@@ -1,0 +1,182 @@
+<div class="dlabnav">
+  <div class="dlabnav-scroll">
+    <ul class="metismenu" id="menu">
+      <li [class.mm-active]="isSectionActive('dashboard')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('dashboard')"
+          (click)="toggle('dashboard'); $event.preventDefault()"
+        >
+          <i class="material-symbols-outlined">home</i>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('dashboard')" [style.display]="isExpanded('dashboard') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('dashboard')">
+          <li [class.mm-active]="isActiveExact('/dashboard')"><a routerLink="/dashboard">Dashboard Page</a></li>
+          <li [class.mm-active]="isActiveExact('/dashboard/finance')"><a routerLink="/dashboard/finance">Finance</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('student')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('student')"
+          (click)="toggle('student'); $event.preventDefault()"
+        >
+          <i class="material-symbols-outlined">school</i>
+          <span class="nav-text">Student</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('student')" [style.display]="isExpanded('student') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('student')">
+          <li><a href="javascript:void(0)">Student</a></li>
+          <li><a href="javascript:void(0)">Student Detail</a></li>
+          <li><a href="javascript:void(0)">Add New Student</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('teacher')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('teacher')"
+          (click)="toggle('teacher'); $event.preventDefault()"
+        >
+          <i class="material-symbols-outlined">person</i>
+          <span class="nav-text">Teacher</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('teacher')" [style.display]="isExpanded('teacher') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('teacher')">
+          <li><a href="javascript:void(0)">Teacher</a></li>
+          <li><a href="javascript:void(0)">Teacher Detail</a></li>
+          <li><a href="javascript:void(0)">Add New Teacher</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isShopActive()">
+        <a routerLink="/dashboard/packs" aria-expanded="false">
+          <i class="material-icons">shopping_cart</i>
+          <span class="nav-text">Shop</span>
+        </a>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('courses')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('courses')"
+          (click)="toggle('courses'); $event.preventDefault()"
+        >
+          <i class="material-symbols-outlined">school</i>
+          <span class="nav-text">Courses</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('courses')" [style.display]="isExpanded('courses') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('courses')">
+          <li [class.mm-active]="isActivePrefix('/dashboard/courses')"><a routerLink="/dashboard/courses">All Courses</a></li>
+          <li [class.mm-active]="isActivePrefix('/dashboard/lessons')"><a routerLink="/dashboard/lessons">Lessons</a></li>
+          <li [class.mm-active]="isActiveExact('/dashboard/calendar')"><a routerLink="/dashboard/calendar">Calendar</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('assessment')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('assessment')"
+          (click)="toggle('assessment'); $event.preventDefault()"
+        >
+          <i class="material-icons">verified</i>
+          <span class="nav-text">Assessment &amp; Certification</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('assessment')" [style.display]="isExpanded('assessment') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('assessment')">
+          <li><a href="javascript:void(0)">Certifications</a></li>
+          <li><a href="javascript:void(0)">Quiz Assessments</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('forum')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('forum')"
+          (click)="toggle('forum'); $event.preventDefault()"
+        >
+          <i class="material-icons">forum</i>
+          <span class="nav-text">Forum</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('forum')" [style.display]="isExpanded('forum') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('forum')">
+          <li [class.mm-active]="isActivePrefix('/dashboard/forum/threads')"><a routerLink="/dashboard/forum/threads">Forum Threads</a></li>
+          <li [class.mm-active]="isActivePrefix('/dashboard/forum/categories')"><a routerLink="/dashboard/forum/categories">Forum Categories</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('reports')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('reports')"
+          (click)="toggle('reports'); $event.preventDefault()"
+        >
+          <i class="material-icons">assessment</i>
+          <span class="nav-text">Reports</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('reports')" [style.display]="isExpanded('reports') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('reports')">
+          <li><a href="javascript:void(0)">Student Reports</a></li>
+          <li><a href="javascript:void(0)">Teacher Reports</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('recruitment')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('recruitment')"
+          (click)="toggle('recruitment'); $event.preventDefault()"
+        >
+          <i class="material-icons">business_center</i>
+          <span class="nav-text">Recruitment</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('recruitment')" [style.display]="isExpanded('recruitment') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('recruitment')">
+          <li [class.mm-active]="isActivePrefix('/dashboard/partners')"><a routerLink="/dashboard/partners">Partners</a></li>
+          <li [class.mm-active]="isActivePrefix('/dashboard/job-offers')"><a routerLink="/dashboard/job-offers">Job Offers</a></li>
+          <li [class.mm-active]="isActivePrefix('/dashboard/applications') && !isActiveExact('/dashboard/applications/evaluate')"><a routerLink="/dashboard/applications">Applications</a></li>
+          <li [class.mm-active]="isActiveExact('/dashboard/applications/evaluate')"><a routerLink="/dashboard/applications/evaluate">Evaluate Applications</a></li>
+          <li [class.mm-active]="isActiveExact('/dashboard/ai-application')"><a routerLink="/dashboard/ai-application">AI Builder</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('fileManager')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('fileManager')"
+          (click)="toggle('fileManager'); $event.preventDefault()"
+        >
+          <i class="material-icons">folder</i>
+          <span class="nav-text">File Manager</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('fileManager')" [style.display]="isExpanded('fileManager') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('fileManager')">
+          <li><a href="javascript:void(0)">File Manager</a></li>
+          <li><a href="javascript:void(0)">User</a></li>
+          <li><a href="javascript:void(0)">Calendar</a></li>
+          <li><a href="javascript:void(0)">Chat</a></li>
+          <li><a href="javascript:void(0)">Activity</a></li>
+        </ul>
+      </li>
+
+      <li [class.mm-active]="isSectionActive('apps')">
+        <a
+          class="has-arrow"
+          href="javascript:void(0);"
+          [attr.aria-expanded]="isExpanded('apps')"
+          (click)="toggle('apps'); $event.preventDefault()"
+        >
+          <i class="material-icons">app_registration</i>
+          <span class="nav-text">Apps</span>
+        </a>
+        <ul [class.mm-show]="isExpanded('apps')" [style.display]="isExpanded('apps') ? 'block' : 'none'" [attr.aria-expanded]="isExpanded('apps')">
+          <li><a href="javascript:void(0)">Profile</a></li>
+          <li><a href="javascript:void(0)">Edit Profile</a></li>
+          <li><a href="javascript:void(0)">Post Details</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

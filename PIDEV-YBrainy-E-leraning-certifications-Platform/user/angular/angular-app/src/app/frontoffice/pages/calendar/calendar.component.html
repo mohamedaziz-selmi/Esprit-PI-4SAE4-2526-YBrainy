@@ -1,0 +1,223 @@
+<ng-container *ngIf="mainHtml; else loading">
+  <div class="calendar-loader-shell" *ngIf="!pageVisible">
+    <div class="calendar-loader-hero">
+      <div class="calendar-loader-pill"></div>
+      <div class="calendar-loader-title"></div>
+      <div class="calendar-loader-subtitle"></div>
+      <div class="calendar-loader-tabs">
+        <span></span>
+        <span></span>
+        <span class="active"></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="calendar-loader-layout">
+      <div class="calendar-loader-main">
+        <div class="calendar-loader-filters">
+          <span class="active"></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="calendar-loader-label"></div>
+        <div class="calendar-loader-card" *ngFor="let _ of [1, 2, 3]">
+          <div class="calendar-loader-date">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+          <div class="calendar-loader-copy">
+            <div class="calendar-loader-chip"></div>
+            <div class="calendar-loader-line strong"></div>
+            <div class="calendar-loader-line"></div>
+            <div class="calendar-loader-line short"></div>
+          </div>
+          <div class="calendar-loader-side">
+            <div class="calendar-loader-cta"></div>
+            <div class="calendar-loader-badge"></div>
+          </div>
+        </div>
+      </div>
+      <div class="calendar-loader-sidebar">
+        <div class="calendar-loader-panel large">
+          <div class="calendar-loader-panel-title"></div>
+          <div class="calendar-loader-grid">
+            <span *ngFor="let _ of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]"></span>
+          </div>
+        </div>
+        <div class="calendar-loader-panel">
+          <div class="calendar-loader-panel-title"></div>
+          <div class="calendar-loader-list-line" *ngFor="let _ of [1, 2, 3, 4]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fo-static-page" [style.visibility]="pageVisible ? 'visible' : 'hidden'" [innerHTML]="mainHtml"></div>
+</ng-container>
+
+<div class="register-confirm-overlay" *ngIf="confirmRegisterOpen" (click)="closeRegisterConfirmation()">
+  <div class="register-confirm-card" (click)="$event.stopPropagation()">
+    <div class="register-confirm-badge">Registration</div>
+    <h3>Confirm Event Registration</h3>
+    <p>
+      Register you for
+      <strong>{{ confirmRegisterEventName }}</strong>
+      ?
+    </p>
+    <div class="register-confirm-actions">
+      <button type="button" class="register-confirm-back" (click)="closeRegisterConfirmation()" [disabled]="confirmRegisterBusy">
+        Back
+      </button>
+      <button type="button" class="register-confirm-yes" (click)="confirmRegister()" [disabled]="confirmRegisterBusy">
+        {{ confirmRegisterBusy ? 'Registering...' : 'Yes, Register' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="register-confirm-overlay" *ngIf="confirmCancelOpen" (click)="closeCancelConfirmation()">
+  <div class="register-confirm-card cancel-tone" (click)="$event.stopPropagation()">
+    <div class="register-confirm-badge cancel-badge">Manage Registration</div>
+    <h3>Cancel registration?</h3>
+    <p>
+      This will remove the registration from
+      <strong>{{ confirmCancelEventName }}</strong>
+      and may immediately free up a seat for other students.
+    </p>
+    <div class="register-confirm-actions">
+      <button type="button" class="register-confirm-back" (click)="closeCancelConfirmation()" [disabled]="confirmCancelBusy">
+        Back
+      </button>
+      <button type="button" class="register-confirm-yes cancel-yes" (click)="confirmCancel()" [disabled]="confirmCancelBusy">
+        {{ confirmCancelBusy ? 'Cancelling...' : 'Yes, Cancel' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="register-confirm-overlay feedback-overlay" *ngIf="feedbackModalOpen" (click)="closeFeedbackModal()">
+  <div class="feedback-card" (click)="$event.stopPropagation()">
+    <div class="feedback-card-top">
+      <div>
+        <div class="register-confirm-badge">Event Feedback</div>
+        <h3>Share your experience</h3>
+        <p>
+          Tell us what you thought about
+          <strong>{{ feedbackTargetEventName }}</strong>.
+        </p>
+      </div>
+      <button type="button" class="feedback-close" (click)="closeFeedbackModal()" [disabled]="feedbackSubmitting">×</button>
+    </div>
+
+    <div class="feedback-rating-row">
+      <span class="feedback-rating-label">Your rating</span>
+      <div class="feedback-stars" role="radiogroup" aria-label="Feedback rating">
+        <button
+          type="button"
+          *ngFor="let rating of [1,2,3,4,5]"
+          class="feedback-star"
+          [class.active]="rating <= feedbackRating"
+          [attr.aria-checked]="rating === feedbackRating"
+          (click)="setFeedbackRating(rating)"
+          [disabled]="feedbackSubmitting">
+          ★
+        </button>
+      </div>
+    </div>
+
+    <div class="feedback-comment-heading">
+      <label class="feedback-comment-label" for="feedbackComment">Comment</label>
+      <span
+        class="feedback-inline-sentiment-badge"
+        *ngIf="feedbackSentimentLabel"
+        [ngClass]="feedbackSentimentLabel">
+        {{ feedbackSentimentLabel | titlecase }}
+      </span>
+    </div>
+    <div class="feedback-comment-toolbar">
+      <span class="feedback-speech-status" *ngIf="feedbackSpeechStatus">{{ feedbackSpeechStatus }}</span>
+      <div class="feedback-toolbar-actions">
+        <button
+          type="button"
+          class="feedback-sentiment-btn"
+          (click)="analyzeFeedbackSentiment()"
+          [disabled]="feedbackSubmitting || feedbackTranscribing || feedbackRecording || feedbackSentimentLoading">
+          {{ feedbackSentimentLoading ? 'Analyzing...' : 'Analyze Sentiment' }}
+        </button>
+      </div>
+      <button
+        type="button"
+        class="feedback-speech-btn"
+        [class.is-recording]="feedbackRecording"
+        (click)="toggleFeedbackSpeechRecording()"
+        [disabled]="feedbackSubmitting || feedbackTranscribing || !canUseFeedbackSpeech()"
+        [attr.aria-label]="feedbackRecording ? 'Stop speech recording' : 'Start speech recording'">
+        <svg *ngIf="!feedbackRecording" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V7a3.5 3.5 0 1 0-7 0v5a3.5 3.5 0 0 0 3.5 3.5Zm6-3.5a1 1 0 1 1 2 0 8 8 0 0 1-7 7.93V22a1 1 0 1 1-2 0v-2.07A8 8 0 0 1 4 12a1 1 0 0 1 2 0 6 6 0 0 0 12 0Z"></path>
+        </svg>
+        <svg *ngIf="feedbackRecording" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 8h8v8H8z"></path>
+        </svg>
+        <span>{{ feedbackRecording ? 'Stop' : 'Speak' }}</span>
+      </button>
+    </div>
+    <textarea
+      id="feedbackComment"
+      class="feedback-comment"
+      [value]="feedbackComment"
+      (input)="onFeedbackCommentInput($any($event.target).value)"
+      maxlength="1000"
+      rows="6"
+      placeholder="Share what stood out, what was useful, and how the event could improve."
+      [disabled]="feedbackSubmitting || feedbackTranscribing"></textarea>
+    <div class="feedback-sentiment-panel" *ngIf="feedbackSentimentLabel">
+      <div class="feedback-sentiment-header">
+        <span class="feedback-sentiment-chip" [ngClass]="feedbackSentimentLabel">{{ feedbackSentimentLabel | titlecase }}</span>
+        <span class="feedback-sentiment-summary">{{ feedbackSentimentSummary }}</span>
+      </div>
+      <div class="feedback-sentiment-scores">
+        <div class="feedback-sentiment-score" *ngFor="let entry of getFeedbackSentimentEntries()">
+          <span>{{ entry.key | titlecase }}</span>
+          <strong>{{ entry.value | number:'1.2-2' }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="feedback-meta-row">
+      <span>{{ feedbackComment.length }}/1000</span>
+      <span *ngIf="feedbackError" class="feedback-error">{{ feedbackError }}</span>
+    </div>
+
+    <div class="register-confirm-actions feedback-actions">
+      <button type="button" class="register-confirm-back" (click)="closeFeedbackModal()" [disabled]="feedbackSubmitting || feedbackTranscribing || feedbackSentimentLoading">
+        Back
+      </button>
+      <button type="button" class="register-confirm-yes feedback-submit" (click)="submitFeedback()" [disabled]="feedbackSubmitting || feedbackRecording || feedbackTranscribing || feedbackSentimentLoading">
+        {{ feedbackSubmitting ? 'Saving...' : 'Submit Feedback' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="confirmation-toast" [ngClass]="confirmationToastTone" *ngIf="confirmationToastVisible">
+  <div class="confirmation-toast-icon">
+    <span></span>
+  </div>
+  <div class="confirmation-toast-copy">
+    <small>{{ confirmationToastTitle }}</small>
+    <strong>{{ confirmationToastMessage }}</strong>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="comm-section" style="min-height:60vh; display:flex; align-items:center; justify-content:center;">
+    <div class="container">
+      <div class="comm-head-wrap cen">
+        <h1 class="comm-head mb16">Loading…</h1>
+        <div class="comm-txt mb36">
+          <p>Preparing page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

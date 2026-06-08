@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="DexignLab">
+	<meta name="robots" content="">
+	<meta name="keywords" content="school, school admin, education, academy, admin dashboard, college, college management, education management, institute, school management, school management system, student management, teacher management, university, university management">
+	<meta name="description" content="Discover Akademi - the ultimate admin dashboard and Bootstrap 5 template. Specially designed for professionals, and for business.">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Lesson Viewer - YBrainy</title>
+
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">>
+	<link href="vendor/wow-master/css/libs/animate.css" rel="stylesheet">
+	<link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+	<style>
+		.bt-buy-now, .bt-support-now, #DZScript { display: none !important; }
+		#viewerPlayer {
+			border-radius: 14px;
+			overflow: hidden;
+			background: #000;
+			min-height: 70vh;
+		}
+		#viewerVideo, #viewerPdf, #viewerYoutube { height: min(78vh, 880px) !important; max-height: none !important; }
+		#viewerImage { max-height: min(78vh, 880px) !important; }
+		.roadmap-step { cursor: pointer; user-select: none; }
+		.roadmap-step.active { border-left: 4px solid var(--primary); background: #f8f9ff; }
+	</style>
+</head>
+
+<body>
+	<div id="preloader">
+		<div class="loader">
+			<div class="dots">
+				<div class="dot mainDot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="main-wrapper">
+		<div class="nav-header">
+			<a href="index.html" class="brand-logo">
+				<img src="images/logo-text.png" alt="">
+			</a>
+			<div class="nav-control">
+				<div class="hamburger">
+					<span class="line"></span><span class="line"></span><span class="line"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="header">
+			<div class="header-content">
+				<nav class="navbar navbar-expand">
+					<div class="collapse navbar-collapse justify-content-between">
+						<div class="header-left"></div>
+						<ul class="navbar-nav header-right"></ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+		<div class="dlabnav">
+			<div class="dlabnav-scroll">
+				<ul class="metismenu" id="menu">
+					<li><a href="courses.html" aria-expanded="false"><i class="material-icons">school</i><span class="nav-text">Courses</span></a></li>
+					<li><a href="lessons.html" aria-expanded="false"><i class="material-icons">play_lesson</i><span class="nav-text">Lessons</span></a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="content-body">
+			<div class="container-fluid">
+				<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap">
+					<div>
+						<h3 class="mb-1" id="viewerTitle">
+							<i class="material-icons align-middle me-2" style="font-size:32px;color:var(--primary);">slideshow</i>
+							Lesson Viewer
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a href="courses.html">Courses</a></li>
+								<li class="breadcrumb-item"><a id="backToLessons" href="lessons.html">Lessons</a></li>
+								<li class="breadcrumb-item active" id="viewerBreadcrumb">Viewer</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="d-flex gap-2 mt-2 mt-md-0">
+						<button id="viewerPrev" type="button" class="btn btn-outline-primary" disabled>
+							<i class="material-icons align-middle" style="font-size:20px;">navigate_before</i>
+							Prev
+						</button>
+						<button id="viewerNext" type="button" class="btn btn-outline-primary" disabled>
+							Next
+							<i class="material-icons align-middle" style="font-size:20px;">navigate_next</i>
+						</button>
+					</div>
+				</div>
+
+				<div class="row g-3">
+					<div class="col-xl-4 col-lg-5">
+						<div class="card" style="min-height:500px;">
+							<div class="card-header border-0 pb-0 d-flex align-items-center justify-content-between">
+								<h5 class="mb-0"><i class="material-icons align-middle me-1" style="color:var(--primary);">route</i> Roadmap</h5>
+								<small id="viewerStepMeta" class="text-muted"></small>
+							</div>
+							<div class="card-body p-2">
+								<div id="viewerRoadmap" class="d-flex flex-column gap-2"></div>
+								<div id="viewerRoadmapEmpty" class="text-center py-5 text-muted" style="display:none;">
+									<i class="material-icons" style="font-size:48px;opacity:.3;">playlist_add</i>
+									<p class="mt-2">No content found for this lesson.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-8 col-lg-7">
+						<div class="card" style="min-height:500px;">
+							<div class="card-header border-0 pb-0">
+								<h5 class="mb-0"><i class="material-icons align-middle me-1" style="color:var(--primary);">smart_display</i> Content</h5>
+							</div>
+							<div class="card-body">
+								<div id="viewerPlayer" class="w-100">
+									<video id="viewerVideo" controls class="w-100" style="background:#000;display:none;"></video>
+									<iframe id="viewerPdf" class="w-100" style="border:0;background:#fff;display:none;"></iframe>
+									<iframe id="viewerYoutube" class="w-100" style="border:0;background:#000;display:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+									<img id="viewerImage" class="w-100" style="object-fit:contain;background:#fff;display:none;" alt="Lesson image" />
+								</div>
+
+								<div class="mt-3">
+									<h4 id="viewerLessonName" class="mb-1"></h4>
+									<p class="text-muted mt-2" id="viewerLessonDesc"></p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="vendor/wow-master/dist/wow.min.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+	<script>
+		const API_BASE_URL = '/api/courses';
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const courseId = urlParams.get('courseId');
+		const lessonId = urlParams.get('lessonId');
+
+		const backLink = document.getElementById('backToLessons');
+		if (backLink && courseId) backLink.href = `lessons.html?courseId=${encodeURIComponent(courseId)}`;
+
+		let mediaItems = [];
+		let activeIndex = 0;
+		let lesson = null;
+
+		function normalizeMediaType(t) {
+			if (!t) return t;
+			const s = String(t).toUpperCase();
+			if (s === 'VIDEO') return 'VIDEO_UPLOAD';
+			if (s === 'YOUTUBE') return 'YOUTUBE_EMBED';
+			return s;
+		}
+		function typeLabel(t) {
+			if (t === 'VIDEO_UPLOAD') return 'Video';
+			if (t === 'YOUTUBE_EMBED') return 'YouTube';
+			if (t === 'PDF') return 'PDF';
+			if (t === 'IMAGE') return 'Image';
+			return t;
+		}
+		function iconFor(t) {
+			if (t === 'VIDEO_UPLOAD') return 'smart_display';
+			if (t === 'YOUTUBE_EMBED') return 'ondemand_video';
+			if (t === 'PDF') return 'picture_as_pdf';
+			if (t === 'IMAGE') return 'image';
+			return 'insert_drive_file';
+		}
+		function resolveCourseFileUrl(u) {
+			if (!u) return '';
+			const s = String(u);
+			if (s.startsWith('blob:') || s.startsWith('data:')) return s;
+			if (s.startsWith('http://') || s.startsWith('https://')) {
+				// Convert absolute URL to relative so it goes through the Angular proxy
+				try { return new URL(s).pathname; } catch (_) { return s; }
+			}
+			if (s.startsWith('/api/')) return s;
+			if (s.startsWith('/')) return s;
+			return '/api/courses/files/' + s;
+		}
+		function hideAll() {
+			const v = document.getElementById('viewerVideo');
+			const p = document.getElementById('viewerPdf');
+			const y = document.getElementById('viewerYoutube');
+			const i = document.getElementById('viewerImage');
+			if (v) { v.pause?.(); v.removeAttribute('src'); v.style.display = 'none'; }
+			if (p) { p.removeAttribute('src'); p.style.display = 'none'; }
+			if (y) { y.removeAttribute('src'); y.style.display = 'none'; }
+			if (i) { i.removeAttribute('src'); i.style.display = 'none'; }
+		}
+		function setButtons() {
+			const prev = document.getElementById('viewerPrev');
+			const next = document.getElementById('viewerNext');
+			if (prev) prev.disabled = activeIndex <= 0;
+			if (next) next.disabled = activeIndex + 1 >= mediaItems.length;
+			const meta = document.getElementById('viewerStepMeta');
+			if (meta) meta.textContent = mediaItems.length ? `${activeIndex + 1} / ${mediaItems.length}` : '';
+		}
+		function renderRoadmap() {
+			const el = document.getElementById('viewerRoadmap');
+			const empty = document.getElementById('viewerRoadmapEmpty');
+			if (!el || !empty) return;
+			if (!mediaItems.length) {
+				el.innerHTML = '';
+				empty.style.display = '';
+				return;
+			}
+			empty.style.display = 'none';
+			el.innerHTML = mediaItems.map((m, idx) => {
+				const active = idx === activeIndex;
+				return `
+					<div class="roadmap-step p-3 rounded border bg-white shadow-sm ${active ? 'active' : ''}" onclick="openIndex(${idx})">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="d-flex align-items-center gap-2">
+								<span class="badge bg-primary rounded-circle" style="width:30px;height:30px;display:flex;align-items:center;justify-content:center;">${idx + 1}</span>
+								<i class="material-icons" style="color:var(--primary);">${iconFor(m.type)}</i>
+								<strong>${typeLabel(m.type)}</strong>
+							</div>
+							<small class="text-muted">${m.type}</small>
+						</div>
+					</div>
+				`;
+			}).join('');
+		}
+		function showIndex(idx) {
+			if (!mediaItems[idx]) return;
+			activeIndex = idx;
+			renderRoadmap();
+			setButtons();
+			hideAll();
+			const item = mediaItems[idx];
+			const v = document.getElementById('viewerVideo');
+			const p = document.getElementById('viewerPdf');
+			const y = document.getElementById('viewerYoutube');
+			const i = document.getElementById('viewerImage');
+
+			if (item.type === 'VIDEO_UPLOAD' && v) {
+				v.src = resolveCourseFileUrl(item.contentUrl);
+				v.style.display = '';
+				v.load();
+				return;
+			}
+			if (item.type === 'PDF' && p) {
+				p.src = resolveCourseFileUrl(item.contentUrl);
+				p.style.display = '';
+				return;
+			}
+			if (item.type === 'IMAGE' && i) {
+				i.src = resolveCourseFileUrl(item.contentUrl);
+				i.style.display = '';
+				return;
+			}
+			if (item.type === 'YOUTUBE_EMBED' && y) {
+				let embed = item.contentUrl;
+				try {
+					const u = new URL(item.contentUrl);
+					if (u.hostname.includes('youtu.be')) {
+						const id = u.pathname.replace('/', '').trim();
+						embed = id ? `https://www.youtube.com/embed/${id}` : embed;
+					} else if (u.hostname.includes('youtube.com')) {
+						const id = u.searchParams.get('v');
+						embed = id ? `https://www.youtube.com/embed/${id}` : embed;
+					}
+				} catch (_) {}
+				y.src = embed;
+				y.style.display = '';
+				return;
+			}
+		}
+
+		window.openIndex = showIndex;
+
+		async function load() {
+			const title = document.getElementById('viewerTitle');
+			if (!courseId || !lessonId) {
+				if (title) title.textContent = 'Lesson Viewer (missing courseId / lessonId)';
+				return;
+			}
+			try {
+				const res = await fetch(`${API_BASE_URL}/${courseId}/lessons/${lessonId}`);
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				lesson = await res.json();
+				if (title) title.innerHTML = `<i class="material-icons align-middle me-2" style="font-size:32px;color:var(--primary);">slideshow</i>${lesson.title || 'Lesson Viewer'}`;
+				const ln = document.getElementById('viewerLessonName');
+				const ld = document.getElementById('viewerLessonDesc');
+				if (ln) ln.textContent = lesson.title || '';
+				if (ld) ld.textContent = lesson.description || '';
+
+				const contents = Array.isArray(lesson.contents) ? lesson.contents : [];
+				mediaItems = contents
+					.filter(c => c && c.type && c.contentUrl)
+					.map(c => ({ ...c, type: normalizeMediaType(c.type) }))
+					.sort((a, b) => {
+						const ao = (a && typeof a.orderIndex === 'number') ? a.orderIndex : 0;
+						const bo = (b && typeof b.orderIndex === 'number') ? b.orderIndex : 0;
+						return ao - bo;
+					});
+
+				activeIndex = 0;
+				renderRoadmap();
+				setButtons();
+				if (mediaItems.length) showIndex(0);
+			} catch (e) {
+				console.error('Failed to load lesson', e);
+				if (title) title.textContent = 'Lesson Viewer (failed to load)';
+			}
+		}
+
+		document.getElementById('viewerPrev').addEventListener('click', () => showIndex(Math.max(0, activeIndex - 1)));
+		document.getElementById('viewerNext').addEventListener('click', () => showIndex(Math.min(mediaItems.length - 1, activeIndex + 1)));
+
+		load();
+	</script>
+</body>
+</html>

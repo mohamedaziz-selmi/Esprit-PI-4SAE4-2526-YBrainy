@@ -1,0 +1,349 @@
+<div class="db-page">
+  <ng-container *ngIf="loading">
+    <div class="db-page-header db-page-header--skeleton">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-sub" style="margin-top:8px;"></div>
+    </div>
+    <div class="db-cards-row">
+      <div *ngFor="let _ of [1,2,3,4,5]" class="db-kpi-card db-kpi-card--skeleton">
+        <div class="skeleton" style="height:16px;width:80px;margin-bottom:10px;"></div>
+        <div class="skeleton" style="height:36px;width:100px;margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:12px;width:120px;"></div>
+      </div>
+    </div>
+    <div class="db-charts-main">
+      <div class="db-chart-box db-chart-box--skeleton">
+        <div class="skeleton" style="height:18px;width:200px;margin-bottom:16px;"></div>
+        <div class="skeleton" style="height:220px;"></div>
+      </div>
+      <div class="db-chart-box db-chart-box--skeleton">
+        <div class="skeleton" style="height:18px;width:140px;margin-bottom:16px;"></div>
+        <div class="skeleton" style="height:220px;"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div *ngIf="!loading && error" class="db-error">
+    <span class="db-error-icon">!</span>
+    <p>Unable to load the dashboard. Please try again.</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !error && data">
+    <div class="db-page-header">
+      <div>
+        <div class="db-page-title">Forum Dashboard</div>
+        <div class="db-page-sub">Your activity, quality signals, and community ranking.</div>
+      </div>
+      <div class="db-header-actions">
+        <div class="db-rank-pill">
+          Rank <strong>#{{ data.rankPosition }}</strong>
+          <span class="db-rank-pct">Top {{ data.userPercentile }}%</span>
+        </div>
+        <a routerLink="/forum" class="db-back-btn">Back to forum</a>
+      </div>
+    </div>
+
+    <div class="db-cards-row">
+      <div class="db-kpi-card db-kpi-card--blue">
+        <div class="db-kpi-top">
+          <span class="db-kpi-label">Total Posts</span>
+          <span class="db-kpi-icon db-kpi-icon--blue">P</span>
+        </div>
+        <div class="db-kpi-val">{{ animPosts }}</div>
+        <div class="db-kpi-change db-kpi-change--pos">
+          {{ data.totalThreadsCreated }} threads and {{ data.totalCommentsCreated }} comments
+        </div>
+      </div>
+
+      <div class="db-kpi-card db-kpi-card--green">
+        <div class="db-kpi-top">
+          <span class="db-kpi-label">Upvotes Received</span>
+          <span class="db-kpi-icon db-kpi-icon--green">U</span>
+        </div>
+        <div class="db-kpi-val">{{ animUpvotes }}</div>
+        <div class="db-kpi-change" [class.db-kpi-change--neg]="data.totalDownvotesReceived > 0">
+          {{ data.totalDownvotesReceived }} downvotes and {{ data.totalSavesReceived }} saves
+        </div>
+      </div>
+
+      <div class="db-kpi-card db-kpi-card--red">
+        <div class="db-kpi-top">
+          <span class="db-kpi-label">Total XP</span>
+          <span class="db-kpi-icon db-kpi-icon--red">XP</span>
+        </div>
+        <div class="db-kpi-val">
+          {{ data.xpTimeline.length > 0 ? data.xpTimeline[data.xpTimeline.length - 1].newTotal : 0 }}
+        </div>
+        <div class="db-kpi-change" [class.db-kpi-change--pos]="positiveRatioPct >= 50" [class.db-kpi-change--neg]="positiveRatioPct < 50">
+          {{ positiveRatioPct }}% positive ratio
+        </div>
+      </div>
+
+      <div class="db-kpi-card db-kpi-card--purple">
+        <div class="db-kpi-top">
+          <span class="db-kpi-label">Rank Position</span>
+          <span class="db-kpi-icon db-kpi-icon--purple">#</span>
+        </div>
+        <div class="db-kpi-val">#{{ animRank }}</div>
+        <div class="db-kpi-change db-kpi-change--pos">
+          {{ data.engagementRate | number:'1.1-1' }}% engagement rate
+        </div>
+      </div>
+
+      <div class="db-kpi-card db-kpi-card--teal" *ngIf="data.mlAvailable && (data.mlTotalAnalyzed ?? 0) > 0">
+        <div class="db-kpi-top">
+          <span class="db-kpi-label">Thread Quality</span>
+          <span class="db-kpi-icon db-kpi-icon--teal">ML</span>
+        </div>
+        <div class="db-kpi-val" [style.color]="mlLabelColor">{{ animHqRate }}%</div>
+        <div class="db-kpi-change db-kpi-change--pos">
+          {{ data.mlTotalAnalyzed }} threads analyzed
+        </div>
+      </div>
+    </div>
+
+    <div class="db-ml-row" *ngIf="data.mlAvailable && (data.mlTotalAnalyzed ?? 0) > 0">
+      <div class="db-chart-box db-chart-box--ml">
+        <div class="db-chart-header">
+          <span class="db-chart-title">ML Thread Quality</span>
+          <span class="db-chart-badge db-badge--ml" [style.background]="mlLabelColor + '22'" [style.color]="mlLabelColor">
+            {{ mlLabel }}
+          </span>
+        </div>
+        <div class="db-ml-body">
+          <div class="db-ml-donut-wrap">
+            <canvas #mlCanvas></canvas>
+          </div>
+          <div class="db-ml-stats">
+            <div class="db-ml-stat">
+              <span class="db-ml-dot" style="background:#22c55e;"></span>
+              <span class="db-ml-stat-label">High quality</span>
+              <span class="db-ml-stat-val">{{ data.mlHqCount ?? 0 }}</span>
+            </div>
+            <div class="db-ml-stat">
+              <span class="db-ml-dot" style="background:#f59e0b;"></span>
+              <span class="db-ml-stat-label">Needs editing</span>
+              <span class="db-ml-stat-val">{{ data.mlLqEditCount ?? 0 }}</span>
+            </div>
+            <div class="db-ml-stat">
+              <span class="db-ml-dot" style="background:#ef4444;"></span>
+              <span class="db-ml-stat-label">Likely to struggle</span>
+              <span class="db-ml-stat-val">{{ data.mlLqCloseCount ?? 0 }}</span>
+            </div>
+            <div class="db-ml-rate">
+              <div class="db-ml-rate-val" [style.color]="mlLabelColor">{{ (data.mlHqRate ?? 0) | number:'1.0-1' }}%</div>
+              <div class="db-ml-rate-label">HQ rate</div>
+            </div>
+          </div>
+        </div>
+        <div class="db-ml-bar-wrap">
+          <div class="db-ml-bar">
+            <div class="db-ml-bar-seg db-ml-bar-seg--hq" [style.width]="((data.mlTotalAnalyzed ?? 0) > 0 ? ((data.mlHqCount ?? 0) / (data.mlTotalAnalyzed ?? 1) * 100) : 0) + '%'"></div>
+            <div class="db-ml-bar-seg db-ml-bar-seg--edit" [style.width]="((data.mlTotalAnalyzed ?? 0) > 0 ? ((data.mlLqEditCount ?? 0) / (data.mlTotalAnalyzed ?? 1) * 100) : 0) + '%'"></div>
+            <div class="db-ml-bar-seg db-ml-bar-seg--close" [style.width]="((data.mlTotalAnalyzed ?? 0) > 0 ? ((data.mlLqCloseCount ?? 0) / (data.mlTotalAnalyzed ?? 1) * 100) : 0) + '%'"></div>
+          </div>
+          <div class="db-ml-bar-labels">
+            <span>{{ data.mlTotalAnalyzed }} threads analyzed by ML</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="db-chart-box db-chart-box--predict">
+        <div class="db-chart-header">
+          <span class="db-chart-title">Activity Forecast</span>
+        </div>
+        <div class="db-predict-body">
+          <div class="db-predict-card">
+            <div class="db-predict-icon">N</div>
+            <div class="db-predict-info">
+              <div class="db-predict-val">{{ data.predictedNextWeekPosts ?? 0 }}</div>
+              <div class="db-predict-label">Predicted posts next week</div>
+              <div class="db-predict-sub">Based on your recent weekly activity</div>
+            </div>
+          </div>
+          <div class="db-predict-divider"></div>
+          <div class="db-predict-stats">
+            <div class="db-predict-row">
+              <span>Threads</span>
+              <strong>{{ data.totalThreadsCreated }}</strong>
+            </div>
+            <div class="db-predict-row">
+              <span>Posts</span>
+              <strong>{{ data.totalPostsCreated }}</strong>
+            </div>
+            <div class="db-predict-row">
+              <span>Comments</span>
+              <strong>{{ data.totalCommentsCreated }}</strong>
+            </div>
+            <div class="db-predict-row">
+              <span>Saves</span>
+              <strong>{{ data.totalSavesReceived }}</strong>
+            </div>
+            <div class="db-predict-row">
+              <span>Engagement</span>
+              <strong>{{ data.engagementRate | number:'1.1-1' }}%</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-leaderboard-section" *ngIf="data.topLeaderboard && data.topLeaderboard.length > 0">
+      <div class="db-section-title">Top Contributors</div>
+      <div class="db-leaderboard-list">
+        <div *ngFor="let entry of data.topLeaderboard" class="db-lb-row" [class.db-lb-row--me]="entry.userId === currentUserId">
+          <div class="db-lb-rank">#{{ entry.rankPosition }}</div>
+          <div class="db-lb-avatar" [style.background]="leaderboardAvatarColor(entry.rankPosition)">
+            {{ leaderboardInitials(entry.username) }}
+          </div>
+          <div class="db-lb-info">
+            <div class="db-lb-username">{{ entry.username }}</div>
+            <div class="db-lb-level">{{ entry.levelTitle }}</div>
+          </div>
+          <div class="db-lb-stats">
+            <span class="db-lb-stat">Threads {{ entry.threadCount }}</span>
+            <span class="db-lb-stat">XP {{ entry.xp | number }}</span>
+            <span class="db-lb-stat db-lb-stat--hq" *ngIf="entry.mlTotalAnalyzed > 0">HQ {{ entry.hqRate | number:'1.0-1' }}%</span>
+          </div>
+          <div class="db-lb-level-badge" [style.background]="leaderboardAvatarColor(entry.rankPosition) + '22'" [style.color]="leaderboardAvatarColor(entry.rankPosition)">
+            Lv {{ entry.level }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-charts-main">
+      <div class="db-chart-box db-chart-box--area">
+        <div class="db-chart-header">
+          <span class="db-chart-title">XP and Activity</span>
+          <div class="db-chart-legend">
+            <span class="db-legend-dot db-legend-dot--purple"></span><span>XP total</span>
+          </div>
+        </div>
+        <div class="db-chart-canvas-wrap db-chart-canvas-wrap--area">
+          <canvas #xpCanvas *ngIf="data.xpTimeline.length > 0"></canvas>
+          <div *ngIf="data.xpTimeline.length === 0" class="db-chart-empty">No XP data yet</div>
+        </div>
+      </div>
+
+      <div class="db-chart-box db-chart-box--donut">
+        <div class="db-chart-header">
+          <span class="db-chart-title">Reaction Sources</span>
+          <span class="db-chart-badge">{{ data.totalPositiveReactions + data.totalNegativeReactions }} total</span>
+        </div>
+        <div class="db-chart-canvas-wrap db-chart-canvas-wrap--donut">
+          <canvas #donutCanvas *ngIf="(data.totalPositiveReactions + data.totalNegativeReactions) > 0"></canvas>
+          <div *ngIf="(data.totalPositiveReactions + data.totalNegativeReactions) === 0" class="db-chart-empty">No reactions yet</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-charts-bottom">
+      <div class="db-chart-box db-chart-box--bar">
+        <div class="db-chart-header">
+          <span class="db-chart-title">Weekly Activity</span>
+          <span class="db-chart-badge">Last 12 weeks</span>
+        </div>
+        <div class="db-chart-canvas-wrap db-chart-canvas-wrap--bar">
+          <canvas #barCanvas></canvas>
+        </div>
+      </div>
+
+      <div class="db-chart-box db-activity-feed">
+        <div class="db-chart-header">
+          <span class="db-chart-title">Performance Insights</span>
+        </div>
+        <div class="db-feed-list">
+          <div *ngFor="let insight of data.performanceInsights; let i = index" class="db-feed-item" [style.animation-delay]="(i * 60) + 'ms'">
+            <div class="db-feed-avatar">{{ insight.icon }}</div>
+            <div class="db-feed-info">
+              <div class="db-feed-msg">{{ insight.message }}</div>
+              <div class="db-feed-time">{{ insight.type | titlecase }}</div>
+            </div>
+            <div
+              class="db-feed-badge"
+              [class.db-feed-badge--pos]="insight.type === 'POSITIVE'"
+              [class.db-feed-badge--neg]="insight.type === 'NEGATIVE'"
+              [class.db-feed-badge--tip]="insight.type === 'SUGGESTION'">
+              {{ insight.type === 'POSITIVE' ? '+' : insight.type === 'NEGATIVE' ? '!' : 'i' }}
+            </div>
+          </div>
+          <div *ngIf="data.performanceInsights.length === 0" class="db-chart-empty">
+            No insights yet. Keep contributing.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="db-perf-section">
+      <div class="db-section-title">Performance Report</div>
+      <table class="db-perf-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>You</th>
+            <th>Community</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Average upvotes per thread</td>
+            <td class="db-td-val">{{ data.avgUpvotesPerPost | number:'1.1-1' }}</td>
+            <td class="db-td-comm">{{ data.communityAvgUpvotesPerPost | number:'1.1-1' }}</td>
+            <td>
+              <span class="db-status-badge" [class.db-status--above]="statusBadge(data.avgUpvotesPerPost, data.communityAvgUpvotesPerPost) === 'above'" [class.db-status--below]="statusBadge(data.avgUpvotesPerPost, data.communityAvgUpvotesPerPost) === 'below'" [class.db-status--avg]="statusBadge(data.avgUpvotesPerPost, data.communityAvgUpvotesPerPost) === 'avg'">
+                {{ statusBadge(data.avgUpvotesPerPost, data.communityAvgUpvotesPerPost) }}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Positive ratio</td>
+            <td class="db-td-val">{{ positiveRatioPct }}%</td>
+            <td class="db-td-comm">-</td>
+            <td>
+              <span class="db-status-badge" [class.db-status--above]="positiveRatioPct >= 75" [class.db-status--below]="positiveRatioPct < 50" [class.db-status--avg]="positiveRatioPct >= 50 && positiveRatioPct < 75">
+                {{ positiveRatioPct >= 75 ? 'excellent' : positiveRatioPct >= 50 ? 'good' : 'improve' }}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>Engagement rate</td>
+            <td class="db-td-val">{{ data.engagementRate | number:'1.1-1' }}%</td>
+            <td class="db-td-comm">{{ data.communityAvgEngagementRate | number:'1.1-1' }}%</td>
+            <td>
+              <span class="db-status-badge" [class.db-status--above]="statusBadge(data.engagementRate, data.communityAvgEngagementRate) === 'above'" [class.db-status--below]="statusBadge(data.engagementRate, data.communityAvgEngagementRate) === 'below'" [class.db-status--avg]="statusBadge(data.engagementRate, data.communityAvgEngagementRate) === 'avg'">
+                {{ statusBadge(data.engagementRate, data.communityAvgEngagementRate) }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="data.mlAvailable && (data.mlTotalAnalyzed ?? 0) > 0">
+            <td>ML HQ rate</td>
+            <td class="db-td-val" [style.color]="mlLabelColor">{{ (data.mlHqRate ?? 0) | number:'1.0-1' }}%</td>
+            <td class="db-td-comm">70% or more is strong</td>
+            <td>
+              <span class="db-status-badge" [class.db-status--above]="(data.mlHqRate ?? 0) >= 70" [class.db-status--avg]="(data.mlHqRate ?? 0) >= 40 && (data.mlHqRate ?? 0) < 70" [class.db-status--below]="(data.mlHqRate ?? 0) < 40">
+                {{ mlLabel }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="db-perf-footer">
+        <div class="db-best-box" *ngIf="data.bestPerformingPost">
+          <div class="db-best-label">Best thread</div>
+          <div class="db-best-title">{{ data.bestPerformingPost.title }}</div>
+          <div class="db-best-meta">
+            <span class="db-best-stat">{{ data.bestPerformingPost.upvotes }} upvotes</span>
+            <span class="db-best-stat">{{ data.bestPerformingPost.totalReactions }} reactions</span>
+          </div>
+        </div>
+        <div class="db-rank-banner">
+          You are in the <strong>Top {{ data.userPercentile }}%</strong> of contributors
+          <span class="db-rank-pos">(#{{ data.rankPosition }})</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

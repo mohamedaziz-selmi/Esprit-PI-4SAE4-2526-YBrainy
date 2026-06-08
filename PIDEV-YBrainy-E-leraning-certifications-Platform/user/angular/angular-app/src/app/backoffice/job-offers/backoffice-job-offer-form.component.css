@@ -1,0 +1,182 @@
+:host {
+  display: block;
+}
+
+.bo-wrap,
+:host {
+  color: #111827;
+}
+
+.bo-wrap {
+  padding: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.bo-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+.muted {
+  color: #667085;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card {
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #344054;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.input,
+.select {
+  height: 40px;
+}
+
+/* Override backoffice theme rule that expands date indicator over the page. */
+.input[type='date'] {
+  position: relative;
+}
+
+.input[type='date']::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.location-picker {
+  position: relative;
+}
+
+.location-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(16, 24, 40, 0.08);
+}
+
+.location-item {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #f2f4f7;
+  background: #fff;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-item:hover {
+  background: #f9fafb;
+}
+
+.location-flag {
+  min-width: 20px;
+}
+
+.location-empty {
+  padding: 10px 12px;
+  color: #667085;
+  font-size: 13px;
+}
+
+.error {
+  color: #b42318;
+  font-size: 12px;
+}
+
+.uploader {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border: 1px dashed #e5e7eb;
+  border-radius: 12px;
+}
+
+.preview img {
+  width: 120px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  background: #fff;
+}
+
+.empty {
+  border: 1px solid #eef2f7;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

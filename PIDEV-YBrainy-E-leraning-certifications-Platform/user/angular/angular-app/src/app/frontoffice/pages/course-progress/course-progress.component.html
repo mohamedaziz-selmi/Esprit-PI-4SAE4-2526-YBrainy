@@ -1,0 +1,99 @@
+<div class="fo-cp-page">
+
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div class="fo-cp-header">
+    <button class="button line" type="button" (click)="back()">← Back to Course</button>
+    <h1 class="fo-cp-heading">My Progress</h1>
+  </div>
+
+  <div class="fo-cp-body">
+    <div *ngIf="loading" class="fo-cp-state">Loading progress…</div>
+    <div *ngIf="error" class="fo-cp-alert">{{ error }}</div>
+
+    <div *ngIf="progress?.enrollmentStatus === 'COMPLETED'"
+         style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white; padding: 24px; border-radius: 12px;
+                text-align: center; margin-bottom: 24px;">
+      <div style="font-size: 48px;">🎉</div>
+      <h2 style="margin: 8px 0;">Congratulations!</h2>
+      <p style="margin: 0; opacity: 0.9;">You have successfully completed this course.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !error && progress">
+
+      <!-- ── Enrollment summary ──────────────────────────── -->
+      <div class="fo-cp-summary-card">
+        <div class="fo-cp-ring-wrap">
+          <svg viewBox="0 0 120 120" class="fo-cp-ring-svg">
+            <circle cx="60" cy="60" r="50" class="fo-cp-ring-track"/>
+            <circle cx="60" cy="60" r="50" class="fo-cp-ring-arc"
+                    [style.stroke-dashoffset]="314.16 * (1 - progress.completionPercentage / 100)"/>
+          </svg>
+          <div class="fo-cp-ring-inner">
+            <span class="fo-cp-ring-pct">{{ progress.completionPercentage | number:'1.0-0' }}%</span>
+            <span class="fo-cp-ring-label">complete</span>
+          </div>
+        </div>
+        <div class="fo-cp-summary-stats">
+          <div class="fo-cp-stat">
+            <div class="fo-cp-stat-value">{{ completedCount }}</div>
+            <div class="fo-cp-stat-label">Lessons Done</div>
+          </div>
+          <div class="fo-cp-stat">
+            <div class="fo-cp-stat-value">{{ totalCount }}</div>
+            <div class="fo-cp-stat-label">Total Lessons</div>
+          </div>
+          <div class="fo-cp-stat">
+            <div class="fo-cp-stat-value">{{ progress.enrollmentStatus }}</div>
+            <div class="fo-cp-stat-label">Status</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Lesson list ────────────────────────────────── -->
+      <div class="fo-cp-lessons">
+        <h2 class="fo-cp-section-title">Lessons</h2>
+        <p *ngIf="progress.lessonProgresses.length === 0" class="fo-cp-empty">No lessons found for this course.</p>
+        <div *ngFor="let l of progress.lessonProgresses; let i = index" class="fo-cp-lesson-row"
+             [class.fo-cp-lesson-done]="l.status === 'COMPLETED'"
+             (click)="goToLesson(l.lessonId)"
+             style="cursor:pointer;">
+          <div class="fo-cp-lesson-left">
+            <span class="fo-cp-lesson-num" [class.fo-cp-num-done]="l.status === 'COMPLETED'">
+              {{ l.status === 'COMPLETED' ? '✓' : (i + 1) }}
+            </span>
+            <div class="fo-cp-lesson-info">
+              <span class="fo-cp-lesson-title">{{ getLessonTitle(l.lessonId) }}</span>
+              <span class="fo-cp-lesson-date" *ngIf="l.completedAt">
+                Completed {{ l.completedAt | date:'mediumDate' }}
+              </span>
+              <span *ngIf="l.timeSpentSeconds && l.timeSpentSeconds > 0" class="fo-cp-time-spent">
+                ⏱ {{ formatTime(l.timeSpentSeconds) }}
+              </span>
+            </div>
+          </div>
+          <button *ngIf="l.status !== 'COMPLETED'" class="fo-cp-mark-btn" type="button"
+                  (click)="markComplete(l.lessonId)">
+            Mark Complete
+          </button>
+          <span *ngIf="l.status === 'COMPLETED'" class="fo-cp-done-badge">Done</span>
+        </div>
+      </div>
+
+      <!-- Certificate download -->
+      <div *ngIf="progress?.enrollmentStatus === 'COMPLETED'" class="fo-cp-cert-section">
+        <div class="fo-cp-cert-title">🏆 Course Completed!</div>
+        <p class="fo-cp-cert-desc">Congratulations! You have completed this course and earned a certificate.</p>
+        <button class="fo-cp-cert-btn" type="button" [disabled]="certDownloading" (click)="downloadCertificate()">
+          {{ certDownloading ? 'Downloading...' : '⬇ Download Certificate' }}
+        </button>
+        <div *ngIf="certError" class="fo-cp-cert-err">{{ certError }}</div>
+      </div>
+
+    </ng-container>
+
+    <div *ngIf="!loading && !error && !progress" class="fo-cp-state">
+      No enrollment found. Please enroll in this course first.
+    </div>
+  </div>
+</div>

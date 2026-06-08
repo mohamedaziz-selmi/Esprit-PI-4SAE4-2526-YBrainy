@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    ports: ["3306:3306"]
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=elearning_platform
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports: ["5672:5672", "15672:15672"]
+    restart: always
+
+  cart-service:
+    build: ./cart
+    image: issamriahi99/cart-service:1.0.0
+    container_name: cart-service
+    ports: ["8954:8954"]
+    depends_on: [mysqldb, rabbitmq]
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false
+      - RABBITMQ_HOST=rabbitmq
+      - YBRAINY_EUREKA_URL=http://host.docker.internal:8761/eureka/
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+      - AUTH_JWT_SECRET=${AUTH_JWT_SECRET}
+
+  finance-service:
+    build: ./finance
+    image: issamriahi99/finance-service:1.0.0
+    container_name: finance-service
+    ports: ["8995:8995"]
+    depends_on: [mysqldb, rabbitmq]
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false
+      - RABBITMQ_HOST=rabbitmq
+      - YBRAINY_EUREKA_URL=http://host.docker.internal:8761/eureka/
+
+  payment-service:
+    build: ./Payment
+    image: issamriahi99/payment-service:1.0.0
+    container_name: payment-service
+    ports: ["8095:8095"]
+    depends_on: [mysqldb, rabbitmq]
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false
+      - RABBITMQ_HOST=rabbitmq
+      - YBRAINY_EUREKA_URL=http://host.docker.internal:8761/eureka/
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - TTS_API_KEY=${TTS_API_KEY}
+      - CONTENT_WRITER_API_KEY=${CONTENT_WRITER_API_KEY}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+      - AUTH_JWT_SECRET=${AUTH_JWT_SECRET}

@@ -1,0 +1,111 @@
+/* Header component styles are handled by global main.css */
+
+.checkout-spin {
+    display: inline-block;
+    animation: checkoutSpin 0.8s linear infinite;
+}
+
+.checkout-toast {
+    position: fixed;
+    top: 88px;
+    right: 20px;
+    width: min(390px, calc(100vw - 24px));
+    z-index: 2200;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: 14px;
+    border: 1px solid rgba(180, 204, 255, 0.4);
+    color: #f6f9ff;
+    box-shadow: 0 14px 28px rgba(10, 20, 54, 0.35);
+    animation: checkoutToastIn 0.25s ease-out;
+}
+
+.checkout-toast--success {
+    background:
+        radial-gradient(120% 120% at 8% 0%, rgba(94, 210, 171, 0.32) 0%, rgba(94, 210, 171, 0) 55%),
+        linear-gradient(135deg, #0a2452 0%, #1a3f74 100%);
+}
+
+.checkout-toast--error {
+    background:
+        radial-gradient(120% 120% at 8% 0%, rgba(255, 128, 139, 0.28) 0%, rgba(255, 128, 139, 0) 55%),
+        linear-gradient(135deg, #451839 0%, #7f2946 100%);
+}
+
+.checkout-toast__icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 1rem;
+}
+
+.checkout-toast__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.checkout-toast__title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.checkout-toast__message {
+    margin: 0.22rem 0 0;
+    font-size: 0.83rem;
+    line-height: 1.35;
+    color: rgba(241, 246, 255, 0.9);
+}
+
+.checkout-toast__close {
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0.12rem;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.checkout-toast__close:hover {
+    color: #fff;
+}
+
+@keyframes checkoutSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes checkoutToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .checkout-toast {
+        top: 72px;
+        left: 12px;
+        right: 12px;
+        width: auto;
+    }
+}
+

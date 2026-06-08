@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'Docker image tag from CI')
+    }
+
+    environment {
+        GIT_CREDENTIALS    = 'ybrainy-token'
+        DOCKER_USER        = 'hos77'
+        APP_NAME           = 'event-service'
+        IMAGE_NAME         = "${DOCKER_USER}/${APP_NAME}"
+        K8S_NAMESPACE      = 'ybrainy'
+        NOTIFICATION_EMAIL = 'jacemjouili@gmail.com'
+    }
+
+    stages {
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo "Deploying image ${IMAGE_NAME}:${params.DOCKER_TAG}"
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events') {
+                    bat """
+                        wsl kubectl apply -f event-service/k8s/configmap.yaml -n ${K8S_NAMESPACE}
+                        wsl kubectl apply -f event-service/k8s/secret.yaml -n ${K8S_NAMESPACE} || echo "secret.yaml not found, skipping"
+                        wsl kubectl apply -f event-service/k8s/deployment.yaml -n ${K8S_NAMESPACE}
+                        wsl kubectl apply -f event-service/k8s/service.yaml -n ${K8S_NAMESPACE}
+
+                        wsl kubectl set image deployment/event-service ^
+                        event-service=${IMAGE_NAME}:${params.DOCKER_TAG} ^
+                        -n ${K8S_NAMESPACE}
+
+                        wsl kubectl rollout status deployment/event-service ^
+                        -n ${K8S_NAMESPACE} --timeout=5m
+
+                        wsl kubectl get pods -n ${K8S_NAMESPACE} -l app=event-service
+                    """
+                }
+            }
+        }
+
+        stage('Monitoring') {
+            steps {
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events') {
+                    bat """
+                        wsl kubectl apply -f monitoring/prometheus-config.yaml
+                        wsl kubectl apply -f monitoring/grafana-dashboard-provider.yaml
+                        wsl kubectl apply -f monitoring/grafana-events-dashboard.yaml
+                        wsl kubectl rollout restart deployment/prometheus -n monitoring
+                        wsl kubectl rollout restart deployment/grafana -n monitoring
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '========================================'
+            echo "CD SUCCESS - event-service:${params.DOCKER_TAG} deployed to ${K8S_NAMESPACE}"
+            echo '========================================'
+        }
+        failure {
+            echo 'CD FAILED - check Console Output'
+            emailext(
+                subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """event-service CD failed.
+
+Build URL: ${env.BUILD_URL}
+Image tag: ${params.DOCKER_TAG}
+
+Please review the deployment logs in Jenkins.
+""",
+                to: "${env.NOTIFICATION_EMAIL}"
+            )
+        }
+    }
+}

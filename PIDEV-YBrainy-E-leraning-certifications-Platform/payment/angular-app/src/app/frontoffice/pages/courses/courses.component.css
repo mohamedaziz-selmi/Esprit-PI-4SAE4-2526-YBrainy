@@ -1,0 +1,12 @@
+.fo-static-page {
+  display: block;
+}
+
+/* Courses CRUD page: keep it compatible with template form styles */
+.form-field,
+textarea.form-field {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+

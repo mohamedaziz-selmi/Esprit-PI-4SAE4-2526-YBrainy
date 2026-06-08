@@ -1,0 +1,4 @@
+priority,action,rationale,target_metric
+HIGH,Optimize salary and contractor load,"Recommended across 2026-11, 2026-12. Average projected margin uplift: +3.54 pts and profit uplift: +1328.",salary_ratio
+HIGH,Scale marketing on the strongest channels,"Recommended across 2026-08, 2026-09, 2026-10. Average projected margin uplift: +4.36 pts and profit uplift: +2913.",income_growth
+LOW,Stabilize support operations with automation,Recommended across 2026-07. Average projected margin uplift: +0.55 pts and profit uplift: +274.,support_ratio

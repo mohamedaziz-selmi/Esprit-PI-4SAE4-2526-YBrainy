@@ -1,0 +1,560 @@
+<header id="header" [class.home-header]="isHome">
+  <div class="header-box">
+    <div class="container">
+      <div class="header-container">
+
+        <!-- Left Logo -->
+        <div class="head-left">
+          <a class="logo" routerLink="/">
+            <img [src]="assets + 'wp-content/uploads/2025/10/logos.svg'" width="100" height="63" alt="YBrainy Logo" />
+          </a>
+        </div>
+
+        <!-- Main Menu -->
+        <ul class="header-list">
+
+          <!-- Mega Menu - Services -->
+          <li class="drop-big">
+            <a routerLink="/services">Services</a>
+            <div class="drop-list-wrap">
+              <div class="drop-list-container">
+                <div class="drop-list-tabs">
+                  <ul>
+                    <li class="active">
+                      <a routerLink="/services">
+                        <div class="drop-tab-icon">
+                          <img [src]="assets + 'wp-content/uploads/2025/10/fi_8599789.png'" alt="">
+                        </div>
+                        Software Engineering
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/services">
+                        <div class="drop-tab-icon">
+                          <img [src]="assets + 'wp-content/uploads/2025/10/fi_6119491-2.png'" alt="">
+                        </div>
+                        Professional Development
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/services">
+                        <div class="drop-tab-icon">
+                          <img [src]="assets + 'wp-content/uploads/2025/10/service-icon-3.png'" alt="">
+                        </div>
+                        Automation &amp; DevOps
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/services">
+                        <div class="drop-tab-icon">
+                          <img [src]="assets + 'wp-content/uploads/2025/10/service-icon-4.png'" alt="">
+                        </div>
+                        Cloud Computing
+                      </a>
+                    </li>
+                    <li>
+                      <a routerLink="/services">
+                        <div class="drop-tab-icon">
+                          <img [src]="assets + 'wp-content/uploads/2025/10/service-icon-5.png'" alt="">
+                        </div>
+                        Data Science
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="drop-list-links-wrap">
+                  <!-- Software Engineering Links -->
+                  <div class="drop-list-links active">
+                    <ul>
+                      <li><a routerLink="/services">Software Engineering</a></li>
+                      <li>
+                        <a routerLink="/services">AI-Enabled Software Engineering
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_6582502.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Solution Discovery
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/eng-icon-1-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Software Architecture
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/eng-icon-2-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Scaled Agile Delivery
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/eng-icon-3-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Digital Assurance
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/eng-icon-4-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">RunOps
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/eng-icon-5-2.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Enterprise-Ready AI
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/ent.png'" alt="">
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">AI-Assisted Legacy Refactor
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_7253691.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Professional Development Links -->
+                  <div class="drop-list-links">
+                    <ul>
+                      <li><a routerLink="/services">Professional Development</a></li>
+                      <li>
+                        <a routerLink="/services">User Research
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_8057761.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">UX/UI Design
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/exp-icon-1-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Product Discovery
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/exp-icon-4-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Product Management
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/prod-mgmt.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">AI Incubator
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/exp-icon-2-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Automation & DevOps Links -->
+                  <div class="drop-list-links">
+                    <ul>
+                      <li><a routerLink="/services">Automation &amp; DevOps</a></li>
+                      <li>
+                        <a routerLink="/services">Conversational AI
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_4429516.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">AI Strategy, Enablement &amp; CoE
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_4729618.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Generative AI &amp; Decision Science
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_6771715-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Process Transformation &amp; Automation
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_9126189-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Low Code Applications
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/XMLID_786_.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">AI Agents &amp; Autonomous Orchestration
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_9251990.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Cloud Computing Links -->
+                  <div class="drop-list-links">
+                    <ul>
+                      <li><a routerLink="/services">Cloud Computing</a></li>
+                      <li>
+                        <a routerLink="/services">Cloud Services
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_5157311-2.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">DevOps
+                          <div class="drop-tab-icon"><img
+                              [src]="assets + 'wp-content/uploads/2025/10/fi_10472747-4.png'" alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Edge Tech
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_7486594.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">IoT &amp; Embedded
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_7253691.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Media &amp; Content Creation
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_6581908-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">XR: AR/MR/VR
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_10433935.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Gaming &amp; Simulation
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_7863402.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Cloud Transformation Optimization
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_6582496.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Data Science Links -->
+                  <div class="drop-list-links">
+                    <ul>
+                      <li><a routerLink="/services">Data Science Analytics</a></li>
+                      <li>
+                        <a routerLink="/services">Modern Data Science Tech
+                          <div class="drop-tab-icon"><img
+                              [src]="assets + 'wp-content/uploads/2025/10/fi_10472868-1.png'" alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Business Intelligence
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_4183351.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Modern Data Platforms
+                          <div class="drop-tab-icon"><img
+                              [src]="assets + 'wp-content/uploads/2025/10/bigData Science.png'" alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Data Science &amp; Analytics
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_7009962-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">Responsible AI
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_8093780-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                      <li>
+                        <a routerLink="/services">AIOps
+                          <div class="drop-tab-icon"><img [src]="assets + 'wp-content/uploads/2025/10/fi_5154056-1.png'"
+                              alt=""></div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- Packs Link -->
+          <li>
+            <a routerLink="/packs">Packs</a>
+          </li>
+
+          <!-- Resources Submenu -->
+          <li class="drop">
+            <a routerLink="/resources">Resources</a>
+            <div class="drop-list-tabs">
+              <ul>
+                <li class="active">
+                  <a routerLink="/forum">Forum</a>
+                </li>
+                <li>
+                  <a routerLink="/calendar">Calendar</a>
+                </li>
+                <li>
+                  <a routerLink="/courses">Courses</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- About -->
+          <li>
+            <a routerLink="/about">About</a>
+          </li>
+        </ul>
+
+        <!-- Right Button -->
+        <div class="head-right">
+          <div class="menuBtn">
+            <a routerLink="/" class="button line">
+              Get In Touch
+            </a>
+
+            <!-- Cart Icon and Dropdown -->
+            <div class="cart-wrapper" style="position: relative; margin-left: 20px; display: inline-block;">
+              <a href="javascript:void(0)" (click)="toggleCartDropdown()" class="cart-toggle"
+                style="font-size: 24px; color: #000; position: relative;">
+                <i class="bi bi-cart3"></i>
+                <span class="cart-badge" *ngIf="cartService.getCartItemCount() > 0"
+                  style="position: absolute; top: -10px; right: -10px; background: #e74c3c; color: #fff; font-size: 12px; font-weight: bold; border-radius: 50%; padding: 2px 6px; min-width: 20px; text-align: center;">
+                  {{ cartService.getCartItemCount() }}
+                </span>
+              </a>
+
+              <!-- Dropdown Content -->
+              <div class="cart-dropdown text-dark" *ngIf="cartDropdownOpen"
+                style="position: absolute; top: 100%; right: 0; width: 300px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 1000; padding: 15px; margin-top: 15px;">
+
+                <!-- Tabs -->
+                <ul class="nav nav-pills nav-justified mb-3" id="cart-tabs" role="tablist"
+                  style="border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                  <li class="nav-item">
+                    <a class="nav-link btn-sm" [class.active]="!showHistory" (click)="toggleHistory(false)"
+                      href="javascript:void(0)" style="font-size: 12px; font-weight: 600; cursor: pointer;">
+                      <i class="bi bi-cart"></i> Cart
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link btn-sm" [class.active]="showHistory" (click)="toggleHistory(true)"
+                      href="javascript:void(0)" style="font-size: 12px; font-weight: 600; cursor: pointer;">
+                      <i class="bi bi-clock-history"></i> Activity
+                    </a>
+                  </li>
+                </ul>
+
+                <!-- Cart Tab Content -->
+                <div *ngIf="!showHistory">
+                  <div *ngIf="(cartService.cart$ | async)?.items?.length === 0" class="text-center py-3">
+                    <p class="text-muted">Your cart is empty.</p>
+                  </div>
+
+                  <div class="cart-items" style="max-height: 250px; overflow-y: auto;">
+                    <div class="cart-item d-flex justify-content-between align-items-center mb-2 pb-2"
+                      *ngFor="let item of (cartService.cart$ | async)?.items" style="border-bottom: 1px solid #f9f9f9;">
+                      <div style="flex: 1;">
+                        <div style="font-size: 14px; font-weight: 600;">{{ item.packTitle }}</div>
+                        <div style="font-size: 12px; color: #666;">{{ item.quantity }} x ${{ item.priceAtPurchase |
+                          number:'1.2-2' }}</div>
+                      </div>
+                      <button (click)="removeFromCart(item.id, $event)" class="btn btn-sm text-danger"
+                        style="padding: 0 5px;">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div *ngIf="(cartService.cart$ | async)?.items?.length! > 0" class="cart-footer mt-3"
+                    style="border-top: 1px solid #eee; padding-top: 10px;">
+                    <div class="d-flex justify-content-between mb-2">
+                      <span style="font-weight: 600;">Total:</span>
+                      <span style="font-weight: 700; color: #000;">${{ (cartService.cart$ | async)?.totalAmount |
+                        number:'1.2-2' }}</span>
+                    </div>
+                    <button (click)="checkout()" class="btn btn-primary w-100 btn-sm" [disabled]="checkoutInProgress">
+                      <span *ngIf="!checkoutInProgress">Checkout</span>
+                      <span *ngIf="checkoutInProgress">
+                        <i class="bi bi-arrow-repeat me-1 checkout-spin"></i>Processing...
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- History Tab Content (Activity Feed) -->
+                <div *ngIf="showHistory" class="activity-feed" style="max-height: 320px; overflow-y: auto;">
+                  <div *ngIf="cartHistory.length === 0" class="text-center py-3">
+                    <p class="text-muted">No recent activity.</p>
+                  </div>
+
+                  <div class="history-item d-flex align-items-start mb-3" *ngFor="let entry of cartHistory"
+                    style="padding-bottom: 10px; border-bottom: 1px dashed #f0f0f0;">
+                    <div class="activity-icon mr-2 mt-1" [ngSwitch]="entry.action">
+                      <i *ngSwitchCase="'ADD_ITEM'" class="bi bi-plus-circle-fill text-success"
+                        style="font-size: 18px;"></i>
+                      <i *ngSwitchCase="'REMOVE_ITEM'" class="bi bi-dash-circle-fill text-danger"
+                        style="font-size: 18px;"></i>
+                      <i *ngSwitchCase="'CLEAR_CART'" class="bi bi-x-circle-fill text-warning"
+                        style="font-size: 18px;"></i>
+                      <i *ngSwitchCase="'CHECKOUT'" class="bi bi-check-circle-fill text-primary"
+                        style="font-size: 18px;"></i>
+                      <i *ngSwitchCase="'CART_CREATED'" class="bi bi-stars text-info" style="font-size: 18px;"></i>
+                      <i *ngSwitchDefault class="bi bi-clock-history text-secondary" style="font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 600;">{{ (entry.action || 'ACTIVITY').replace('_', ' ')
+                        | titlecase }}</div>
+                      <div style="font-size: 12px; color: #333;">
+                        {{ entry.description || 'Action recorded in previous session' }}
+                      </div>
+                      <div style="font-size: 11px; color: #999;">
+                        {{ entry.createdAt | date:'MMM d, h:mm a' }} • Total: ${{ entry.totalAmount | number:'1.2-2' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="menu side-menu">
+              <a href="javascript:void(0)" class="js-nav-toggle" (click)="toggleMenu()">
+                <span></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Side Menu (Mobile) -->
+  <div class="menuOverlay"></div>
+  <div class="nav-wrapper">
+    <nav role="mob-navigation" class="mob-navigation">
+      <div class="nav-toggle">
+        <span class="nav-back"></span>
+        <span class="nav-title"></span>
+        <span class="nav-close"></span>
+      </div>
+
+      <ul>
+        <li class="has-dropdown">
+          <a routerLink="/services">Services</a>
+          <ul>
+            <li class="has-dropdown">
+              <a routerLink="/services">Software Engineering</a>
+              <ul class="third-list">
+                <li><a routerLink="/services">Software Engineering</a></li>
+                <li><a routerLink="/services">AI-Enabled Software Engineering</a></li>
+                <li><a routerLink="/services">Solution Discovery</a></li>
+                <li><a routerLink="/services">Software Architecture</a></li>
+                <li><a routerLink="/services">Scaled Agile Delivery</a></li>
+                <li><a routerLink="/services">Digital Assurance</a></li>
+                <li><a routerLink="/services">RunOps</a></li>
+                <li><a routerLink="/services">Enterprise-Ready AI</a></li>
+                <li><a routerLink="/services">AI-Assisted Legacy Refactor</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown">
+              <a routerLink="/services">Professional Development</a>
+              <ul class="third-list">
+                <li><a routerLink="/services">Professional Development</a></li>
+                <li><a routerLink="/services">User Research</a></li>
+                <li><a routerLink="/services">UX/UI Design</a></li>
+                <li><a routerLink="/services">Product Discovery</a></li>
+                <li><a routerLink="/services">Product Management</a></li>
+                <li><a routerLink="/services">AI Incubator</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown">
+              <a routerLink="/services">Automation &amp; DevOps</a>
+              <ul class="third-list">
+                <li><a routerLink="/services">Automation &amp; DevOps</a></li>
+                <li><a routerLink="/services">Conversational AI</a></li>
+                <li><a routerLink="/services">AI Strategy, Enablement &amp; CoE</a></li>
+                <li><a routerLink="/services">Generative AI &amp; Decision Science</a></li>
+                <li><a routerLink="/services">Process Transformation &amp; Automation</a></li>
+                <li><a routerLink="/services">Low Code Applications</a></li>
+                <li><a routerLink="/services">AI Agents &amp; Autonomous Orchestration</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown">
+              <a routerLink="/services">Cloud Computing</a>
+              <ul class="third-list">
+                <li><a routerLink="/services">Cloud Computing</a></li>
+                <li><a routerLink="/services">Cloud Services</a></li>
+                <li><a routerLink="/services">DevOps</a></li>
+                <li><a routerLink="/services">Edge Tech</a></li>
+                <li><a routerLink="/services">IoT &amp; Embedded</a></li>
+                <li><a routerLink="/services">Media &amp; Content Creation</a></li>
+                <li><a routerLink="/services">XR: AR/MR/VR</a></li>
+                <li><a routerLink="/services">Gaming &amp; Simulation</a></li>
+                <li><a routerLink="/services">Cloud Transformation Optimization</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown">
+              <a routerLink="/services">Data Science</a>
+              <ul class="third-list">
+                <li><a routerLink="/services">Data Science Analytics</a></li>
+                <li><a routerLink="/services">Modern Data Science Tech</a></li>
+                <li><a routerLink="/services">Business Intelligence</a></li>
+                <li><a routerLink="/services">Modern Data Platforms</a></li>
+                <li><a routerLink="/services">Data Science &amp; Analytics</a></li>
+                <li><a routerLink="/services">Responsible AI</a></li>
+                <li><a routerLink="/services">AIOps</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a routerLink="/packs">Packs</a></li>
+        <li class="has-dropdown">
+          <a routerLink="/resources">Resources</a>
+          <ul>
+            <li><a routerLink="/forum">Forum</a></li>
+            <li><a routerLink="/calendar">Calendar</a></li>
+            <li><a routerLink="/courses">Courses</a></li>
+          </ul>
+        </li>
+        <li><a routerLink="/about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="checkout-toast" *ngIf="showCheckoutToast"
+    [ngClass]="checkoutToastType === 'success' ? 'checkout-toast--success' : 'checkout-toast--error'">
+    <div class="checkout-toast__icon">
+      <i class="bi" [ngClass]="checkoutToastType === 'success' ? 'bi-check2-circle' : 'bi-exclamation-octagon'"></i>
+    </div>
+    <div class="checkout-toast__content">
+      <div class="checkout-toast__title">{{ checkoutToastTitle }}</div>
+      <p class="checkout-toast__message">{{ checkoutToastMessage }}</p>
+    </div>
+    <button type="button" class="checkout-toast__close" (click)="closeCheckoutToast()" aria-label="Close notification">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+</header>

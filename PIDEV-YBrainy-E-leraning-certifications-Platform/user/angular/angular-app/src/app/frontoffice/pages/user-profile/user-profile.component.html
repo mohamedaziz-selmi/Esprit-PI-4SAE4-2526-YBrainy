@@ -1,0 +1,49 @@
+<div class="up-page">
+  <div class="up-container">
+    <div *ngIf="loading" class="up-card">Loading…</div>
+    <div *ngIf="!loading && error" class="up-card up-error">{{ error }}</div>
+
+    <div *ngIf="!loading && !error && profile" class="up-grid">
+      <div class="up-card up-hero">
+        <div class="up-title">
+          <div>
+            <div class="up-name">{{ profile.username }}</div>
+            <div class="up-sub">{{ profile.email }} • {{ profile.role }}</div>
+          </div>
+          <div class="up-badge">Lv. {{ profile.level }}</div>
+        </div>
+
+        <div class="up-level">{{ profile.levelTitle }}</div>
+
+        <div class="up-progress">
+          <div class="up-progress-fill" [style.width.%]="profile.progressPercent"></div>
+        </div>
+
+        <div class="up-meta">
+          <div><strong>{{ profile.xp }}</strong> XP total</div>
+          <div *ngIf="!profile.isMaxLevel"><strong>{{ profile.xpProgress }}</strong> / {{ profile.xpNeeded }} XP to next level</div>
+          <div *ngIf="profile.isMaxLevel"><strong>Max level</strong></div>
+          <div><strong>{{ profile.streakDays }}</strong> day streak</div>
+        </div>
+      </div>
+
+      <div class="up-card">
+        <div class="up-card-title">Recent XP</div>
+        <div *ngIf="recent.length === 0" class="up-muted">No XP events yet.</div>
+
+        <div *ngFor="let e of recent" class="up-event">
+          <div class="up-event-left">
+            <div class="up-event-desc">{{ e.description }}</div>
+            <div class="up-muted">{{ e.createdAt | date:'medium' }}</div>
+          </div>
+          <div class="up-event-right">+{{ e.amount }} XP</div>
+        </div>
+      </div>
+
+      <div class="up-card">
+        <div class="up-card-title">Coming soon</div>
+        <div class="up-muted">Badges, leaderboard position, activity stats, and more.</div>
+      </div>
+    </div>
+  </div>
+</div>

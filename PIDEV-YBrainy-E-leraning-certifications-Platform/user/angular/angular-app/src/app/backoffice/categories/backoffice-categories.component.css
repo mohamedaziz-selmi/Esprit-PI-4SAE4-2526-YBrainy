@@ -1,0 +1,12 @@
+.bo-wrap{padding:24px;max-width:1200px;margin:0 auto;}
+.bo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
+.bo-card{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:16px;}
+.bo-error{color:#b00020;}
+.bo-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.bo-table{width:100%;border-collapse:collapse;}
+.bo-table th,.bo-table td{border-bottom:1px solid rgba(0,0,0,.08);text-align:left;padding:10px;vertical-align:top;}
+.bo-empty{padding:12px 0;opacity:.7;}
+.bo-form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+input,textarea{padding:8px 10px;border:1px solid rgba(0,0,0,.2);border-radius:6px;}
+.btn{padding:6px 10px;border:1px solid rgba(0,0,0,.2);background:#f6f6f6;border-radius:6px;cursor:pointer;}
+.btn.danger{border-color:#b00020;color:#b00020;background:#fff;}

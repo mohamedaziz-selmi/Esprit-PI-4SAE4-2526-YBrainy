@@ -1,0 +1,10 @@
+<button
+  type="button"
+  class="animated-btn"
+  [class.animated-btn--full]="fullWidth"
+  [disabled]="isDisabled"
+  (click)="onPress()"
+>
+  <span class="animated-btn__gloss"></span>
+  <span class="animated-btn__label">{{ loading ? 'Generating...' : label }}</span>
+</button>

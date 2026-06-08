@@ -1,0 +1,6 @@
+priority,action,rationale,target_metric
+high,Expand course portfolio in 'python',16 top-ranked courses with average hybrid score 0.913,Increase enrollments and conversion in this skill cluster
+high,Expand course portfolio in 'machine-learning',9 top-ranked courses with average hybrid score 0.914,Increase enrollments and conversion in this skill cluster
+high,Control SUPPORT cost growth,Forecast flags SUPPORT at +312.76% growth pressure,Reduce cost growth while keeping 6-month margin stable
+medium,Run marketing on top-10 hybrid courses,Align campaign with strongest ranked courses and revenue source COURSE_SALE,Improve course sales conversion and ROI
+medium,"Create bundled paths for python, machine-learning, data-science",Top trend-demand skills should be packaged as progression tracks,Increase bundle share and learner retention

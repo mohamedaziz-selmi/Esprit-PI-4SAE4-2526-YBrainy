@@ -1,0 +1,576 @@
+FORECAST FOR: July 2026 to December 2026
+------------------------------
+Predicted Income:       $253,442
+Income Range:           $201,119 to $305,765
+Predicted Expenses:     $184,858
+Expenses Range:         $125,703 to $244,012
+Expected Profit:        $68,584
+Profit Range:           $-42,893 to $180,061
+Profit Margin:          27.06%
+Margin Range:           -14.03% to 89.53% (Risk: HIGH)
+
+TOP REVENUE SOURCE:        COURSE_SALE
+EXPENSE TO WATCH:          SUPPORT - growing at 312.76%
+
+BUSINESS SUMMARY: Business stays profitable, but margin is getting tighter as SUPPORT costs outpace revenue growth.
+------------------------------
+
+MODEL QUALITY SNAPSHOT (Selected models)
+- income_total: RandomForest (WAPE 34.78%, R2 -0.05, Reliability HIGH)
+- expense_TOOLS: GradientBoosting (WAPE 87.87%, R2 -0.01, Reliability MEDIUM)
+- expense_INFRASTRUCTURE: RandomForest (WAPE 99.82%, R2 -0.03, Reliability MEDIUM)
+- expense_SALARY: RandomForest (WAPE 107.79%, R2 -0.07, Reliability MEDIUM)
+- expense_CONTENT: ExtraTrees (WAPE 122.96%, R2 -0.27, Reliability LOW)
+- expense_MARKETING: ExtraTrees (WAPE 161.03%, R2 -0.22, Reliability LOW)
+- expense_SUPPORT: RandomForest (WAPE 346.51%, R2 -1.35, Reliability LOW)
+
+VISUAL DASHBOARD
+------------------------------
+KPI CARDS:
+- Income (Forecast 6M): $253,442
+- Expenses (Forecast 6M): $184,858
+- Profit (Forecast 6M): $68,584
+- Margin (Forecast 6M): 27.06% (Range -14.03% to 89.53%)
+
+1) INCOME TREND (Actual Jan-Jun + Forecast Next 6 Months)
+Jan      |*                                     | $21,085
+Feb      |o-----*                               | $24,928
+Mar      |      o--------------------*          | $37,589
+Apr      |                           o*         | $37,803
+May      |                            o--------*| $43,476
+Jun      |                     *--------------- | $34,076
+Jul      |                     o--------------* | $42,752
+Aug      |                                   *  | $42,460
+Sep      |                                  *   | $41,534
+Oct      |                                  o-* | $42,992
+Nov      |                                 *--  | $41,278
+Dec      |                                 o-*  | $42,427
+Data:
+Jan: $21,085 | Feb: $24,928 | Mar: $37,589 | Apr: $37,803 | May: $43,476 | Jun: $34,076 | Jul: $42,752 | Aug: $42,460 | Sep: $41,534 | Oct: $42,992 | Nov: $41,278 | Dec: $42,427
+
+2) EXPENSES BY CATEGORY (Next Month Forecast)
+SALARY         | ################################## | $12,627
+MARKETING      | #########                          | $3,458
+INFRASTRUCTURE | #######                            | $2,659
+TOOLS          | ###                                | $1,172
+CONTENT        | ########                           | $2,837
+SUPPORT        | ###                                | $1,094
+Data:
+SALARY: $12,627
+MARKETING: $3,458
+INFRASTRUCTURE: $2,659
+TOOLS: $1,172
+CONTENT: $2,837
+SUPPORT: $1,094
+
+3) PROFIT TREND (Actual Jan-Jun + Forecast Next 6 Months)
+Jan      |*                                     | $8,515
+Feb      |o--------*                            | $13,743
+Mar      |         o----------------------*     | $27,878
+Apr      |                       *--------      | $22,075
+May      |                       o-------------*| $30,806
+Jun      |                 *------------------- | $18,637
+Jul      |                 *                    | $18,905
+Aug      |     *-----------                     | $11,467
+Sep      |    *                                 | $10,756
+Oct      |  *-                                  | $9,886
+Nov      |*-                                    | $8,702
+Dec      |o*                                    | $8,869
+Data:
+Jan: $8,515 | Feb: $13,743 | Mar: $27,878 | Apr: $22,075 | May: $30,806 | Jun: $18,637 | Jul: $18,905 | Aug: $11,467 | Sep: $10,756 | Oct: $9,886 | Nov: $8,702 | Dec: $8,869
+
+4) REVENUE MIX (Share by source_type)
+COURSE_SALE: 51.18%
+SUBSCRIPTION: 7.18%
+BUNDLE_SALE: 31.16%
+WORKSHOP: 10.48%
+
+5) 6-MONTH FORECAST BREAKDOWN
+- 2026-07: Income $42,752 | Expenses $23,847 | Profit $18,905 | Margin 44.22% (Range 4.75% to 104.23%)
+- 2026-08: Income $42,460 | Expenses $30,993 | Profit $11,467 | Margin 27.01% (Range -14.09% to 89.48%)
+- 2026-09: Income $41,534 | Expenses $30,779 | Profit $10,756 | Margin 25.90% (Range -15.30% to 88.53%)
+- 2026-10: Income $42,992 | Expenses $33,106 | Profit $9,886 | Margin 23.00% (Range -18.48% to 86.05%)
+- 2026-11: Income $41,278 | Expenses $32,576 | Profit $8,702 | Margin 21.08% (Range -20.57% to 84.41%)
+- 2026-12: Income $42,427 | Expenses $33,558 | Profit $8,869 | Margin 20.90% (Range -20.76% to 84.25%)
+
+(Optional) CHART DATA (for real dashboards)
+```json
+{
+  "monthly_income_actual": {
+    "2026-01": 21085.0,
+    "2026-02": 24928.0,
+    "2026-03": 37589.0,
+    "2026-04": 37803.0,
+    "2026-05": 43476.0,
+    "2026-06": 34076.0
+  },
+  "monthly_expense_actual": {
+    "2026-01": 12570.0,
+    "2026-02": 11185.0,
+    "2026-03": 9711.0,
+    "2026-04": 15728.0,
+    "2026-05": 12670.0,
+    "2026-06": 15439.0
+  },
+  "monthly_profit_actual": {
+    "2026-01": 8515.0,
+    "2026-02": 13743.0,
+    "2026-03": 27878.0,
+    "2026-04": 22075.0,
+    "2026-05": 30806.0,
+    "2026-06": 18637.0
+  },
+  "next_month_forecast": {
+    "month": "2026-07",
+    "income": 42751.85,
+    "income_low": 33925.82,
+    "income_high": 51577.88,
+    "expenses_by_category": {
+      "SALARY": 12626.77,
+      "MARKETING": 3457.94,
+      "INFRASTRUCTURE": 2658.99,
+      "TOOLS": 1171.86,
+      "CONTENT": 2837.3,
+      "SUPPORT": 1093.89
+    },
+    "expenses_by_category_low": {
+      "SALARY": 8586.2,
+      "MARKETING": 2351.4,
+      "INFRASTRUCTURE": 1808.12,
+      "TOOLS": 796.87,
+      "CONTENT": 1929.37,
+      "SUPPORT": 743.85
+    },
+    "expenses_by_category_high": {
+      "SALARY": 16667.33,
+      "MARKETING": 4564.48,
+      "INFRASTRUCTURE": 3509.87,
+      "TOOLS": 1546.86,
+      "CONTENT": 3745.24,
+      "SUPPORT": 1443.94
+    },
+    "expenses": 23846.76,
+    "expenses_low": 16215.79,
+    "expenses_high": 31477.72,
+    "profit": 18905.09,
+    "profit_low": 2448.1,
+    "profit_high": 35362.09,
+    "margin": 44.22,
+    "margin_low": 4.75,
+    "margin_high": 104.23
+  },
+  "forecast_monthly": {
+    "2026-07": {
+      "income": 42751.85,
+      "income_low": 33925.82,
+      "income_high": 51577.88,
+      "expenses": 23846.76,
+      "expenses_low": 16215.79,
+      "expenses_high": 31477.72,
+      "profit": 18905.09,
+      "profit_low": 2448.1,
+      "profit_high": 35362.09,
+      "margin": 44.22,
+      "margin_low": 4.75,
+      "margin_high": 104.23,
+      "expenses_by_category": {
+        "SALARY": 12626.77,
+        "MARKETING": 3457.94,
+        "INFRASTRUCTURE": 2658.99,
+        "TOOLS": 1171.86,
+        "CONTENT": 2837.3,
+        "SUPPORT": 1093.89
+      },
+      "expenses_by_category_low": {
+        "SALARY": 8586.2,
+        "MARKETING": 2351.4,
+        "INFRASTRUCTURE": 1808.12,
+        "TOOLS": 796.87,
+        "CONTENT": 1929.37,
+        "SUPPORT": 743.85
+      },
+      "expenses_by_category_high": {
+        "SALARY": 16667.33,
+        "MARKETING": 4564.48,
+        "INFRASTRUCTURE": 3509.87,
+        "TOOLS": 1546.86,
+        "CONTENT": 3745.24,
+        "SUPPORT": 1443.94
+      }
+    },
+    "2026-08": {
+      "income": 42459.58,
+      "income_low": 33693.89,
+      "income_high": 51225.27,
+      "expenses": 30993.05,
+      "expenses_low": 21075.28,
+      "expenses_high": 40910.83,
+      "profit": 11466.52,
+      "profit_low": -7216.95,
+      "profit_high": 30149.99,
+      "margin": 27.01,
+      "margin_low": -14.09,
+      "margin_high": 89.48,
+      "expenses_by_category": {
+        "SALARY": 17849.4,
+        "MARKETING": 4097.53,
+        "INFRASTRUCTURE": 3025.06,
+        "TOOLS": 1200.72,
+        "CONTENT": 3313.92,
+        "SUPPORT": 1506.43
+      },
+      "expenses_by_category_low": {
+        "SALARY": 12137.59,
+        "MARKETING": 2786.32,
+        "INFRASTRUCTURE": 2057.04,
+        "TOOLS": 816.49,
+        "CONTENT": 2253.46,
+        "SUPPORT": 1024.37
+      },
+      "expenses_by_category_high": {
+        "SALARY": 23561.21,
+        "MARKETING": 5408.74,
+        "INFRASTRUCTURE": 3993.08,
+        "TOOLS": 1584.95,
+        "CONTENT": 4374.37,
+        "SUPPORT": 1988.49
+      }
+    },
+    "2026-09": {
+      "income": 41534.34,
+      "income_low": 32959.66,
+      "income_high": 50109.02,
+      "expenses": 30778.83,
+      "expenses_low": 20929.61,
+      "expenses_high": 40628.06,
+      "profit": 10755.51,
+      "profit_low": -7668.4,
+      "profit_high": 29179.41,
+      "margin": 25.9,
+      "margin_low": -15.3,
+      "margin_high": 88.53,
+      "expenses_by_category": {
+        "SALARY": 17621.89,
+        "MARKETING": 4253.47,
+        "INFRASTRUCTURE": 2740.9,
+        "TOOLS": 1192.46,
+        "CONTENT": 3423.89,
+        "SUPPORT": 1546.22
+      },
+      "expenses_by_category_low": {
+        "SALARY": 11982.88,
+        "MARKETING": 2892.36,
+        "INFRASTRUCTURE": 1863.81,
+        "TOOLS": 810.87,
+        "CONTENT": 2328.24,
+        "SUPPORT": 1051.43
+      },
+      "expenses_by_category_high": {
+        "SALARY": 23260.89,
+        "MARKETING": 5614.58,
+        "INFRASTRUCTURE": 3617.99,
+        "TOOLS": 1574.04,
+        "CONTENT": 4519.53,
+        "SUPPORT": 2041.02
+      }
+    },
+    "2026-10": {
+      "income": 42991.61,
+      "income_low": 34116.08,
+      "income_high": 51867.14,
+      "expenses": 33105.51,
+      "expenses_low": 22511.74,
+      "expenses_high": 43699.27,
+      "profit": 9886.1,
+      "profit_low": -9583.19,
+      "profit_high": 29355.39,
+      "margin": 23.0,
+      "margin_low": -18.48,
+      "margin_high": 86.05,
+      "expenses_by_category": {
+        "SALARY": 19055.34,
+        "MARKETING": 4529.29,
+        "INFRASTRUCTURE": 2990.81,
+        "TOOLS": 1254.7,
+        "CONTENT": 3592.92,
+        "SUPPORT": 1682.45
+      },
+      "expenses_by_category_low": {
+        "SALARY": 12957.63,
+        "MARKETING": 3079.91,
+        "INFRASTRUCTURE": 2033.75,
+        "TOOLS": 853.19,
+        "CONTENT": 2443.19,
+        "SUPPORT": 1144.07
+      },
+      "expenses_by_category_high": {
+        "SALARY": 25153.05,
+        "MARKETING": 5978.66,
+        "INFRASTRUCTURE": 3947.87,
+        "TOOLS": 1656.2,
+        "CONTENT": 4742.66,
+        "SUPPORT": 2220.84
+      }
+    },
+    "2026-11": {
+      "income": 41277.78,
+      "income_low": 32756.07,
+      "income_high": 49799.49,
+      "expenses": 32575.61,
+      "expenses_low": 22151.41,
+      "expenses_high": 42999.8,
+      "profit": 8702.17,
+      "profit_low": -10243.74,
+      "profit_high": 27648.08,
+      "margin": 21.08,
+      "margin_low": -20.57,
+      "margin_high": 84.41,
+      "expenses_by_category": {
+        "SALARY": 18967.26,
+        "MARKETING": 4441.5,
+        "INFRASTRUCTURE": 2873.05,
+        "TOOLS": 1234.47,
+        "CONTENT": 3427.72,
+        "SUPPORT": 1631.6
+      },
+      "expenses_by_category_low": {
+        "SALARY": 12897.74,
+        "MARKETING": 3020.22,
+        "INFRASTRUCTURE": 1953.67,
+        "TOOLS": 839.44,
+        "CONTENT": 2330.85,
+        "SUPPORT": 1109.49
+      },
+      "expenses_by_category_high": {
+        "SALARY": 25036.79,
+        "MARKETING": 5862.78,
+        "INFRASTRUCTURE": 3792.42,
+        "TOOLS": 1629.5,
+        "CONTENT": 4524.59,
+        "SUPPORT": 2153.72
+      }
+    },
+    "2026-12": {
+      "income": 42426.81,
+      "income_low": 33667.88,
+      "income_high": 51185.74,
+      "expenses": 33557.9,
+      "expenses_low": 22819.37,
+      "expenses_high": 44296.43,
+      "profit": 8868.91,
+      "profit_low": -10628.55,
+      "profit_high": 28366.36,
+      "margin": 20.9,
+      "margin_low": -20.76,
+      "margin_high": 84.25,
+      "expenses_by_category": {
+        "SALARY": 19487.74,
+        "MARKETING": 4608.66,
+        "INFRASTRUCTURE": 2983.32,
+        "TOOLS": 1219.26,
+        "CONTENT": 3556.26,
+        "SUPPORT": 1702.66
+      },
+      "expenses_by_category_low": {
+        "SALARY": 13251.66,
+        "MARKETING": 3133.89,
+        "INFRASTRUCTURE": 2028.66,
+        "TOOLS": 829.1,
+        "CONTENT": 2418.26,
+        "SUPPORT": 1157.81
+      },
+      "expenses_by_category_high": {
+        "SALARY": 25723.82,
+        "MARKETING": 6083.43,
+        "INFRASTRUCTURE": 3937.98,
+        "TOOLS": 1609.43,
+        "CONTENT": 4694.27,
+        "SUPPORT": 2247.51
+      }
+    }
+  },
+  "forecast_horizon_summary": {
+    "months_ahead": 6,
+    "from": "2026-07",
+    "to": "2026-12",
+    "income_total": 253441.97,
+    "income_total_low": 201119.4,
+    "income_total_high": 305764.53,
+    "expenses_total": 184857.66,
+    "expenses_total_low": 125703.21,
+    "expenses_total_high": 244012.11,
+    "profit_total": 68584.31,
+    "profit_total_low": -42892.71,
+    "profit_total_high": 180061.32,
+    "margin": 27.06,
+    "margin_low": -14.03,
+    "margin_high": 89.53,
+    "risk_level": "HIGH"
+  },
+  "revenue_mix_percent": {
+    "COURSE_SALE": 51.18,
+    "SUBSCRIPTION": 7.18,
+    "BUNDLE_SALE": 31.16,
+    "WORKSHOP": 10.48
+  },
+  "model_scorecard": [
+    {
+      "target": "income_total",
+      "selected_model": "RandomForest",
+      "ensemble_models": "RandomForest,GradientBoosting",
+      "validation_mae": 402.5231,
+      "validation_rmse": 500.3175,
+      "validation_wape": 34.7786,
+      "validation_mape": 31.1511,
+      "validation_smape": 35.9166,
+      "validation_r2": -0.05,
+      "confidence_ratio": 0.2064,
+      "reliability": "HIGH"
+    },
+    {
+      "target": "expense_SALARY",
+      "selected_model": "RandomForest",
+      "ensemble_models": "RandomForest,ExtraTrees",
+      "validation_mae": 314.5081,
+      "validation_rmse": 414.4206,
+      "validation_wape": 107.7916,
+      "validation_mape": 59.7123,
+      "validation_smape": 146.1667,
+      "validation_r2": -0.0696,
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    {
+      "target": "expense_MARKETING",
+      "selected_model": "ExtraTrees",
+      "ensemble_models": "ExtraTrees,RandomForest",
+      "validation_mae": 82.2806,
+      "validation_rmse": 94.9182,
+      "validation_wape": 161.0289,
+      "validation_mape": 247.0559,
+      "validation_smape": 159.3603,
+      "validation_r2": -0.2157,
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    },
+    {
+      "target": "expense_INFRASTRUCTURE",
+      "selected_model": "RandomForest",
+      "ensemble_models": "RandomForest,GradientBoosting",
+      "validation_mae": 62.3392,
+      "validation_rmse": 80.3136,
+      "validation_wape": 99.8201,
+      "validation_mape": 57.1995,
+      "validation_smape": 150.4907,
+      "validation_r2": -0.0299,
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    {
+      "target": "expense_TOOLS",
+      "selected_model": "GradientBoosting",
+      "ensemble_models": "GradientBoosting,ExtraTrees",
+      "validation_mae": 21.0898,
+      "validation_rmse": 30.1535,
+      "validation_wape": 87.8741,
+      "validation_mape": 42.3815,
+      "validation_smape": 135.1421,
+      "validation_r2": -0.0132,
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    {
+      "target": "expense_CONTENT",
+      "selected_model": "ExtraTrees",
+      "ensemble_models": "ExtraTrees,RandomForest",
+      "validation_mae": 69.8112,
+      "validation_rmse": 84.4478,
+      "validation_wape": 122.9628,
+      "validation_mape": 67.0077,
+      "validation_smape": 158.5972,
+      "validation_r2": -0.2665,
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    },
+    {
+      "target": "expense_SUPPORT",
+      "selected_model": "RandomForest",
+      "ensemble_models": "RandomForest,ExtraTrees",
+      "validation_mae": 41.358,
+      "validation_rmse": 42.773,
+      "validation_wape": 346.5128,
+      "validation_mape": 150.9145,
+      "validation_smape": 177.1673,
+      "validation_r2": -1.352,
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    }
+  ],
+  "confidence_assumptions": {
+    "income_total": {
+      "selected_model": "RandomForest",
+      "ensemble_models": [
+        "RandomForest",
+        "GradientBoosting"
+      ],
+      "confidence_ratio": 0.2064,
+      "reliability": "HIGH"
+    },
+    "expense_SALARY": {
+      "selected_model": "RandomForest",
+      "ensemble_models": [
+        "RandomForest",
+        "ExtraTrees"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    "expense_MARKETING": {
+      "selected_model": "ExtraTrees",
+      "ensemble_models": [
+        "ExtraTrees",
+        "RandomForest"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    },
+    "expense_INFRASTRUCTURE": {
+      "selected_model": "RandomForest",
+      "ensemble_models": [
+        "RandomForest",
+        "GradientBoosting"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    "expense_TOOLS": {
+      "selected_model": "GradientBoosting",
+      "ensemble_models": [
+        "GradientBoosting",
+        "ExtraTrees"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "MEDIUM"
+    },
+    "expense_CONTENT": {
+      "selected_model": "ExtraTrees",
+      "ensemble_models": [
+        "ExtraTrees",
+        "RandomForest"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    },
+    "expense_SUPPORT": {
+      "selected_model": "RandomForest",
+      "ensemble_models": [
+        "RandomForest",
+        "ExtraTrees"
+      ],
+      "confidence_ratio": 0.32,
+      "reliability": "LOW"
+    }
+  }
+}
+```
+------------------------------

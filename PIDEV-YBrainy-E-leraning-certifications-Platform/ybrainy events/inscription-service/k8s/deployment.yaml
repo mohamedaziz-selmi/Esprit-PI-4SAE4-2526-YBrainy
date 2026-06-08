@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inscription-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inscription-service
+  template:
+    metadata:
+      labels:
+        app: inscription-service
+    spec:
+      containers:
+        - name: inscription-service
+          image: hos77/inscription-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9002
+          envFrom:
+            - configMapRef:
+                name: inscription-service-config
+            - secretRef:
+                name: inscription-service-secret
+          readinessProbe:
+            tcpSocket:
+              port: 9002
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9002
+            initialDelaySeconds: 45
+            periodSeconds: 20

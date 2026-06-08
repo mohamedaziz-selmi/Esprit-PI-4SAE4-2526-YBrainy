@@ -1,0 +1,328 @@
+<!-- Preloader start -->
+<div id="preloader" style="display: none;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+
+<!-- Main wrapper start -->
+<div id="main-wrapper" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+
+  <!-- Nav header start -->
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr"
+        style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect width="4" height="4" rx="2" fill="#2A353A" />
+          <rect y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect y="22" width="4" height="4" rx="2" fill="#2A353A" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header start -->
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">
+              Packs Order History
+            </div>
+          </div>
+          <ul class="navbar-nav header-right">
+            <li class="nav-item dropdown notification_dropdown search-area-header">
+              <div class="search-area-creative d-flex align-items-center">
+                <span class="ps-3"><i class="bi bi-search text-primary"></i></span>
+                <input type="text" class="form-control border-0" placeholder="Search orders..." [(ngModel)]="searchTerm"
+                  (ngModelChange)="onSearchChange()">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Sidebar start -->
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">home</i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard">Dashboard Page</a></li>
+            <li><a routerLink="/dashboard/finance">Finance</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Student</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Student</a></li>
+            <li><a href="javascript:void(0);">Student Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Student</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">person</i>
+            <span class="nav-text">Teacher</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Teacher</a></li>
+            <li><a href="javascript:void(0);">Teacher Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Teacher</a></li>
+          </ul>
+        </li>
+        <li><a routerLink="/dashboard/packs" class="text-primary font-w600">
+            <i class="material-icons">shopping_cart</i>
+            <span class="nav-text">Shop</span>
+          </a>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Courses</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/courses">All Courses</a></li>
+            <li><a routerLink="/dashboard/lessons">Lessons</a></li>
+            <li><a routerLink="/dashboard/calendar">Calendar</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">verified</i>
+            <span class="nav-text">Assessment & Certification</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Certifications</a></li>
+            <li><a href="javascript:void(0);">Quiz Assessments</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">assessment</i>
+            <span class="nav-text">Reports</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Student Reports</a></li>
+            <li><a href="javascript:void(0);">Teacher Reports</a></li>
+          </ul>
+        </li>
+        <li><a href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">contact_page</i>
+            <span class="nav-text">CV Submissions</span>
+          </a>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">folder</i>
+            <span class="nav-text">File Manager</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">File Manager</a></li>
+            <li><a href="javascript:void(0);">User</a></li>
+            <li><a href="javascript:void(0);">Calendar</a></li>
+            <li><a href="javascript:void(0);">Chat</a></li>
+            <li><a href="javascript:void(0);">Activity</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons"> app_registration </i>
+            <span class="nav-text">Apps</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Profile</a></li>
+            <li><a href="javascript:void(0);">Edit Profile</a></li>
+            <li><a href="javascript:void(0);">Post Details</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <div class="container-fluid">
+
+      <div class="row">
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ orderRows.length }}</h2>
+                <span>Order Rows</span>
+              </div>
+              <div class="bg-primary rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">receipt_long</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ totalOrderItems }}</h2>
+                <span>Packs Quantity</span>
+              </div>
+              <div class="bg-info rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">inventory_2</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ completedItems }}</h2>
+                <span>Completed Packs</span>
+              </div>
+              <div class="bg-success rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">check_circle</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ checkedOutOrders }}</h2>
+                <span>Checked Out Orders</span>
+              </div>
+              <div class="bg-warning rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">shopping_bag</i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card most-bought-pack-card">
+            <div class="card-body most-bought-pack-body">
+              <div class="most-bought-pack-left">
+                <span class="most-bought-pack-icon">
+                  <i class="material-icons">workspace_premium</i>
+                </span>
+                <div class="most-bought-pack-copy">
+                  <span class="most-bought-pack-kicker">Top Seller Pack</span>
+                  <h4 class="most-bought-pack-title mb-1">{{ mostBoughtPackTitle }}</h4>
+                  <small class="most-bought-pack-meta">{{ mostBoughtPackQuantity }} purchase(s)</small>
+                </div>
+              </div>
+              <div class="most-bought-pack-right" *ngIf="mostBoughtPackQuantity > 0">
+                <span class="most-bought-pack-pill">
+                  {{ mostBoughtPackBasedOnCheckedOut ? 'From checked out orders' : 'From cart history' }}
+                </span>
+                <div class="most-bought-pack-qty">{{ mostBoughtPackQuantity }}</div>
+                <small class="most-bought-pack-qty-label">Total Quantity</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+              <h4 class="card-title mb-0">
+                <i class="material-icons me-2 align-middle text-primary">table_view</i>
+                Product Order Table (Cart History)
+              </h4>
+              <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                <span class="badge badge-sm light badge-primary">Revenue: ${{ totalRevenue | number:'1.2-2' }}</span>
+                <button class="btn btn-outline-primary btn-sm" (click)="loadOrderHistory()">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">refresh</i>Refresh
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body p-0">
+              <div *ngIf="loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2 text-muted mb-0">Loading order history...</p>
+              </div>
+
+              <div *ngIf="error" class="alert alert-danger m-3">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+              </div>
+
+              <div class="table-responsive" *ngIf="!loading && !error">
+                <table class="table order-table table-sm mb-0">
+                  <thead class="orders-table-head">
+                    <tr>
+                      <th class="align-middle ps-4">Cart #</th>
+                      <th class="align-middle">Pack</th>
+                      <th class="align-middle text-center">Qty</th>
+                      <th class="align-middle">Action</th>
+                      <th class="align-middle">Created At</th>
+                      <th class="align-middle text-end">Cart Total</th>
+                      <th class="align-middle text-center">Completed</th>
+                      <th class="align-middle text-center pe-4">Checked Out</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="filteredOrderRows.length === 0">
+                      <td colspan="8" class="text-center text-muted py-5">
+                        No order packs yet. Add packs to cart and checkout to see history here.
+                      </td>
+                    </tr>
+                    <tr *ngFor="let row of filteredOrderRows" class="btn-reveal-trigger">
+                      <td class="py-3 ps-4">
+                        <strong class="text-primary">#{{ row.cartId }}</strong>
+                      </td>
+                      <td class="py-3">
+                        <strong>{{ row.packTitle || '-' }}</strong>
+                      </td>
+                      <td class="py-3 text-center">{{ row.quantity || 0 }}</td>
+                      <td class="py-3">
+                        <span class="badge light badge-primary badge-sm">{{ getActionLabel(row.action) }}</span>
+                      </td>
+                      <td class="py-3">{{ row.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+                      <td class="py-3 text-end font-w600">${{ row.totalAmount | number:'1.2-2' }}</td>
+                      <td class="py-3 text-center">
+                        <span class="badge badge-sm"
+                          [ngClass]="row.completed ? 'badge-success' : 'badge-secondary'">
+                          {{ row.completed ? 'Completed' : 'In Cart' }}
+                        </span>
+                      </td>
+                      <td class="py-3 text-center pe-4">
+                        <span class="badge badge-sm"
+                          [ngClass]="row.checkedOut ? 'badge-success' : 'badge-warning text-dark'">
+                          {{ row.checkedOut ? 'Checked Out' : 'Pending' }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

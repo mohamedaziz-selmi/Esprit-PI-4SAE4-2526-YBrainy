@@ -1,0 +1,136 @@
+pipeline {
+    agent any
+
+    environment {
+        SERVICE_NAME    = 'enrollment-service'
+        SERVICE_DIR     = 'YBRAINY/Enrollment/enrollment-service'
+        IMAGE_NAME      = "ybrainy/${SERVICE_NAME}"
+        REGISTRY        = 'localhost:5000'
+        IMAGE_TAG       = "${BUILD_NUMBER}"
+        SONAR_HOST_URL  = 'http://localhost:9000'
+        K8S_NAMESPACE   = 'ybrainy'
+        K8S_DEPLOYMENT  = 'enrollment-service'
+        BUILD_DIR       = "/tmp/ybrainy-builds/${SERVICE_NAME}-${BUILD_NUMBER}"
+    }
+
+    tools {
+        maven 'Maven'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build & Test') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh "mvn clean verify -Dmaven.test.failure.ignore=false -Dproject.build.directory=${BUILD_DIR}/target"
+                }
+            }
+            post {
+                always {
+                    junit testResults: "${BUILD_DIR}/target/surefire-reports/*.xml",
+                          allowEmptyResults: true
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    dir("${SERVICE_DIR}") {
+                        sh """
+                            mvn sonar:sonar \
+                                -Dsonar.projectKey=${SERVICE_NAME} \
+                                -Dsonar.projectName='YBrainy Enrollment Service' \
+                                -Dsonar.host.url=${SONAR_HOST_URL} \
+                                -Dsonar.token=${SONAR_TOKEN} \
+                                -Dsonar.coverage.jacoco.xmlReportPaths=${BUILD_DIR}/target/site/jacoco/jacoco.xml \
+                                -Dproject.build.directory=${BUILD_DIR}/target
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+                }
+            }
+        }
+
+        stage('Security Scan (Trivy)') {
+            steps {
+                sh """
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        aquasec/trivy:latest image \
+                        --exit-code 0 \
+                        --severity MEDIUM,HIGH,CRITICAL \
+                        --format table \
+                        ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
+        }
+
+        stage('Push to Registry') {
+            steps {
+                sh """
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker tag ${IMAGE_NAME}:latest      ${REGISTRY}/${IMAGE_NAME}:latest
+                    docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${REGISTRY}/${IMAGE_NAME}:latest
+                    echo "Pushed ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                """
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        kubectl --kubeconfig=${KUBECONFIG} get namespace ${K8S_NAMESPACE} \
+                            || kubectl --kubeconfig=${KUBECONFIG} create namespace ${K8S_NAMESPACE}
+
+                        kubectl --kubeconfig=${KUBECONFIG} apply \
+                            -f DEVOPS/${SERVICE_NAME}/k8s/ \
+                            -n ${K8S_NAMESPACE} || true
+
+                        kubectl --kubeconfig=${KUBECONFIG} -n ${K8S_NAMESPACE} \
+                            set image deployment/${K8S_DEPLOYMENT} \
+                            ${K8S_DEPLOYMENT}=${IMAGE_NAME}:${IMAGE_TAG}
+
+                        kubectl --kubeconfig=${KUBECONFIG} -n ${K8S_NAMESPACE} \
+                            rollout status deployment/${K8S_DEPLOYMENT} --timeout=120s
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline PASSED — ${SERVICE_NAME}:${IMAGE_TAG} deployed to ybrainy namespace"
+        }
+        failure {
+            echo "Pipeline FAILED at stage: ${currentBuild.result}"
+        }
+        always {
+            sh "rm -rf ${BUILD_DIR} || true"
+        }
+    }
+}

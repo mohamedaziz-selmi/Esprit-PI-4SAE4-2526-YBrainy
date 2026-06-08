@@ -1,0 +1,165 @@
+<div class="fo-rv-page">
+
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div class="fo-rv-header">
+    <button class="button line" type="button" (click)="back()">← Back to Course</button>
+    <h1 class="fo-rv-heading">Reviews</h1>
+  </div>
+
+  <div class="fo-rv-body">
+
+    <!-- Enrollment gate -->
+    <div *ngIf="enrollmentChecked && !isEnrolled" class="fo-rv-gate">
+      <div class="fo-rv-gate-icon">🔒</div>
+      <p class="fo-rv-gate-msg">You must enroll in this course before leaving reviews.</p>
+      <button class="button line" type="button" (click)="back()">← Back to Course</button>
+    </div>
+
+    <ng-container *ngIf="isEnrolled">
+
+    <!-- ── Rating summary ────────────────────────────────── -->
+    <div class="fo-rv-stats" *ngIf="ratingStats && ratingStats.totalReviews > 0">
+      <div class="fo-rv-stats-score">
+        <div class="fo-rv-score-big">{{ ratingStats.averageRating | number:'1.1-1' }}</div>
+        <div class="fo-rv-score-stars">
+          <span *ngFor="let n of [1,2,3,4,5]" class="fo-rv-score-star"
+                [class.fo-rv-score-star-full]="n <= ratingStats.averageRating"
+                [class.fo-rv-score-star-half]="n > ratingStats.averageRating && n - 0.5 <= ratingStats.averageRating">★</span>
+        </div>
+        <div class="fo-rv-score-total">{{ ratingStats.totalReviews }} review{{ ratingStats.totalReviews !== 1 ? 's' : '' }}</div>
+      </div>
+      <div class="fo-rv-stats-bars">
+        <div class="fo-rv-bar-row" *ngFor="let row of [
+          { label: 5, count: ratingStats.count5 },
+          { label: 4, count: ratingStats.count4 },
+          { label: 3, count: ratingStats.count3 },
+          { label: 2, count: ratingStats.count2 },
+          { label: 1, count: ratingStats.count1 }
+        ]">
+          <span class="fo-rv-bar-label">{{ row.label }}★</span>
+          <div class="fo-rv-bar-track">
+            <div class="fo-rv-bar-fill" [style.width]="getBarWidth(row.count)"></div>
+          </div>
+          <span class="fo-rv-bar-count">{{ row.count }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Submit review form ─────────────────────────────── -->
+    <div class="fo-rv-form-card" *ngIf="!alreadyReviewed">
+      <h2 class="fo-rv-form-title">Leave a Review</h2>
+      <div *ngIf="error" class="fo-rv-alert">{{ error }}</div>
+      <div *ngIf="success" class="fo-rv-success">{{ success }}</div>
+
+      <div class="fo-rv-stars-row">
+        <button *ngFor="let n of [1,2,3,4,5]"
+                type="button"
+                class="fo-rv-star-btn"
+                [class.fo-rv-star-active]="n <= newRating"
+                (click)="setRating(n)">★</button>
+        <span class="fo-rv-star-hint" *ngIf="newRating > 0">{{ newRating }} / 5</span>
+      </div>
+
+      <textarea class="fo-rv-textarea"
+                [class.input-error]="commentRef.invalid && commentRef.touched"
+                placeholder="Share your thoughts about this course…"
+                rows="4"
+                name="newComment"
+                [(ngModel)]="newComment"
+                [ngModelOptions]="{standalone: true}"
+                required
+                minlength="5"
+                #commentRef="ngModel"></textarea>
+      <div class="validation-error"
+           *ngIf="commentRef.invalid && commentRef.touched">
+        <span *ngIf="commentRef.errors?.['required']">⚠ Comment is required</span>
+        <span *ngIf="commentRef.errors?.['minlength']">⚠ Comment must be at least 5 characters</span>
+      </div>
+
+      <button class="fo-rv-submit-btn" type="button" (click)="submitReview()">
+        Submit Review
+      </button>
+    </div>
+
+    <div *ngIf="alreadyReviewed" class="fo-rv-form-card">
+      <p style="text-align:center; color: #888;">You have already submitted a review for this course.</p>
+    </div>
+
+    <!-- ── Review list ────────────────────────────────────── -->
+    <div class="fo-rv-list">
+      <h2 class="fo-rv-section-title">
+        All Reviews
+        <span class="fo-rv-count" *ngIf="page.totalElements">{{ page.totalElements }}</span>
+      </h2>
+
+      <p *ngIf="page.content.length === 0" class="fo-rv-empty">
+        No reviews yet. Be the first to review!
+      </p>
+
+      <div *ngFor="let r of page.content" class="fo-rv-card">
+
+        <!-- Normal view (hidden while editing this review) -->
+        <div *ngIf="editingReviewId !== r.id">
+          <div class="fo-rv-card-top">
+            <div class="fo-rv-stars">{{ stars(r.rating) }}</div>
+            <span class="fo-rv-date" *ngIf="r.createdAt">{{ r.createdAt | date:'mediumDate' }}</span>
+          </div>
+          <p class="fo-rv-comment" *ngIf="r.comment">{{ r.comment }}</p>
+
+          <!-- Edit/Delete buttons (only for own reviews) -->
+          <div *ngIf="r.studentId === studentId"
+               class="review-actions"
+               style="margin-top: 12px; display: flex; gap: 8px;">
+            <button (click)="startEdit(r)"
+                    class="btn-edit"
+                    style="padding: 6px 12px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
+              ✏️ Edit
+            </button>
+            <button (click)="confirmDelete(r.id)"
+                    [disabled]="deleting === r.id"
+                    class="btn-delete"
+                    style="padding: 6px 12px; background: #ef4444; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px;">
+              {{ deleting === r.id ? '🔄 Deleting...' : '🗑️ Delete' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Edit form (shown when editing this review) -->
+        <div *ngIf="editingReviewId === r.id" class="edit-form" style="padding: 16px; background: #f3f4f6; border-radius: 8px; margin-top: 12px;">
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Rating:</label>
+            <div class="star-rating" style="display: flex; gap: 4px;">
+              <span *ngFor="let star of [1,2,3,4,5]"
+                    (click)="setEditRating(star)"
+                    style="cursor: pointer; font-size: 24px;">
+                {{ star <= editRating ? '⭐' : '☆' }}
+              </span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Comment:</label>
+            <textarea [(ngModel)]="editComment"
+                      rows="4"
+                      style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;"
+                      placeholder="Update your review..."></textarea>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button (click)="saveEdit(r.id)"
+                    style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+              💾 Save Changes
+            </button>
+            <button (click)="cancelEdit()"
+                    style="padding: 8px 16px; background: #6b7280; color: white; border: none; border-radius: 6px; cursor: pointer;">
+              ✖️ Cancel
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    </ng-container>
+  </div>
+</div>

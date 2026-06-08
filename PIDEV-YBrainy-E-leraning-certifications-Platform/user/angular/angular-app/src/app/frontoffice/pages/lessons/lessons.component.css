@@ -1,0 +1,629 @@
+/* ── Sticky progress bar ─────────────────────────────────────── */
+.ls-sticky-progress {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1a1a2e;
+  height: 6px;
+  width: 100%;
+}
+.ls-sticky-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  transition: width 0.5s ease;
+}
+.ls-sticky-label {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 11px;
+  color: #888;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CSS Custom Properties
+══════════════════════════════════════════════════════════════════ */
+:host {
+  --primary:    #365df7;
+  --green:      #059669;
+  --border:     rgba(0, 0, 0, 0.07);
+  --card-bg:    #fff;
+  --page-bg:    #f7f8fc;
+  display: block;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Page shell — fixed-height viewport layout, cleared below header
+══════════════════════════════════════════════════════════════════ */
+.ls-page {
+  margin-top: 80px;           /* PROBLEM 1 FIX: clear fixed app header     */
+  height: calc(100vh - 80px); /* fill remaining viewport height             */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--page-bg);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Top bar
+══════════════════════════════════════════════════════════════════ */
+.ls-top-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+  padding: 0 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.ls-back-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(54, 93, 247, 0.28);
+  background: rgba(54, 93, 247, 0.05);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+  white-space: nowrap;
+}
+
+.ls-back-btn:hover {
+  background: rgba(54, 93, 247, 0.1);
+  border-color: rgba(54, 93, 247, 0.5);
+}
+
+.ls-top-title {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ls-top-progress {
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.ls-top-count {
+  /* PROBLEM 5 FIX: make progress count bigger + prominent */
+  font-size: 18px;
+  font-weight: 950;
+  color: var(--primary);
+}
+
+.ls-top-count-label {
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(17, 24, 39, 0.45);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   State overlays (loading / error / empty)
+══════════════════════════════════════════════════════════════════ */
+.ls-state-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 24px;
+}
+
+.ls-state-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(54, 93, 247, 0.18);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ls-spin 0.75s linear infinite;
+}
+
+@keyframes ls-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ls-state-icon {
+  font-size: 40px;
+}
+
+.ls-state-text {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.5);
+  text-align: center;
+}
+
+.ls-state-err {
+  color: #dc2626;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Two-panel layout
+══════════════════════════════════════════════════════════════════ */
+.ls-layout {
+  flex: 1;
+  display: flex;
+  min-height: 0; /* required for flex children to scroll independently */
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LEFT SIDEBAR (35%)
+══════════════════════════════════════════════════════════════════ */
+.ls-sidebar {
+  /* PROBLEM 3 FIX: 35% width (was ~20%) */
+  flex-shrink: 0;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border-right: 1px solid var(--border);
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.05); /* VISUAL POLISH: subtle shadow separator */
+  overflow-y: auto;
+}
+
+/* ── Progress block ──────────────────────────────────────── */
+.ls-progress-block {
+  flex-shrink: 0;
+  padding: 14px 18px 12px;
+  background: #fafbff;
+  border-bottom: 1px solid var(--border);
+}
+
+.ls-pb-track {
+  height: 7px;
+  background: rgba(54, 93, 247, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 9px;
+}
+
+.ls-pb-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #365df7, #818cf8);
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}
+
+/* PROBLEM 5 FIX: bigger, more prominent progress text */
+.ls-pb-label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.6);
+  line-height: 1.4;
+}
+
+.ls-pb-label strong {
+  font-size: 15px;
+  font-weight: 950;
+  color: var(--primary);
+}
+
+.ls-pb-pct {
+  font-weight: 950;
+  color: rgba(54, 93, 247, 0.65);
+}
+
+/* ── Lesson list ─────────────────────────────────────────── */
+.ls-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 2px;
+}
+
+/* PROBLEM 4 FIX: each item has 60px min-height + clear progress */
+.ls-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  border-left: 3px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.16s ease, border-color 0.16s ease;
+  position: relative;
+}
+
+.ls-item:hover {
+  background: rgba(54, 93, 247, 0.05);
+}
+
+/* VISUAL POLISH: completed lessons slightly faded */
+.ls-item-done {
+  opacity: 0.68;
+}
+
+.ls-item-done:hover {
+  opacity: 1;
+}
+
+/* VISUAL POLISH: active lesson — blue left border + pulse */
+@keyframes ls-item-pulse {
+  0%, 100% { background: rgba(54, 93, 247, 0.07); }
+  50%       { background: rgba(54, 93, 247, 0.14); }
+}
+
+.ls-item-active {
+  border-left-color: var(--primary) !important;
+  animation: ls-item-pulse 2.5s ease-in-out infinite;
+}
+
+.ls-item-active .ls-item-title {
+  color: var(--primary);
+  font-weight: 950;
+}
+
+/* Number / checkmark badge */
+.ls-item-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(54, 93, 247, 0.1);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ls-item-num-done {
+  background: rgba(5, 150, 105, 0.12);
+  color: var(--green);
+}
+
+.ls-item-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ls-item-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  transition: color 0.16s ease;
+}
+
+.ls-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ls-kind-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  min-width: 22px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.kind-youtube, .kind-video { background: rgba(239, 68, 68, 0.1);   color: #dc2626; }
+.kind-pdf                  { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+.kind-image                { background: rgba(16, 185, 129, 0.12); color: #059669; }
+.kind-lesson               { background: rgba(0, 0, 0, 0.06);     color: rgba(17, 24, 39, 0.5); }
+
+.ls-duration {
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.38);
+}
+
+.ls-item-chevron {
+  flex-shrink: 0;
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(17, 24, 39, 0.22);
+  transition: transform 0.14s ease, color 0.14s ease;
+}
+
+.ls-item:hover .ls-item-chevron,
+.ls-item-active .ls-item-chevron {
+  color: var(--primary);
+  transform: translateX(3px);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RIGHT CONTENT AREA (65%)
+══════════════════════════════════════════════════════════════════ */
+.ls-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+  background: var(--page-bg);
+}
+
+/* ── Content header ──────────────────────────────────────── */
+.ls-ch {
+  margin-bottom: 20px;
+}
+
+.ls-ch-title {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 950;
+  color: #111827;
+  line-height: 1.25;
+}
+
+.ls-ch-desc {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.52);
+  line-height: 1.65;
+}
+
+/* ── Media container ─────────────────────────────────────── */
+/* PROBLEM 2 FIX: max-height 500px (not 80vh), maintain aspect ratio */
+.ls-media {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #111827;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+  margin-bottom: 20px;
+}
+
+/* A/V (YouTube + Video): 16:9 capped at 500px */
+.ls-media-av {
+  aspect-ratio: 16 / 9;
+  max-height: 500px;
+}
+
+/* PDF: fixed height, scrollable */
+.ls-media-pdf {
+  height: 500px;
+  background: #fff;
+}
+
+/* Image: auto height, contained */
+.ls-media-img {
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ls-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* PROBLEM 2 FIX: video never stretches beyond container */
+.ls-video {
+  display: block;
+  width: 100%;
+  max-height: 500px;
+  background: #000;
+  object-fit: contain;
+}
+
+.ls-img {
+  display: block;
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+}
+
+.ls-no-media {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.ls-no-media-icon {
+  font-size: 44px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.ls-no-media p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Actions bar ─────────────────────────────────────────── */
+.ls-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ls-mark-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+  transition: filter 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ls-mark-btn:hover {
+  filter: brightness(0.93);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.42);
+}
+
+.ls-done-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 11px;
+  background: rgba(5, 150, 105, 0.09);
+  border: 1.5px solid rgba(5, 150, 105, 0.28);
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.ls-fullpage-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 11px;
+  border: 1.5px solid rgba(54, 93, 247, 0.28);
+  background: rgba(54, 93, 247, 0.05);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 950;
+  cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.ls-fullpage-btn:hover {
+  background: rgba(54, 93, 247, 0.11);
+  border-color: rgba(54, 93, 247, 0.48);
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.ls-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  min-height: 320px;
+  padding: 40px;
+}
+
+.ls-empty-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+  opacity: 0.65;
+  /* VISUAL POLISH: gentle pulse */
+  animation: ls-empty-pulse 3s ease-in-out infinite;
+}
+
+@keyframes ls-empty-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.65; }
+  50%       { transform: scale(1.06); opacity: 0.85; }
+}
+
+.ls-empty-h {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 950;
+  color: #111827;
+}
+
+.ls-empty-p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(17, 24, 39, 0.42);
+  max-width: 280px;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Responsive — mobile (<= 900px): stack vertically, sidebar on top
+══════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* LAYOUT: allow natural scroll on mobile */
+  .ls-page {
+    height: auto;
+    min-height: calc(100vh - 80px);
+    overflow: visible;
+  }
+
+  .ls-layout {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* SIDEBAR: full width, capped height, on top */
+  .ls-sidebar {
+    width: 100%;
+    max-height: 45vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  /* CONTENT: full width below */
+  .ls-content {
+    overflow-y: visible;
+    padding: 20px 18px;
+  }
+
+  /* Hide long course title on small screens */
+  .ls-top-title {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .ls-top-bar {
+    padding: 0 14px;
+    gap: 10px;
+    height: 54px;
+  }
+
+  .ls-content {
+    padding: 16px 12px;
+  }
+
+  .ls-media-av {
+    max-height: 220px;
+  }
+
+  .ls-media-pdf {
+    height: 360px;
+  }
+}

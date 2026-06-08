@@ -1,0 +1,222 @@
+<!-- Main Container Starts -->
+<main class="main-container">
+
+  <!-- Breadcrumbs -->
+  <div class="container" style="margin-top: 20px; margin-bottom: 24px;">
+    <div class="breadcrumbs">
+      <a routerLink="/" style="color: #666; text-decoration: none;">Home</a>
+      <span style="color: #999; margin: 0 10px;">/</span>
+      <span style="color: #333;">E-Learning Packs</span>
+    </div>
+  </div>
+
+  <!-- Hero Section Starts -->
+  <div class="industry-banner siBanner over-mob-hidden packs-hero-match">
+    <section class="comm-section pos-rel pt0">
+      <div class="container container-md si-text">
+        <div class="services-ban-txt">
+          <h1 class="small-head-tag">E-Learning & Certifications</h1>
+          <p class="comm-head">
+            Expert-Led Learning Packs<br />
+            <span class="grad-txt">Accelerate Your Career</span>
+          </p>
+          <div class="comm-txt fs20 mb36">
+            <p>
+              Access bundled courses, interactive lessons, and industry-recognized
+              certifications designed to accelerate your professional growth and unlock
+              new career opportunities.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Hero Media -->
+      <div class="services-ban-img-sticky">
+        <div class="services-ban-img-wrap">
+          <div class="services-ban-img nombm packs-hero-media">
+            <video
+              class="packs-hero-video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              poster="assets/frontoffice/www.ciklum.com/wp-content/uploads/2026/01/BFSI-hand-card-cutout.png">
+              <source src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2026/01/BFSI.mp4" type="video/mp4">
+              <source src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/industry-bfsi.mp4"
+                type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- Hero Section Ends -->
+  <!-- Packs Content Section -->
+  <section class="comm-section" style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f5ff 50%, #ffffff 100%); padding: 80px 0;">
+    <div class="container container-md">
+
+      <div class="comm-head-wrap cen mb60">
+        <h4 class="comm-head mb16" style="font-size: 2.5rem; background: linear-gradient(135deg, #0088cc, #005a99); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 800;">Available Packs</h4>
+        <p class="comm-head-small mb16" style="font-size: 1.1rem; color: #666; font-weight: 500;">Discover expertly-curated learning paths designed to accelerate your professional growth.</p>
+      </div>
+
+      <div class="row packs-layout-row">
+        <!-- Sidebar: Category Filter -->
+        <div class="col-lg-3 mb-4 mb-lg-0 packs-sidebar-col">
+          <aside class="filter-sidebar pack-filter-panel">
+            <div class="filter-head">
+              <h5 class="filter-title">
+                <i class="bi bi-funnel"></i>Categories
+              </h5>
+              <span class="filter-total">{{ filteredPacks.length }} shown</span>
+            </div>
+            <ul class="filter-list">
+              <li [class.active]="selectedCategoryId === null" class="filter-item" (click)="filterByCategory(null)">
+                <span class="filter-item-left">
+                  <i class="bi bi-grid-3x3-gap"></i>
+                  All Packs
+                </span>
+                <span class="count">{{ packs.length }}</span>
+              </li>
+              <li *ngFor="let cat of categories" [class.active]="selectedCategoryId === cat.id" class="filter-item"
+                (click)="filterByCategory(cat.id)">
+                <span class="filter-item-left">
+                  <i [class]="'bi ' + (cat.icon || 'bi-folder')"></i>
+                  {{ cat.name }}
+                </span>
+                <span class="count">{{ cat.packCount }}</span>
+              </li>
+            </ul>
+            <div class="telegram-launch-box">
+              <p class="telegram-launch-label">Need quick support?</p>
+              <button type="button" class="telegram-launch-btn" (click)="openTelegramApp()">
+                <i class="bi bi-telegram"></i>
+                Open Telegram App
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Pack Cards Grid -->
+        <div class="col-lg-9 packs-cards-col">
+
+          <!-- Loading -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading learning packs...</p>
+          </div>
+
+          <!-- Error -->
+          <div *ngIf="error" class="alert alert-danger">
+            {{ error }}
+            <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadPacks()">Try Again</button>
+          </div>
+
+          <!-- No results -->
+          <div *ngIf="!loading && filteredPacks.length === 0" class="text-center py-5">
+            <div style="width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(0, 136, 204, 0.12), rgba(0, 90, 153, 0.08)); border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+              <i class="bi bi-inbox" style="font-size: 2.5rem; color: #0088cc;"></i>
+            </div>
+            <p style="font-size: 1.1rem; font-weight: 600; color: #0b0e14; margin-top: 10px;">No packs available</p>
+            <p class="mt-2 text-muted" style="color: #999;">No learning packs found in this category. Check back soon or explore other categories!</p>
+          </div>
+
+          <!-- Grid -->
+          <div class="row g-4 packs-card-grid" *ngIf="!loading && filteredPacks.length > 0">
+            <div class="col-xl-4 col-md-6" *ngFor="let pack of paginatedPacks">
+              <div class="hover-card pack-hover-card">
+                <div class="hover-card-img">
+                  <img
+                    [src]="pack.image ? 'http://localhost/assets/img/packs/' + pack.image : 'assets/frontoffice/images/course-placeholder.jpg'"
+                    [alt]="pack.title">
+                </div>
+
+                <h3>{{ pack.title }}</h3>
+
+                <div class="hover-card-txt">
+                  <div class="comm-txt white">
+                    <p>{{ pack.description | slice:0:125 }}{{ pack.description.length > 125 ? '...' : '' }}</p>
+                  </div>
+
+                  <div class="pack-hover-meta">
+                    <span class="pack-hover-level" [title]="pack.level">
+                      <i class="bi bi-bar-chart-fill"></i> {{ getLevelLabel(pack.level) }}
+                    </span>
+                    <span class="pack-hover-duration"><i class="bi bi-clock-fill"></i> {{ pack.durationHours }}h</span>
+                    <span class="pack-hover-price">${{ pack.salePrice | number:'1.2-2' }}</span>
+                  </div>
+
+                  <a [routerLink]="['/packs', pack.id]" class="learn-more white pack-explore-link">
+                    Explore
+                  </a>
+
+                  <button
+                    type="button"
+                    class="pack-tts-btn"
+                    [class.is-playing]="isTtsPlaying(pack.id)"
+                    [disabled]="isTtsLoading(pack.id)"
+                    (click)="togglePackTextToSpeech(pack)">
+                    <i
+                      class="bi"
+                      [ngClass]="{
+                        'bi-hourglass-split': isTtsLoading(pack.id),
+                        'bi-stop-fill': isTtsPlaying(pack.id) && !isTtsLoading(pack.id),
+                        'bi-volume-up-fill': !isTtsPlaying(pack.id) && !isTtsLoading(pack.id)
+                      }"></i>
+                    {{ getTtsButtonLabel(pack.id) }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="packs-pagination-wrap" *ngIf="!loading && filteredPacks.length > pageSize">
+            <div class="packs-pagination-summary">
+              Showing {{ (currentPage - 1) * pageSize + 1 }}-{{ (currentPage - 1) * pageSize + paginatedPacks.length }}
+              of {{ filteredPacks.length }} packs
+            </div>
+            <ul class="pagination pagination-sm packs-pagination mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button type="button" class="page-link" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Previous</button>
+              </li>
+              <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                <button type="button" class="page-link" (click)="goToPage(page)">{{ page }}</button>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <button type="button" class="page-link" (click)="goToNextPage()" [disabled]="currentPage === totalPages">Next</button>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners Section -->
+  <div class="comm-section">
+    <div class="container container-md">
+      <h4 class="small-head t-cen mb60 text-center"
+        style="margin-bottom: 50px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; font-size: 0.9rem; color: #888;">
+        Trusted by Industry Leaders</h4>
+      <div class="d-flex flex-wrap justify-content-center align-items-center gap-5">
+        <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/partner-11.png" alt="partner"
+          style="height: 40px; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.3s;">
+        <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/partner-12.png" alt="partner"
+          style="height: 40px; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.3s;">
+        <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/partner-13.png" alt="partner"
+          style="height: 40px; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.3s;">
+        <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/partner-14.png" alt="partner"
+          style="height: 40px; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.3s;">
+        <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/boostai-1-scaled.png" alt="boostai"
+          style="height: 40px; width: auto; opacity: 0.6; filter: grayscale(100%); transition: all 0.3s;">
+      </div>
+    </div>
+  </div>
+
+
+
+</main>
+

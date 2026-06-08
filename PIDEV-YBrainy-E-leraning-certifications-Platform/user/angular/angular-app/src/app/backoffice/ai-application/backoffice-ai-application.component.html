@@ -1,0 +1,112 @@
+<div id="main-wrapper" class="show wallet-open active">
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr" style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control">
+      <div class="hamburger"><span class="line"></span><span class="line"></span><span class="line"></span></div>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">AI Builder</div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <app-backoffice-dashboard-sidebar></app-backoffice-dashboard-sidebar>
+
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="ai-page">
+        <div class="ai-page__glow ai-page__glow--left"></div>
+        <div class="ai-page__glow ai-page__glow--right"></div>
+
+        <section class="hero-card fade-slide-up">
+          <div>
+            <p class="hero-pill">AI Career Toolkit</p>
+            <h1>CV Optimizer + Cover Letter Generator</h1>
+            <p>
+              Upload a CV, match it with a job description, and generate an ATS-friendly CV plus a professional cover
+              letter in one flow.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <animated-button
+              [label]="hasResults ? 'Regenerate' : 'Generate'"
+              [loading]="loading"
+              [disabled]="loading"
+              (pressed)="generate()"
+            ></animated-button>
+          </div>
+        </section>
+
+        <section class="stepper-card fade-slide-up">
+          <article *ngFor="let step of steps; let index = index" [class.is-active]="currentStep === index + 1" [class.is-done]="currentStep > index + 1">
+            <span>Step {{ index + 1 }}</span>
+            <strong>{{ step }}</strong>
+          </article>
+        </section>
+
+        <section class="input-grid">
+          <cv-upload-card [cvText]="cvText" [fileName]="fileName" (cvChange)="onCvChanged($event)"></cv-upload-card>
+          <job-description-card [value]="jobDescription" (valueChange)="jobDescription = $event"></job-description-card>
+        </section>
+
+        <loader *ngIf="loading"></loader>
+
+        <p *ngIf="errorMessage" class="error-card fade-slide-up">{{ errorMessage }}</p>
+
+        <section *ngIf="hasResults" class="results-area">
+          <div class="results-head">
+            <result-tabs [activeTab]="activeTab" [atsScore]="atsResult?.score ?? null" (tabChange)="setActiveTab($event)"></result-tabs>
+            <p *ngIf="showSuccess" class="success-badge">Generation complete</p>
+          </div>
+
+          <div class="results-grid">
+            <result-card
+              [title]="activeTitle"
+              [content]="activeContent"
+              (contentChange)="onResultChanged($event)"
+              (downloadClick)="downloadPdf()"
+            ></result-card>
+
+            <aside class="ats-card fade-slide-up">
+              <h3>ATS Insights</h3>
+              <p>Keyword overlap between job description and optimized CV.</p>
+
+              <div class="ats-meter">
+                <span [style.width.%]="atsResult?.score ?? 0"></span>
+              </div>
+              <strong class="ats-score">{{ atsResult?.score ?? 0 }}%</strong>
+
+              <div class="ats-list">
+                <h4>Matched keywords</h4>
+                <div>
+                  <span *ngFor="let keyword of atsResult?.matchedKeywords">{{ keyword }}</span>
+                </div>
+              </div>
+
+              <div class="ats-list">
+                <h4>Missing keywords</h4>
+                <div>
+                  <span class="missing" *ngFor="let keyword of atsResult?.missingKeywords">{{ keyword }}</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

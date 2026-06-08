@@ -1,0 +1,59 @@
+<div class="wl-page">
+  <div class="wl-container">
+    <div class="wl-header">
+      <div>
+        <h1 class="wl-title">🔖 My Wishlist</h1>
+        <div class="wl-subtitle">Threads you saved</div>
+      </div>
+      <a class="rd-btn" routerLink="/forum">← Back to Forum</a>
+    </div>
+
+    <div *ngIf="loading" class="wl-card">Loading…</div>
+
+    <div *ngIf="!loading && error" class="wl-card wl-error">
+      <div>{{ error }}</div>
+      <button type="button" class="rd-btn" (click)="load()">Retry</button>
+    </div>
+
+    <div *ngIf="!loading && !error && threads.length === 0" class="wl-card wl-empty">
+      <div style="font-size:48px;margin-bottom:12px;">🔖</div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:6px;">No saved threads yet</div>
+      <div class="wl-muted">Click the 🔖 Save button on any thread to add it here.</div>
+      <a class="rd-btn rd-btn-primary" routerLink="/forum" style="display:inline-block;margin-top:14px;text-decoration:none;">Browse threads</a>
+    </div>
+
+    <div *ngIf="!loading && !error && threads.length > 0">
+      <div *ngFor="let t of threads" class="wl-thread" (click)="goToThread(t.id)">
+        <div class="wl-thread-body">
+          <div class="wl-thread-meta">
+            <span class="wl-chip wl-chip-category" *ngIf="t.category">{{ t.category.name }}</span>
+            <span [ngClass]="'wl-chip wl-chip-' + t.status.toLowerCase()">{{ t.status }}</span>
+            <span class="wl-muted">by {{ t.author?.username ?? 'Unknown user' }} • {{ t.createdAt | date:'mediumDate' }}</span>
+          </div>
+          <div class="wl-thread-title">{{ t.title }}</div>
+          <div class="wl-thread-text">{{ t.body }}</div>
+
+          <a *ngIf="t.imageUrl" class="wl-media" [href]="media.url(t.imageUrl)" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+            <img class="wl-thread-image" [src]="media.url(t.imageUrl)" alt="Thread image" />
+          </a>
+
+          <div class="wl-thread-stats">
+            <span class="wl-stat">👍 {{ t.upvoteCount }}</span>
+            <span class="wl-stat">👎 {{ t.downvoteCount }}</span>
+            <span class="wl-stat">❤️ {{ t.likeCount }}</span>
+            <span class="wl-stat">😠 {{ t.dislikeCount }}</span>
+          </div>
+        </div>
+
+        <div class="wl-actions" (click)="$event.stopPropagation()">
+          <button type="button" class="wl-remove-btn" (click)="removeFromWishlist(t)" title="Remove from wishlist">
+            🗑️ Remove
+          </button>
+          <button type="button" class="rd-btn rd-btn-primary" (click)="goToThread(t.id)">
+            Open →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

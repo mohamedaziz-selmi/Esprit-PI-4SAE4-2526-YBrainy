@@ -1,0 +1,169 @@
+<div class="notes-page">
+
+  <!-- Sidebar -->
+  <aside class="notes-sidebar">
+    <div class="sidebar-title">Directories</div>
+    <ul class="directory-list">
+      <li
+        [class.active]="selectedDirectory === null"
+        (click)="selectDirectory(null)">
+        All Notes
+      </li>
+      <li
+        *ngFor="let dir of directories"
+        [class.active]="selectedDirectory === dir"
+        (click)="selectDirectory(dir)">
+        {{ dir }}
+      </li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="notes-main">
+
+    <!-- Top Bar -->
+    <div class="notes-topbar">
+      <div class="notes-search-wrap">
+        <i class="bi bi-search"></i>
+        <input
+          type="text"
+          class="notes-search"
+          placeholder="Search notes..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearch()" />
+      </div>
+      <button class="btn-new-note" (click)="openNewNote()">
+        + New Note
+      </button>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="errorMessage" class="notes-error">{{ errorMessage }}</div>
+
+    <!-- New Note Form -->
+    <div *ngIf="newNoteMode" class="note-editor-card" [style.background]="newColor">
+      <div class="color-picker">
+        <span
+          *ngFor="let c of colors"
+          class="color-dot"
+          [style.background]="c"
+          [class.selected]="newColor === c"
+          (click)="setNewColor(c)">
+        </span>
+      </div>
+      <input
+        type="text"
+        class="note-edit-title"
+        placeholder="Title"
+        [(ngModel)]="newTitle" />
+      <textarea
+        class="note-edit-content"
+        placeholder="Take a note..."
+        [(ngModel)]="newContent"
+        rows="4">
+      </textarea>
+      <div class="note-dir-row">
+        <label>Directory:</label>
+        <input type="text" class="note-dir-input" [(ngModel)]="newDirectory" placeholder="General" />
+      </div>
+      <div class="note-editor-actions">
+        <button class="btn-save" (click)="saveNewNote()">Save</button>
+        <button class="btn-cancel" (click)="cancelNewNote()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="notes-loading">Loading...</div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && notes.length === 0 && !newNoteMode" class="notes-empty">
+      No notes yet. Click + to create your first note.
+    </div>
+
+    <!-- Notes Grid -->
+    <div class="notes-grid" *ngIf="!isLoading && notes.length > 0">
+      <div
+        *ngFor="let note of notes"
+        class="note-card"
+        [style.background]="editingNoteId === note.id ? editColor : note.color"
+        (click)="editingNoteId !== note.id && startEdit(note)">
+
+        <!-- Pin indicator -->
+        <span *ngIf="note.is_pinned" class="pin-badge">&#128204;</span>
+
+        <!-- View mode -->
+        <ng-container *ngIf="editingNoteId !== note.id">
+          <div class="note-card-title">{{ note.title }}</div>
+          <div class="note-card-content">{{ note.content }}</div>
+          <div class="note-card-footer">
+            <span class="note-dir-badge">{{ note.directory }}</span>
+            <div class="note-card-actions">
+              <button
+                class="note-action-btn"
+                title="{{ note.is_pinned ? 'Unpin' : 'Pin' }}"
+                (click)="togglePin(note, $event)">
+                &#128204;
+              </button>
+              <button
+                class="note-action-btn"
+                title="{{ note.is_archived ? 'Unarchive' : 'Archive' }}"
+                (click)="toggleArchive(note, $event)">
+                &#128230;
+              </button>
+              <button
+                class="note-action-btn note-delete-btn"
+                title="Delete"
+                (click)="deleteNote(note, $event)">
+                &#128465;
+              </button>
+            </div>
+          </div>
+          <!-- Inline color picker -->
+          <div class="color-picker" (click)="$event.stopPropagation()">
+            <span
+              *ngFor="let c of colors"
+              class="color-dot"
+              [style.background]="c"
+              [class.selected]="note.color === c"
+              (click)="setNoteColor(note, c, $event)">
+            </span>
+          </div>
+        </ng-container>
+
+        <!-- Edit mode -->
+        <ng-container *ngIf="editingNoteId === note.id">
+          <div class="color-picker" (click)="$event.stopPropagation()">
+            <span
+              *ngFor="let c of colors"
+              class="color-dot"
+              [style.background]="c"
+              [class.selected]="editColor === c"
+              (click)="setEditColor(c)">
+            </span>
+          </div>
+          <input
+            type="text"
+            class="note-edit-title"
+            [(ngModel)]="editTitle"
+            (click)="$event.stopPropagation()" />
+          <textarea
+            class="note-edit-content"
+            [(ngModel)]="editContent"
+            rows="5"
+            (click)="$event.stopPropagation()">
+          </textarea>
+          <div class="note-dir-row" (click)="$event.stopPropagation()">
+            <label>Directory:</label>
+            <input type="text" class="note-dir-input" [(ngModel)]="editDirectory" />
+          </div>
+          <div class="note-editor-actions" (click)="$event.stopPropagation()">
+            <button class="btn-save" (click)="saveEdit(note)">Save</button>
+            <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+            <button class="btn-delete" (click)="deleteNote(note, $event)">Delete</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </main>
+</div>

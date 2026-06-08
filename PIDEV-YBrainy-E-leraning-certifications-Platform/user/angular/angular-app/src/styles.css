@@ -1,0 +1,171 @@
+/* Global styles for YBrainy front office */
+
+/* WordPress custom CSS overrides */
+@font-face {
+  font-family: 'GTWalsheimProRegular';
+  src: none !important;
+}
+
+.logo img {
+  width: 70px !important;
+  height: auto !important;
+}
+
+/* WordPress block styles */
+img:is([sizes=auto i], [sizes^="auto," i]) {
+  contain-intrinsic-size: 3000px 1500px;
+}
+
+img.wp-smiley,
+img.emoji {
+  display: inline !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 1em !important;
+  width: 1em !important;
+  margin: 0 0.07em !important;
+  vertical-align: -0.1em !important;
+  background: none !important;
+  padding: 0 !important;
+}
+
+.wp-block-button__link {
+  color: #fff;
+  background-color: #32373c;
+  border-radius: 9999px;
+  box-shadow: none;
+  text-decoration: none;
+  padding: calc(.667em + 2px) calc(1.333em + 2px);
+  font-size: 1.125em;
+}
+
+.wp-block-file__button {
+  background: #32373c;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Loader styles */
+.lds-dual-ring {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0px;
+  border-radius: 50%;
+  border: 3px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Global CSS variables */
+:root {
+  --wp--preset--aspect-ratio--square: 1;
+  --wp--preset--aspect-ratio--4-3: 4/3;
+  --wp--preset--aspect-ratio--3-4: 3/4;
+  --wp--preset--aspect-ratio--3-2: 3/2;
+  --wp--preset--aspect-ratio--2-3: 2/3;
+  --wp--preset--aspect-ratio--16-9: 16/9;
+  --wp--preset--aspect-ratio--9-16: 9/16;
+  --wp--preset--color--black: #000000;
+  --wp--preset--color--cyan-bluish-gray: #abb8c3;
+  --wp--preset--color--white: #ffffff;
+  --wp--preset--color--pale-pink: #f78da7;
+  --wp--preset--color--vivid-red: #cf2e2e;
+  --wp--preset--color--luminous-vivid-orange: #ff6900;
+  --wp--preset--color--luminous-vivid-amber: #fcb900;
+  --wp--preset--color--light-green-cyan: #7bdcb5;
+  --wp--preset--color--vivid-green-cyan: #00d084;
+  --wp--preset--color--pale-cyan-blue: #8ed1fc;
+  --wp--preset--color--vivid-cyan-blue: #0693e3;
+  --wp--preset--color--vivid-purple: #9b51e0;
+  --wp--preset--font-size--small: 13px;
+  --wp--preset--font-size--medium: 20px;
+  --wp--preset--font-size--large: 36px;
+  --wp--preset--font-size--x-large: 42px;
+  --wp--preset--spacing--20: 0.44rem;
+  --wp--preset--spacing--30: 0.67rem;
+  --wp--preset--spacing--40: 1rem;
+  --wp--preset--spacing--50: 1.5rem;
+  --wp--preset--spacing--60: 2.25rem;
+  --wp--preset--spacing--70: 3.38rem;
+  --wp--preset--spacing--80: 5.06rem;
+}
+
+/* Ensure full height and no extra margin */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body.backoffice {
+  background: #e6ebee;
+  min-height: 100vh;
+}
+
+body.backoffice #main-wrapper {
+  min-height: 100vh;
+}
+
+body.backoffice .content-body {
+  min-height: calc(100vh - 5rem);
+}
+
+/* Fix dropdown menus z-index so they appear above content */
+.drop-big:hover .drop-list-wrap {
+  z-index: 10 !important;
+}
+.drop:hover ul {
+  z-index: 10 !important;
+}
+
+/* Ensure header-container allows overflow on hover for dropdown menus */
+.header-container:hover {
+  overflow: visible !important;
+}
+
+/* Fix for Angular router-outlet wrapper elements */
+app-layout, app-header, app-footer, app-home,
+app-hero-section, app-trust-logos, app-why-ybrainy,
+app-learning-paths, app-learning-domains, app-designed-for-learners,
+app-success-stories, app-partners, app-career-cta,
+app-blog-insights, app-prefooter-cta,
+app-services, app-payment, app-resources, app-about,
+app-forum, app-calendar, app-courses {
+  display: block;
+}
+
+/* Safety fallback: keep the home page usable even if animation bootstrap fails. */
+.main-circle-wrap {
+  display: none !important;
+}
+
+.home-header,
+.main-head,
+.banner-bottom,
+.fundamental-wrap .card-txt {
+  opacity: 1 !important;
+}
+
+.fundamental-head,
+.fundamentals-grid,
+.fundamental-wrap .comm-card {
+  transform: none !important;
+}

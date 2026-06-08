@@ -1,0 +1,17 @@
+﻿mediapipe
+opencv-python-headless
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+seaborn
+python-docx
+python-pptx
+torch
+torchaudio
+TTS
+librosa
+soundfile
+requests
+Pillow

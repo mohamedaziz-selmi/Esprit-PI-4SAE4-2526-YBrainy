@@ -1,0 +1,1200 @@
+<!-- Preloader start -->
+<div id="preloader" style="display: none;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+
+<!-- Main wrapper start -->
+<div id="main-wrapper" style="opacity: 1 !important; visibility: visible !important; display: block !important;">
+
+  <!-- Nav header start -->
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr"
+        style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect width="4" height="4" rx="2" fill="#2A353A" />
+          <rect y="11" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+          <rect y="22" width="4" height="4" rx="2" fill="#2A353A" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header start -->
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">
+              E-Learning Packs
+            </div>
+          </div>
+          <ul class="navbar-nav header-right">
+            <li class="nav-item dropdown notification_dropdown search-area-header">
+              <div class="search-area-creative d-flex align-items-center">
+                <span class="ps-3"><i class="bi bi-search text-primary"></i></span>
+                <input type="text" class="form-control border-0" placeholder="Search packs..." [(ngModel)]="searchTerm"
+                  (ngModelChange)="onSearchChange()">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Sidebar start -->
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">home</i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard">Dashboard Page</a></li>
+            <li><a routerLink="/dashboard/finance">Finance</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Student</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Student</a></li>
+            <li><a href="javascript:void(0);">Student Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Student</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">person</i>
+            <span class="nav-text">Teacher</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Teacher</a></li>
+            <li><a href="javascript:void(0);">Teacher Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Teacher</a></li>
+          </ul>
+        </li>
+        <li><a routerLink="/dashboard/packs" class="text-primary font-w600">
+            <i class="material-icons">shopping_cart</i>
+            <span class="nav-text">Shop</span>
+          </a>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Courses</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/courses">All Courses</a></li>
+            <li><a routerLink="/dashboard/lessons">Lessons</a></li>
+            <li><a routerLink="/dashboard/calendar">Calendar</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">verified</i>
+            <span class="nav-text">Assessment & Certification</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Certifications</a></li>
+            <li><a href="javascript:void(0);">Quiz Assessments</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">assessment</i>
+            <span class="nav-text">Reports</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Student Reports</a></li>
+            <li><a href="javascript:void(0);">Teacher Reports</a></li>
+          </ul>
+        </li>
+        <li><a href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">contact_page</i>
+            <span class="nav-text">CV Submissions</span>
+          </a>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">folder</i>
+            <span class="nav-text">File Manager</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">File Manager</a></li>
+            <li><a href="javascript:void(0);">User</a></li>
+            <li><a href="javascript:void(0);">Calendar</a></li>
+            <li><a href="javascript:void(0);">Chat</a></li>
+            <li><a href="javascript:void(0);">Activity</a></li>
+          </ul>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons"> app_registration </i>
+            <span class="nav-text">Apps</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Profile</a></li>
+            <li><a href="javascript:void(0);">Edit Profile</a></li>
+            <li><a href="javascript:void(0);">Post Details</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Content body start -->
+  <div class="content-body">
+    <div class="container-fluid">
+      <!-- Stats Row -->
+      <div class="row">
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ totalPacks }}</h2>
+                <span>Total Packs</span>
+              </div>
+              <div class="bg-primary rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">inventory_2</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ totalCoursesBundled | number:'1.0-0' }}</h2>
+                <span>Courses Bundled</span>
+              </div>
+              <div class="bg-success rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">school</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ activePacks }}</h2>
+                <span>Active Packs</span>
+              </div>
+              <div class="bg-info rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">check_circle</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-sm-6">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">${{ totalRevenue | number:'1.0-2' }}</h2>
+                <span>Total Value</span>
+              </div>
+              <div class="bg-warning rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">payments</i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scrapper Launcher -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <section class="pack-scraper-launcher">
+            <div class="pack-scraper-launcher__left">
+              <span class="pack-scraper-launcher__icon">
+                <i class="material-icons">rocket_launch</i>
+              </span>
+              <div>
+                <h4 class="mb-1">Scrapper Control</h4>
+                <p class="mb-0">Launch the e-learning intelligence scraper directly from the Packs dashboard.</p>
+              </div>
+            </div>
+            <button class="btn pack-scraper-launcher__btn" type="button" (click)="runScraper()"
+              [disabled]="scraperStarting">
+              <span *ngIf="!scraperStarting">
+                <i class="bi bi-play-fill me-1"></i> Start Scrapper
+              </span>
+              <span *ngIf="scraperStarting">
+                <i class="bi bi-arrow-repeat me-1 pack-spin"></i> Starting...
+              </span>
+            </button>
+          </section>
+          <div *ngIf="scraperNoticeMessage" class="pack-scraper-notice mt-2"
+            [ngClass]="scraperNoticeType === 'success' ? 'pack-scraper-notice--success' : 'pack-scraper-notice--error'">
+            <i class="bi"
+              [ngClass]="scraperNoticeType === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+            <span>{{ scraperNoticeMessage }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header & Create Button -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+              <h4 class="card-title mb-0">
+                <i class="material-icons me-2 align-middle text-primary">local_offer</i>
+                Pack Management
+              </h4>
+              <div class="d-flex align-items-center gap-3 flex-wrap mt-2 mt-sm-0">
+                <select class="form-select form-select-sm" style="width:auto;" [(ngModel)]="filterCategoryId"
+                  (ngModelChange)="onFilterChange()">
+                  <option [ngValue]="undefined">All Categories</option>
+                  <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+                </select>
+                <select class="form-select form-select-sm" style="width:auto;" [(ngModel)]="filterLevel"
+                  (ngModelChange)="onFilterChange()">
+                  <option [ngValue]="undefined">All Levels</option>
+                  <option value="BEGINNER">Beginner</option>
+                  <option value="INTERMEDIATE">Intermediate</option>
+                  <option value="ADVANCED">Advanced</option>
+                </select>
+                <select class="form-select form-select-sm" style="width:auto;" [(ngModel)]="filterStatus"
+                  (ngModelChange)="onFilterChange()">
+                  <option [ngValue]="undefined">All Statuses</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="DRAFT">Draft</option>
+                  <option value="ARCHIVED">Archived</option>
+                </select>
+                <a routerLink="/dashboard/categories" class="btn btn-outline-primary btn-sm me-2">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">category</i>Categories
+                </a>
+                <button type="button" class="btn btn-outline-warning btn-sm me-2" (click)="openRecommendationsModal()">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">auto_awesome</i>Recommendations
+                </button>
+                <button type="button" class="btn btn-sm pack-conversion-trigger me-2" (click)="openConversionModal()">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">insights</i>Conversion AI
+                </button>
+                <button type="button" class="btn btn-sm pack-pricing-trigger me-2" (click)="openPricingModal()">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">sell</i>Dynamic Pricing AI
+                </button>
+                <a routerLink="/dashboard/packsorder" class="btn btn-outline-info btn-sm me-2">
+                  <i class="material-icons align-middle me-1" style="font-size:18px">receipt_long</i>Order
+                </a>
+                <a (click)="openCreateModal()" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                  data-bs-target="#packModal">
+                  <i class="bi bi-plus-lg me-1"></i> New Pack
+                </a>
+              </div>
+            </div>
+
+            <div class="card-body p-0">
+              <!-- Loading Indicator -->
+              <div *ngIf="loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2 text-muted">Loading packs...</p>
+              </div>
+
+              <!-- Error Message -->
+              <div *ngIf="error" class="alert alert-danger mx-4 mt-3">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadPacks()">Retry</button>
+              </div>
+
+              <!-- Pack Cards -->
+              <div *ngIf="!loading && !error" class="pack-grid-wrap p-4">
+                <div *ngIf="filteredPacks.length === 0" class="pack-empty-state text-center py-5">
+                  <i class="material-icons text-muted mb-2" style="font-size: 52px;">inventory_2</i>
+                  <p class="text-muted mb-0">No packs found matching your criteria.</p>
+                </div>
+
+                <div *ngIf="filteredPacks.length > 0" class="row g-4">
+                  <div class="col-12 col-xl-6" *ngFor="let pack of filteredPacks; let i = index">
+                    <article class="card pack-item-card h-100" [ngClass]="{
+                      'level-beginner': pack.level === 'BEGINNER',
+                      'level-intermediate': pack.level === 'INTERMEDIATE',
+                      'level-advanced': pack.level === 'ADVANCED',
+                      'status-active': pack.status === 'ACTIVE',
+                      'status-draft': pack.status === 'DRAFT',
+                      'status-archived': pack.status === 'ARCHIVED',
+                      'dropdown-open': openStatusDropdownId === pack.id
+                    }">
+                      <div class="card-body p-0">
+                        <div class="pack-card-layout">
+                          <div class="pack-media">
+                            <div class="pack-media-circle">
+                              <img
+                                [src]="pack.image ? 'http://localhost/assets/img/packs/' + pack.image : 'assets/backoffice/images/product/1.jpg'"
+                                [alt]="pack.title">
+                            </div>
+                            <span class="pack-category-initial">{{ pack.categoryName.charAt(0) }}</span>
+                            <div class="pack-side-badges">
+                              <span class="badge pack-side-status {{ getStatusClass(pack.status) }}">{{ pack.status | titlecase }}</span>
+                              <span class="badge pack-side-cert" *ngIf="pack.certificateName">
+                                <i class="material-icons">workspace_premium</i>
+                                Certification
+                              </span>
+                              <span class="badge pack-side-off" *ngIf="getDiscount(pack) > 0">
+                                {{ getDiscount(pack) }}% OFF
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="pack-content">
+                            <div class="pack-top-row">
+                              <div class="pack-top-left">
+                                <span class="pack-index">#{{ currentPage * pageSize + i + 1 }}</span>
+                                <span class="badge light badge-primary pack-category-chip">{{ pack.categoryName }}</span>
+                              </div>
+                              <div class="pack-price-row">
+                                <span *ngIf="pack.originalPrice > pack.salePrice" class="pack-original-price">
+                                  ${{ pack.originalPrice | number:'1.2-2' }}
+                                </span>
+                                <span class="pack-sale-price">${{ pack.salePrice | number:'1.2-2' }}</span>
+                              </div>
+                            </div>
+
+                            <h5 class="pack-title mb-1">{{ pack.title }}</h5>
+
+                            <div class="pack-meta-row">
+                              <span class="badge badge-sm pack-level-chip {{ getLevelClass(pack.level) }}">{{ pack.level | titlecase }}</span>
+                              <span class="pack-meta-item">
+                                <i class="material-icons">schedule</i>
+                                {{ pack.durationHours }}h
+                              </span>
+                            </div>
+
+                            <p class="pack-description mb-2">{{ pack.description }}</p>
+
+                            <div class="pack-info-row">
+                              <span class="pack-info-item" *ngIf="pack.certificateName">
+                                <i class="material-icons">check_circle</i>
+                                Certificate: {{ pack.certificateName }}
+                              </span>
+                              <span class="pack-info-item">
+                                <i class="material-icons">calendar_today</i>
+                                {{ pack.createdAt | date:'shortDate' }}
+                              </span>
+                            </div>
+
+                            <div class="pack-footer-row">
+                              <div class="d-flex align-items-center gap-2">
+                                <div class="pack-status-dropdown dropdown d-inline-block position-relative">
+                                  <button class="badge border-0 dropdown-toggle pack-status-trigger {{ getStatusClass(pack.status) }}"
+                                    type="button" (click)="toggleStatusDropdown(pack.id); $event.stopPropagation()">
+                                    {{ pack.status | titlecase }}
+                                  </button>
+                                  <ul class="dropdown-menu pack-status-menu" *ngIf="openStatusDropdownId === pack.id"
+                                    (click)="$event.stopPropagation()">
+                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="changeStatus(pack, 'DRAFT')">Draft</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="changeStatus(pack, 'ACTIVE')">Active</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)"
+                                        (click)="changeStatus(pack, 'ARCHIVED')">Archived</a></li>
+                                  </ul>
+                                </div>
+
+                                <div class="pack-action-group">
+                                  <button (click)="openEditModal(pack)"
+                                    class="btn btn-primary shadow btn-xs pack-action-btn me-1"
+                                    data-bs-toggle="modal" data-bs-target="#packModal" title="Edit pack">
+                                    <i class="fas fa-pencil-alt"></i>
+                                  </button>
+                                  <button (click)="deletePack(pack)" class="btn btn-danger shadow btn-xs pack-action-btn"
+                                    title="Delete pack">
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div *ngIf="totalPages > 1 && !loading"
+                class="card-footer d-flex justify-content-between align-items-center flex-wrap pt-3 pb-3">
+                <span class="fs-14 text-muted">Showing {{ filteredPacks.length }} of {{ totalElements }} packs</span>
+                <nav>
+                  <ul class="pagination pagination-sm mb-0 d-flex flex-row">
+                    <li class="page-item" [class.disabled]="currentPage === 0">
+                      <a class="page-link" (click)="goToPage(currentPage - 1)" style="cursor:pointer">
+                        <i class="la la-angle-left"></i>
+                      </a>
+                    </li>
+                    <li class="page-item" *ngFor="let p of pages" [class.active]="p === currentPage">
+                      <a class="page-link" (click)="goToPage(p)" style="cursor:pointer">{{ p + 1 }}</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                      <a class="page-link" (click)="goToPage(currentPage + 1)" style="cursor:pointer">
+                        <i class="la la-angle-right"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recommendations Modal -->
+<div class="pack-reco-overlay" *ngIf="recommendationsModalOpen" (click)="closeRecommendationsModal()">
+  <div class="pack-reco-modal-card" role="dialog" aria-modal="true" aria-labelledby="recommendationsTitle"
+    (click)="$event.stopPropagation()">
+    <div class="pack-reco-headline">
+      <div class="pack-reco-title-wrap">
+        <span class="pack-reco-icon-wrap">
+          <i class="material-icons">auto_awesome</i>
+        </span>
+        <div>
+          <h4 id="recommendationsTitle">Recommended Products To Sell</h4>
+          <p>AI recommendations from scraper output to improve platform performance.</p>
+        </div>
+      </div>
+      <button type="button" class="btn-close" (click)="closeRecommendationsModal()" aria-label="Close"></button>
+    </div>
+
+    <div class="pack-reco-controls">
+      <label class="mb-0 d-flex align-items-center gap-2">
+        <span class="text-muted">Top</span>
+        <input type="number" class="form-control form-control-sm pack-reco-limit-input" min="1" max="50"
+          [(ngModel)]="recommendationsLimit">
+      </label>
+      <button type="button" class="btn btn-sm btn-primary" (click)="fetchRecommendations()"
+        [disabled]="recommendationsLoading">
+        <i class="material-icons align-middle me-1" style="font-size:16px">refresh</i>Refresh
+      </button>
+    </div>
+
+    <div class="pack-reco-body">
+      <div *ngIf="recommendationsLoading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 mb-0 text-muted">Loading recommendations...</p>
+      </div>
+
+      <div *ngIf="recommendationsError" class="alert alert-danger mb-3">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ recommendationsError }}
+      </div>
+
+      <div *ngIf="!recommendationsLoading && !recommendationsError && recommendationsSummary">
+        <div class="pack-reco-meta">
+          <span class="badge light badge-primary">Generated: {{ recommendationsSummary.generatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="badge light badge-success" *ngIf="recommendationsSummary.forecastContext?.marginPct != null">
+            Margin: {{ recommendationsSummary.forecastContext?.marginPct | number:'1.0-2' }}%
+          </span>
+          <span class="badge light badge-warning text-dark"
+            *ngIf="recommendationsSummary.forecastContext?.watchCategory">
+            Watch: {{ recommendationsSummary.forecastContext?.watchCategory }}
+          </span>
+        </div>
+
+        <div class="table-responsive pack-reco-table-wrap mt-3">
+          <table class="table table-sm mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product / Course</th>
+                <th>Skill</th>
+                <th>Score</th>
+                <th>Confidence</th>
+                <th>Impact</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!recommendationsSummary.topRecommendations?.length">
+                <td colspan="7" class="text-center text-muted py-3">No recommendations available.</td>
+              </tr>
+              <tr *ngFor="let rec of recommendationsSummary.topRecommendations">
+                <td><strong>{{ rec.recommendationRank }}</strong></td>
+                <td class="pack-reco-title-cell">{{ rec.title }}</td>
+                <td>{{ rec.skillCategory }}</td>
+                <td>{{ rec.hybridFinalScore | number:'1.3-3' }}</td>
+                <td>
+                  <span class="badge badge-sm" [ngClass]="getConfidenceBadgeClass(rec.confidenceLevel)">
+                    {{ rec.confidenceLevel }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge badge-sm" [ngClass]="getImpactBadgeClass(rec.impactBand)">
+                    {{ rec.impactBand }}
+                  </span>
+                </td>
+                <td>
+                  <a *ngIf="rec.url" [href]="rec.url" target="_blank" rel="noopener" class="btn btn-xs btn-outline-primary">
+                    Open
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pack-reco-actions mt-3">
+          <h6 class="mb-2">Improvement Actions</h6>
+          <div class="pack-reco-action-list">
+            <div class="pack-reco-action-item" *ngFor="let action of recommendationsSummary.improvementActions">
+              <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge badge-sm" [ngClass]="getPriorityBadgeClass(action.priority)">
+                  {{ action.priority || 'N/A' }}
+                </span>
+                <strong>{{ action.action }}</strong>
+              </div>
+              <p class="mb-1 text-muted">{{ action.rationale }}</p>
+              <small class="text-primary">Target: {{ action.targetMetric }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Conversion Score Modal -->
+<div class="pack-conversion-overlay" *ngIf="conversionModalOpen" (click)="closeConversionModal()">
+  <div class="pack-conversion-modal-card" role="dialog" aria-modal="true" aria-labelledby="conversionTitle"
+    (click)="$event.stopPropagation()">
+    <div class="pack-conversion-headline">
+      <div class="pack-conversion-title-wrap">
+        <span class="pack-conversion-icon-wrap">
+          <i class="material-icons">show_chart</i>
+        </span>
+        <div>
+          <h4 id="conversionTitle">Pack Conversion AI Window</h4>
+          <p>Purchase probability signals blended from pack pricing, learner behavior, and scraper market demand.</p>
+        </div>
+      </div>
+
+      <div class="pack-conversion-head-actions">
+        <label class="mb-0 d-flex align-items-center gap-2 pack-conversion-limit">
+          <span class="text-muted">Top</span>
+          <input type="number" class="form-control form-control-sm" min="1" max="10" [(ngModel)]="conversionLimit">
+        </label>
+        <button type="button" class="btn btn-sm pack-conversion-refresh" (click)="fetchConversionSummary()"
+          [disabled]="conversionLoading">
+          <i class="material-icons align-middle me-1" style="font-size:16px">refresh</i>Refresh
+        </button>
+        <button type="button" class="btn-close" (click)="closeConversionModal()" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <div class="pack-conversion-body">
+      <div *ngIf="conversionLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 mb-0 text-muted">Reading the latest conversion output...</p>
+      </div>
+
+      <div *ngIf="conversionError" class="alert alert-danger mb-0">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ conversionError }}
+      </div>
+
+      <div *ngIf="!conversionLoading && !conversionError && conversionSummary">
+        <section class="pack-conversion-hero" *ngIf="conversionSummary.champion as champion">
+          <div class="pack-conversion-hero-copy">
+            <span class="pack-conversion-eyebrow">Best current opportunity</span>
+            <h5>{{ champion.title }}</h5>
+            <p>
+              This pack is the current leader by predicted conversion, combining market demand,
+              price fit, discount strength, and synthetic behavior signals.
+            </p>
+
+            <div class="pack-conversion-chip-row">
+              <span class="pack-conversion-pill" [ngClass]="getConversionBadgeClass(champion.predictedConversionRate)">
+                {{ getConversionMood(champion.predictedConversionRate) }}
+              </span>
+              <span class="pack-conversion-soft-chip">{{ champion.categoryName }}</span>
+              <span class="pack-conversion-soft-chip">{{ champion.level }}</span>
+              <span class="pack-conversion-soft-chip">{{ champion.primarySkill }}</span>
+            </div>
+          </div>
+
+          <div class="pack-conversion-hero-metrics">
+            <div class="pack-conversion-score-orb">
+              <strong>{{ getConversionRatePercent(champion.predictedConversionRate) | number:'1.0-2' }}%</strong>
+              <span>Purchase probability</span>
+            </div>
+            <div class="pack-conversion-hero-stat">
+              <label>Expected Revenue</label>
+              <strong>${{ champion.expectedRevenue | number:'1.0-0' }}</strong>
+            </div>
+            <div class="pack-conversion-hero-stat">
+              <label>Demand Score</label>
+              <strong>{{ champion.marketDemandScore | number:'1.2-3' }}</strong>
+            </div>
+            <div class="pack-conversion-hero-stat">
+              <label>Discount</label>
+              <strong>{{ champion.discountPct | number:'1.0-1' }}%</strong>
+            </div>
+          </div>
+        </section>
+
+        <div class="row g-3 mt-1" *ngIf="conversionSummary.modelMetrics as metrics">
+          <div class="col-md-6 col-xl-3">
+            <div class="pack-conversion-metric-card">
+              <small>Model Quality</small>
+              <h4>{{ (metrics.rocAuc || 0) | number:'1.2-3' }}</h4>
+              <p>ROC AUC across the evaluation split.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="pack-conversion-metric-card">
+              <small>Accuracy</small>
+              <h4>{{ getConversionRatePercent(metrics.accuracy) | number:'1.0-2' }}%</h4>
+              <p>Classification accuracy on held-out rows.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="pack-conversion-metric-card">
+              <small>Training Rows</small>
+              <h4>{{ metrics.trainingRows | number:'1.0-0' }}</h4>
+              <p>User-pack behavior rows used to train the model.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3">
+            <div class="pack-conversion-metric-card">
+              <small>Positive Rate</small>
+              <h4>{{ getConversionRatePercent(metrics.positiveRate) | number:'1.0-2' }}%</h4>
+              <p>Share of purchase outcomes in the generated dataset.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pack-conversion-podium d-none" *ngIf="conversionPodium.length">
+          <article class="pack-conversion-podium-card" *ngFor="let item of conversionPodium; let i = index">
+            <div class="pack-conversion-podium-rank">#{{ item.conversionRank }}</div>
+            <h6>{{ item.title }}</h6>
+            <p>{{ item.categoryName }} • {{ item.level }}</p>
+            <div class="pack-conversion-podium-progress">
+              <div class="pack-conversion-podium-bar" [ngClass]="getConversionBarClass(i)"
+                [style.width.%]="getConversionRateWidth(item.predictedConversionRate)"></div>
+            </div>
+            <div class="pack-conversion-podium-stats">
+              <span>{{ getConversionRatePercent(item.predictedConversionRate) | number:'1.0-2' }}%</span>
+              <span>${{ item.expectedRevenue | number:'1.0-0' }}</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="table-responsive pack-conversion-table-wrap mt-3">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+            <div>
+              <h6 class="mb-1">Leaderboard</h6>
+              <small class="text-muted">The packs your dashboard should spotlight first.</small>
+            </div>
+            <span class="pack-conversion-generated-at">
+              Generated: {{ conversionSummary.generatedAt | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pack</th>
+                <th>Conversion</th>
+                <th>Revenue</th>
+                <th>Demand</th>
+                <th>Price</th>
+                <th>Discount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!topConversionPacks.length">
+                <td colspan="7" class="text-center text-muted py-4">No conversion packs available yet.</td>
+              </tr>
+              <tr *ngFor="let item of topConversionPacks; let i = index">
+                <td>
+                  <span class="pack-conversion-rank-chip">#{{ item.conversionRank || i + 1 }}</span>
+                </td>
+                <td class="pack-conversion-pack-cell">
+                  <strong>{{ item.title }}</strong>
+                  <small>{{ item.categoryName }} • {{ item.level }} • {{ item.durationHours }}h</small>
+                </td>
+                <td class="pack-conversion-rate-cell">
+                  <div class="pack-conversion-inline-score">
+                    <strong>{{ getConversionRatePercent(item.predictedConversionRate) | number:'1.0-2' }}%</strong>
+                    <span class="pack-conversion-pill" [ngClass]="getConversionBadgeClass(item.predictedConversionRate)">
+                      {{ getConversionMood(item.predictedConversionRate) }}
+                    </span>
+                  </div>
+                  <div class="pack-conversion-inline-progress">
+                    <div class="pack-conversion-inline-progress-bar"
+                      [ngClass]="getConversionBarClass(i)"
+                      [style.width.%]="getConversionRateWidth(item.predictedConversionRate)"></div>
+                  </div>
+                </td>
+                <td>
+                  <strong>${{ item.expectedRevenue | number:'1.0-0' }}</strong>
+                  <small>{{ item.expectedBuyers | number:'1.0-0' }} expected buyers</small>
+                </td>
+                <td>
+                  <strong>{{ item.marketDemandScore | number:'1.2-3' }}</strong>
+                  <small>{{ item.marketCourseCount }} market matches</small>
+                </td>
+                <td>
+                  <strong>${{ item.salePrice | number:'1.2-2' }}</strong>
+                  <small *ngIf="item.originalPrice && item.originalPrice > (item.salePrice || 0)">
+                    Was ${{ item.originalPrice | number:'1.2-2' }}
+                  </small>
+                </td>
+                <td>
+                  <strong>{{ item.discountPct | number:'1.0-1' }}%</strong>
+                  <small>off</small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dynamic Pricing Modal -->
+<div class="pack-pricing-overlay" *ngIf="pricingModalOpen" (click)="closePricingModal()">
+  <div class="pack-pricing-modal-card" role="dialog" aria-modal="true" aria-labelledby="pricingTitle"
+    (click)="$event.stopPropagation()">
+    <div class="pack-pricing-headline">
+      <div class="pack-pricing-title-wrap">
+        <span class="pack-pricing-icon-wrap">
+          <i class="material-icons">sell</i>
+        </span>
+        <div>
+          <h4 id="pricingTitle">Dynamic Pricing AI Window</h4>
+          <p>Best sale price, discount range, and revenue lift recommendations derived from scraper demand signals.</p>
+        </div>
+      </div>
+
+      <div class="pack-pricing-head-actions">
+        <label class="mb-0 d-flex align-items-center gap-2 pack-pricing-limit">
+          <span class="text-muted">Top</span>
+          <input type="number" class="form-control form-control-sm" min="1" max="10" [(ngModel)]="pricingLimit">
+        </label>
+        <button type="button" class="btn btn-sm pack-pricing-refresh" (click)="fetchPricingSummary()"
+          [disabled]="pricingLoading">
+          <i class="material-icons align-middle me-1" style="font-size:16px">refresh</i>Refresh
+        </button>
+        <button type="button" class="btn-close" (click)="closePricingModal()" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <div class="pack-pricing-body">
+      <div *ngIf="pricingLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 mb-0 text-muted">Reading the latest pricing output...</p>
+      </div>
+
+      <div *ngIf="pricingError" class="alert alert-danger mb-0">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ pricingError }}
+      </div>
+
+      <div *ngIf="!pricingLoading && !pricingError && pricingSummary">
+        <section class="pack-pricing-hero" *ngIf="pricingSummary.champion as champion">
+          <div class="pack-pricing-hero-copy">
+            <span class="pack-pricing-eyebrow">Highest pricing upside</span>
+            <h5>{{ champion.title }}</h5>
+            <p>
+              This pack shows the strongest expected revenue lift when its current offer is replaced
+              with the model's recommended sale price and discount range.
+            </p>
+
+            <div class="pack-pricing-chip-row">
+              <span class="pack-pricing-action-chip" [ngClass]="getPricingActionClass(champion.priceAction)">
+                <i class="material-icons">{{ getPricingActionIcon(champion.priceAction) }}</i>
+                {{ getPricingActionLabel(champion.priceAction) }}
+              </span>
+              <span class="pack-pricing-band-chip" [ngClass]="getPricingBandClass(champion.recommendedBand)">
+                {{ champion.recommendedBand }}
+              </span>
+              <span class="pack-pricing-soft-chip">{{ champion.categoryName }}</span>
+              <span class="pack-pricing-soft-chip">{{ champion.level }}</span>
+              <span class="pack-pricing-soft-chip">{{ champion.primarySkill }}</span>
+            </div>
+          </div>
+
+          <div class="pack-pricing-hero-metrics">
+            <div class="pack-pricing-orb">
+              <strong>{{ champion.revenueLiftPct | number:'1.0-1' }}%</strong>
+              <span>Revenue lift</span>
+            </div>
+            <div class="pack-pricing-hero-stat">
+              <label>Current Price</label>
+              <strong>${{ champion.currentSalePrice | number:'1.2-2' }}</strong>
+            </div>
+            <div class="pack-pricing-hero-stat">
+              <label>Recommended Price</label>
+              <strong>${{ champion.recommendedSalePrice | number:'1.2-2' }}</strong>
+            </div>
+            <div class="pack-pricing-hero-stat">
+              <label>Discount Range</label>
+              <strong>{{ getDiscountRangeLabel(champion.discountRangeMinPct, champion.discountRangeMaxPct) }}</strong>
+            </div>
+            <div class="pack-pricing-hero-stat">
+              <label>Pricing Confidence</label>
+              <strong>{{ getPricingConfidencePercent(champion.pricingConfidence) | number:'1.0-1' }}%</strong>
+            </div>
+          </div>
+        </section>
+
+        <div class="row g-3 mt-1">
+          <div class="col-md-6 col-xl-3" *ngIf="pricingSummary.portfolioSummary as portfolio">
+            <div class="pack-pricing-metric-card">
+              <small>Portfolio Lift</small>
+              <h4>{{ portfolio.revenueUpliftPct | number:'1.0-1' }}%</h4>
+              <p>${{ portfolio.currentExpectedRevenueTotal | number:'1.0-0' }} to ${{ portfolio.recommendedExpectedRevenueTotal | number:'1.0-0' }}</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3" *ngIf="pricingSummary.portfolioSummary as portfolio">
+            <div class="pack-pricing-metric-card">
+              <small>Action Mix</small>
+              <h4>{{ portfolio.packsToIncreasePrice || 0 }}/{{ portfolio.packsToDecreasePrice || 0 }}/{{ portfolio.packsToHoldPrice || 0 }}</h4>
+              <p>Increase / decrease / hold decisions across packs.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3" *ngIf="pricingSummary.modelMetrics as metrics">
+            <div class="pack-pricing-metric-card">
+              <small>Model Quality</small>
+              <h4>{{ (metrics.rocAuc || 0) | number:'1.2-3' }}</h4>
+              <p>ROC AUC for the simulated pricing decision model.</p>
+            </div>
+          </div>
+          <div class="col-md-6 col-xl-3" *ngIf="pricingSummary.modelMetrics as metrics">
+            <div class="pack-pricing-metric-card">
+              <small>Discount Grid</small>
+              <h4>{{ metrics.discountGridPct.length }}</h4>
+              <p>Candidate discount levels evaluated for every pack.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pack-pricing-story-grid d-none">
+          <article class="pack-pricing-note-card">
+            <div class="pack-pricing-note-icon">
+              <i class="material-icons">psychology</i>
+            </div>
+            <div>
+              <h6>How to read this</h6>
+              <p>{{ pricingSummary.assumption }}</p>
+            </div>
+          </article>
+
+          <article class="pack-pricing-note-card">
+            <div class="pack-pricing-note-icon">
+              <i class="material-icons">dataset</i>
+            </div>
+            <div>
+              <h6>Data sources</h6>
+              <p>Courses file: {{ pricingSummary.coursesFile || 'N/A' }}</p>
+              <p class="mb-0">Trend file: {{ pricingSummary.skillTrendsFile || 'N/A' }}</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="pack-pricing-spotlight d-none" *ngIf="pricingSpotlight.length">
+          <article class="pack-pricing-spotlight-card" *ngFor="let item of pricingSpotlight">
+            <div class="pack-pricing-spotlight-top">
+              <span class="pack-pricing-rank-chip">#{{ item.pricingRank }}</span>
+              <span class="pack-pricing-action-chip" [ngClass]="getPricingActionClass(item.priceAction)">
+                <i class="material-icons">{{ getPricingActionIcon(item.priceAction) }}</i>
+                {{ getPricingActionLabel(item.priceAction) }}
+              </span>
+            </div>
+            <h6>{{ item.title }}</h6>
+            <p>{{ item.categoryName }} • {{ item.level }} • {{ item.recommendedBand }}</p>
+            <div class="pack-pricing-spotlight-prices">
+              <div>
+                <label>Current</label>
+                <strong>${{ item.currentSalePrice | number:'1.2-2' }}</strong>
+              </div>
+              <i class="material-icons">arrow_forward</i>
+              <div>
+                <label>Recommended</label>
+                <strong>${{ item.recommendedSalePrice | number:'1.2-2' }}</strong>
+              </div>
+            </div>
+            <div class="pack-pricing-spotlight-stats">
+              <span [ngClass]="getPricingLiftClass(item.revenueLiftPct)">
+                {{ item.revenueLiftPct | number:'1.0-1' }}% revenue
+              </span>
+              <span>{{ getPricingConfidencePercent(item.pricingConfidence) | number:'1.0-1' }}% confidence</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="table-responsive pack-pricing-table-wrap mt-3">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+            <div>
+              <h6 class="mb-1">Recommended Price Table</h6>
+              <small class="text-muted">Current offer, recommended offer, and the revenue upside your admins should act on.</small>
+            </div>
+            <span class="pack-pricing-generated-at">
+              Generated: {{ pricingSummary.generatedAt | date:'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Pack</th>
+                <th>Action</th>
+                <th>Current</th>
+                <th>Recommended</th>
+                <th>Discount Range</th>
+                <th>Revenue Lift</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!topPricingRecommendations.length">
+                <td colspan="8" class="text-center text-muted py-4">No pricing recommendations available yet.</td>
+              </tr>
+              <tr *ngFor="let item of topPricingRecommendations">
+                <td>
+                  <span class="pack-pricing-rank-chip">#{{ item.pricingRank }}</span>
+                </td>
+                <td class="pack-pricing-pack-cell">
+                  <strong>{{ item.title }}</strong>
+                  <small>{{ item.categoryName }} • {{ item.level }} • {{ item.scenarioCount }} scenarios</small>
+                </td>
+                <td>
+                  <span class="pack-pricing-action-chip" [ngClass]="getPricingActionClass(item.priceAction)">
+                    <i class="material-icons">{{ getPricingActionIcon(item.priceAction) }}</i>
+                    {{ getPricingActionLabel(item.priceAction) }}
+                  </span>
+                </td>
+                <td>
+                  <strong>${{ item.currentSalePrice | number:'1.2-2' }}</strong>
+                  <small>{{ item.currentDiscountPct | number:'1.0-1' }}% off</small>
+                </td>
+                <td>
+                  <strong>${{ item.recommendedSalePrice | number:'1.2-2' }}</strong>
+                  <small [ngClass]="getPricingLiftClass(getPriceDelta(item.currentSalePrice, item.recommendedSalePrice))">
+                    {{ getPriceDelta(item.currentSalePrice, item.recommendedSalePrice) > 0 ? '+' : '' }}${{ getPriceDelta(item.currentSalePrice, item.recommendedSalePrice) | number:'1.2-2' }}
+                  </small>
+                </td>
+                <td>
+                  <span class="pack-pricing-band-chip" [ngClass]="getPricingBandClass(item.recommendedBand)">
+                    {{ getDiscountRangeLabel(item.discountRangeMinPct, item.discountRangeMaxPct) }}
+                  </span>
+                  <small>{{ item.recommendedBand }}</small>
+                </td>
+                <td>
+                  <strong [ngClass]="getPricingLiftClass(item.revenueLiftPct)">{{ item.revenueLiftPct | number:'1.0-1' }}%</strong>
+                  <small>${{ item.baselineExpectedRevenue | number:'1.0-0' }} → ${{ item.recommendedExpectedRevenue | number:'1.0-0' }}</small>
+                </td>
+                <td>
+                  <span class="pack-pricing-confidence-chip" [ngClass]="getPricingConfidenceClass(item.pricingConfidence)">
+                    {{ getPricingConfidencePercent(item.pricingConfidence) | number:'1.0-1' }}%
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Delete Confirmation Modal -->
+<div class="pack-delete-overlay" *ngIf="isDeleteModalOpen" (click)="closeDeleteModal()">
+  <div class="pack-delete-modal-card" role="dialog" aria-modal="true" aria-labelledby="deletePackTitle"
+    (click)="$event.stopPropagation()">
+    <div class="pack-delete-headline">
+      <span class="pack-delete-icon-wrap">
+        <i class="material-icons">delete_forever</i>
+      </span>
+      <div>
+        <h4 id="deletePackTitle">Delete Pack</h4>
+        <p>This action is permanent and cannot be undone.</p>
+      </div>
+    </div>
+
+    <div class="pack-delete-body">
+      <p class="pack-delete-question">
+        Are you sure you want to delete
+        <span class="pack-delete-name">"{{ packToDelete?.title }}"</span>?
+      </p>
+      <div *ngIf="deleteError" class="pack-delete-error">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ deleteError }}
+      </div>
+    </div>
+
+    <div class="pack-delete-actions">
+      <button type="button" class="btn btn-light pack-delete-cancel" (click)="closeDeleteModal()"
+        [disabled]="deletingPack">
+        Keep Pack
+      </button>
+      <button type="button" class="btn pack-delete-confirm" (click)="confirmDeletePack()" [disabled]="deletingPack">
+        <span *ngIf="deletingPack" class="spinner-border spinner-border-sm me-2"></span>
+        {{ deletingPack ? 'Deleting...' : 'Yes, Delete It' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Create / Edit Pack Modal -->
+<div class="modal fade" id="packModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ isEdit ? 'Edit E-Learning Pack' : 'Create New E-Learning Pack' }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="formError" class="alert alert-danger">{{ formError }}</div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="title"
+                placeholder="e.g., Full-Stack Developer Bundle"
+                [class.is-invalid]="form.get('title')?.touched && form.get('title')?.invalid">
+              <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['required']">Title is required</div>
+              <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['minlength']">Title must be at least 2 characters</div>
+              <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['maxlength']">Title must not exceed 200 characters</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Category <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="categoryId"
+                [class.is-invalid]="form.get('categoryId')?.touched && form.get('categoryId')?.invalid">
+                <option [ngValue]="null" disabled>Select Category</option>
+                <option *ngFor="let cat of categories" [ngValue]="cat.id">{{ cat.name }}</option>
+              </select>
+              <div class="invalid-feedback">Category is required</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
+              <label class="form-label fw-bold mb-0">Description <span class="text-danger">*</span></label>
+              <button
+                type="button"
+                class="btn btn-sm pack-ai-generate-btn"
+                (click)="generatePackContent()"
+                [disabled]="contentGenerating">
+                <span *ngIf="!contentGenerating">
+                  <i class="material-icons align-middle me-1" style="font-size:16px">auto_awesome</i>
+                  Generate with AI
+                </span>
+                <span *ngIf="contentGenerating">
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                  Generating...
+                </span>
+              </button>
+            </div>
+            <p class="pack-ai-helper mb-2">Uses AI Content Writer to draft a professional pack description.</p>
+
+            <textarea class="form-control" formControlName="description" rows="3" maxlength="2000"
+              placeholder="Describe the pack and what students will learn..."
+              [class.is-invalid]="form.get('description')?.touched && form.get('description')?.invalid"></textarea>
+            <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['required']">Description is required</div>
+            <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['minlength']">Description must be at least 10 characters</div>
+            <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['maxlength']">Description must not exceed 2000 characters</div>
+
+            <div *ngIf="contentGenerationSuccess" class="pack-ai-feedback pack-ai-feedback--success mt-2">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ contentGenerationSuccess }}</span>
+            </div>
+            <div *ngIf="contentGenerationError" class="pack-ai-feedback pack-ai-feedback--error mt-2">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span>{{ contentGenerationError }}</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Pack Image</label>
+            <input type="file" class="form-control" (change)="onFileSelect($event)" accept="image/*">
+            <div class="form-text">Optional. Recommended size: 800x600.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Original Price ($) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" formControlName="originalPrice" step="0.01" min="0.01" max="999999.99"
+                [class.is-invalid]="form.get('originalPrice')?.touched && form.get('originalPrice')?.invalid">
+              <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['required']">Required</div>
+              <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['min']">Min 0.01</div>
+              <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['max']">Max 999,999.99</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Sale Price ($) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" formControlName="salePrice" step="0.01" min="0" max="999999.99"
+                [class.is-invalid]="form.get('salePrice')?.touched && form.get('salePrice')?.invalid">
+              <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['required']">Required</div>
+              <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['min']">Must be ≥ 0</div>
+              <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['max']">Max 999,999.99</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Discount</label>
+              <div class="form-control bg-light text-center" style="cursor:default;">
+                <span *ngIf="getDiscount(form.value) > 0" class="badge bg-danger">{{ getDiscount(form.value) }}%
+                  OFF</span>
+                <span *ngIf="getDiscount(form.value) <= 0">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Level <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="level"
+                [class.is-invalid]="form.get('level')?.touched && form.get('level')?.invalid">
+                <option value="" disabled>Select Level</option>
+                <option value="BEGINNER">Beginner</option>
+                <option value="INTERMEDIATE">Intermediate</option>
+                <option value="ADVANCED">Advanced</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Duration (hours) <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" formControlName="durationHours" min="1" max="9999"
+                [class.is-invalid]="form.get('durationHours')?.touched && form.get('durationHours')?.invalid">
+              <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['required']">Required</div>
+              <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['min']">Min 1 hour</div>
+              <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['max']">Max 9,999 hours</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Certificate Name</label>
+              <input type="text" class="form-control" formControlName="certificateName" placeholder="optional" maxlength="100"
+                [class.is-invalid]="form.get('certificateName')?.touched && form.get('certificateName')?.invalid">
+            </div>
+          </div>
+
+          <div class="modal-footer px-0 pb-0 mt-3 pt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="submitting">
+              <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+              {{ isEdit ? 'Update Pack' : 'Create Pack' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

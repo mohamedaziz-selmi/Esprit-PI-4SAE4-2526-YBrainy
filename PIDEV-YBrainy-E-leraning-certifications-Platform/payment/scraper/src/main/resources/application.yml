@@ -1,0 +1,18 @@
+server:
+  port: 8093
+
+spring:
+  application:
+    name: scraper-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+scraper:
+  python-command: "C:\\Users\\azizs\\anaconda3\\python.exe"
+  script-path: "C:\\Users\\azizs\\Downloads\\ssss\\PIDEV-YBrainy-E-leraning-certifications-Platform\\payment\\scraper\\elearning_scraper.py"
+  working-directory: "C:\\Users\\azizs\\Downloads\\ssss\\PIDEV-YBrainy-E-leraning-certifications-Platform\\payment\\scraper"

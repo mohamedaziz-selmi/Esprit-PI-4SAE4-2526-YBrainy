@@ -1,0 +1,137 @@
+# YBrainy – Parteneriat stack (partnership-service + job-offer-service)
+#
+# Usage
+# ─────
+#   cd "new parteneriat/backend"
+#   docker compose up --build -d
+#
+# Requires the unified Eureka running on the host at :8761.
+# Docker Desktop resolves host.docker.internal automatically on Win/Mac.
+#
+# To push images to Docker Hub after a successful build:
+#   docker tag  ybrainy/job-offer-service:1.0.0   <HUB_USER>/job-offer-service:1.0.0
+#   docker push <HUB_USER>/job-offer-service:1.0.0
+#   docker tag  ybrainy/partnership-service:1.0.0  <HUB_USER>/partnership-service:1.0.0
+#   docker push <HUB_USER>/partnership-service:1.0.0
+
+services:
+
+  # ── MySQL ─────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.3
+    container_name: parteneriat-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # Both services use createDatabaseIfNotExist=true in the JDBC URL,
+      # so no extra init SQL is needed.
+    ports:
+      - "3307:3306"          # 3307 on host to avoid collision with local MySQL
+    volumes:
+      - parteneriat-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ── RabbitMQ ──────────────────────────────────────────────────────────────
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: parteneriat-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5673:5672"          # AMQP (5673 on host to avoid collision)
+      - "15673:15672"        # Management UI → http://localhost:15673  guest/guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ── job-offer-service ─────────────────────────────────────────────────────
+  job-offer-service:
+    build:
+      context: .
+      dockerfile: job-offer-service/Dockerfile
+    image: issamriahi99/job-offer-service:1.0.0
+    container_name: job-offer-service
+    restart: unless-stopped
+    ports:
+      - "8187:8187"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      # ── Server ──────────────────────────────────────────────────────────
+      JOB_OFFER_SERVICE_PORT: "8187"
+
+      # ── Database ────────────────────────────────────────────────────────
+      JOB_OFFER_DB_URL: "jdbc:mysql://mysql:3306/jobofferdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      JOB_OFFER_DB_USERNAME: root
+      JOB_OFFER_DB_PASSWORD: root
+
+      # ── RabbitMQ ────────────────────────────────────────────────────────
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+
+      # ── Eureka (unified — running on host) ───────────────────────────────
+      YBRAINY_EUREKA_URL: "http://host.docker.internal:8761/eureka/"
+
+      # ── Mail (Gmail SMTP) ────────────────────────────────────────────────
+      JOB_MAIL_USERNAME: ${JOB_MAIL_USERNAME:-ihebb9491@gmail.com}
+      JOB_MAIL_PASSWORD: ${JOB_MAIL_PASSWORD:-changeme}
+
+      # ── Gemini AI ────────────────────────────────────────────────────────
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-changeme}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8187/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── partnership-service ───────────────────────────────────────────────────
+  partnership-service:
+    build:
+      context: .
+      dockerfile: partnership-service/Dockerfile
+    image: issamriahi99/partnership-service:1.0.0
+    container_name: partnership-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      # ── Database ────────────────────────────────────────────────────────
+      PARTNERSHIP_DB_URL: "jdbc:mysql://mysql:3306/partnershipdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      PARTNERSHIP_DB_USERNAME: root
+      PARTNERSHIP_DB_PASSWORD: root
+
+      # ── RabbitMQ ────────────────────────────────────────────────────────
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+
+      # ── Eureka (unified — running on host) ───────────────────────────────
+      YBRAINY_EUREKA_URL: "http://host.docker.internal:8761/eureka/"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  parteneriat-mysql-data:

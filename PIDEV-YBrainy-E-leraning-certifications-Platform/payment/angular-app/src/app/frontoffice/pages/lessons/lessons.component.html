@@ -1,0 +1,77 @@
+<div class="comm-section" style="padding-top: 40px;">
+  <div class="container container-md">
+    <div class="comm-head-wrap flex mb36" style="align-items: flex-end;">
+      <div class="comm-head-left">
+        <h2 class="comm-head mb8">Lessons</h2>
+        <div class="comm-txt">
+          <p *ngIf="course; else missing">Course: <b>{{ course.title }}</b></p>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button class="button line" type="button" (click)="backToCourses()">Back to Courses</button>
+        <button class="button" type="button" (click)="openCreate()" [disabled]="!course">Add Lesson</button>
+      </div>
+    </div>
+
+    <ng-template #missing>
+      <div class="comm-txt">
+        <p>Course not found.</p>
+      </div>
+    </ng-template>
+
+    <div *ngIf="showForm" class="comm-card" style="padding: 24px; margin-bottom: 24px;">
+      <h3 style="margin: 0 0 16px 0;">{{ editingLessonId ? 'Edit Lesson' : 'Create Lesson' }}</h3>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="comm-grid g-2 gp-20 g-990-1">
+          <div>
+            <label class="form-label">Title</label>
+            <input class="form-field" formControlName="title" placeholder="Lesson title" />
+          </div>
+          <div>
+            <label class="form-label">Duration (min)</label>
+            <input class="form-field" type="number" formControlName="durationMinutes" placeholder="e.g. 15" />
+          </div>
+          <div class="w100">
+            <label class="form-label">Description</label>
+            <textarea class="form-field" rows="3" formControlName="description"></textarea>
+          </div>
+          <div class="w100">
+            <label class="form-label">Video URL</label>
+            <input class="form-field" formControlName="videoUrl" placeholder="assets/...mp4 or https://..." />
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top: 16px;">
+          <button class="button" type="submit">{{ editingLessonId ? 'Save' : 'Create' }}</button>
+          <button class="button line" type="button" (click)="cancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="course" class="comm-grid g-2 gp-20 g-990-1">
+      <div class="comm-card base" *ngFor="let l of course.lessons">
+        <div class="card-txt">
+          <h3 style="margin-bottom: 6px;">{{ l.title }}</h3>
+          <p style="margin-top: 0;">{{ l.description }}</p>
+
+          <div class="comm-txt" *ngIf="l.durationMinutes">
+            <p><b>Duration:</b> {{ l.durationMinutes }} min</p>
+          </div>
+
+          <video *ngIf="l.videoUrl" controls playsinline style="width:100%; border-radius:12px; background:#000;">
+            <source [src]="l.videoUrl" type="video/mp4" />
+          </video>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px;">
+            <button class="button line" type="button" (click)="openEdit(l)">Edit</button>
+            <button class="button line" type="button" (click)="remove(l)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

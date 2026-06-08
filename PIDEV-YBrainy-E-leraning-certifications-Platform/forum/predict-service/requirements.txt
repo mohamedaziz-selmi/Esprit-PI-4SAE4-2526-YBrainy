@@ -1,0 +1,10 @@
+flask==3.0.3
+flask-cors==4.0.1
+scikit-learn==1.4.2
+joblib==1.4.2
+numpy==1.26.4
+scipy==1.13.0
+
+# test dependencies
+pytest>=8.0
+pytest-mock>=3.14

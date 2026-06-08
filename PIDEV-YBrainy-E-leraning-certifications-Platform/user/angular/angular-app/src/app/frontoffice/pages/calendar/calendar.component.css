@@ -1,0 +1,2256 @@
+.fo-static-page {
+  display: block;
+}
+
+.fo-static-page ::ng-deep .hero-events-actions,
+.fo-static-page .hero-events-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-slot,
+.fo-static-page .hero-recommendation-slot {
+  width: min(760px, 100%);
+  margin-top: 22px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-slot.is-visible,
+.fo-static-page .hero-recommendation-slot.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button,
+.fo-static-page .hero-recommend-button {
+  --border-radius: 24px;
+  --padding: 4px;
+  --transition: 0.4s;
+  --button-color: #101010;
+  --highlight-color-hue: 210deg;
+  user-select: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 74px;
+  white-space: nowrap;
+  padding: 0.5em 0.5em 0.5em 1.1em;
+  font-family: "Poppins", "Inter", "Segoe UI", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  text-decoration: none;
+  background-color: var(--button-color);
+  border: solid 1px #fff2;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 2px 2px rgba(255, 255, 255, 0.15),
+    inset 0 4px 4px rgba(255, 255, 255, 0.1),
+    inset 0 8px 8px rgba(255, 255, 255, 0.05),
+    inset 0 16px 16px rgba(255, 255, 255, 0.05),
+    0 -1px 1px rgba(0, 0, 0, 0.02),
+    0 -2px 2px rgba(0, 0, 0, 0.03),
+    0 -4px 4px rgba(0, 0, 0, 0.05),
+    0 -8px 8px rgba(0, 0, 0, 0.06),
+    0 -16px 16px rgba(0, 0, 0, 0.08);
+  transition:
+    box-shadow var(--transition),
+    border var(--transition),
+    background-color var(--transition),
+    transform 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button::before,
+.fo-static-page .hero-recommend-button::before {
+  content: "";
+  position: absolute;
+  top: calc(0px - var(--padding));
+  left: calc(0px - var(--padding));
+  width: calc(100% + var(--padding) * 2);
+  height: calc(100% + var(--padding) * 2);
+  border-radius: calc(var(--border-radius) + var(--padding));
+  pointer-events: none;
+  background-image: linear-gradient(0deg, #0004, #000a);
+  z-index: -1;
+  transition:
+    box-shadow var(--transition),
+    filter var(--transition);
+  box-shadow:
+    0 -8px 8px -6px #0000 inset,
+    0 -16px 16px -8px #0000 inset,
+    1px 1px 1px #fff2,
+    2px 2px 2px #fff1,
+    -1px -1px 1px #0002,
+    -2px -2px 2px #0001;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button::after,
+.fo-static-page .hero-recommend-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: linear-gradient(
+    0deg,
+    #fff,
+    hsl(var(--highlight-color-hue), 100%, 70%),
+    hsla(var(--highlight-color-hue), 100%, 70%, 50%),
+    8%,
+    transparent
+  );
+  background-position: 0 0;
+  opacity: 0;
+  transition:
+    opacity var(--transition),
+    filter var(--transition);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter,
+.fo-static-page .hero-recommend-button .btn-letter {
+  position: relative;
+  display: inline-block;
+  color: #fff5;
+  animation: heroRecommendLetterAnim 2s ease-in-out infinite;
+  transition:
+    color var(--transition),
+    text-shadow var(--transition),
+    opacity var(--transition);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .btn-svg,
+.fo-static-page .hero-recommend-button .btn-svg {
+  flex-grow: 1;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  fill: #e8e8e8;
+  animation: heroRecommendFlicker 2s linear infinite;
+  animation-delay: 0.5s;
+  filter: drop-shadow(0 0 2px #fff9);
+  transition:
+    fill var(--transition),
+    filter var(--transition),
+    opacity var(--transition);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .txt-wrapper,
+.fo-static-page .hero-recommend-button .txt-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 22ch;
+  white-space: nowrap;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .txt-1,
+.fo-static-page ::ng-deep .hero-recommend-button .txt-2,
+.fo-static-page .hero-recommend-button .txt-1,
+.fo-static-page .hero-recommend-button .txt-2 {
+  position: absolute;
+  white-space: nowrap;
+  word-spacing: 0;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .btn-space,
+.fo-static-page .hero-recommend-button .btn-space {
+  display: inline-block;
+  width: 0.5em;
+  flex: 0 0 0.5em;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .txt-1,
+.fo-static-page .hero-recommend-button .txt-1 {
+  animation: heroRecommendAppearAnim 1s ease-in-out forwards;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .txt-2,
+.fo-static-page .hero-recommend-button .txt-2 {
+  opacity: 0;
+}
+
+.fo-static-page ::ng-deep .hero-codelab-button,
+.fo-static-page .hero-codelab-button {
+  flex-basis: 100%;
+  max-width: 320px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #1d2459, #2f5fff);
+  color: #ffffff;
+  box-shadow: 0 20px 46px rgba(29, 36, 89, 0.28);
+}
+
+.fo-static-page ::ng-deep .hero-codelab-icon,
+.fo-static-page .hero-codelab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.18rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  color: currentColor;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+}
+
+.fo-static-page ::ng-deep .hero-codelab-label,
+.fo-static-page .hero-codelab-label {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.fo-static-page ::ng-deep .hero-codelab-button:hover,
+.fo-static-page .hero-codelab-button:hover {
+  background: linear-gradient(135deg, #25307a, #3f74ff);
+  color: #ffffff;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:hover,
+.fo-static-page .hero-recommend-button:hover {
+  transform: translateY(-2px);
+  border: solid 1px hsla(var(--highlight-color-hue), 100%, 80%, 40%);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:hover::before,
+.fo-static-page .hero-recommend-button:hover::before {
+  box-shadow:
+    0 -8px 8px -6px #fffa inset,
+    0 -16px 16px -8px hsla(var(--highlight-color-hue), 100%, 70%, 30%) inset,
+    1px 1px 1px #fff2,
+    2px 2px 2px #fff1,
+    -1px -1px 1px #0002,
+    -2px -2px 2px #0001;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:hover::after,
+.fo-static-page .hero-recommend-button:hover::after {
+  opacity: 1;
+  mask-image: linear-gradient(0deg, #fff, transparent);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:hover .btn-svg,
+.fo-static-page .hero-recommend-button:hover .btn-svg {
+  fill: #fff;
+  filter: drop-shadow(0 0 3px hsl(var(--highlight-color-hue), 100%, 70%))
+    drop-shadow(0 -4px 6px #0009);
+  animation: none;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible,
+.fo-static-page .hero-recommend-button:focus-visible {
+  outline: none;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible .txt-1,
+.fo-static-page .hero-recommend-button:focus-visible .txt-1 {
+  animation: heroRecommendOpacityAnim 0.3s ease-in-out forwards;
+  animation-delay: 1s;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible .txt-2,
+.fo-static-page .hero-recommend-button:focus-visible .txt-2 {
+  animation: heroRecommendOpacityAnim 0.3s ease-in-out reverse forwards;
+  animation-delay: 1s;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible .btn-letter,
+.fo-static-page .hero-recommend-button:focus-visible .btn-letter {
+  animation:
+    heroRecommendFocusedLetterAnim 1s ease-in-out forwards,
+    heroRecommendLetterAnim 1.2s ease-in-out infinite;
+  animation-delay: 0s, 1s;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible .btn-svg,
+.fo-static-page .hero-recommend-button:focus-visible .btn-svg {
+  animation-duration: 1.2s;
+  animation-delay: 0.2s;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible::before,
+.fo-static-page .hero-recommend-button:focus-visible::before {
+  box-shadow:
+    0 -8px 12px -6px #fff3 inset,
+    0 -16px 16px -8px hsla(var(--highlight-color-hue), 100%, 70%, 20%) inset,
+    1px 1px 1px #fff3,
+    2px 2px 2px #fff1,
+    -1px -1px 1px #0002,
+    -2px -2px 2px #0001;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:focus-visible::after,
+.fo-static-page .hero-recommend-button:focus-visible::after {
+  opacity: 0.6;
+  mask-image: linear-gradient(0deg, #fff, transparent);
+  filter: brightness(100%);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:active,
+.fo-static-page .hero-recommend-button:active {
+  border: solid 1px hsla(var(--highlight-color-hue), 100%, 80%, 70%);
+  background-color: hsla(var(--highlight-color-hue), 50%, 20%, 0.5);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:active::before,
+.fo-static-page .hero-recommend-button:active::before {
+  box-shadow:
+    0 -8px 12px -6px #fffa inset,
+    0 -16px 16px -8px hsla(var(--highlight-color-hue), 100%, 70%, 80%) inset,
+    1px 1px 1px #fff4,
+    2px 2px 2px #fff2,
+    -1px -1px 1px #0002,
+    -2px -2px 2px #0001;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:active::after,
+.fo-static-page .hero-recommend-button:active::after {
+  opacity: 1;
+  mask-image: linear-gradient(0deg, #fff, transparent);
+  filter: brightness(200%);
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button:active .btn-letter,
+.fo-static-page .hero-recommend-button:active .btn-letter {
+  text-shadow: 0 0 1px hsla(var(--highlight-color-hue), 100%, 90%, 90%);
+  animation: none;
+}
+
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(1),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(1) { animation-delay: 0s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(2),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(2) { animation-delay: 0.08s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(3),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(3) { animation-delay: 0.16s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(4),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(4) { animation-delay: 0.24s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(5),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(5) { animation-delay: 0.32s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(6),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(6) { animation-delay: 0.4s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(7),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(7) { animation-delay: 0.48s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(8),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(8) { animation-delay: 0.56s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(9),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(9) { animation-delay: 0.64s; }
+.fo-static-page ::ng-deep .hero-recommend-button .btn-letter:nth-child(10),
+.fo-static-page .hero-recommend-button .btn-letter:nth-child(10) { animation-delay: 0.72s; }
+
+@keyframes heroRecommendLetterAnim {
+  50% {
+    text-shadow: 0 0 3px #fff8;
+    color: #fff;
+  }
+}
+
+@keyframes heroRecommendFlicker {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes heroRecommendAppearAnim {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes heroRecommendOpacityAnim {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes heroRecommendFocusedLetterAnim {
+  0%,
+  100% {
+    filter: blur(0px);
+  }
+  50% {
+    transform: scale(2);
+    filter: blur(10px) brightness(150%)
+      drop-shadow(-36px 12px 12px hsl(var(--highlight-color-hue), 100%, 70%));
+  }
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-card,
+.fo-static-page .hero-recommendation-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 20px;
+  align-items: center;
+  padding: 24px 26px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(17, 22, 47, 0.98), rgba(35, 40, 160, 0.96));
+  color: #fff;
+  box-shadow: 0 24px 54px rgba(17, 23, 61, 0.18);
+  overflow: hidden;
+  position: relative;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-media,
+.fo-static-page .hero-recommendation-media {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 220px;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(17, 23, 61, 0.18);
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-media img,
+.fo-static-page .hero-recommendation-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card,
+.fo-static-page .hero-recommendation-loader-card {
+  padding: 18px 20px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.16), transparent 30%),
+    linear-gradient(135deg, rgba(17, 22, 47, 0.98), rgba(35, 40, 160, 0.96));
+  box-shadow: 0 24px 54px rgba(17, 23, 61, 0.18);
+  overflow: hidden;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .main-container,
+.fo-static-page .hero-recommendation-loader-card .main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 260px;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .loader,
+.fo-static-page .hero-recommendation-loader-card .loader {
+  width: min(100%, 560px);
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .trace-bg,
+.fo-static-page .hero-recommendation-loader-card .trace-bg {
+  stroke: #252525;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .trace-flow,
+.fo-static-page .hero-recommendation-loader-card .trace-flow {
+  stroke-width: 1.8;
+  fill: none;
+  stroke-dasharray: 40 400;
+  stroke-dashoffset: 438;
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: flow 3s cubic-bezier(0.5, 0, 0.9, 1) infinite;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .blue2,
+.fo-static-page .hero-recommendation-loader-card .blue2 {
+  stroke: #399fff;
+  color: #399fff;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-loader-card .blue,
+.fo-static-page .hero-recommendation-loader-card .blue {
+  stroke: #399fff;
+  color: #399fff;
+}
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-card.is-empty,
+.fo-static-page .hero-recommendation-card.is-empty {
+  grid-template-columns: 1fr;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 249, 253, 1));
+  color: #16214b;
+  border: 1px solid rgba(35, 40, 160, 0.08);
+  box-shadow: 0 20px 42px rgba(17, 23, 61, 0.08);
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-kicker,
+.fo-static-page .hero-recommendation-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-card.is-empty .hero-recommendation-kicker,
+.fo-static-page .hero-recommendation-card.is-empty .hero-recommendation-kicker {
+  background: rgba(35, 40, 160, 0.08);
+  color: #2b3583;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-copy h3,
+.fo-static-page .hero-recommendation-copy h3 {
+  margin: 16px 0 10px;
+  font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+  line-height: 1.08;
+  color: inherit;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-copy p,
+.fo-static-page .hero-recommendation-copy p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-card.is-empty .hero-recommendation-copy p,
+.fo-static-page .hero-recommendation-card.is-empty .hero-recommendation-copy p {
+  color: #60709a;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-meta,
+.fo-static-page .hero-recommendation-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-meta span,
+.fo-static-page .hero-recommendation-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-side,
+.fo-static-page .hero-recommendation-side {
+  display: grid;
+  gap: 12px;
+  justify-items: end;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-score,
+.fo-static-page .hero-recommendation-score {
+  width: 100%;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-score small,
+.fo-static-page .hero-recommendation-score small {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-score strong,
+.fo-static-page .hero-recommendation-score strong {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: #7affd4;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-open,
+.fo-static-page .hero-recommendation-open {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, #7affd4 0%, #ffffff 100%);
+  color: #17203f;
+  font-size: 0.92rem;
+  font-weight: 800;
+  box-shadow: 0 16px 34px rgba(122, 255, 212, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .hero-recommendation-open:hover,
+.fo-static-page .hero-recommendation-open:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(122, 255, 212, 0.22);
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-slot,
+.fo-static-page .cal-recommendation-slot {
+  margin-bottom: 24px;
+}
+
+.fo-static-page ::ng-deep .cal-events-controls,
+.fo-static-page .cal-events-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 1fr);
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.fo-static-page ::ng-deep .cal-search-shell,
+.fo-static-page .cal-search-shell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  padding: 0 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(35, 40, 160, 0.1);
+  box-shadow: 0 18px 40px rgba(17, 23, 61, 0.08);
+}
+
+.fo-static-page ::ng-deep .cal-search-shell svg,
+.fo-static-page .cal-search-shell svg {
+  width: 19px;
+  height: 19px;
+  fill: #68739a;
+  flex: 0 0 auto;
+}
+
+.fo-static-page ::ng-deep .cal-search-input,
+.fo-static-page .cal-search-input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #202748;
+  font-size: 0.96rem;
+  font-weight: 600;
+}
+
+.fo-static-page ::ng-deep .cal-search-input::placeholder,
+.fo-static-page .cal-search-input::placeholder {
+  color: #98a1bc;
+  font-weight: 500;
+}
+
+.fo-static-page ::ng-deep .cal-events-selects,
+.fo-static-page .cal-events-selects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fo-static-page ::ng-deep .cal-select-shell,
+.fo-static-page .cal-select-shell {
+  display: grid;
+  gap: 8px;
+}
+
+.fo-static-page ::ng-deep .cal-select-shell span,
+.fo-static-page .cal-select-shell span {
+  color: #5f6990;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.fo-static-page ::ng-deep .cal-status-select,
+.fo-static-page .cal-status-select,
+.fo-static-page ::ng-deep .cal-sort-select,
+.fo-static-page .cal-sort-select {
+  min-height: 54px;
+  padding: 0 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(35, 40, 160, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+  color: #202748;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: 0 16px 34px rgba(17, 23, 61, 0.06);
+  outline: none;
+}
+
+.fo-static-page ::ng-deep .cal-status-select:focus,
+.fo-static-page .cal-status-select:focus,
+.fo-static-page ::ng-deep .cal-sort-select:focus,
+.fo-static-page .cal-sort-select:focus {
+  border-color: rgba(45, 53, 191, 0.26);
+  box-shadow: 0 0 0 4px rgba(45, 53, 191, 0.08);
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-card,
+.fo-static-page .cal-recommendation-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 24px;
+  align-items: center;
+  padding: 24px 26px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.18), transparent 30%),
+    linear-gradient(135deg, rgba(17, 22, 47, 0.98), rgba(35, 40, 160, 0.96));
+  color: #fff;
+  box-shadow: 0 26px 60px rgba(17, 23, 61, 0.24);
+  overflow: hidden;
+  position: relative;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-media,
+.fo-static-page .cal-recommendation-media {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 190px;
+  border-radius: 22px;
+  overflow: hidden;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 34px rgba(17, 23, 61, 0.18);
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-media img,
+.fo-static-page .cal-recommendation-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-card::after,
+.fo-static-page .cal-recommendation-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -30px -40px auto;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(116, 255, 205, 0.24), rgba(116, 255, 205, 0));
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-card.is-recommendation-spotlight,
+.fo-static-page .cal-recommendation-card.is-recommendation-spotlight {
+  animation: recommendationSpotlight 1.75s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-kicker,
+.fo-static-page .cal-recommendation-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-copy h3,
+.fo-static-page .cal-recommendation-copy h3 {
+  margin: 16px 0 10px;
+  font-size: clamp(1.45rem, 2.3vw, 2rem);
+  line-height: 1.06;
+  color: #fff;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-copy p,
+.fo-static-page .cal-recommendation-copy p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-meta,
+.fo-static-page .cal-recommendation-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-meta span,
+.fo-static-page .cal-recommendation-meta span {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-side,
+.fo-static-page .cal-recommendation-side {
+  display: grid;
+  gap: 14px;
+  justify-items: end;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-score,
+.fo-static-page .cal-recommendation-score {
+  width: 100%;
+  padding: 18px 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-score small,
+.fo-static-page .cal-recommendation-score small {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-score strong,
+.fo-static-page .cal-recommendation-score strong {
+  display: block;
+  font-size: 2rem;
+  line-height: 1;
+  color: #7affd4;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-btn,
+.fo-static-page .cal-recommendation-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, #7affd4 0%, #ffffff 100%);
+  color: #17203f;
+  font-size: 0.92rem;
+  font-weight: 800;
+  box-shadow: 0 16px 34px rgba(122, 255, 212, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .cal-recommendation-btn:hover,
+.fo-static-page .cal-recommendation-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 40px rgba(122, 255, 212, 0.22);
+}
+
+.fo-static-page ::ng-deep .cal-events-pagination,
+.fo-static-page .cal-events-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+  padding: 18px 22px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 249, 253, 0.98));
+  box-shadow: 0 18px 40px rgba(17, 23, 61, 0.08);
+  border: 1px solid rgba(40, 54, 160, 0.08);
+}
+
+.fo-static-page ::ng-deep .cal-pagination-copy,
+.fo-static-page .cal-pagination-copy {
+  color: #6c7597;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.fo-static-page ::ng-deep .cal-pagination-copy strong,
+.fo-static-page .cal-pagination-copy strong {
+  color: #151933;
+  font-weight: 800;
+}
+
+.fo-static-page ::ng-deep .cal-pagination-controls,
+.fo-static-page .cal-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fo-static-page ::ng-deep .cal-page-pills,
+.fo-static-page .cal-page-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fo-static-page ::ng-deep .cal-page-arrow,
+.fo-static-page .cal-page-arrow,
+.fo-static-page ::ng-deep .cal-page-pill,
+.fo-static-page .cal-page-pill {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: rgba(238, 242, 251, 0.92);
+  color: #2d355f;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(35, 40, 160, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .cal-page-arrow:hover:not(:disabled),
+.fo-static-page .cal-page-arrow:hover:not(:disabled),
+.fo-static-page ::ng-deep .cal-page-pill:hover:not(:disabled),
+.fo-static-page .cal-page-pill:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(35, 40, 160, 0.12);
+}
+
+.fo-static-page ::ng-deep .cal-page-pill.active,
+.fo-static-page .cal-page-pill.active {
+  background: linear-gradient(90deg, #151933 0%, #2d35bf 100%);
+  color: #fff;
+  box-shadow: 0 16px 32px rgba(35, 40, 160, 0.18);
+}
+
+.fo-static-page ::ng-deep .cal-page-arrow:disabled,
+.fo-static-page .cal-page-arrow:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.fo-static-page ::ng-deep .cal-page-ellipsis,
+.fo-static-page .cal-page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  color: #7b84a2;
+  font-weight: 800;
+}
+
+.fo-static-page ::ng-deep .cal-event-card,
+.fo-static-page .cal-event-card {
+  align-items: stretch;
+}
+
+.fo-static-page ::ng-deep .cal-event-media,
+.fo-static-page .cal-event-media {
+  flex: 0 0 148px;
+  width: 148px;
+  min-height: 122px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(35, 40, 160, 0.1), rgba(116, 255, 205, 0.12));
+  border: 1px solid rgba(35, 40, 160, 0.08);
+  box-shadow: 0 14px 32px rgba(17, 23, 61, 0.1);
+}
+
+.fo-static-page ::ng-deep .cal-event-media img,
+.fo-static-page .cal-event-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 122px;
+  object-fit: cover;
+}
+
+.fo-static-page ::ng-deep .cal-event-media-fallback,
+.fo-static-page .cal-event-media-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 122px;
+  padding: 16px;
+  text-align: center;
+  color: #2d35bf;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.register-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(12, 16, 33, 0.46);
+  backdrop-filter: blur(10px);
+}
+
+.register-confirm-card {
+  width: min(460px, 100%);
+  padding: 30px 30px 26px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
+  box-shadow: 0 28px 70px rgba(17, 23, 61, 0.24);
+  border: 1px solid rgba(40, 54, 160, 0.08);
+}
+
+.register-confirm-card.cancel-tone {
+  background:
+    radial-gradient(circle at top right, rgba(255, 185, 145, 0.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #fff8f4 100%);
+}
+
+.register-confirm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(35, 40, 160, 0.1);
+  color: #2328a0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.register-confirm-badge.cancel-badge {
+  background: rgba(214, 98, 59, 0.12);
+  color: #b44e2d;
+}
+
+.register-confirm-card h3 {
+  margin: 18px 0 10px;
+  color: #151933;
+  font-size: clamp(1.55rem, 2vw, 1.85rem);
+  line-height: 1.1;
+}
+
+.register-confirm-card p {
+  margin: 0;
+  color: #58607a;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.register-confirm-card strong {
+  color: #151933;
+  font-weight: 700;
+}
+
+.register-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.register-confirm-actions button {
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.register-confirm-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.register-confirm-actions button:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
+.feedback-overlay {
+  z-index: 1210;
+}
+
+.feedback-card {
+  width: min(620px, 100%);
+  padding: 30px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.16), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(35, 40, 160, 0.12), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
+  box-shadow: 0 32px 80px rgba(17, 23, 61, 0.26);
+  border: 1px solid rgba(40, 54, 160, 0.08);
+}
+
+.feedback-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.feedback-card h3 {
+  margin: 18px 0 10px;
+  color: #151933;
+  font-size: clamp(1.65rem, 2.2vw, 2rem);
+  line-height: 1.08;
+}
+
+.feedback-card p {
+  margin: 0;
+  color: #58607a;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.feedback-close {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(238, 242, 251, 0.94);
+  color: #2a315a;
+  font-size: 1.5rem;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(35, 40, 160, 0.08);
+}
+
+.feedback-rating-row {
+  margin-top: 26px;
+  padding: 20px 22px;
+  border-radius: 24px;
+  background: rgba(245, 247, 253, 0.92);
+  border: 1px solid rgba(53, 60, 89, 0.06);
+}
+
+.feedback-rating-label {
+  display: block;
+  margin-bottom: 12px;
+  color: #2c335e;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.feedback-stars {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.feedback-star {
+  width: 54px;
+  height: 54px;
+  border: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #c8cfeb;
+  font-size: 1.9rem;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(35, 40, 160, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, color 0.18s ease, background 0.18s ease;
+}
+
+.feedback-star.active {
+  background: linear-gradient(135deg, #151933 0%, #2d35bf 100%);
+  color: #ffe28a;
+  box-shadow: 0 16px 32px rgba(35, 40, 160, 0.18);
+}
+
+.feedback-star:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.feedback-comment-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 22px 0 10px;
+}
+
+.feedback-comment-label {
+  display: block;
+  margin: 0;
+  color: #2c335e;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.feedback-inline-sentiment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.feedback-inline-sentiment-badge.positive {
+  background: rgba(67, 176, 42, 0.14);
+  color: #236b12;
+}
+
+.feedback-inline-sentiment-badge.neutral {
+  background: rgba(196, 148, 28, 0.16);
+  color: #8a6200;
+}
+
+.feedback-inline-sentiment-badge.negative {
+  background: rgba(201, 74, 74, 0.14);
+  color: #9c1f1f;
+}
+
+.feedback-comment-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.feedback-speech-status {
+  color: #5f6990;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.feedback-toolbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.feedback-sentiment-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #11173d 0%, #3340d3 100%);
+  color: #fff;
+  font-size: 0.84rem;
+  font-weight: 700;
+  box-shadow: 0 14px 28px rgba(17, 23, 61, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.feedback-sentiment-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(17, 23, 61, 0.22);
+}
+
+.feedback-sentiment-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.feedback-speech-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgba(35, 40, 160, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.98);
+  color: #202a63;
+  font-size: 0.88rem;
+  font-weight: 700;
+  box-shadow: 0 12px 28px rgba(17, 23, 61, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.feedback-speech-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.feedback-speech-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(17, 23, 61, 0.12);
+}
+
+.feedback-speech-btn.is-recording {
+  background: linear-gradient(90deg, #151933 0%, #2d35bf 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.feedback-speech-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.feedback-comment {
+  width: 100%;
+  min-height: 170px;
+  padding: 18px 20px;
+  border: 1px solid rgba(35, 40, 160, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  color: #202748;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.feedback-comment:focus {
+  border-color: rgba(45, 53, 191, 0.28);
+  box-shadow: 0 0 0 4px rgba(45, 53, 191, 0.08);
+}
+
+.feedback-sentiment-panel {
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(240, 244, 255, 0.95), rgba(248, 250, 255, 0.98));
+  border: 1px solid rgba(73, 94, 219, 0.12);
+}
+
+.feedback-sentiment-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.feedback-sentiment-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.feedback-sentiment-chip.positive {
+  background: rgba(67, 176, 42, 0.14);
+  color: #236b12;
+}
+
+.feedback-sentiment-chip.neutral {
+  background: rgba(196, 148, 28, 0.16);
+  color: #8a6200;
+}
+
+.feedback-sentiment-chip.negative {
+  background: rgba(201, 74, 74, 0.14);
+  color: #9c1f1f;
+}
+
+.feedback-sentiment-summary {
+  color: #3b4567;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.feedback-sentiment-scores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.feedback-sentiment-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #25304f;
+}
+
+.feedback-sentiment-score strong {
+  color: #131a36;
+}
+
+.feedback-meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  color: #7b84a2;
+  font-size: 0.86rem;
+}
+
+.feedback-error {
+  color: #b44e2d;
+  font-weight: 600;
+}
+
+.feedback-actions {
+  margin-top: 28px;
+}
+
+.feedback-submit {
+  min-width: 180px;
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-feedback-btn,
+.fo-static-page .cal-event-card .cal-feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #151933 0%, #2d35bf 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  box-shadow: 0 18px 36px rgba(35, 40, 160, 0.2);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-feedback-btn:hover,
+.fo-static-page .cal-event-card .cal-feedback-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 42px rgba(35, 40, 160, 0.24);
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-feedback-rating,
+.fo-static-page .cal-event-card .cal-feedback-rating {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 229, 155, 0.26);
+  color: #9a6a0f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.register-confirm-back {
+  background: #eef2fb;
+  color: #353c59;
+}
+
+.register-confirm-yes {
+  background: linear-gradient(90deg, #161b35 0%, #2328a0 100%);
+  color: #fff;
+  box-shadow: 0 16px 32px rgba(35, 40, 160, 0.24);
+}
+
+.register-confirm-yes.cancel-yes {
+  background: linear-gradient(90deg, #7e2d18 0%, #d26c3f 100%);
+  box-shadow: 0 16px 32px rgba(210, 108, 63, 0.24);
+}
+
+.confirmation-toast {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 1250;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: min(360px, calc(100vw - 32px));
+  max-width: 420px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.22), transparent 32%),
+    linear-gradient(135deg, rgba(17, 22, 47, 0.98), rgba(35, 40, 160, 0.94));
+  color: #fff;
+  box-shadow: 0 24px 60px rgba(17, 23, 61, 0.34);
+  overflow: hidden;
+  animation: confirmationToastIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.confirmation-toast.confirmed {
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.24), transparent 32%),
+    linear-gradient(135deg, rgba(17, 22, 47, 0.98), rgba(35, 40, 160, 0.94));
+}
+
+.confirmation-toast.refused {
+  background:
+    radial-gradient(circle at top right, rgba(255, 145, 113, 0.24), transparent 34%),
+    linear-gradient(135deg, rgba(45, 16, 30, 0.98), rgba(167, 47, 66, 0.94));
+}
+
+.confirmation-toast::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -60% auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(116, 255, 205, 0.3) 0%, rgba(116, 255, 205, 0) 70%);
+  pointer-events: none;
+}
+
+.confirmation-toast.refused::after {
+  background: radial-gradient(circle, rgba(255, 154, 125, 0.34) 0%, rgba(255, 154, 125, 0) 70%);
+}
+
+.confirmation-toast-icon {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #7affd4 0%, #2ad59f 100%);
+  box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.16);
+}
+
+.confirmation-toast.refused .confirmation-toast-icon {
+  background: linear-gradient(180deg, #ffaf8f 0%, #ff6b7f 100%);
+}
+
+.confirmation-toast-icon span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 10px;
+  border-left: 3px solid #10203d;
+  border-bottom: 3px solid #10203d;
+  transform: translate(-50%, -62%) rotate(-45deg);
+}
+
+.confirmation-toast.refused .confirmation-toast-icon span {
+  width: 18px;
+  height: 18px;
+  border: 0;
+  transform: translate(-50%, -50%);
+}
+
+.confirmation-toast.refused .confirmation-toast-icon span::before,
+.confirmation-toast.refused .confirmation-toast-icon span::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #35111d;
+}
+
+.confirmation-toast.refused .confirmation-toast-icon span::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.confirmation-toast.refused .confirmation-toast-icon span::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.confirmation-toast-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.confirmation-toast-copy small {
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.confirmation-toast-copy strong {
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+@keyframes confirmationToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes recommendationSpotlight {
+  0% {
+    transform: scale(0.985);
+    box-shadow: 0 26px 60px rgba(17, 23, 61, 0.24);
+  }
+  35% {
+    transform: scale(1.015);
+    box-shadow: 0 34px 82px rgba(35, 40, 160, 0.26);
+  }
+  65% {
+    transform: scale(1.01);
+    box-shadow: 0 34px 84px rgba(122, 255, 212, 0.22);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 26px 60px rgba(17, 23, 61, 0.24);
+  }
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-confirmed-celebration,
+.fo-static-page .cal-event-card.is-confirmed-celebration {
+  position: relative;
+  overflow: hidden;
+  animation: confirmedCardLift 0.85s cubic-bezier(0.19, 1, 0.22, 1), confirmedCardGlow 2.8s ease-out;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-refused-celebration,
+.fo-static-page .cal-event-card.is-refused-celebration {
+  position: relative;
+  overflow: hidden;
+  animation: refusedCardLift 0.85s cubic-bezier(0.19, 1, 0.22, 1), refusedCardGlow 2.8s ease-out;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-confirmed-celebration::before,
+.fo-static-page .cal-event-card.is-confirmed-celebration::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 28px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(64, 231, 176, 0.95), rgba(126, 255, 218, 0.18), rgba(35, 40, 160, 0.1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-refused-celebration::before,
+.fo-static-page .cal-event-card.is-refused-celebration::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 28px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 107, 127, 0.95), rgba(255, 180, 150, 0.18), rgba(167, 47, 66, 0.14));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-confirmed-celebration::after,
+.fo-static-page .cal-event-card.is-confirmed-celebration::after {
+  content: '';
+  position: absolute;
+  inset: -30% auto auto -10%;
+  width: 140px;
+  height: 220%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(126, 255, 218, 0.42) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: rotate(18deg) translateX(-180%);
+  animation: confirmedSweep 1.1s ease-out;
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-refused-celebration::after,
+.fo-static-page .cal-event-card.is-refused-celebration::after {
+  content: '';
+  position: absolute;
+  inset: -30% auto auto -10%;
+  width: 140px;
+  height: 220%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 154, 125, 0.38) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: rotate(18deg) translateX(-180%);
+  animation: refusedSweep 1.15s ease-out;
+  pointer-events: none;
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-confirmed-celebration .cal-status,
+.fo-static-page .cal-event-card.is-confirmed-celebration .cal-status {
+  background: linear-gradient(90deg, #15b985 0%, #7affd4 100%) !important;
+  color: #0f2238 !important;
+  box-shadow: 0 10px 22px rgba(42, 213, 159, 0.28);
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-refused-celebration .cal-status,
+.fo-static-page .cal-event-card.is-refused-celebration .cal-status {
+  background: linear-gradient(90deg, #ff6c7e 0%, #ffb08d 100%) !important;
+  color: #35111d !important;
+  box-shadow: 0 10px 22px rgba(255, 107, 127, 0.26);
+}
+
+.fo-static-page ::ng-deep .cal-event-card.is-focused-target,
+.fo-static-page .cal-event-card.is-focused-target {
+  transform-origin: center;
+  animation: targetCardSpotlight 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-join-btn.is-morph-confirmed,
+.fo-static-page .cal-event-card .cal-join-btn.is-morph-confirmed {
+  background: linear-gradient(90deg, #15b985 0%, #7affd4 100%) !important;
+  color: #0f2238 !important;
+  box-shadow: 0 18px 36px rgba(42, 213, 159, 0.3);
+  animation: statusMorphConfirmed 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-join-btn.is-morph-refused,
+.fo-static-page .cal-event-card .cal-join-btn.is-morph-refused {
+  background: linear-gradient(90deg, #ff6c7e 0%, #ffb08d 100%) !important;
+  color: #35111d !important;
+  box-shadow: 0 18px 36px rgba(255, 107, 127, 0.28);
+  animation: statusMorphRefused 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-action-stack,
+.fo-static-page .cal-event-card .cal-action-stack {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-cancel-btn,
+.fo-static-page .cal-event-card .cal-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 242, 237, 0.92);
+  color: #b44e2d;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: 1px solid rgba(210, 108, 63, 0.16);
+  box-shadow: 0 12px 28px rgba(180, 78, 45, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.fo-static-page ::ng-deep .cal-event-card .cal-cancel-btn:hover,
+.fo-static-page .cal-event-card .cal-cancel-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px rgba(180, 78, 45, 0.13);
+  background: rgba(255, 236, 228, 0.98);
+}
+
+@keyframes confirmedCardLift {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-6px) scale(1.012);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes confirmedCardGlow {
+  0% {
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+  30% {
+    box-shadow: 0 24px 54px rgba(42, 213, 159, 0.2);
+  }
+  100% {
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+}
+
+@keyframes refusedCardLift {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-5px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes refusedCardGlow {
+  0% {
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+  30% {
+    box-shadow: 0 24px 54px rgba(255, 107, 127, 0.2);
+  }
+  100% {
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+}
+
+@keyframes confirmedSweep {
+  0% {
+    transform: rotate(18deg) translateX(-180%);
+  }
+  100% {
+    transform: rotate(18deg) translateX(720%);
+  }
+}
+
+@keyframes refusedSweep {
+  0% {
+    transform: rotate(18deg) translateX(-180%);
+  }
+  100% {
+    transform: rotate(18deg) translateX(720%);
+  }
+}
+
+@keyframes statusMorphConfirmed {
+  0% {
+    transform: scale(0.94);
+    filter: saturate(0.7) brightness(0.96);
+    letter-spacing: 0.02em;
+  }
+  45% {
+    transform: scale(1.08);
+    filter: saturate(1.15) brightness(1.05);
+    letter-spacing: 0.05em;
+  }
+  100% {
+    transform: scale(1);
+    filter: saturate(1) brightness(1);
+    letter-spacing: 0;
+  }
+}
+
+@keyframes statusMorphRefused {
+  0% {
+    transform: scale(0.94);
+    filter: saturate(0.72) brightness(0.96);
+    letter-spacing: 0.02em;
+  }
+  45% {
+    transform: scale(1.08);
+    filter: saturate(1.12) brightness(1.04);
+    letter-spacing: 0.05em;
+  }
+  100% {
+    transform: scale(1);
+    filter: saturate(1) brightness(1);
+    letter-spacing: 0;
+  }
+}
+
+@keyframes targetCardSpotlight {
+  0% {
+    transform: scale(0.985);
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+  35% {
+    transform: scale(1.015);
+    box-shadow: 0 26px 60px rgba(35, 40, 160, 0.16);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 12px 28px rgba(17, 23, 61, 0.06);
+  }
+}
+
+.calendar-loader-shell {
+  --loader-bg: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
+  --loader-card: rgba(255, 255, 255, 0.94);
+  --loader-line: linear-gradient(90deg, #eef2fb 0%, #ffffff 48%, #eef2fb 100%);
+  min-height: 100vh;
+  padding: 52px 24px 64px;
+  background:
+    radial-gradient(circle at top right, rgba(116, 255, 205, 0.2), transparent 28%),
+    radial-gradient(circle at top left, rgba(35, 40, 160, 0.08), transparent 24%),
+    var(--loader-bg);
+}
+
+.calendar-loader-hero,
+.calendar-loader-layout {
+  width: min(1420px, 100%);
+  margin: 0 auto;
+}
+
+.calendar-loader-hero {
+  padding: 28px 0 24px;
+}
+
+.calendar-loader-pill,
+.calendar-loader-title,
+.calendar-loader-subtitle,
+.calendar-loader-tabs span,
+.calendar-loader-filters span,
+.calendar-loader-label,
+.calendar-loader-date i,
+.calendar-loader-chip,
+.calendar-loader-line,
+.calendar-loader-cta,
+.calendar-loader-badge,
+.calendar-loader-panel-title,
+.calendar-loader-grid span,
+.calendar-loader-list-line {
+  background: var(--loader-line);
+  background-size: 220% 100%;
+  animation: calendarLoaderPulse 1.45s ease-in-out infinite;
+}
+
+.calendar-loader-pill {
+  width: 120px;
+  height: 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.calendar-loader-title {
+  width: min(520px, 82%);
+  height: 60px;
+  border-radius: 24px;
+  margin-bottom: 16px;
+}
+
+.calendar-loader-subtitle {
+  width: min(720px, 92%);
+  height: 22px;
+  border-radius: 999px;
+}
+
+.calendar-loader-tabs,
+.calendar-loader-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.calendar-loader-tabs {
+  margin-top: 34px;
+  justify-content: center;
+}
+
+.calendar-loader-tabs span,
+.calendar-loader-filters span {
+  display: inline-block;
+  height: 48px;
+  border-radius: 999px;
+}
+
+.calendar-loader-tabs span {
+  width: 140px;
+}
+
+.calendar-loader-tabs span.active,
+.calendar-loader-filters span.active {
+  background: linear-gradient(90deg, #151933 0%, #2d35bf 50%, #151933 100%);
+  background-size: 200% 100%;
+}
+
+.calendar-loader-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.7fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 22px;
+}
+
+.calendar-loader-label {
+  width: 280px;
+  height: 18px;
+  border-radius: 999px;
+  margin: 22px 0 18px;
+}
+
+.calendar-loader-card,
+.calendar-loader-panel {
+  display: grid;
+  gap: 18px;
+  padding: 24px 26px;
+  border-radius: 28px;
+  background: var(--loader-card);
+  box-shadow: 0 24px 60px rgba(31, 36, 85, 0.08);
+}
+
+.calendar-loader-card {
+  grid-template-columns: 78px minmax(0, 1fr) 110px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-loader-date {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border-radius: 22px;
+  background: rgba(244, 246, 251, 0.8);
+}
+
+.calendar-loader-date i:first-child {
+  width: 34px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.calendar-loader-date i:nth-child(2) {
+  width: 40px;
+  height: 28px;
+  border-radius: 14px;
+}
+
+.calendar-loader-date i:nth-child(3) {
+  width: 30px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.calendar-loader-copy {
+  min-width: 0;
+}
+
+.calendar-loader-chip {
+  width: 120px;
+  height: 22px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.calendar-loader-line {
+  height: 16px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.calendar-loader-line.strong {
+  width: 72%;
+  height: 26px;
+  border-radius: 14px;
+}
+
+.calendar-loader-line.short {
+  width: 58%;
+}
+
+.calendar-loader-side {
+  display: grid;
+  justify-items: end;
+  gap: 14px;
+}
+
+.calendar-loader-cta {
+  width: 90px;
+  height: 42px;
+  border-radius: 999px;
+}
+
+.calendar-loader-badge {
+  width: 64px;
+  height: 24px;
+  border-radius: 999px;
+}
+
+.calendar-loader-sidebar {
+  display: grid;
+  gap: 22px;
+}
+
+.calendar-loader-panel.large {
+  min-height: 320px;
+}
+
+.calendar-loader-panel-title {
+  width: 160px;
+  height: 28px;
+  border-radius: 16px;
+}
+
+.calendar-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.calendar-loader-grid span {
+  display: block;
+  height: 34px;
+  border-radius: 12px;
+}
+
+.calendar-loader-list-line {
+  height: 16px;
+  border-radius: 999px;
+}
+
+@keyframes calendarLoaderPulse {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (max-width: 980px) {
+  .fo-static-page ::ng-deep .cal-events-controls,
+  .fo-static-page .cal-events-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .fo-static-page ::ng-deep .cal-events-selects,
+  .fo-static-page .cal-events-selects {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .calendar-loader-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-loader-card {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .calendar-loader-side {
+    grid-column: 2;
+    justify-items: start;
+    grid-auto-flow: column;
+  }
+}
+
+@media (max-width: 640px) {
+  .fo-static-page ::ng-deep .cal-events-selects,
+  .fo-static-page .cal-events-selects {
+    grid-template-columns: 1fr;
+  }
+
+  .fo-static-page ::ng-deep .hero-events-actions,
+  .fo-static-page .hero-events-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fo-static-page ::ng-deep .hero-recommendation-slot,
+  .fo-static-page .hero-recommendation-slot {
+    width: 100%;
+  }
+
+  .fo-static-page ::ng-deep .hero-recommend-button,
+  .fo-static-page .hero-recommend-button {
+    width: min(100%, 28rem);
+    min-height: 62px;
+    font-size: 0.92rem;
+  }
+
+  .fo-static-page ::ng-deep .hero-recommendation-card,
+  .fo-static-page .hero-recommendation-card {
+    grid-template-columns: 1fr;
+    padding: 22px 20px;
+  }
+
+  .fo-static-page ::ng-deep .hero-recommendation-side,
+  .fo-static-page .hero-recommendation-side {
+    justify-items: stretch;
+  }
+
+  .fo-static-page ::ng-deep .cal-recommendation-card,
+  .fo-static-page .cal-recommendation-card {
+    grid-template-columns: 1fr;
+    padding: 22px 20px;
+  }
+
+  .fo-static-page ::ng-deep .cal-recommendation-side,
+  .fo-static-page .cal-recommendation-side {
+    justify-items: stretch;
+  }
+
+  .fo-static-page ::ng-deep .cal-events-pagination,
+  .fo-static-page .cal-events-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 18px;
+  }
+
+  .fo-static-page ::ng-deep .cal-pagination-controls,
+  .fo-static-page .cal-pagination-controls {
+    justify-content: space-between;
+  }
+
+  .fo-static-page ::ng-deep .cal-page-pills,
+  .fo-static-page .cal-page-pills {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .confirmation-toast {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+    min-width: 0;
+  }
+
+  .calendar-loader-shell {
+    padding: 34px 16px 48px;
+  }
+
+  .calendar-loader-title {
+    height: 42px;
+    width: 92%;
+  }
+
+  .calendar-loader-subtitle {
+    height: 18px;
+    width: 100%;
+  }
+
+  .calendar-loader-card {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-loader-date,
+  .calendar-loader-side {
+    justify-items: start;
+  }
+
+  .calendar-loader-side {
+    grid-column: auto;
+  }
+
+  .fo-static-page ::ng-deep .cal-event-media,
+  .fo-static-page .cal-event-media {
+    width: 100%;
+    flex-basis: auto;
+    min-height: 180px;
+  }
+
+  .fo-static-page ::ng-deep .cal-event-media img,
+  .fo-static-page .cal-event-media img,
+  .fo-static-page ::ng-deep .cal-event-media-fallback,
+  .fo-static-page .cal-event-media-fallback {
+    min-height: 180px;
+  }
+}
+
+

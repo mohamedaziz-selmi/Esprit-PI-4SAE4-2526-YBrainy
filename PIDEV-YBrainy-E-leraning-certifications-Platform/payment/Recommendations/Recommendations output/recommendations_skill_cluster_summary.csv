@@ -1,0 +1,3 @@
+skill_category,top_courses,avg_hybrid_score,avg_roi_score,avg_content_similarity,high_conf_count
+machine-learning,9,0.9136411202080984,99.0,0.5032844544227544,8
+python,16,0.9127961584352804,99.4375,0.31152614242136883,12

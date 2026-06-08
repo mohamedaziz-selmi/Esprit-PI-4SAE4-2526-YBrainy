@@ -1,0 +1,93 @@
+name: Quiz Service CI/CD
+
+on:
+  push:
+    branches: [ main, 3la-5atr-houssem ]
+    paths:
+      - 'PIDEV-YBrainy-E-leraning-certifications-Platform/YBRAINY/Quiz/**'
+      - '.github/workflows/quiz-service-ci.yml'
+  pull_request:
+    paths:
+      - 'PIDEV-YBrainy-E-leraning-certifications-Platform/YBRAINY/Quiz/**'
+
+env:
+  DOCKER_IMAGE: swaggyo/quiz-service
+  WORKING_DIR: PIDEV-YBrainy-E-leraning-certifications-Platform/YBRAINY/Quiz/quiz-service
+
+jobs:
+  ci:
+    name: CI — Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and run tests
+        working-directory: ${{ env.WORKING_DIR }}
+        run: mvn clean verify
+
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: swaggyo
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        if: github.event_name == 'push'
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          TAG=${{ github.run_number }}
+          docker build -t ${{ env.DOCKER_IMAGE }}:${TAG} .
+          docker tag ${{ env.DOCKER_IMAGE }}:${TAG} ${{ env.DOCKER_IMAGE }}:latest
+          docker push ${{ env.DOCKER_IMAGE }}:${TAG}
+          docker push ${{ env.DOCKER_IMAGE }}:latest
+
+      - name: CI Summary
+        if: github.event_name == 'push'
+        run: |
+          echo "## Quiz Service CI" >> $GITHUB_STEP_SUMMARY
+          echo "- **Image**: ${{ env.DOCKER_IMAGE }}:${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  cd:
+    name: CD — Deploy to Kubernetes
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: Update image tag in deployment
+        run: |
+          sed -i "s|image: .*/quiz-service:.*|image: ${{ env.DOCKER_IMAGE }}:${{ github.run_number }}|g" \
+            DEVOPS/quiz-service/k8s/deployment.yaml
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply --validate=false -f DEVOPS/quiz-service/k8s/
+          kubectl rollout status deployment/quiz-service -n ybrainy --timeout=120s
+
+      - name: CD Summary
+        run: |
+          echo "## Quiz Service CD" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployed**: ${{ env.DOCKER_IMAGE }}:${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Namespace**: ybrainy" >> $GITHUB_STEP_SUMMARY

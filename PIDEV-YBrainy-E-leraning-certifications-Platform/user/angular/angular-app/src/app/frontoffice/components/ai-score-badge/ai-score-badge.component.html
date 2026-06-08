@@ -1,0 +1,51 @@
+<!-- Inline badge — only shown after AI analyzed -->
+<span *ngIf="showBadge" class="ai-badge" [style.background]="color" (click)="toggleDetail()" title="Score qualité IA — cliquez pour les détails">
+  ✦ {{ aiOverallScore }}/10 {{ aiLabel }}
+</span>
+
+<!-- Pending indicator (shown while async scoring is running) -->
+<span *ngIf="!showBadge" class="ai-badge-pending" title="Analyse IA en cours…">
+  ✦ IA…
+</span>
+
+<!-- Detail popover -->
+<div class="ai-detail-backdrop" *ngIf="detailOpen" (click)="closeDetail()"></div>
+<div class="ai-detail-popover" *ngIf="detailOpen">
+  <div class="ai-detail-header">
+    <span class="ai-detail-badge" [style.background]="color">{{ aiOverallScore }}/10 — {{ aiLabel }}</span>
+    <button type="button" class="ai-detail-close" (click)="closeDetail()">✕</button>
+  </div>
+  <p class="ai-detail-summary" *ngIf="aiSummary">{{ aiSummary }}</p>
+
+  <div *ngIf="loadingDetail" class="ai-detail-loading">
+    <span class="ai-spinner-sm"></span> Chargement…
+  </div>
+
+  <ng-container *ngIf="fullScore && !loadingDetail">
+    <div class="ai-detail-bars">
+      <div class="ai-dbar-row">
+        <span class="ai-dbar-label">Clarté</span>
+        <div class="ai-dbar-track"><div class="ai-dbar-fill" [style.width.%]="scoreBar(fullScore.clarity)" [style.background]="color"></div></div>
+        <span class="ai-dbar-val">{{ fullScore.clarity }}/10</span>
+      </div>
+      <div class="ai-dbar-row">
+        <span class="ai-dbar-label">Détail</span>
+        <div class="ai-dbar-track"><div class="ai-dbar-fill" [style.width.%]="scoreBar(fullScore.detail)" [style.background]="color"></div></div>
+        <span class="ai-dbar-val">{{ fullScore.detail }}/10</span>
+      </div>
+      <div class="ai-dbar-row">
+        <span class="ai-dbar-label">Utilité</span>
+        <div class="ai-dbar-track"><div class="ai-dbar-fill" [style.width.%]="scoreBar(fullScore.usefulness)" [style.background]="color"></div></div>
+        <span class="ai-dbar-val">{{ fullScore.usefulness }}/10</span>
+      </div>
+    </div>
+    <div *ngIf="fullScore.strengths?.length" class="ai-detail-list">
+      <div class="ai-detail-list-title">Points forts</div>
+      <ul><li *ngFor="let s of fullScore.strengths" class="strength-item">{{ s }}</li></ul>
+    </div>
+    <div *ngIf="fullScore.improvements?.length" class="ai-detail-list">
+      <div class="ai-detail-list-title">Améliorations</div>
+      <ul><li *ngFor="let s of fullScore.improvements" class="improve-item">{{ s }}</li></ul>
+    </div>
+  </ng-container>
+</div>

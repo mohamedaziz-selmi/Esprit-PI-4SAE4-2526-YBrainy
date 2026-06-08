@@ -1,0 +1,7 @@
+metric,value,notes,status
+months_at_risk_before,5,Forecast months below margin target or with negative downside profit before recommendations.,HIGH
+months_at_risk_after,5,Remaining months still at risk after applying the suggested actions.,HIGH
+avg_margin_uplift,+3.45 pts,Average margin improvement across the 6-month horizon.,LOW
+avg_profit_uplift,"$1,945",Average monthly profit improvement expected from the recommendations.,LOW
+best_gain_window,2026-10,Highest projected margin lift comes from 'Scale marketing on the strongest channels'.,LOW
+model_accuracy,92.6%,Holdout accuracy of the recommendation classifier on scenario-based validation data.,LOW

@@ -1,0 +1,217 @@
+<div class="ls-page">
+
+  <!-- ── Sticky progress bar ───────────────────────────────────── -->
+  <div class="ls-sticky-progress">
+    <div class="ls-sticky-bar" [style.width.%]="progressPercent"></div>
+    <span class="ls-sticky-label">
+      {{ visitedLessonIds.size }} / {{ courseLessons.length }} lessons &middot;
+      {{ progressPercent | number:'1.0-0' }}% complete
+    </span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TOP BAR — back button · course title · progress count
+  ══════════════════════════════════════════════════════════ -->
+  <div class="ls-top-bar">
+    <button type="button" class="ls-back-btn" (click)="backToCourses()">
+      <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M10 13L5 8l5-5"/>
+      </svg>
+      Back to Course
+    </button>
+
+    <h2 class="ls-top-title">{{ course?.title || 'Course Lessons' }}</h2>
+
+    <span class="ls-top-progress" *ngIf="courseLessons.length > 0">
+      <span class="ls-top-count">{{ completedCount }} / {{ courseLessons.length }}</span>
+      <span class="ls-top-count-label">completed</span>
+    </span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       STATE OVERLAYS — loading / error / empty
+  ══════════════════════════════════════════════════════════ -->
+  <div *ngIf="lessonsLoading" class="ls-state-wrap">
+    <div class="ls-state-spinner"></div>
+    <p class="ls-state-text">Loading lessons…</p>
+  </div>
+
+  <div *ngIf="!lessonsLoading && lessonsError" class="ls-state-wrap">
+    <p class="ls-state-text ls-state-err">{{ lessonsError }}</p>
+  </div>
+
+  <div *ngIf="!lessonsLoading && !lessonsError && courseLessons.length === 0" class="ls-state-wrap">
+    <div class="ls-state-icon">📭</div>
+    <p class="ls-state-text">No lessons available for this course yet.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TWO-PANEL LAYOUT
+  ══════════════════════════════════════════════════════════ -->
+  <div class="ls-layout" *ngIf="!lessonsLoading && !lessonsError && courseLessons.length > 0">
+
+    <!-- ════════════════════════════════════════════════════
+         LEFT SIDEBAR — progress bar + lesson list (35%)
+    ════════════════════════════════════════════════════ -->
+    <aside class="ls-sidebar">
+
+      <!-- Progress block -->
+      <div class="ls-progress-block">
+        <div class="ls-pb-track">
+          <div class="ls-pb-fill" [style.width.%]="progressPercentage"></div>
+        </div>
+        <p class="ls-pb-label">
+          <strong>{{ completedCount }}</strong> of {{ courseLessons.length }} lessons completed
+          <span class="ls-pb-pct">&nbsp;({{ progressPercentage }}%)</span>
+        </p>
+      </div>
+
+      <!-- Lesson list -->
+      <div class="ls-list" role="list">
+        <button
+          *ngFor="let l of courseLessons; let i = index"
+          type="button"
+          role="listitem"
+          class="ls-item"
+          [class.ls-item-active]="selectedLesson?.id === l.id"
+          [class.ls-item-done]="isVisited(l)"
+          (click)="openLesson(l)">
+
+          <!-- Number / checkmark badge -->
+          <span class="ls-item-num" [class.ls-item-num-done]="isVisited(l)">
+            <svg
+              *ngIf="isVisited(l)"
+              viewBox="0 0 14 14" width="11" height="11"
+              fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="1.5,7 5,10.5 12.5,3"/>
+            </svg>
+            <span *ngIf="!isVisited(l)">{{ i + 1 }}</span>
+          </span>
+
+          <!-- Title + meta -->
+          <span class="ls-item-body">
+            <span class="ls-item-title">{{ l.title }}</span>
+            <span class="ls-item-meta">
+              <span class="ls-kind-tag" [ngClass]="lessonKindClass(l)">
+                {{ lessonKindIcon(l) }}
+              </span>
+              <span *ngIf="l.durationMinutes && l.durationMinutes > 0" class="ls-duration">
+                {{ l.durationMinutes }}m
+              </span>
+            </span>
+          </span>
+
+          <span class="ls-item-chevron" aria-hidden="true">›</span>
+        </button>
+      </div>
+
+    </aside><!-- /ls-sidebar -->
+
+    <!-- ════════════════════════════════════════════════════
+         RIGHT CONTENT AREA — inline lesson viewer (65%)
+    ════════════════════════════════════════════════════ -->
+    <main class="ls-content">
+
+      <!-- ── Lesson selected ── -->
+      <ng-container *ngIf="selectedLesson; else noSelection">
+
+        <!-- Header -->
+        <div class="ls-ch">
+          <h3 class="ls-ch-title">{{ selectedLesson.title }}</h3>
+          <p class="ls-ch-desc" *ngIf="selectedLesson.description">
+            {{ selectedLesson.description }}
+          </p>
+        </div>
+
+        <!-- Media container — renders ALL content blocks stacked -->
+        <ng-container *ngFor="let item of contentItems(selectedLesson)">
+          <div
+            class="ls-media"
+            [class.ls-media-av]="contentKind(item) === 'YOUTUBE' || contentKind(item) === 'VIDEO'"
+            [class.ls-media-pdf]="contentKind(item) === 'PDF'"
+            [class.ls-media-img]="contentKind(item) === 'IMAGE'">
+
+            <!-- YouTube embed -->
+            <iframe
+              *ngIf="contentKind(item) === 'YOUTUBE'"
+              class="ls-iframe"
+              [src]="safeContentYoutubeUrl(item)"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+
+            <!-- Video file -->
+            <video
+              *ngIf="contentKind(item) === 'VIDEO'"
+              class="ls-video"
+              controls
+              [src]="contentMediaUrl(item)">
+            </video>
+
+            <!-- PDF -->
+            <iframe
+              *ngIf="contentKind(item) === 'PDF'"
+              class="ls-iframe"
+              [src]="safeContentPdfUrl(item)">
+            </iframe>
+
+            <!-- Image -->
+            <img
+              *ngIf="contentKind(item) === 'IMAGE'"
+              class="ls-img"
+              [src]="contentMediaUrl(item)"
+              [alt]="selectedLesson.title" />
+
+          </div>
+        </ng-container>
+
+        <!-- No media fallback -->
+        <div *ngIf="contentItems(selectedLesson).length === 0" class="ls-no-media">
+          <div class="ls-no-media-icon">📄</div>
+          <p>This lesson has no media content to preview.</p>
+        </div>
+
+        <!-- Actions bar -->
+        <div class="ls-actions">
+          <button
+            *ngIf="!isVisited(selectedLesson)"
+            type="button"
+            class="ls-mark-btn"
+            (click)="markLessonComplete(selectedLesson.id)">
+            ✓ &nbsp;Mark as Complete
+          </button>
+
+          <div *ngIf="isVisited(selectedLesson)" class="ls-done-badge">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.3">
+              <polyline points="2,8 6,12 14,4"/>
+            </svg>
+            &nbsp;Completed
+          </div>
+
+          <button
+            type="button"
+            class="ls-fullpage-btn"
+            (click)="goToLessonDetail(selectedLesson)">
+            Open Full Page &nbsp;→
+          </button>
+        </div>
+
+      </ng-container>
+
+      <!-- ── No lesson selected ── -->
+      <ng-template #noSelection>
+        <div class="ls-empty">
+          <div class="ls-empty-icon">📚</div>
+          <h3 class="ls-empty-h">Select a lesson to begin</h3>
+          <p class="ls-empty-p">
+            Choose any lesson from the sidebar to view its content here.
+          </p>
+        </div>
+      </ng-template>
+
+    </main><!-- /ls-content -->
+
+  </div><!-- /ls-layout -->
+
+</div><!-- /ls-page -->

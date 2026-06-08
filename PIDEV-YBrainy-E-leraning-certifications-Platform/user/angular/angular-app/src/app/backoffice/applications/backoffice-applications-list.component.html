@@ -1,0 +1,251 @@
+<div id="main-wrapper" class="show wallet-open active">
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr" style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control"><div class="hamburger"><span class="line"></span><span class="line"></span><span class="line"></span></div></div>
+  </div>
+
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left"><div class="dashboard_bar">CV Submissions</div></div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <app-backoffice-dashboard-sidebar></app-backoffice-dashboard-sidebar>
+
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="bo-wrap">
+        <div class="bo-top">
+          <div>
+            <h1>Candidatures</h1>
+            <p class="muted">Tous les candidats dans une seule page.</p>
+          </div>
+          <div class="actions">
+            <button class="btn section-btn" [class.is-active]="activeSection === 'all'" type="button" (click)="setSection('all')">All Submissions</button>
+            <button class="btn section-btn" [class.is-active]="activeSection === 'evaluate'" type="button" (click)="setSection('evaluate')">Evaluer candidats</button>
+            <button class="btn" type="button" (click)="refreshApplications()">Rafraichir</button>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="loading">Chargement des candidatures...</div>
+        <div class="card error" *ngIf="loadError">{{ loadError }}</div>
+        <div class="card error" *ngIf="referenceLoadError">{{ referenceLoadError }}</div>
+
+        <ng-container *ngIf="!loading && !loadError">
+          <section *ngIf="activeSection === 'all'">
+            <div class="bo-filters">
+              <input
+                class="input"
+                type="search"
+                placeholder="Rechercher (nom, email, offre, entreprise)..."
+                [(ngModel)]="query"
+                (ngModelChange)="page = 1"
+              />
+
+              <label class="inline">
+                <span>Offre</span>
+                <select class="select" [(ngModel)]="offerId" (ngModelChange)="page = 1">
+                  <option [ngValue]="''">Toutes</option>
+                  <option *ngFor="let o of offers" [ngValue]="o.id">{{ o.title }}</option>
+                </select>
+              </label>
+
+              <label class="inline">
+                <span>Page size</span>
+                <select class="select" [(ngModel)]="pageSize" (ngModelChange)="page = 1">
+                  <option [ngValue]="8">8</option>
+                  <option [ngValue]="10">10</option>
+                  <option [ngValue]="15">15</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="table">
+              <div class="row head">
+                <div></div>
+                <div>Candidat</div>
+                <div>Email</div>
+                <div>Offre</div>
+                <div>Entreprise</div>
+                <div>Status</div>
+                <div>Message</div>
+                <div>CV</div>
+                <div>Date</div>
+              </div>
+
+              <div class="row" *ngFor="let a of paged">
+                <div>
+                  <button class="icon-btn danger" type="button" (click)="deleteApplication(a)" title="Supprimer candidature" aria-label="Supprimer candidature">
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                      <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z" fill="currentColor"></path>
+                    </svg>
+                  </button>
+                </div>
+                <div class="strong">{{ a.applicantName }}</div>
+                <div>{{ a.applicantEmail }}</div>
+                <div>{{ a.offer?.title || offerLabel(a.offerId) }}</div>
+                <div>{{ a.partner?.name || '-' }}</div>
+                <div>
+                  <select
+                    class="select status-select"
+                    [ngModel]="a.status"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="updateApplicationStatus(a, $event)"
+                    [disabled]="isStatusUpdating(a.id)"
+                  >
+                    <option *ngFor="let status of applicationStatuses" [ngValue]="status">{{ statusLabel(status) }}</option>
+                  </select>
+                </div>
+                <div class="message">{{ a.message || '-' }}</div>
+                <div>
+                  <a *ngIf="resolveCvLink(a.cvDataUrl) as cvHref; else noCv" [href]="cvHref" target="_blank" rel="noopener">Voir CV</a>
+                  <ng-template #noCv><span>-</span></ng-template>
+                </div>
+                <div>{{ a.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+              </div>
+
+              <div class="empty" *ngIf="filtered.length === 0">Aucune candidature.</div>
+            </div>
+
+            <div class="pager">
+              <button class="btn small" type="button" (click)="page = 1" [disabled]="page <= 1">&lt;&lt;</button>
+              <button class="btn small" type="button" (click)="page = page - 1" [disabled]="page <= 1">&lt;</button>
+              <span class="muted">Page {{ page }} / {{ totalPages }}</span>
+              <button class="btn small" type="button" (click)="page = page + 1" [disabled]="page >= totalPages">&gt;</button>
+              <button class="btn small" type="button" (click)="page = totalPages" [disabled]="page >= totalPages">&gt;&gt;</button>
+            </div>
+          </section>
+
+          <section *ngIf="activeSection === 'evaluate'">
+            <div class="eval-controls">
+              <label class="field">
+                <span>Job Offer</span>
+                <select class="select" [(ngModel)]="evalOfferId" (ngModelChange)="onEvalOfferChange()">
+                  <option [ngValue]="''">Choisir une offre</option>
+                  <option *ngFor="let o of offers" [ngValue]="o.id">{{ o.title }}</option>
+                </select>
+              </label>
+
+              <label class="field small">
+                <span>Top candidats</span>
+                <input class="input" type="number" min="1" max="50" [(ngModel)]="topCount" />
+              </label>
+
+              <label class="field small">
+                <span>Seuil compatibilite (%)</span>
+                <input class="input" type="number" min="0" max="100" [(ngModel)]="minCompatibility" />
+              </label>
+
+              <label class="toggle">
+                <input type="checkbox" [(ngModel)]="autoStatusEnabled" />
+                <span>Status auto Accept/Reject</span>
+              </label>
+
+              <button class="btn primary" type="button" [disabled]="!canAnalyze" (click)="analyzeCandidates()">
+                {{ isAnalyzing ? 'Analyse...' : 'Analyser les CV' }}
+              </button>
+            </div>
+
+            <div class="card info" *ngIf="evaluationInfo">{{ evaluationInfo }}</div>
+            <div class="card error" *ngIf="evaluationError">{{ evaluationError }}</div>
+
+            <div class="summary-grid" *ngIf="topCandidates.length > 0">
+              <article class="summary-card">
+                <span>Top candidats affiches</span>
+                <strong>{{ topCandidates.length }}</strong>
+                <small>sur {{ selectedOfferApplicationsCount }} candidatures</small>
+              </article>
+              <article class="summary-card">
+                <span>Compatibilite moyenne</span>
+                <strong>{{ scoreSummary.average }}%</strong>
+                <small>max {{ scoreSummary.max }}% / min {{ scoreSummary.min }}%</small>
+              </article>
+              <article class="summary-card">
+                <span>Au-dessus du seuil</span>
+                <strong>{{ scoreSummary.aboveThreshold }}</strong>
+                <small>seuil: {{ minCompatibility }}%</small>
+              </article>
+              <article class="summary-card">
+                <span>CV peu lisibles</span>
+                <strong>{{ scoreSummary.withoutCvText }}</strong>
+                <small>formats non texte (pdf/image)</small>
+              </article>
+            </div>
+
+            <div class="chart-card" *ngIf="topCandidates.length > 0">
+              <h3>Dashboard compatibilite (Top {{ topCandidates.length }})</h3>
+              <div class="chart-list">
+                <div class="chart-row" *ngFor="let c of topCandidates; let idx = index">
+                  <div class="chart-label">
+                    <strong>#{{ idx + 1 }} {{ c.applicantName }}</strong>
+                    <span>{{ c.compatibilityScore }}%</span>
+                  </div>
+                  <div class="bar">
+                    <span [style.width.%]="c.compatibilityScore"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table" *ngIf="topCandidates.length > 0">
+              <div class="row head eval-head">
+                <div>Candidat</div>
+                <div>Email</div>
+                <div>Compatibilite</div>
+                <div>Mots-cles</div>
+                <div>Status</div>
+                <div>CV</div>
+              </div>
+
+              <div class="row eval-row" *ngFor="let c of topCandidates">
+                <div>
+                  <div class="strong">{{ c.applicantName }}</div>
+                  <small class="muted-small">{{ c.partner?.name || '-' }}</small>
+                </div>
+                <div>{{ c.applicantEmail }}</div>
+                <div>
+                  <div class="score-pill" [class.good]="c.compatibilityScore >= minCompatibility">{{ c.compatibilityScore }}%</div>
+                  <small class="muted-small">{{ c.matchedCount }}/{{ c.keywordCount }} keywords</small>
+                </div>
+                <div>
+                  <div class="tags">
+                    <span class="tag ok" *ngFor="let k of c.matchedKeywords.slice(0, 4)">{{ k }}</span>
+                    <span class="tag miss" *ngFor="let k of c.missingKeywords.slice(0, 2)">{{ k }}</span>
+                  </div>
+                </div>
+                <div>
+                  <select
+                    class="select status-select"
+                    [disabled]="autoStatusEnabled || isStatusUpdating(c.id) || isApplyingAutoStatus"
+                    [ngModel]="c.status"
+                    [ngModelOptions]="{ standalone: true }"
+                    (ngModelChange)="updateCandidateStatus(c, $event)"
+                  >
+                    <option *ngFor="let status of applicationStatuses" [ngValue]="status">{{ statusLabel(status) }}</option>
+                  </select>
+                </div>
+                <div>
+                  <a *ngIf="resolveCvLink(c.cvDataUrl) as cvHref; else noCv2" [href]="cvHref" target="_blank" rel="noopener">Lire CV</a>
+                  <ng-template #noCv2><span>-</span></ng-template>
+                </div>
+              </div>
+            </div>
+
+            <div class="empty" *ngIf="!isAnalyzing && evalOfferId && topCandidates.length === 0">
+              Lance l analyse pour afficher les candidats compatibles.
+            </div>
+          </section>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

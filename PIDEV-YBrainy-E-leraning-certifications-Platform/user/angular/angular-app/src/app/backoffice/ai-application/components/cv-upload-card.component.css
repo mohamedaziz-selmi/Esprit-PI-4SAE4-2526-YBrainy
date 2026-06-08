@@ -1,0 +1,79 @@
+@import './shared-card.css';
+
+.drop-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.35rem;
+  padding: 1.2rem;
+  border-radius: 16px;
+  border: 2px dashed rgba(77, 68, 181, 0.32);
+  background: rgba(248, 250, 255, 0.9);
+  transition: all 300ms ease;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+}
+
+.drop-area:hover,
+.drop-area--active {
+  border-color: #4d44b5;
+  transform: scale(1.03);
+  box-shadow: 0 12px 24px rgba(77, 68, 181, 0.2);
+}
+
+.drop-area input {
+  display: none;
+}
+
+.drop-area strong {
+  color: #4d44b5;
+  font-family: var(--font-family-title, Poppins, sans-serif);
+}
+
+.drop-area small {
+  color: #6670a5;
+}
+
+.file-pill {
+  display: inline-flex;
+  margin: 0 0 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(77, 68, 181, 0.12);
+  color: #4d44b5;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.error-text {
+  margin: 0 0 0.75rem;
+  color: #cc3030;
+  font-size: 0.86rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  border: 1px solid rgba(77, 68, 181, 0.2);
+  border-radius: 16px;
+  background: #fff;
+  padding: 0.9rem;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #4d44b5;
+  box-shadow: 0 0 0 4px rgba(77, 68, 181, 0.12);
+}
+
+.char-count {
+  margin: 0.45rem 0 0;
+  text-align: right;
+  font-size: 0.82rem;
+  color: #6670a5;
+}

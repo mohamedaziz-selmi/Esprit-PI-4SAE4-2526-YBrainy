@@ -1,0 +1,25 @@
+<div class="lvlbar" *ngIf="(userState.profile$ | async) as p">
+  <div class="lvlbar-inner">
+    <div class="lvl-left">
+      <div class="lvl-title">
+        <span class="lvl-username">{{ p.username }}</span>
+        <span class="lvl-badge">Lv. {{ p.level }}</span>
+        <span class="lvl-text">{{ p.levelTitle }}</span>
+      </div>
+
+      <div class="lvl-progress" [attr.aria-label]="'XP progress ' + p.progressPercent + '%'">
+        <div class="lvl-progress-fill" [style.width.%]="p.progressPercent"></div>
+      </div>
+
+      <div class="lvl-meta">
+        <span>{{ p.xp }} XP</span>
+        <span *ngIf="!p.isMaxLevel">• {{ p.xpProgress }} / {{ p.xpNeeded }} XP to next</span>
+        <span *ngIf="p.isMaxLevel">• Max level</span>
+      </div>
+    </div>
+
+    <div class="lvl-right">
+      <a routerLink="/forum/profile" class="lvl-btn">Profile</a>
+    </div>
+  </div>
+</div>

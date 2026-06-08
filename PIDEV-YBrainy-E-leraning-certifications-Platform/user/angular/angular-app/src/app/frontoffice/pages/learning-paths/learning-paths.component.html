@@ -1,0 +1,251 @@
+<div class="lp-page">
+
+  <!-- SECTION 1 — Hero input -->
+  <div class="lp-hero">
+    <div class="lp-hero-content">
+      <div class="lp-hero-badge">✨ AI-Powered</div>
+      <h1 class="lp-hero-title">Your Personal Learning Path</h1>
+      <p class="lp-hero-subtitle">
+        Tell us what you want to achieve and our AI will
+        build a customized course roadmap just for you
+      </p>
+      <div class="lp-input-wrap">
+        <textarea
+          class="lp-goal-input"
+          [(ngModel)]="goal"
+          placeholder="e.g. I want to become a full-stack web developer, or I want to learn data science from scratch..."
+          rows="3"
+          (keydown.control.enter)="generatePath()">
+        </textarea>
+        <button class="lp-generate-btn"
+                [disabled]="generating || !goal.trim()"
+                (click)="generatePath()">
+          <span *ngIf="!generating">🚀 Generate My Path</span>
+          <span *ngIf="generating" class="lp-loading">
+            <span class="lp-dot"></span>
+            <span class="lp-dot"></span>
+            <span class="lp-dot"></span>
+            AI is thinking...
+          </span>
+        </button>
+      </div>
+      <div *ngIf="generateError" class="lp-error">
+        {{ generateError }}
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — Generated path result -->
+  <div class="lp-enroll-success" *ngIf="showEnrollSuccess">
+    Payment successful! You are now enrolled in all courses
+    in this learning path. Check <a routerLink="/my-learning">My Learning</a>
+    to start learning.
+  </div>
+
+  <div *ngIf="generatedPath" class="lp-result">
+
+    <div class="lp-result-header">
+      <div class="lp-result-badge">Generated for you</div>
+      <h2 class="lp-result-title">{{ generatedPath.generatedTitle }}</h2>
+      <p class="lp-result-desc">{{ generatedPath.generatedDescription }}</p>
+      <div class="lp-result-stats">
+        <span class="lp-stat">
+          📚 {{ generatedPath.courses.length }} Courses
+        </span>
+        <span class="lp-stat">
+          ⏱ {{ generatedPath.totalDurationMinutes }} min total
+        </span>
+        <span class="lp-stat" *ngIf="generatedPath.totalPrice > 0">
+          💰 ${{ generatedPath.totalPrice | number:'1.2-2' }} total
+        </span>
+        <span class="lp-stat lp-stat-free"
+              *ngIf="generatedPath.totalPrice === 0">
+          🎉 Completely Free
+        </span>
+      </div>
+    </div>
+
+    <!-- Course roadmap -->
+    <div class="lp-roadmap">
+      <div *ngFor="let course of generatedPath.courses; let i = index; let last = last"
+           class="lp-roadmap-item">
+
+        <div class="lp-roadmap-left">
+          <div class="lp-step-circle">{{ i + 1 }}</div>
+          <div class="lp-connector" *ngIf="!last"></div>
+        </div>
+
+        <div class="lp-course-card"
+             [routerLink]="['/courses', course.id]">
+          <div class="lp-course-header">
+            <div class="lp-course-meta">
+              <span class="lp-course-category">{{ course.category }}</span>
+              <span class="lp-course-level">{{ course.level }}</span>
+              <span class="lp-course-price"
+                    *ngIf="course.price > 0">
+                ${{ course.price }}
+              </span>
+              <span class="lp-course-free"
+                    *ngIf="!course.price || course.price === 0">
+                FREE
+              </span>
+            </div>
+          </div>
+          <h3 class="lp-course-title">{{ course.title }}</h3>
+          <p class="lp-course-desc">{{ course.description }}</p>
+          <div class="lp-why-included" *ngIf="course.whyIncluded">
+            <span class="lp-why-icon">💡</span>
+            {{ course.whyIncluded }}
+          </div>
+          <div class="lp-course-duration"
+               *ngIf="course.approximateDurationMinutes">
+            ⏱ {{ course.approximateDurationMinutes }} min
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="lp-actions">
+      <button class="lp-save-btn"
+              *ngIf="!generatedPath.saved"
+              [disabled]="saving"
+              (click)="savePath()">
+        {{ saving ? 'Saving...' : '🔖 Save This Path' }}
+      </button>
+      <span class="lp-saved-badge" *ngIf="generatedPath.saved">
+        ✅ Saved to your paths
+      </span>
+      <button class="lp-enroll-btn"
+              *ngIf="generatedPath.saved"
+              [disabled]="enrolling"
+              (click)="enrollInPath()">
+        <span *ngIf="!enrolling">
+          🎓 Enroll in Full Path
+          <span *ngIf="generatedPath.totalPrice > 0">
+            — ${{ generatedPath.totalPrice | number:'1.2-2' }}
+          </span>
+          <span *ngIf="generatedPath.totalPrice === 0">
+            — Free
+          </span>
+        </span>
+        <span *ngIf="enrolling">Processing...</span>
+      </button>
+      <button class="lp-regenerate-btn" (click)="clearGeneratedPath()">
+        🔄 Regenerate
+      </button>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3 — Saved paths -->
+  <div class="lp-saved-section" *ngIf="savedPaths.length > 0">
+    <div class="lp-saved-header" (click)="showSaved = !showSaved">
+      <h3>🔖 My Saved Paths ({{ savedPaths.length }})</h3>
+      <span>{{ showSaved ? '▲' : '▼' }}</span>
+    </div>
+    <div *ngIf="showSaved" class="lp-saved-list">
+      <div *ngFor="let path of savedPaths" class="lp-saved-card">
+        <div class="lp-saved-info">
+          <div class="lp-saved-title">{{ path.generatedTitle }}</div>
+          <div class="lp-saved-meta">
+            {{ path.courses.length }} courses ·
+            {{ path.totalDurationMinutes }} min
+            <span *ngIf="path.totalPrice > 0">
+              · ${{ path.totalPrice }}
+            </span>
+          </div>
+          <div class="lp-saved-goal">Goal: {{ path.goal }}</div>
+        </div>
+        <button class="lp-load-btn"
+                (click)="generatedPath = path">
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — Example paths inspiration -->
+  <div class="lp-examples-section" *ngIf="!generatedPath && savedPaths.length === 0">
+    <div class="lp-examples-header">
+      <h3 class="lp-examples-title">✨ Need inspiration? Try one of these</h3>
+      <p class="lp-examples-sub">Click any example to use it as your goal</p>
+    </div>
+    <div class="lp-examples-grid">
+
+      <div class="lp-example-card" (click)="useExample('I want to become a full-stack web developer using React and Node.js')">
+        <div class="lp-example-icon">💻</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">Full-Stack Developer</div>
+          <div class="lp-example-desc">React, Node.js, databases and deployment</div>
+          <div class="lp-example-tags">
+            <span>PROGRAMMING</span><span>BEGINNER→ADVANCED</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+      <div class="lp-example-card" (click)="useExample('I want to learn data science and machine learning with Python from scratch')">
+        <div class="lp-example-icon">🤖</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">Data Scientist</div>
+          <div class="lp-example-desc">Python, statistics, ML models and visualization</div>
+          <div class="lp-example-tags">
+            <span>SCIENCE</span><span>MATH</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+      <div class="lp-example-card" (click)="useExample('I want to start my own business and learn entrepreneurship and marketing')">
+        <div class="lp-example-icon">🚀</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">Entrepreneur</div>
+          <div class="lp-example-desc">Business strategy, marketing and financial planning</div>
+          <div class="lp-example-tags">
+            <span>BUSINESS</span><span>MARKETING</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+      <div class="lp-example-card" (click)="useExample('I want to become a UI/UX designer and learn Figma and design principles')">
+        <div class="lp-example-icon">🎨</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">UI/UX Designer</div>
+          <div class="lp-example-desc">Design principles, Figma and user research</div>
+          <div class="lp-example-tags">
+            <span>DESIGN</span><span>BEGINNER</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+      <div class="lp-example-card" (click)="useExample('I want to learn digital marketing including SEO, social media and content creation')">
+        <div class="lp-example-icon">📈</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">Digital Marketer</div>
+          <div class="lp-example-desc">SEO, social media strategy and content marketing</div>
+          <div class="lp-example-tags">
+            <span>MARKETING</span><span>BEGINNER</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+      <div class="lp-example-card" (click)="useExample('I want to learn photography from basics to advanced including editing')">
+        <div class="lp-example-icon">📷</div>
+        <div class="lp-example-content">
+          <div class="lp-example-title">Photographer</div>
+          <div class="lp-example-desc">Camera basics, composition and photo editing</div>
+          <div class="lp-example-tags">
+            <span>PHOTOGRAPHY</span><span>BEGINNER</span>
+          </div>
+        </div>
+        <div class="lp-example-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

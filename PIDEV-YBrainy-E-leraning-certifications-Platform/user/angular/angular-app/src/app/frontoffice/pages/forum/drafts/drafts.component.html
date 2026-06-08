@@ -1,0 +1,39 @@
+<div class="rd-page">
+  <div class="rd-container">
+    <div class="draft-page-wrap">
+
+      <!-- Header row -->
+      <div class="draft-page-header">
+        <div>
+          <h1 class="draft-page-title">My Drafts</h1>
+          <p class="draft-page-sub">Saved threads you haven't published yet</p>
+        </div>
+        <a routerLink="/forum/create" class="rd-btn rd-btn-primary">+ New Thread</a>
+      </div>
+
+      <!-- Empty state -->
+      <div *ngIf="drafts.length === 0" class="draft-empty">
+        <div class="draft-empty-icon">📝</div>
+        <div class="draft-empty-title">No drafts yet</div>
+        <div class="draft-empty-sub">Start writing a thread and it will be auto-saved here.</div>
+        <a routerLink="/forum/create" class="rd-btn rd-btn-primary" style="margin-top:16px;">Create a Thread</a>
+      </div>
+
+      <!-- Draft list -->
+      <div *ngIf="drafts.length > 0" class="draft-list">
+        <div *ngFor="let draft of drafts" class="draft-card">
+          <div class="draft-card-body" (click)="open(draft)">
+            <div class="draft-card-title">{{ draft.title || '(Untitled)' }}</div>
+            <div class="draft-card-preview" [innerHTML]="draft.body || '<em>No content</em>'"></div>
+            <div class="draft-card-meta">Saved {{ formatDate(draft.savedAt) }}</div>
+          </div>
+          <div class="draft-card-actions">
+            <button class="draft-btn-edit" (click)="open(draft)" title="Edit draft">Edit</button>
+            <button class="draft-btn-delete" (click)="delete(draft.id)" title="Delete draft">Delete</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+HYBRID RECOMMENDATION REPORT
+------------------------------
+Input files:
+- Courses: D:\4eme\ml\scrap\result\elearning_outputs\courses_20260226_090600.csv
+- Skill trends: D:\4eme\ml\scrap\result\elearning_outputs\skill_trends_20260226_090600.csv
+
+Forecast context:
+- Horizon: 2026-07 to 2026-12
+- Margin: 27.06%
+- Margin trend (last-first month): -23.32%
+- Top revenue source: COURSE_SALE
+- Expense to watch: SUPPORT (312.76%)
+
+Algorithms used:
+- Content Similarity: TF-IDF + Cosine Similarity
+- Personalization: KNN + SVD latent profile
+- Demand Integration: gradient_boosting
+- Final Ranking: Hybrid Weighted Model
+
+Demand integration diagnostics:
+- Validation MAE: 0.0139
+- Validation RMSE: 0.0178
+- Validation R2: 0.9725
+- SVD components: 30
+
+Recommendation scorecard:
+- Average top score: 0.913
+- High-confidence in top list: 20/25
+- Best skill cluster: machine-learning (0.914)
+
+Top skill clusters by hybrid score:
+- machine-learning: 0.914
+- python: 0.913
+
+Top recommended courses:
+- #1: Python for Data Science and Machine Learning Bootcamp | skill=python | score=0.950
+- #2: Complete A.I. & Machine Learning, Data Science Bootcamp | skill=machine-learning | score=0.946
+- #3: Python for Data Science: The Complete Data Science Bootcamp | skill=python | score=0.943
+- #4: Python for Machine Learning & Data Science Masterclass | skill=python | score=0.941
+- #5: Python Data Science: Unsupervised Machine Learning | skill=python | score=0.934
+- #6: Python Data Science: Regression & Forecasting | skill=python | score=0.922
+- #7: Data Science and Machine Learning Fundamentals [2026] | skill=machine-learning | score=0.920
+- #8: Data Analytics, Data Science, & Machine Learning - All in 1 | skill=machine-learning | score=0.919
+- #9: Deployment of Machine Learning Models | skill=machine-learning | score=0.917
+- #10: Mathematical Foundations of Machine Learning | skill=machine-learning | score=0.916
+
+Top improvement actions:
+- [high] Expand course portfolio in 'python'
+- [high] Expand course portfolio in 'machine-learning'
+- [high] Control SUPPORT cost growth
+- [medium] Run marketing on top-10 hybrid courses
+- [medium] Create bundled paths for python, machine-learning, data-science
+
+Total scored courses: 125
+Top recommendations exported: 25
+------------------------------

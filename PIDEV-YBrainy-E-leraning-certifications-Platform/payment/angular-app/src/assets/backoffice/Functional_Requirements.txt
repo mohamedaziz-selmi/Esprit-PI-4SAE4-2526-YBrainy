@@ -1,0 +1,89 @@
+
+# Functional Requirements Specification (Cahier des Charges Fonctionnel)
+
+## 1. Administrator Functional Requirements
+**Objective:** Provide full control over the platform's users, content, finances, and security.
+
+*   **User Management:**
+    *   Manage users (students, teachers).
+    *   Assign, update, and revoke user roles and permissions.
+    *   Activate, suspend, or delete user accounts.
+    *   View user login history and activity logs.
+
+*   **Content & Certification Management:**
+    *   Manage courses, services, and certifications.
+    *   Approve, edit, or remove courses created by teachers.
+    *   Manage certification sources and dropshipping providers.
+    *   Monitor trending certifications and learning demands.
+    *   Create and manage learning packs and subscription plans.
+
+*   **Analytics & Monitoring:**
+    *   Supervise overall platform activity.
+    *   Monitor student performance and engagement statistics.
+    *   Access AI-based analytics and predictive dashboards.
+
+*   **Security & Finance:**
+    *   Manage access control and security policies.
+    *   Monitor fraud detection alerts and suspicious payments.
+    *   Validate and refund transactions when necessary.
+    *   View financial dashboards, revenues, and transaction history.
+
+*   **Communication & Community:**
+    *   Manage automated emails, notifications, and announcements.
+    *   Moderate forums and reported content.
+
+---
+
+## 2. Student Functional Requirements
+**Objective:** Provide a personalized and engaging learning experience for end-users.
+
+*   **Authentication & Profile:**
+    *   Register and log in securely.
+    *   Use optional AI-based face recognition for authentication.
+    *   Manage personal profile and preferences.
+
+*   **Learning & Enrollment:**
+    *   Access online courses, video courses, and live sessions.
+    *   Enroll in courses, learning packs, and certifications.
+    *   Take quizzes, exams, and certification assessments.
+
+*   **Intelligence & Recommendations:**
+    *   Receive AI-personalized content and course recommendations.
+    *   Get suggested certifications based on performance and CV analysis.
+
+*   **Progress & Records:**
+    *   Track learning progress, scores, and completion status.
+    *   Download course completion certificates.
+
+*   **Commerce & Communication:**
+    *   Purchase subscriptions and certification packs.
+    *   Receive automated emails and notifications.
+    *   Participate in forums and discussions.
+    *   Communicate with teachers through messaging tools.
+    *   View payment history and invoices.
+
+---
+
+## 3. Teacher Functional Requirements
+**Objective:** Empower instructors to create content, assess students, and manage their classes.
+
+*   **Content Creation:**
+    *   Create, update, and manage courses (video & live).
+    *   Upload course materials (videos, documents, quizzes).
+    *   Define learning levels (beginner, intermediate, advanced).
+    *   Create quizzes, exams, and certification preparation content.
+
+*   **Assessment & Monitoring:**
+    *   Configure adaptive quizzes based on student level.
+    *   Monitor student progress, performance, and engagement.
+    *   Access AI-based analytics on student results.
+
+*   **Engagement & Feedback:**
+    *   Recommend courses and certifications to students.
+    *   Interact with students via forums, messaging, and announcements.
+    *   Moderate course-related discussions.
+    *   Schedule live classes and manage attendance.
+
+*   **Performance Tracking:**
+    *   Receive feedback and ratings from students.
+    *   Track course popularity and completion rates.

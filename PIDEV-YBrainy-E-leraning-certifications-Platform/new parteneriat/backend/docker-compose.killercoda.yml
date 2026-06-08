@@ -1,0 +1,93 @@
+services:
+
+  mysql:
+    image: mysql:8.3
+    container_name: parteneriat-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - parteneriat-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: parteneriat-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  job-offer-service:
+    image: issamriahi99/job-offer-service:1.0.0
+    container_name: job-offer-service
+    restart: unless-stopped
+    ports:
+      - "8187:8187"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      JOB_OFFER_SERVICE_PORT: "8187"
+      JOB_OFFER_DB_URL: "jdbc:mysql://mysql:3306/jobofferdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      JOB_OFFER_DB_USERNAME: root
+      JOB_OFFER_DB_PASSWORD: root
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: "http://host.docker.internal:8761/eureka/"
+      JOB_MAIL_USERNAME: ihebb9491@gmail.com
+      JOB_MAIL_PASSWORD: changeme
+      GEMINI_API_KEY: changeme
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8187/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  partnership-service:
+    image: issamriahi99/partnership-service:1.0.0
+    container_name: partnership-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      PARTNERSHIP_DB_URL: "jdbc:mysql://mysql:3306/partnershipdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+      PARTNERSHIP_DB_USERNAME: root
+      PARTNERSHIP_DB_PASSWORD: root
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: "http://host.docker.internal:8761/eureka/"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  parteneriat-mysql-data:

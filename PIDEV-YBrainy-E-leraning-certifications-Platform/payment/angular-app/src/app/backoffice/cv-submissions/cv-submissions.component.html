@@ -1,0 +1,424 @@
+<!-- Preloader -->
+<div id="preloader" style="display:none;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+
+<div id="main-wrapper" style="opacity:1 !important; visibility:visible !important; display:block !important;">
+
+  <!-- Nav header -->
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr"
+        style="max-height:60px; max-width:200px; width:auto; height:auto; object-fit:contain;">
+      <div class="brand-title">
+        <h3 style="color:white; margin:0; font-size:24px; font-weight:bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top header -->
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">CV Submissions</div>
+          </div>
+          <ul class="navbar-nav header-right">
+            <li class="nav-item dropdown notification_dropdown search-area-header">
+              <div class="search-area-creative d-flex align-items-center">
+                <span class="ps-3"><i class="bi bi-search text-primary"></i></span>
+                <input type="text" class="form-control border-0" placeholder="Search applicants..."
+                  [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()">
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Sidebar (identical to pack-list) -->
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">home</i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard">Dashboard Page</a></li>
+            <li><a routerLink="/dashboard/finance">Finance</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Student</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/students">Students</a></li>
+            <li><a routerLink="/dashboard/student-detail">Student Detail</a></li>
+            <li><a routerLink="/dashboard/add-student">Add New Student</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">person</i>
+            <span class="nav-text">Teacher</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/teachers">Teachers</a></li>
+            <li><a routerLink="/dashboard/teacher-detail">Teacher Detail</a></li>
+            <li><a routerLink="/dashboard/add-teacher">Add New Teacher</a></li>
+          </ul>
+        </li>
+
+        <li><a routerLink="/dashboard/packs">
+            <i class="material-icons">shopping_cart</i>
+            <span class="nav-text">Shop</span>
+          </a>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Courses</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/courses">All Courses</a></li>
+            <li><a routerLink="/dashboard/lessons">Lessons</a></li>
+            <li><a routerLink="/dashboard/calendar">Calendar</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">verified</i>
+            <span class="nav-text">Assessment &amp; Certification</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/certifications">Certifications</a></li>
+            <li><a routerLink="/dashboard/quiz">Quiz Assessments</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">assessment</i>
+            <span class="nav-text">Reports</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/student-reports">Student Reports</a></li>
+            <li><a routerLink="/dashboard/teacher-reports">Teacher Reports</a></li>
+          </ul>
+        </li>
+
+        <li><a routerLink="/dashboard/cv-submissions" class="text-primary font-w600">
+            <i class="material-icons">contact_page</i>
+            <span class="nav-text">CV Submissions</span>
+          </a>
+        </li>
+
+        <li><a routerLink="/dashboard/files">
+            <i class="material-icons">folder</i>
+            <span class="nav-text">File Manager</span>
+          </a>
+        </li>
+
+        <li><a routerLink="/dashboard/profile">
+            <i class="material-icons">manage_accounts</i>
+            <span class="nav-text">My Profile</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- Content body — FULL WIDTH, no forum panel -->
+  <div class="content-body">
+    <div class="container-fluid">
+
+      <!-- Stats row -->
+      <div class="row mb-4">
+        <div class="col-6 col-xl-3">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ submissions.length }}</h2>
+                <span>Total</span>
+              </div>
+              <div class="bg-primary rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">contact_page</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ countByStatus('PENDING') }}</h2>
+                <span>Pending</span>
+              </div>
+              <div class="rounded-circle p-3" style="background:#fcc43e33">
+                <i class="material-icons" style="font-size:28px;color:#b68900">hourglass_empty</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ countByStatus('SHORTLISTED') }}</h2>
+                <span>Shortlisted</span>
+              </div>
+              <div class="bg-success rounded-circle p-3">
+                <i class="material-icons text-white" style="font-size:28px">star</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="card overflow-hidden">
+            <div class="card-body d-flex align-items-center justify-content-between p-4">
+              <div>
+                <h2 class="text-black font-w600 mb-1">{{ countByStatus('REJECTED') }}</h2>
+                <span>Rejected</span>
+              </div>
+              <div class="rounded-circle p-3" style="background:#fd535333">
+                <i class="material-icons" style="font-size:28px;color:#c0392b">cancel</i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main card — full width -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <h4 class="card-title mb-0">
+                <i class="material-icons me-2 align-middle text-primary">contact_page</i>
+                CV Submissions
+              </h4>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <select class="form-select form-select-sm" style="width:auto;" [(ngModel)]="filterStatus"
+                  (ngModelChange)="onFilterChange()">
+                  <option [ngValue]="undefined">All Statuses</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="REVIEWED">Reviewed</option>
+                  <option value="SHORTLISTED">Shortlisted</option>
+                  <option value="REJECTED">Rejected</option>
+                </select>
+                <button class="btn btn-sm btn-outline-secondary" (click)="loadSubmissions()">
+                  <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body p-0">
+
+              <!-- Loading -->
+              <div *ngIf="loading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2 text-muted">Loading submissions...</p>
+              </div>
+
+              <!-- Error -->
+              <div *ngIf="error" class="alert alert-danger mx-4 mt-3">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadSubmissions()">Retry</button>
+              </div>
+
+              <!-- Table -->
+              <div *ngIf="!loading && !error" class="table-responsive">
+                <div *ngIf="filteredSubmissions.length === 0" class="cv-empty-state text-center py-5">
+                  <i class="material-icons text-muted mb-2" style="font-size:52px">contact_page</i>
+                  <p class="text-muted mb-0">No CV submissions found.</p>
+                </div>
+
+                <table *ngIf="filteredSubmissions.length > 0" class="table align-middle mb-0 cv-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Applicant</th>
+                      <th>Position</th>
+                      <th>ATS Score</th>
+                      <th>Submitted</th>
+                      <th>Status</th>
+                      <th class="text-end">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let s of filteredSubmissions; let i = index" class="cv-row"
+                      (click)="openDetail(s)" style="cursor:pointer">
+                      <td><span class="cv-index">{{ i + 1 }}</span></td>
+                      <td>
+                        <div class="cv-applicant-cell">
+                          <div class="cv-avatar">{{ s.applicantName.charAt(0).toUpperCase() }}</div>
+                          <div>
+                            <strong>{{ s.applicantName }}</strong>
+                            <small>{{ s.applicantEmail }}</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{{ s.jobTitle }}</td>
+                      <td>
+                        <div *ngIf="s.atsScore != null" class="cv-ats-cell">
+                          <div class="cv-ats-bar-wrap">
+                            <div class="cv-ats-bar"
+                              [style.width.%]="s.atsScore"
+                              [style.background]="getAtsColor(s.atsScore)"></div>
+                          </div>
+                          <span class="cv-ats-label" [style.color]="getAtsColor(s.atsScore)">
+                            {{ s.atsScore }}%
+                          </span>
+                        </div>
+                        <span *ngIf="s.atsScore == null" class="text-muted">—</span>
+                      </td>
+                      <td class="text-muted" style="font-size:0.83rem; white-space:nowrap;">
+                        {{ s.submittedAt | date:'MMM d, yyyy' }}
+                      </td>
+                      <td>
+                        <span class="badge cv-status-badge {{ getStatusClass(s.status) }}">
+                          {{ s.status | titlecase }}
+                        </span>
+                      </td>
+                      <td class="text-end" (click)="$event.stopPropagation()">
+                        <div class="d-inline-flex gap-1">
+                          <button class="btn btn-xs btn-outline-primary cv-action-btn" title="View"
+                            (click)="openDetail(s)">
+                            <i class="bi bi-eye"></i>
+                          </button>
+                          <button class="btn btn-xs btn-outline-success cv-action-btn" title="Shortlist"
+                            [disabled]="updatingStatusId === s.id"
+                            (click)="updateStatus(s, 'SHORTLISTED')">
+                            <i class="bi bi-star"></i>
+                          </button>
+                          <button class="btn btn-xs btn-outline-danger cv-action-btn" title="Reject"
+                            [disabled]="updatingStatusId === s.id"
+                            (click)="updateStatus(s, 'REJECTED')">
+                            <i class="bi bi-x-lg"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- /table-responsive -->
+            </div><!-- /card-body -->
+          </div><!-- /card -->
+        </div>
+      </div><!-- /row -->
+
+    </div>
+  </div><!-- /content-body -->
+
+</div><!-- /main-wrapper -->
+
+<!-- Detail modal -->
+<div class="cv-detail-overlay" *ngIf="selectedSubmission" (click)="closeDetail()">
+  <div class="cv-detail-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+    <div class="cv-detail-header">
+      <div class="cv-detail-header-left">
+        <div class="cv-detail-avatar">{{ selectedSubmission.applicantName.charAt(0).toUpperCase() }}</div>
+        <div>
+          <h4>{{ selectedSubmission.applicantName }}</h4>
+          <span>{{ selectedSubmission.applicantEmail }}</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close" (click)="closeDetail()" aria-label="Close"></button>
+    </div>
+
+    <div class="cv-detail-body">
+      <div class="row g-3 mb-3">
+        <div class="col-sm-6">
+          <div class="cv-detail-field">
+            <label>Applied For</label>
+            <strong>{{ selectedSubmission.jobTitle }}</strong>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="cv-detail-field">
+            <label>Submitted</label>
+            <strong>{{ selectedSubmission.submittedAt | date:'MMM d, yyyy · h:mm a' }}</strong>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="cv-detail-field">
+            <label>ATS Score</label>
+            <div *ngIf="selectedSubmission.atsScore != null" class="cv-ats-cell mt-1">
+              <div class="cv-ats-bar-wrap">
+                <div class="cv-ats-bar"
+                  [style.width.%]="selectedSubmission.atsScore"
+                  [style.background]="getAtsColor(selectedSubmission.atsScore)"></div>
+              </div>
+              <span class="cv-ats-label fw-bold" [style.color]="getAtsColor(selectedSubmission.atsScore)">
+                {{ selectedSubmission.atsScore }}%
+              </span>
+            </div>
+            <span *ngIf="selectedSubmission.atsScore == null" class="text-muted">Not scored</span>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="cv-detail-field">
+            <label>CV File</label>
+            <span *ngIf="selectedSubmission.cvFileName">
+              <i class="bi bi-file-earmark-text me-1 text-primary"></i>{{ selectedSubmission.cvFileName }}
+            </span>
+            <span *ngIf="!selectedSubmission.cvFileName" class="text-muted">No file attached</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedSubmission.coverLetter" class="cv-detail-field mb-3">
+        <label>Cover Letter</label>
+        <div class="cv-cover-letter">{{ selectedSubmission.coverLetter }}</div>
+      </div>
+
+      <div class="cv-detail-status-row">
+        <label>Update Status</label>
+        <div class="d-flex gap-2 flex-wrap mt-1">
+          <button class="btn btn-sm cv-status-action-btn cv-status-pending"
+            [class.active]="selectedSubmission.status === 'PENDING'"
+            [disabled]="updatingStatusId === selectedSubmission.id"
+            (click)="updateStatus(selectedSubmission, 'PENDING')">Pending</button>
+          <button class="btn btn-sm cv-status-action-btn cv-status-reviewed"
+            [class.active]="selectedSubmission.status === 'REVIEWED'"
+            [disabled]="updatingStatusId === selectedSubmission.id"
+            (click)="updateStatus(selectedSubmission, 'REVIEWED')">Reviewed</button>
+          <button class="btn btn-sm cv-status-action-btn cv-status-shortlisted"
+            [class.active]="selectedSubmission.status === 'SHORTLISTED'"
+            [disabled]="updatingStatusId === selectedSubmission.id"
+            (click)="updateStatus(selectedSubmission, 'SHORTLISTED')">Shortlisted</button>
+          <button class="btn btn-sm cv-status-action-btn cv-status-rejected"
+            [class.active]="selectedSubmission.status === 'REJECTED'"
+            [disabled]="updatingStatusId === selectedSubmission.id"
+            (click)="updateStatus(selectedSubmission, 'REJECTED')">Rejected</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

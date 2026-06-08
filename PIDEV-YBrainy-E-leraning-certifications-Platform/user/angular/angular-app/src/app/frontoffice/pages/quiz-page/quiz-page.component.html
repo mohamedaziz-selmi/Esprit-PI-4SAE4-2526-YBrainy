@@ -1,0 +1,480 @@
+<div class="fo-qz-page" [class.fo-qz-arena-mode]="arenaMode" [class.fo-qz-distracted]="gazeWarning">
+  <div class="fo-qz-gaze-alert" *ngIf="gazeWarning" role="alert">
+    <strong>Look back at the quiz</strong>
+    <span>You have been away for {{ gazeAwaySeconds }} seconds.</span>
+  </div>
+
+  <!-- ── Header ────────────────────────────────────────────── -->
+  <div class="fo-qz-header">
+    <button class="button line" type="button" (click)="back()">← Back to Course</button>
+    <h1 class="fo-qz-heading">Quizzes</h1>
+  </div>
+
+  <div class="fo-qz-body">
+    <!-- Enrollment gate -->
+    <div *ngIf="enrollmentChecked && !isEnrolled" class="fo-qz-gate">
+      <div class="fo-qz-gate-icon">🔒</div>
+      <p class="fo-qz-gate-msg">You must enroll in this course before taking quizzes.</p>
+      <button class="button line" type="button" (click)="back()">← Back to Course</button>
+    </div>
+
+    <ng-container *ngIf="isEnrolled">
+    <div *ngIf="loading" class="fo-qz-state">Loading quizzes…</div>
+    <div *ngIf="error" class="fo-qz-alert">{{ error }}</div>
+
+    <!-- ── Quiz list (grid of cards) ─────────────────────── -->
+    <div *ngIf="!selectedQuiz && !loading" class="fo-qz-list">
+      <p *ngIf="quizzes.length === 0 && !error" class="fo-qz-empty">
+        No quizzes available for this course yet.
+      </p>
+      <div class="fo-qz-cards-grid">
+        <div *ngFor="let quiz of quizzes" class="fo-qz-card">
+          <div class="fo-qz-card-top">
+            <div class="fo-qz-card-icon">📝</div>
+            <div class="fo-qz-card-title">{{ quiz.title }}</div>
+            <div class="fo-qz-card-desc">{{ quiz.description }}</div>
+          </div>
+          <div class="fo-qz-card-badges">
+            <span class="fo-qz-badge">{{ quiz.questionCount }} questions</span>
+            <span class="fo-qz-badge warn">Pass {{ quiz.passingScore }}%</span>
+            <span class="fo-qz-badge" *ngIf="quiz.timeLimitMinutes">⏱ {{ quiz.timeLimitMinutes }}m</span>
+          </div>
+          <button class="fo-qz-start-btn" type="button" (click)="selectQuiz(quiz)">
+            Start Quiz →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Quiz taking (one question at a time) ───────────── -->
+    <div *ngIf="selectedQuiz && !showReview && !quizResult" class="fo-qz-exam">
+
+      <!-- Progress bar -->
+      <div class="fo-qz-exam-progress-wrap">
+        <div class="fo-qz-exam-progress-bar"
+             [style.width.%]="questions.length ? (currentQuestionIndex + 1) / questions.length * 100 : 0">
+        </div>
+      </div>
+
+      <div class="fo-qz-exam-header">
+        <div>
+          <div class="fo-qz-exam-title">{{ selectedQuiz.title }}</div>
+          <div class="fo-qz-exam-sub" *ngIf="questions.length > 0">
+            Question {{ currentQuestionIndex + 1 }} of {{ questions.length }} · pass at {{ selectedQuiz.passingScore }}%
+          </div>
+        </div>
+        <div class="fo-qz-exam-tools">
+          <div class="fo-qz-gaze-panel">
+            <label class="fo-qz-gaze-toggle">
+              <input type="checkbox"
+                     [checked]="gazeEnabled"
+                     (change)="toggleGazeTracking($any($event.target).checked)" />
+              <span>Eye tracking</span>
+            </label>
+            <span class="fo-qz-gaze-pill active" *ngIf="gazeActive">Focus {{ gazeFocusScore }}%</span>
+            <span class="fo-qz-gaze-pill warn" *ngIf="gazeWarning">Away {{ gazeAwaySeconds }}s</span>
+            <span class="fo-qz-gaze-pill muted" *ngIf="gazeUnavailable">{{ gazeUnavailable }}</span>
+          </div>
+          <div *ngIf="selectedQuiz?.timeLimitMinutes"
+               class="fo-qz-timer"
+               [class.fo-qz-timer-warning]="timeLeft <= 60 && timeLeft > 0"
+               [class.fo-qz-timer-danger]="timeLeft <= 30 && timeLeft > 0">
+            ⏱ {{ formattedTime }}
+          </div>
+          <button class="fo-qz-cancel-btn" type="button" (click)="cancelQuiz()">✕ Cancel</button>
+        </div>
+      </div>
+
+      <div *ngIf="timerExpired" class="fo-qz-expired-banner">
+        ⏰ Time's up! Submitting your answers...
+      </div>
+
+      <div *ngIf="questionsLoading && !error" class="fo-qz-state" style="padding: 1.5rem;">
+        Loading questions…
+      </div>
+
+      <!-- Current question -->
+      <div *ngIf="currentQuestion" class="fo-qz-q-block">
+        <div class="fo-qz-q-indicator">
+          <span class="fo-qz-q-pill">Q{{ currentQuestionIndex + 1 }}</span>
+          <span class="fo-qz-q-of">of {{ questions.length }}</span>
+        </div>
+        <p class="fo-qz-q-text">{{ currentQuestion.questionText }}</p>
+
+        <!-- 2×2 answer grid -->
+        <div class="fo-qz-answers-grid">
+          <div *ngFor="let a of currentQuestion.options"
+               class="fo-qz-answer"
+               [class.fo-qz-answer-selected]="isSelected(currentQuestion.id, a.id)"
+               (click)="selectAnswer(currentQuestion.id, a.id)">
+            <span class="fo-qz-answer-check" *ngIf="isSelected(currentQuestion.id, a.id)">✓</span>
+            <span class="fo-qz-answer-dot" *ngIf="!isSelected(currentQuestion.id, a.id)">○</span>
+            <span class="fo-qz-answer-text">{{ a.optionText }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation row -->
+      <div class="fo-qz-submit-row" *ngIf="questions.length > 0">
+        <button class="fo-qz-prev-btn" type="button"
+                *ngIf="currentQuestionIndex > 0"
+                (click)="prevQuestion()">
+          ← Back
+        </button>
+        <div class="fo-qz-nav-spacer" *ngIf="currentQuestionIndex === 0"></div>
+        <button class="fo-qz-next-btn" type="button"
+                *ngIf="!isLastQuestion()"
+                [disabled]="!canProceed()"
+                (click)="nextQuestion()">
+          Next Question →
+        </button>
+        <button class="fo-qz-submit-btn" type="button"
+                *ngIf="isLastQuestion()"
+                [disabled]="!canProceed()"
+                (click)="reviewAnswers()">
+          Review &amp; Submit →
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Answer review screen ──────────────────────────── -->
+    <div *ngIf="showReview && !quizResult" class="fo-qz-review">
+
+      <div class="fo-qz-review-header">
+        <h3>Review Your Answers</h3>
+        <p>Check your answers before submitting. You can go back and change them.</p>
+      </div>
+
+      <div class="fo-qz-review-list">
+        <div *ngFor="let q of questions; let i = index"
+             class="fo-qz-review-item"
+             [class.fo-qz-review-unanswered]="!responses.has(q.id)">
+          <div class="fo-qz-review-qnum">Q{{ i + 1 }}</div>
+          <div class="fo-qz-review-content">
+            <div class="fo-qz-review-qtext">{{ q.questionText }}</div>
+            <div class="fo-qz-review-answer"
+                 [class.fo-qz-review-empty]="!responses.has(q.id)">
+              <span *ngIf="responses.has(q.id)">✓ {{ getSelectedOptionText(q.id) }}</span>
+              <span *ngIf="!responses.has(q.id)">⚠️ Not answered</span>
+            </div>
+          </div>
+          <button class="fo-qz-review-edit" type="button" (click)="goToQuestion(i)">
+            Edit
+          </button>
+        </div>
+      </div>
+
+      <div class="fo-qz-review-actions">
+        <div class="quiz-validation-error" *ngIf="validationError">
+          ⚠ {{ validationError }}
+        </div>
+        <button class="fo-btn-secondary" type="button" (click)="backToExam()">
+          ← Back to Exam
+        </button>
+        <button class="fo-btn-submit" type="button"
+                [disabled]="submitting"
+                (click)="submitQuiz()">
+          <span *ngIf="!submitting">Submit Quiz ✓</span>
+          <span *ngIf="submitting">Submitting...</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ── Result card ────────────────────────────────────── -->
+    <div *ngIf="quizResult" class="fo-qz-result" [class.fo-qz-result-arena]="arenaMode">
+      <div class="fo-qz-score-ring"
+           [class.fo-qz-ring-pass]="quizResult.passed"
+           [class.fo-qz-ring-fail]="!quizResult.passed">
+        <svg viewBox="0 0 120 120" class="fo-qz-ring-svg">
+          <circle cx="60" cy="60" r="50" class="fo-qz-ring-track"/>
+          <circle cx="60" cy="60" r="50" class="fo-qz-ring-arc"
+                  [class.fo-qz-arc-pass]="quizResult.passed"
+                  [class.fo-qz-arc-fail]="!quizResult.passed"
+                  [style.stroke-dashoffset]="314.16 * (1 - quizResult.score / 100)"/>
+        </svg>
+        <div class="fo-qz-score-inner">
+          <div class="fo-qz-score-num"
+               [class.fo-qz-num-pass]="quizResult.passed"
+               [class.fo-qz-num-fail]="!quizResult.passed">
+            {{ quizResult.score | number:'1.0-0' }}%
+          </div>
+          <div class="fo-qz-score-verdict"
+               [class.fo-qz-verdict-pass]="quizResult.passed"
+               [class.fo-qz-verdict-fail]="!quizResult.passed">
+            {{ quizResult.passed ? 'PASSED' : 'FAILED' }}
+          </div>
+        </div>
+      </div>
+
+      <div class="fo-qz-result-table">
+        <div class="fo-qz-result-row">
+          <span>Correct answers</span>
+          <strong>{{ quizResult.correctAnswers }} / {{ quizResult.totalQuestions }}</strong>
+        </div>
+        <div class="fo-qz-result-row">
+          <span>Passing score</span>
+          <strong>{{ quizResult.passingScore }}%</strong>
+        </div>
+        <div class="fo-qz-result-row">
+          <span>Attempts used</span>
+          <strong>{{ quizResult.attemptsUsed }} of {{ quizResult.attemptsUsed + quizResult.attemptsRemaining }}</strong>
+        </div>
+      </div>
+
+      <div *ngIf="quizResult?.questionReviews?.length" class="fo-qz-review-toggle">
+        <button class="fo-qz-toggle-btn" type="button" (click)="toggleAnswerReview()">
+          <span *ngIf="!showAnswerReview">📋 See Correct Answers ▼</span>
+          <span *ngIf="showAnswerReview">📋 Hide Answers ▲</span>
+        </button>
+      </div>
+
+      <div *ngIf="showAnswerReview && quizResult?.questionReviews" class="fo-qz-answer-review">
+        <div *ngFor="let r of quizResult!.questionReviews; let i = index"
+             class="fo-qz-answer-item"
+             [class.fo-qz-answer-correct]="r.selectedCorrect"
+             [class.fo-qz-answer-wrong]="!r.selectedCorrect">
+
+          <div class="fo-qz-answer-header">
+            <span class="fo-qz-answer-num">Q{{ i + 1 }}</span>
+            <span class="fo-qz-answer-result">
+              <span *ngIf="r.selectedCorrect">✅ Correct</span>
+              <span *ngIf="!r.selectedCorrect">❌ Wrong</span>
+            </span>
+          </div>
+
+          <div class="fo-qz-answer-question">{{ r.questionText }}</div>
+
+          <div class="fo-qz-answer-yours" [class.fo-qz-wrong-answer]="!r.selectedCorrect">
+            <span class="fo-qz-answer-label">Your answer:</span>
+            {{ r.selectedOptionText }}
+          </div>
+
+          <div *ngIf="!r.selectedCorrect" class="fo-qz-answer-correct-text">
+            <span class="fo-qz-answer-label">Correct answer:</span>
+            {{ r.correctOptionText }}
+          </div>
+
+        </div>
+      </div>
+
+      <div class="fo-qz-result-actions">
+        <button *ngIf="!quizResult.passed" class="fo-qz-try-btn" type="button" (click)="tryAgain()">
+          Try Again
+        </button>
+        <button class="button line" type="button" (click)="back()">
+          ← Back to Course
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Tekken Arena Leaderboard ──────────────────────── -->
+    <div *ngIf="showLeaderboard"
+         class="tk-arena"
+         [class.tk-arena-embedded]="arenaMode">
+
+      <!-- Scanline overlay -->
+      <div class="tk-scanlines"></div>
+
+      <!-- Header -->
+      <div class="tk-arena-header">
+        <div class="tk-header-top">
+          <div class="tk-fire-left">
+            <span class="tk-fire f1">🔥</span>
+            <span class="tk-fire f2">🔥</span>
+            <span class="tk-fire f3">🔥</span>
+          </div>
+          <div class="tk-header-center">
+            <div class="tk-round-complete">— ROUND COMPLETE —</div>
+            <div class="tk-hall-title">{{ selectedQuiz?.title || 'HALL OF CHAMPIONS' }}</div>
+            <div class="tk-header-subtitle">
+              {{ leaderboard.length }} FIGHTER{{ leaderboard.length !== 1 ? 'S' : '' }} RANKED
+            </div>
+          </div>
+          <div class="tk-fire-right">
+            <span class="tk-fire f1">🔥</span>
+            <span class="tk-fire f2">🔥</span>
+            <span class="tk-fire f3">🔥</span>
+          </div>
+        </div>
+        <div class="tk-header-line">
+          <div class="tk-header-line-inner"></div>
+        </div>
+      </div>
+
+      <!-- Champion spotlight — 1st place always on top alone -->
+      <div class="tk-champion-stage"
+           *ngIf="leaderboard.length >= 1"
+           [class.tk-is-you]="leaderboard[0].studentId === studentId">
+
+        <div class="tk-champion-glow"></div>
+        <div class="tk-champion-spotlight"></div>
+
+        <div class="tk-champion-card"
+             (mouseenter)="onChampionHover(true)"
+             (mouseleave)="onChampionHover(false)">
+
+          <div class="tk-champion-crown-wrap">
+            <span class="tk-big-crown">👑</span>
+            <span class="tk-crown-rays"></span>
+          </div>
+
+          <div class="tk-champion-rank-num">1ST PLACE</div>
+
+          <div class="tk-champion-avatar">
+            <div class="tk-avatar-ring"></div>
+            <div class="tk-avatar-inner tk-avatar-gold">
+              P{{ leaderboard[0].studentId }}
+            </div>
+            <div class="tk-avatar-particles">
+              <span class="tk-particle p1">✦</span>
+              <span class="tk-particle p2">✦</span>
+              <span class="tk-particle p3">✦</span>
+              <span class="tk-particle p4">✦</span>
+            </div>
+          </div>
+
+          <div class="tk-champion-name">
+            {{ leaderboard[0].studentName }}
+            <span *ngIf="leaderboard[0].studentId === studentId"
+                  class="tk-you-crown">← YOU</span>
+          </div>
+
+          <div class="tk-rank-title-badge tk-badge-champion"
+               [ngClass]="getPlayerRankClass(leaderboard[0].rankTitle)">
+            {{ getRankIcon(leaderboard[0].rankTitle) }}
+            {{ leaderboard[0].rankTitle }}
+          </div>
+
+          <div class="tk-hp-bar-wrap">
+            <div class="tk-hp-label">POWER</div>
+            <div class="tk-hp-track">
+              <div class="tk-hp-fill tk-hp-gold"
+                   [style.width.%]="leaderboard[0].score">
+              </div>
+              <div class="tk-hp-shine"></div>
+            </div>
+            <div class="tk-hp-value">{{ leaderboard[0].score | number:'1.0-1' }}%</div>
+          </div>
+
+          <div class="tk-medal-strip">🥇 CHAMPION</div>
+        </div>
+      </div>
+
+      <!-- 2nd and 3rd podium -->
+      <div class="tk-podium-row"
+           *ngIf="leaderboard.length >= 2">
+
+        <!-- 2nd place -->
+        <div class="tk-podium-card-wrap tk-card-2nd"
+             [class.tk-is-you]="leaderboard[1].studentId === studentId"
+             (mouseenter)="onCardHover($event, true)"
+             (mouseleave)="onCardHover($event, false)">
+          <div class="tk-place-medal">🥈</div>
+          <div class="tk-podium-avatar-sm tk-av-silver">
+            P{{ leaderboard[1].studentId }}
+          </div>
+          <div class="tk-podium-name-sm">{{ leaderboard[1].studentName }}
+            <span *ngIf="leaderboard[1].studentId === studentId"
+                  class="tk-you-tag">YOU</span>
+          </div>
+          <div class="tk-rank-title-badge"
+               [ngClass]="getPlayerRankClass(leaderboard[1].rankTitle)">
+            {{ getRankIcon(leaderboard[1].rankTitle) }}
+            {{ leaderboard[1].rankTitle }}
+          </div>
+          <div class="tk-hp-track tk-hp-sm">
+            <div class="tk-hp-fill tk-hp-silver"
+                 [style.width.%]="leaderboard[1].score">
+            </div>
+          </div>
+          <div class="tk-podium-score-sm">
+            {{ leaderboard[1].score | number:'1.0-1' }}%
+          </div>
+          <div class="tk-podium-base-sm tk-base-silver">2ND</div>
+        </div>
+
+        <!-- 3rd place -->
+        <div class="tk-podium-card-wrap tk-card-3rd"
+             *ngIf="leaderboard.length >= 3"
+             [class.tk-is-you]="leaderboard[2].studentId === studentId"
+             (mouseenter)="onCardHover($event, true)"
+             (mouseleave)="onCardHover($event, false)">
+          <div class="tk-place-medal">🥉</div>
+          <div class="tk-podium-avatar-sm tk-av-bronze">
+            P{{ leaderboard[2].studentId }}
+          </div>
+          <div class="tk-podium-name-sm">{{ leaderboard[2].studentName }}
+            <span *ngIf="leaderboard[2].studentId === studentId"
+                  class="tk-you-tag">YOU</span>
+          </div>
+          <div class="tk-rank-title-badge"
+               [ngClass]="getPlayerRankClass(leaderboard[2].rankTitle)">
+            {{ getRankIcon(leaderboard[2].rankTitle) }}
+            {{ leaderboard[2].rankTitle }}
+          </div>
+          <div class="tk-hp-track tk-hp-sm">
+            <div class="tk-hp-fill tk-hp-bronze"
+                 [style.width.%]="leaderboard[2].score">
+            </div>
+          </div>
+          <div class="tk-podium-score-sm">
+            {{ leaderboard[2].score | number:'1.0-1' }}%
+          </div>
+          <div class="tk-podium-base-sm tk-base-bronze">3RD</div>
+        </div>
+
+      </div>
+
+      <!-- Ranks 4-5 -->
+      <div class="tk-lower-ranks" *ngIf="leaderboard.length > 3">
+        <div *ngFor="let entry of leaderboard.slice(3)"
+             class="tk-lower-row"
+             [class.tk-is-you]="entry.studentId === studentId"
+             (mouseenter)="onCardHover($event, true)"
+             (mouseleave)="onCardHover($event, false)">
+          <div class="tk-lower-num">#{{ entry.rank }}</div>
+          <div class="tk-lower-av">P{{ entry.studentId }}</div>
+          <div class="tk-lower-mid">
+            <div class="tk-lower-name">{{ entry.studentName }}
+              <span *ngIf="entry.studentId === studentId"
+                    class="tk-you-tag">YOU</span>
+            </div>
+            <div class="tk-rank-title-badge"
+                 [ngClass]="getPlayerRankClass(entry.rankTitle)">
+              {{ getRankIcon(entry.rankTitle) }} {{ entry.rankTitle }}
+            </div>
+          </div>
+          <div class="tk-lower-right">
+            <div class="tk-hp-track tk-hp-xs">
+              <div class="tk-hp-fill tk-hp-default"
+                   [style.width.%]="entry.score">
+              </div>
+            </div>
+            <div class="tk-lower-score">
+              {{ entry.score | number:'1.0-1' }}%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your score footer -->
+      <div class="tk-footer-score">
+        <div class="tk-footer-left">
+          <div class="tk-footer-label">YOUR SCORE THIS ROUND</div>
+          <div class="tk-footer-sub">
+            {{ quizResult?.passed ? '✓ PASSED' : '✗ FAILED' }}
+          </div>
+        </div>
+        <div class="tk-footer-score-num"
+             [class.tk-score-pass]="quizResult?.passed"
+             [class.tk-score-fail]="!quizResult?.passed">
+          {{ quizResult?.score | number:'1.0-1' }}%
+        </div>
+      </div>
+
+    </div>
+
+    </ng-container>
+  </div>
+</div>

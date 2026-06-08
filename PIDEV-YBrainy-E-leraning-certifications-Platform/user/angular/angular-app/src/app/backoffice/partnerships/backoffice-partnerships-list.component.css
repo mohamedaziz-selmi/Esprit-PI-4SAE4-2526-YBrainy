@@ -1,0 +1,132 @@
+:host {
+  display: block;
+}
+
+.partner-size-label {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.partners-toolbar .default-select {
+  min-width: 110px;
+}
+
+.partner-card {
+  border: 1px solid #eef2f7;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.partner-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.9);
+}
+
+.partner-card .card-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 312px;
+  gap: 12px;
+}
+
+.partner-card .user-content {
+  min-height: 132px;
+}
+
+.partner-card .user-img img {
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  object-fit: contain;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.partner-card .user-details {
+  max-width: 100%;
+}
+
+.partner-card .user-details .user-name {
+  font-size: 1.02rem;
+  line-height: 1.25;
+  font-weight: 600;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-card .user-details p {
+  margin: 3px 0 0;
+  color: #6b7280;
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-actions {
+  margin-top: auto;
+}
+
+.partner-tags {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.partner-tags .badge {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.partner-actions .partner-delete {
+  color: #b42318;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.partner-actions .partner-delete:hover,
+.partner-actions .partner-delete:focus {
+  color: #991b1b;
+  border-color: #fca5a5;
+  background: #fee2e2;
+}
+
+.table-pagenation.teach {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.table-pagenation.teach small {
+  color: #667085;
+}
+
+.table-pagenation.teach .page-item.disabled .page-link {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .partners-toolbar {
+    width: 100%;
+  }
+
+  .partners-toolbar .default-select {
+    min-width: 96px;
+  }
+
+  .table-pagenation.teach {
+    justify-content: center;
+  }
+}

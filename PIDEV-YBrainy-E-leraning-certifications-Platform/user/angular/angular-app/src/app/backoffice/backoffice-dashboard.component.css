@@ -1,0 +1,324 @@
+.bo-shell {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  width: 100%;
+  height: 100vh;
+  background: #d6dce2;
+}
+
+.bo-sidebar {
+  background: linear-gradient(180deg, #0b6f73 0%, #0d5f7a 100%);
+  color: #fff;
+  padding: 20px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 8px 0 24px rgba(2, 18, 28, 0.16);
+  z-index: 2;
+}
+
+.bo-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+}
+
+.bo-logo-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: grid;
+  place-items: center;
+  font: 700 13px/1 "Poppins", "Segoe UI", sans-serif;
+  letter-spacing: 0.6px;
+}
+
+.bo-brand-name {
+  font: 700 15px/1.15 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-brand-sub {
+  margin-top: 3px;
+  opacity: 0.78;
+  font: 500 11px/1.2 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.bo-nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  font: 600 13px/1 "Poppins", "Segoe UI", sans-serif;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 120ms ease;
+}
+
+.bo-nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.bo-nav-link.is-active {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+.bo-sidebar-footer {
+  margin-top: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.bo-admin-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bo-admin-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font: 700 14px/1 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-admin-name {
+  font: 700 12px/1.2 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-admin-role {
+  margin-top: 2px;
+  opacity: 0.75;
+  font: 500 11px/1.2 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-logout-btn {
+  min-height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(160, 34, 34, 0.22);
+  color: #fff;
+  cursor: pointer;
+  font: 700 13px/1 "Poppins", "Segoe UI", sans-serif;
+}
+
+.bo-logout-btn:hover {
+  background: rgba(160, 34, 34, 0.34);
+}
+
+.bo-frame-wrap {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  min-width: 0;
+}
+
+.bo-quick-menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+}
+
+.bo-quick-menu[open] {
+  z-index: 6;
+}
+
+.bo-quick-menu-trigger {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(20, 28, 45, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  color: #243049;
+  font: 700 12px/1 "Poppins", "Segoe UI", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+  user-select: none;
+}
+
+.bo-quick-menu-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.bo-quick-menu-trigger::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+  opacity: 0.7;
+}
+
+.bo-quick-menu[open] .bo-quick-menu-trigger::after {
+  transform: rotate(-135deg) translateY(-1px);
+}
+
+.bo-quick-menu-list {
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(20, 28, 45, 0.1);
+  box-shadow: 0 18px 40px rgba(17, 24, 39, 0.14);
+  display: grid;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.bo-quick-menu-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 10px;
+  border-bottom: 1px solid rgba(20, 28, 45, 0.08);
+  margin-bottom: 2px;
+}
+
+.bo-quick-menu-head .bo-admin-avatar {
+  background: linear-gradient(135deg, #0b6f73 0%, #0d5f7a 100%);
+  border-color: rgba(11, 111, 115, 0.18);
+  color: #fff;
+}
+
+.bo-quick-menu-head .bo-admin-role {
+  color: #64748b;
+  opacity: 1;
+}
+
+.quick-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 1px solid rgba(20, 28, 45, 0.12);
+  background: rgba(255, 255, 255, 0.94);
+  color: #243049;
+  font: 600 12px/1 "Poppins", "Segoe UI", sans-serif;
+  box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+  cursor: pointer;
+}
+
+button.quick-link {
+  width: 100%;
+}
+
+.quick-link.primary {
+  background: #4d44b5;
+  border-color: #4d44b5;
+  color: #fff;
+}
+
+.quick-link-danger {
+  background: #fff5f5;
+  border-color: rgba(220, 38, 38, 0.2);
+  color: #b42318;
+}
+
+.bo-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 980px) {
+  .bo-shell {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+  }
+
+  .bo-sidebar {
+    height: auto;
+    padding-bottom: 10px;
+    box-shadow: 0 8px 24px rgba(2, 18, 28, 0.16);
+  }
+
+  .bo-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bo-nav-link {
+    justify-content: center;
+    text-align: center;
+    min-height: 40px;
+    font-size: 12px;
+  }
+
+  .bo-sidebar-footer {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+
+  .bo-admin-card {
+    min-width: 0;
+  }
+
+  .bo-logout-btn {
+    padding: 0 14px;
+  }
+
+  .bo-frame-wrap {
+    height: calc(100vh - 170px);
+  }
+}
+
+@media (max-width: 700px) {
+  .bo-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .bo-sidebar-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .bo-quick-menu {
+    left: 12px;
+    right: 12px;
+  }
+
+  .bo-quick-menu-list {
+    min-width: 0;
+  }
+
+  .quick-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .bo-frame-wrap {
+    height: calc(100vh - 240px);
+  }
+}

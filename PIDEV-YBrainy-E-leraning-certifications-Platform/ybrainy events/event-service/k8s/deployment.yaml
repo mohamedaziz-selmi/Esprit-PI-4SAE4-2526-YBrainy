@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-service
+  template:
+    metadata:
+      labels:
+        app: event-service
+    spec:
+      containers:
+        - name: event-service
+          image: hos77/event-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9001
+          envFrom:
+            - configMapRef:
+                name: event-service-config
+            - secretRef:
+                name: event-service-secret
+          readinessProbe:
+            tcpSocket:
+              port: 9001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9001
+            initialDelaySeconds: 45
+            periodSeconds: 20

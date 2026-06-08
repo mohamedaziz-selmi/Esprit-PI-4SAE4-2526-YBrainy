@@ -1,0 +1,14 @@
+<section class="module-card fade-slide-up">
+  <header class="module-card__header">
+    <h3>{{ title }}</h3>
+    <span>Required</span>
+  </header>
+
+  <textarea
+    [ngModel]="value"
+    (ngModelChange)="valueChange.emit($event)"
+    placeholder="Paste the target job description here..."
+  ></textarea>
+
+  <p class="char-count">{{ value.length }} characters</p>
+</section>

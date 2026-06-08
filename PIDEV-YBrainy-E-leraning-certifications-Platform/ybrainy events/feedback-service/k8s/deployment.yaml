@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feedback-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: feedback-service
+  template:
+    metadata:
+      labels:
+        app: feedback-service
+    spec:
+      containers:
+        - name: feedback-service
+          image: hos77/feedback-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9004
+          envFrom:
+            - configMapRef:
+                name: feedback-service-config
+            - secretRef:
+                name: feedback-service-secret
+          readinessProbe:
+            tcpSocket:
+              port: 9004
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9004
+            initialDelaySeconds: 45
+            periodSeconds: 20

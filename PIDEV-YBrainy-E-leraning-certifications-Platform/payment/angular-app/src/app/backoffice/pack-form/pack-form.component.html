@@ -1,0 +1,151 @@
+<div class="container-fluid py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <div class="d-flex align-items-center mb-4">
+        <a routerLink="/dashboard/packs" class="btn btn-outline-secondary me-3">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="mb-0">{{ isEdit ? 'Edit Pack' : 'New Pack' }}</h2>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+        <button type="button" class="btn-close" (click)="error = ''"></button>
+      </div>
+
+      <!-- Form -->
+      <div *ngIf="!loading" class="card shadow-sm">
+        <div class="card-body p-4">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+
+              <!-- Title -->
+              <div class="col-12 mb-3">
+                <label class="form-label fw-semibold">Title *</label>
+                <input type="text" class="form-control" formControlName="title" maxlength="200"
+                  placeholder="e.g. Full-Stack Web Developer Bundle"
+                  [class.is-invalid]="form.get('title')?.touched && form.get('title')?.invalid">
+                <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['required']">Title is required</div>
+                <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['minlength']">Title must be at least 2 characters</div>
+                <div class="invalid-feedback" *ngIf="form.get('title')?.errors?.['maxlength']">Title must not exceed 200 characters</div>
+              </div>
+
+              <!-- Description -->
+              <div class="col-12 mb-3">
+                <label class="form-label fw-semibold">Description *</label>
+                <textarea class="form-control" formControlName="description" rows="4" maxlength="2000"
+                  placeholder="Describe what learners will get in this pack..."
+                  [class.is-invalid]="form.get('description')?.touched && form.get('description')?.invalid"></textarea>
+                <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['required']">Description is required</div>
+                <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['minlength']">Description must be at least 10 characters</div>
+                <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['maxlength']">Description must not exceed 2000 characters</div>
+              </div>
+
+              <!-- Image Upload -->
+              <div class="col-12 mb-3">
+                <label class="form-label fw-semibold">Pack Image</label>
+                <input type="file" class="form-control" (change)="onFileSelect($event)" accept="image/*">
+                <div class="form-text">Recommended size: 800x600. Max 2MB.</div>
+              </div>
+
+              <!-- Category -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Category *</label>
+                <select class="form-select" formControlName="categoryId"
+                  [class.is-invalid]="form.get('categoryId')?.touched && form.get('categoryId')?.invalid">
+                  <option [ngValue]="null" disabled>Select category...</option>
+                  <option *ngFor="let cat of categories" [ngValue]="cat.id">
+                    {{ cat.name }} <span *ngIf="cat.status === 'INACTIVE'">(Inactive)</span>
+                  </option>
+                </select>
+                <div class="invalid-feedback">Category is required</div>
+              </div>
+
+              <!-- Level -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Level *</label>
+                <select class="form-select" formControlName="level"
+                  [class.is-invalid]="form.get('level')?.touched && form.get('level')?.invalid">
+                  <option value="" disabled>Select level...</option>
+                  <option value="BEGINNER">Beginner</option>
+                  <option value="INTERMEDIATE">Intermediate</option>
+                  <option value="ADVANCED">Advanced</option>
+                </select>
+                <div class="invalid-feedback">Level is required</div>
+              </div>
+
+              <!-- Original Price -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Original Price ($) *</label>
+                <input type="number" class="form-control" formControlName="originalPrice" step="0.01" min="0.01" max="999999.99"
+                  placeholder="299.99"
+                  [class.is-invalid]="form.get('originalPrice')?.touched && form.get('originalPrice')?.invalid">
+                <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['required']">Original price is required</div>
+                <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['min']">Must be at least 0.01</div>
+                <div class="invalid-feedback" *ngIf="form.get('originalPrice')?.errors?.['max']">Must not exceed 999,999.99</div>
+              </div>
+
+              <!-- Sale Price -->
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-semibold">Sale Price ($) *</label>
+                <input type="number" class="form-control" formControlName="salePrice" step="0.01" min="0" max="999999.99"
+                  placeholder="199.99"
+                  [class.is-invalid]="form.get('salePrice')?.touched && form.get('salePrice')?.invalid">
+                <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['required']">Sale price is required</div>
+                <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['min']">Must be zero or positive</div>
+                <div class="invalid-feedback" *ngIf="form.get('salePrice')?.errors?.['max']">Must not exceed 999,999.99</div>
+              </div>
+
+              <!-- Discount Preview -->
+              <div class="col-md-4 mb-3 d-flex align-items-end">
+                <div class="p-3 bg-light rounded w-100 text-center" *ngIf="getDiscount() > 0">
+                  <span class="badge bg-danger fs-6">-{{ getDiscount() }}% OFF</span>
+                </div>
+              </div>
+
+              <!-- Duration -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Duration (hours) *</label>
+                <input type="number" class="form-control" formControlName="durationHours" min="1" max="9999" placeholder="120"
+                  [class.is-invalid]="form.get('durationHours')?.touched && form.get('durationHours')?.invalid">
+                <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['required']">Duration is required</div>
+                <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['min']">Must be at least 1 hour</div>
+                <div class="invalid-feedback" *ngIf="form.get('durationHours')?.errors?.['max']">Must not exceed 9,999 hours</div>
+              </div>
+
+              <!-- Certificate Name -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Certificate Name <span
+                    class="text-muted">(optional)</span></label>
+                <input type="text" class="form-control" formControlName="certificateName" maxlength="100"
+                  placeholder="e.g. Full-Stack Developer Certificate"
+                  [class.is-invalid]="form.get('certificateName')?.touched && form.get('certificateName')?.invalid">
+                <div class="invalid-feedback">Certificate name must not exceed 100 characters</div>
+                <div class="form-text">Leave empty if no certificate is included.</div>
+              </div>
+
+            </div>
+
+            <!-- Actions -->
+            <hr class="my-4">
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4" [disabled]="submitting">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                {{ isEdit ? 'Update' : 'Create' }} Pack
+              </button>
+              <a routerLink="/dashboard/packs" class="btn btn-light">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

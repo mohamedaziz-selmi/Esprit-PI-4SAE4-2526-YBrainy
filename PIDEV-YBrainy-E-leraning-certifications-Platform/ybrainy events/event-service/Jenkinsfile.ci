@@ -1,0 +1,161 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'M2_HOME'
+        jdk 'JAVA_Home'
+    }
+
+    environment {
+        GIT_CREDENTIALS    = 'ybrainy-token'
+        DOCKER_USER        = 'hos77'
+        APP_NAME           = 'event-service'
+        IMAGE_NAME         = "${DOCKER_USER}/${APP_NAME}"
+        DOCKER_TAG         = "${BUILD_NUMBER}"
+        SONAR_PROJECT      = 'event-service'
+        SONAR_HOST_URL     = 'http://localhost:9000'
+        NOTIFICATION_EMAIL = 'jacemjouili@gmail.com'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                deleteDir()
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'integration-final']],
+                    extensions: [[$class: 'CloneOption', depth: 1, shallow: true, timeout: 300]],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/issamrh/ESPRIT-PI-4SAE4-2025-2026-Ybrainy.git',
+                        credentialsId: GIT_CREDENTIALS,
+                        refspec: '+refs/heads/integration-final:refs/remotes/origin/integration-final'
+                    ]]
+                ])
+            }
+        }
+
+        stage('Maven Clean') {
+            steps {
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events/event-service') {
+                    bat 'wsl mvn clean -DskipTests'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events/event-service') {
+                    bat 'wsl mvn package -DskipTests'
+                }
+            }
+        }
+
+        stage('Unit Tests + JaCoCo Coverage') {
+            steps {
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events/event-service') {
+                    bat 'wsl mvn verify'
+                    bat 'wsl cp /tmp/event-service-jacoco.exec target/jacoco.exec'
+                    junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+                    jacoco execPattern: 'target/jacoco.exec',
+                           classPattern: 'target/classes',
+                           sourcePattern: 'src/main/java'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                    withSonarQubeEnv('SonarQube') {
+                        dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events/event-service') {
+                            bat """
+                                wsl mvn sonar:sonar ^
+                                  -Dsonar.host.url=${SONAR_HOST_URL} ^
+                                  -Dsonar.login=%SONAR_AUTH_TOKEN% ^
+                                  -Dsonar.projectKey=${SONAR_PROJECT} ^
+                                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    try {
+                        timeout(time: 2, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: false
+                        }
+                    } catch (e) {
+                        echo "Quality Gate skipped: ${e.message}"
+                    }
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker_hub',
+                    usernameVariable: 'DOCKER_USER_LOGIN',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events') {
+                        bat """
+                            wsl docker build -f event-service/Dockerfile -t ${IMAGE_NAME}:${DOCKER_TAG} .
+                            wsl docker tag ${IMAGE_NAME}:${DOCKER_TAG} ${IMAGE_NAME}:latest
+                            echo %DOCKER_PASSWORD% | wsl docker login -u %DOCKER_USER_LOGIN% --password-stdin
+                            wsl docker push ${IMAGE_NAME}:${DOCKER_TAG}
+                            wsl docker push ${IMAGE_NAME}:latest
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Save build info for CD') {
+            steps {
+                bat 'echo %DOCKER_TAG% > event-service-tag.txt'
+                archiveArtifacts artifacts: 'event-service-tag.txt', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '========================================'
+            echo 'CI SUCCESS - event-service'
+            echo '========================================'
+            build job: 'event-service-CD',
+                  parameters: [string(name: 'DOCKER_TAG', value: "${env.BUILD_NUMBER}")],
+                  wait: false
+        }
+        failure {
+            echo 'CI FAILED - event-service - check Console Output'
+            emailext(
+                subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """event-service CI failed.
+
+Build URL: ${env.BUILD_URL}
+Git branch: integration-final
+
+Please review the Jenkins console output for the failing stage.
+""",
+                to: "${env.NOTIFICATION_EMAIL}"
+            )
+        }
+        unstable {
+            emailext(
+                subject: "UNSTABLE: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """event-service CI is unstable.
+
+Build URL: ${env.BUILD_URL}
+Please review test, coverage, or SonarQube warnings.
+""",
+                to: "${env.NOTIFICATION_EMAIL}"
+            )
+        }
+    }
+}

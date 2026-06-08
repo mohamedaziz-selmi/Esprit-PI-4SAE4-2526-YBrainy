@@ -1,0 +1,108 @@
+server:
+  port: ${JOB_OFFER_SERVICE_PORT:8187}
+
+spring:
+  application:
+    name: job-offer-service
+  config:
+    import: "optional:configserver:${CONFIG_SERVER_URL:http://localhost:8888}"
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+  datasource:
+    url: ${JOB_OFFER_DB_URL:jdbc:mysql://127.0.0.1:3306/jobofferdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${JOB_OFFER_DB_USERNAME:root}
+    password: ${JOB_OFFER_DB_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: ${JOB_MAIL_HOST:smtp.gmail.com}
+    port: ${JOB_MAIL_PORT:587}
+    username: ${JOB_MAIL_USERNAME}
+    password: ${JOB_MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: ${JOB_MAIL_SMTP_AUTH:true}
+          starttls:
+            enable: ${JOB_MAIL_SMTP_STARTTLS:true}
+          connectiontimeout: ${JOB_MAIL_CONNECTION_TIMEOUT:5000}
+          timeout: ${JOB_MAIL_TIMEOUT:5000}
+          writetimeout: ${JOB_MAIL_WRITE_TIMEOUT:5000}
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${YBRAINY_EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL:http://localhost:9411}/api/v2/spans
+
+app:
+  notifications:
+    from: ${JOB_APPLICATION_NOTIFICATION_FROM}
+    accepted:
+      enabled: ${JOB_APPLICATION_ACCEPTED_NOTIFICATION_ENABLED:true}
+  rabbitmq:
+    exchange: ${APP_RABBITMQ_EXCHANGE:ybrainy.events}
+    partnership:
+      queue: ${APP_RABBITMQ_PARTNERSHIP_QUEUE:job-offer.partnership.events.queue}
+      routing-key: ${APP_RABBITMQ_PARTNERSHIP_ROUTING_KEY:partnership.event}
+    application:
+      queue: ${APP_RABBITMQ_APPLICATION_QUEUE:job-application.events.queue}
+      routing-key: ${APP_RABBITMQ_APPLICATION_ROUTING_KEY:job-application.event}
+      analytics-queue: ${APP_RABBITMQ_APPLICATION_ANALYTICS_QUEUE:job-application.analytics.queue}
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+    url: ${GEMINI_API_URL:https://generativelanguage.googleapis.com/v1beta/models}
+    model: ${GEMINI_API_MODEL:gemini-2.5-flash}
+    # Nano Banana models (ordre prioritaire): 2 -> Pro -> 2.5 Flash.
+    # Separateur: virgule.
+    image-models: ${GEMINI_API_IMAGE_MODELS:gemini-3.1-flash-image-preview,gemini-3-pro-image-preview,gemini-2.5-flash-image}
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s

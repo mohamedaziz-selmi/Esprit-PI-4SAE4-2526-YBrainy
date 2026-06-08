@@ -1,0 +1,120 @@
+<div class="form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <button class="btn-back" (click)="cancel()">← Back</button>
+    <h2>{{ isEditMode ? 'Edit Event' : 'Create New Event' }}</h2>
+  </div>
+
+  <!-- Alerts -->
+  <div *ngIf="error" class="alert alert-error">{{ error }}</div>
+  <div *ngIf="success" class="alert alert-success">{{ success }}</div>
+
+  <!-- Loading overlay -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading event data…</p>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!loading">
+    <div class="form-grid">
+
+      <!-- Name -->
+      <div class="field full-width">
+        <label>Event Name <span class="required">*</span></label>
+        <input type="text" formControlName="name" placeholder="e.g. Web Development Workshop 2025" />
+        <div *ngIf="f['name'].touched && f['name'].invalid" class="field-error">
+          <span *ngIf="f['name'].errors?.['required']">Name is required.</span>
+          <span *ngIf="f['name'].errors?.['minlength']">Name must be at least 3 characters.</span>
+        </div>
+      </div>
+
+      <!-- Type & Status -->
+      <div class="field">
+        <label>Event Type <span class="required">*</span></label>
+        <select formControlName="type">
+          <option *ngFor="let t of eventTypes" [value]="t">{{ t }}</option>
+        </select>
+        <div *ngIf="f['type'].touched && f['type'].invalid" class="field-error">Type is required.</div>
+      </div>
+
+      <div class="field">
+        <label>Status <span class="required">*</span></label>
+        <select formControlName="statut">
+          <option *ngFor="let s of eventStatuses" [value]="s">{{ s }}</option>
+        </select>
+        <div *ngIf="f['statut'].touched && f['statut'].invalid" class="field-error">Status is required.</div>
+      </div>
+
+      <!-- Location & Capacity -->
+      <div class="field">
+        <label>Location <span class="required">*</span></label>
+        <input type="text" formControlName="location" placeholder="e.g. Room 101, Online" />
+        <div *ngIf="f['location'].touched && f['location'].invalid" class="field-error">Location is required.</div>
+      </div>
+
+      <div class="field">
+        <label>Capacity <span class="required">*</span></label>
+        <input type="number" formControlName="capacite" min="1" placeholder="e.g. 100" />
+        <div *ngIf="f['capacite'].touched && f['capacite'].invalid" class="field-error">
+          <span *ngIf="f['capacite'].errors?.['required']">Capacity is required.</span>
+          <span *ngIf="f['capacite'].errors?.['min']">Capacity must be at least 1.</span>
+        </div>
+      </div>
+
+      <!-- Dates -->
+      <div class="field">
+        <label>Start Date &amp; Time <span class="required">*</span></label>
+        <input type="datetime-local" formControlName="dateDebut" />
+        <div *ngIf="f['dateDebut'].touched && f['dateDebut'].invalid" class="field-error">Start date is required.</div>
+      </div>
+
+      <div class="field">
+        <label>End Date &amp; Time <span class="required">*</span></label>
+        <input type="datetime-local" formControlName="dateFin" />
+        <div *ngIf="f['dateFin'].touched && f['dateFin'].invalid" class="field-error">End date is required.</div>
+      </div>
+
+      <!-- Description -->
+      <div class="field full-width">
+        <div class="label-row">
+          <label>Description <span class="required">*</span></label>
+          <button type="button" class="btn-ai" (click)="generateDescription()" [disabled]="generatingDesc">
+            <span *ngIf="generatingDesc">Generating…</span>
+            <span *ngIf="!generatingDesc">✨ AI Generate</span>
+          </button>
+        </div>
+        <textarea formControlName="description" rows="5" placeholder="Describe the event, its goals and agenda…"></textarea>
+        <div *ngIf="f['description'].touched && f['description'].invalid" class="field-error">Description is required.</div>
+      </div>
+
+      <!-- Image section -->
+      <div class="field full-width image-section">
+        <div class="label-row">
+          <label>Event Image (optional)</label>
+          <div class="image-actions">
+            <button type="button" class="btn-ai" (click)="generateImage()" [disabled]="generatingImage">
+              <span *ngIf="generatingImage">Generating…</span>
+              <span *ngIf="!generatingImage">🖼️ AI Image</span>
+            </button>
+            <label class="btn-upload" for="imageUpload">📁 Upload</label>
+            <input id="imageUpload" type="file" accept="image/*" (change)="onImageFileChange($event)" style="display:none" />
+          </div>
+        </div>
+        <div *ngIf="imageUrl" class="image-preview">
+          <img [src]="imageUrl" alt="Event image preview" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-submit" [disabled]="saving">
+        <span *ngIf="saving">Saving…</span>
+        <span *ngIf="!saving">{{ isEditMode ? 'Update Event' : 'Create Event' }}</span>
+      </button>
+    </div>
+  </form>
+</div>

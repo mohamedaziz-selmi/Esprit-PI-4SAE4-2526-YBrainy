@@ -1,0 +1,74 @@
+<section class="comm-section jobs-section">
+  <div class="container">
+    <div class="jobs-shell">
+      <div class="jobs-head">
+        <div>
+          <p class="jobs-pill">Career Space</p>
+          <h1 class="comm-head mb16">Offres d'emploi</h1>
+          <div class="comm-txt mb16">
+            <p>
+              Decouvre les offres des entreprises partenaires et postule en quelques secondes.
+              Ouvre une offre pour candidater avec upload direct ou CV Optimizer.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="jobs-filters">
+        <input
+          class="jobs-input"
+          type="search"
+          placeholder="Rechercher (titre, skills, entreprise, lieu)..."
+          [value]="query"
+          (input)="onQueryChange(($any($event.target)).value)"
+        />
+
+        <select class="jobs-select" [value]="contractType" (change)="onContractChange(($any($event.target)).value)">
+          <option *ngFor="let t of contractTypes" [value]="t">{{ t === 'ALL' ? 'Tous les types' : t }}</option>
+        </select>
+      </div>
+
+      <div class="jobs-alert" *ngIf="loadError">{{ loadError }}</div>
+
+      <div class="jobs-grid">
+        <a class="job-card" *ngFor="let o of paged" [routerLink]="['/jobs', o.id]">
+          <div class="job-media">
+            <img [src]="cardImage(o)" alt="" />
+          </div>
+          <div class="job-body">
+            <div class="job-top">
+              <div class="job-title">{{ o.title }}</div>
+              <div class="job-pill-type">{{ o.contractType }}</div>
+            </div>
+            <div class="job-meta">
+              <span class="job-company">{{ o.partner?.name || 'Entreprise' }}</span>
+              <span class="job-dot">|</span>
+              <span>{{ o.location || '-' }}</span>
+              <span class="job-dot">|</span>
+              <span>{{ o.salaryRange || 'Salaire non precise' }}</span>
+            </div>
+            <div class="job-skills" *ngIf="o.skills as skills">
+              <ng-container *ngIf="skills.length > 0">
+                <span class="skill" *ngFor="let s of skills.slice(0, 4)">{{ s }}</span>
+                <span class="skill more" *ngIf="skills.length > 4">+{{ skills.length - 4 }}</span>
+              </ng-container>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="jobs-empty" *ngIf="filtered.length === 0 && !loadError">
+        <h3 class="comm-head mb16 jobs-empty-title">Aucune offre pour le moment</h3>
+        <div class="comm-txt"><p>Essaie une autre recherche ou reviens plus tard.</p></div>
+      </div>
+
+      <div class="jobs-pager" *ngIf="filtered.length > 0">
+        <button class="jobs-btn" type="button" (click)="page = 1" [disabled]="page <= 1">&laquo;</button>
+        <button class="jobs-btn" type="button" (click)="page = page - 1" [disabled]="page <= 1">&lsaquo;</button>
+        <span class="jobs-muted">Page {{ page }} / {{ totalPages }}</span>
+        <button class="jobs-btn" type="button" (click)="page = page + 1" [disabled]="page >= totalPages">&rsaquo;</button>
+        <button class="jobs-btn" type="button" (click)="page = totalPages" [disabled]="page >= totalPages">&raquo;</button>
+      </div>
+    </div>
+  </div>
+</section>

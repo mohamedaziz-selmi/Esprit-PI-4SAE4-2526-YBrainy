@@ -1,0 +1,109 @@
+<ng-container *ngIf="mainHtml; else loading">
+  <div class="fo-static-page" [innerHTML]="mainHtml"></div>
+
+  <!-- Dynamic Packs Section - renders after all static content -->
+  <div class="comm-section" *ngIf="packsInjectionReady" style="margin-top: -100px;">
+    <div class="container container-md">
+      <div class="comm-head-wrap cen mb40">
+        <h3 class="small-head-tag">
+          Comprehensive Learning, Career Growth </h3>
+
+        <h4 class="comm-head">
+          Learning Packs </h4>
+
+        <div class="comm-txt mw768">
+          <p>Choose from our curated learning packs that combine courses, interactive lessons, and professional
+            certifications to accelerate your skill development and career advancement.</p>
+        </div>
+      </div>
+
+      <div class="blue-card-swiper">
+        <div class="swiper blueCardSwiper blue-card-swiper">
+          <div class="swiper-wrapper">
+            <!-- Loading State -->
+            <div class="swiper-slide" *ngIf="packsLoading">
+              <div class="hover-card"
+                style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center;">
+                  <div
+                    style="border: 4px solid #f3f3f3; border-top: 4px solid #00e5ff; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;">
+                  </div>
+                  <p style="color: white; font-size: 1.2rem;">Loading packs...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error State -->
+            <div class="swiper-slide" *ngIf="packsError && !packsLoading">
+              <div class="hover-card"
+                style="min-height: 400px; display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center; color: white;">
+                  <p style="font-size: 1.2rem; margin-bottom: 10px;">⚠️ {{ packsError }}</p>
+                  <button (click)="loadPacks()"
+                    style="padding: 10px 20px; background: #00e5ff; color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;">Try
+                    Again</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Pack Cards -->
+            <div class="swiper-slide" *ngFor="let pack of packs">
+              <div class="hover-card">
+                <div class="hover-card-img">
+                  <img src="assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/all.png" [alt]="pack.title">
+                </div>
+
+                <h5>{{ pack.title }}</h5>
+                <p class="pack-price"
+                  style="font-size: 1.4rem; font-weight: 700; color: #00e5ff; margin: 8px 0 4px; letter-spacing: 0.5px;">
+                  ${{ pack.salePrice | number:'1.2-2' }}
+                  <span *ngIf="getDiscount(pack) > 0"
+                    style="font-size: 0.9rem; color: #ff4444; text-decoration: line-through; margin-left: 8px;">
+                    ${{ pack.originalPrice | number:'1.2-2' }}
+                  </span>
+                </p>
+                <p *ngIf="getDiscount(pack) > 0" style="font-size: 0.9rem; color: #4caf50; margin: 0;">
+                  Save {{ getDiscount(pack) }}%!
+                </p>
+
+                <div class="hover-card-txt">
+                  <div class="comm-txt white">
+                    <p>{{ pack.description }}</p>
+                    <p class="pack-info">
+                      <strong>Level:</strong> {{ getLevelIcon(pack.level) }} {{ pack.level }} •
+                      <strong>Duration:</strong> {{ pack.durationHours }}h
+                      <span *ngIf="pack.certificateName"> • <strong>Certificate:</strong> {{ pack.certificateName
+                        }}</span>
+                    </p>
+                    <p class="pack-info">
+                      <strong>Category:</strong> {{ pack.categoryName }}
+                    </p>
+                  </div>
+
+                  <a href="#contact" class="learn-more white">
+                    Explore Pack </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="blueCardNext circNext swiper-button-next"></div>
+          <div class="blueCardPrev circPrev swiper-button-prev"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="comm-section" style="min-height:60vh; display:flex; align-items:center; justify-content:center;">
+    <div class="container">
+      <div class="comm-head-wrap cen">
+        <h1 class="comm-head mb16">Loading…</h1>
+        <div class="comm-txt mb36">
+          <p>Preparing page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

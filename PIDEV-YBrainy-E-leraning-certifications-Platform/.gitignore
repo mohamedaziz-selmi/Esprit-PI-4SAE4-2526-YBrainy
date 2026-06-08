@@ -1,0 +1,63 @@
+# Dependency directories
+**/node_modules/
+**/.venv-runner/
+user/.m2*/
+
+# Build artifacts
+**/target/
+angular/angular-app/dist/
+angular/angular-app/.angular/
+
+# IDEs and editors
+**/.idea/
+**/.vscode/
+*.swp
+*.swo
+*.DS_Store
+.classpath
+.project
+.settings/
+.factorypath
+
+# Logs and runtime output
+*.log
+**/logs/
+*.out.log
+*.err.log
+user/tmp/
+
+# JVM crash dumps and replay logs
+hs_err_pid*.log
+replay_pid*.log
+
+# Conversation transcripts
+2026-*-this-session-is-being-continued*.txt
+2026-*-local-command-caveat*.txt
+
+# Browser test output artifacts
+user/angular/angular-app/edge-*.txt
+user/angular/angular-app/edge-*.err.txt
+user/angular/angular-app/edge-*.out.txt
+
+# Angular build output
+**/dist/
+**/.angular/
+
+# Python virtual environments
+**/.venv*/
+**/__pycache__/
+**/*.pyc
+
+# Temporary / backup files
+*.before
+*.tmp
+
+# Sensitive info
+application-dev.properties
+application-prod.properties
+*.env
+*.env.local
+
+# Others
+.mvn/wrapper/maven-wrapper.jar
+.m2-runners/

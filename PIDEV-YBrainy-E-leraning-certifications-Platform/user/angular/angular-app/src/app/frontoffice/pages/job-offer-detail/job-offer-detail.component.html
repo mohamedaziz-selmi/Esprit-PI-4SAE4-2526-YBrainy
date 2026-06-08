@@ -1,0 +1,343 @@
+<section class="comm-section job-detail-section">
+  <div class="container">
+    <button class="back" type="button" (click)="back()">&larr; Retour aux offres</button>
+
+    <div class="alert error" *ngIf="loadError">{{ loadError }}</div>
+
+    <div class="loading-card" *ngIf="isLoadingOffer">
+      <h2 class="comm-head mb16 apply-title">Chargement de l'offre...</h2>
+      <div class="comm-txt"><p>Nous recuperons les details du poste.</p></div>
+    </div>
+
+    <div class="hero" *ngIf="offer">
+      <div class="hero-media">
+        <img [src]="image()" alt="" />
+      </div>
+      <div class="hero-body">
+        <div class="hero-title">{{ offer.title }}</div>
+        <div class="hero-meta">
+          <span class="company">{{ partner?.name || 'Entreprise' }}</span>
+          <span class="dot">|</span>
+          <span>{{ offer.contractType }}</span>
+          <span class="dot">|</span>
+          <span>{{ offer.location || '-' }}</span>
+        </div>
+        <div class="hero-meta">
+          <span><strong>Salaire:</strong> {{ offer.salaryRange || 'Non precise' }}</span>
+          <span class="dot">|</span>
+          <span><strong>Deadline:</strong> {{ offer.deadline ? (offer.deadline | date:'dd/MM/yyyy') : '-' }}</span>
+        </div>
+        <div class="hero-meta" *ngIf="partner?.website">
+          <span><strong>Site societe:</strong></span>
+          <a [href]="partner?.website" target="_blank" rel="noopener">{{ partner?.website }}</a>
+        </div>
+
+        <div class="skills" *ngIf="offer.skills?.length">
+          <span class="skill" *ngFor="let s of offer.skills">{{ s }}</span>
+        </div>
+
+        <div class="desc" *ngIf="offer.description">
+          <p>{{ offer.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="apply" *ngIf="offer">
+      <h2 class="comm-head mb16 apply-title">Postuler</h2>
+
+      <div class="alert success" *ngIf="submitSuccess">
+        Candidature envoyee (demo). L'entreprise pourra la voir cote backoffice plus tard.
+      </div>
+      <div class="alert error" *ngIf="submitError">{{ submitError }}</div>
+
+      <div class="form">
+        <label class="field">
+          <span class="label">Nom *</span>
+          <input class="input" type="text" [formControl]="form.controls.applicantName" placeholder="Ton nom" />
+          <span class="error" *ngIf="form.controls.applicantName.touched && form.controls.applicantName.invalid">Obligatoire.</span>
+        </label>
+
+        <label class="field">
+          <span class="label">Email *</span>
+          <input class="input" type="email" [formControl]="form.controls.applicantEmail" placeholder="ton@email.com" />
+          <span class="error" *ngIf="form.controls.applicantEmail.touched && form.controls.applicantEmail.invalid">Email invalide.</span>
+        </label>
+
+        <label class="field full">
+          <span class="label">Message</span>
+          <textarea class="textarea" rows="5" [formControl]="form.controls.message" placeholder="Optionnel..."></textarea>
+        </label>
+
+        <div class="field full cv-section">
+          <div class="label">CV</div>
+
+          <div class="cv-mode">
+            <button type="button" class="mode-btn" [class.active]="cvMode === 'upload'" (click)="setCvMode('upload')">
+              Upload direct
+            </button>
+            <button type="button" class="mode-btn" [class.active]="cvMode === 'optimizer'" (click)="setCvMode('optimizer')">
+              CV Optimizer
+            </button>
+          </div>
+
+          <div class="cv-panel" *ngIf="cvMode === 'upload'">
+            <div class="uploader">
+              <input type="file" accept=".pdf,.doc,.docx,image/*,.txt" (change)="onCvSelected($event)" />
+              <span class="hint" *ngIf="!form.controls.cvDataUrl.value">PDF, DOC, image ou TXT</span>
+              <span class="hint" *ngIf="form.controls.cvDataUrl.value">Fichier attache: {{ attachedCvLabel || 'CV' }}</span>
+            </div>
+          </div>
+
+          <section class="ai-page ai-page--embedded" *ngIf="cvMode === 'optimizer'">
+            <div class="ai-page__glow ai-page__glow--left"></div>
+            <div class="ai-page__glow ai-page__glow--right"></div>
+
+            <section class="hero-card fade-slide-up">
+              <div>
+                <p class="hero-pill">AI Career Toolkit</p>
+                <p>
+                  Le texte de l'offre est deja pre-rempli automatiquement.
+                  Ajoute ton CV puis genere une version optimisee complete.
+                </p>
+              </div>
+
+              <div class="hero-actions">
+                <animated-button
+                  [label]="hasResults ? 'Regenerate' : 'Generate'"
+                  [loading]="optimizerLoading"
+                  [disabled]="optimizerLoading"
+                  (pressed)="generateOptimizedCv()"
+                ></animated-button>
+                <a
+                  class="react-variant-link"
+                  href="http://localhost:4201"
+                  target="_blank"
+                  rel="noopener"
+                  title="Ouvrir la version React (alternative)"
+                >
+                  Ouvrir la version React &rarr;
+                </a>
+              </div>
+            </section>
+
+            <section class="cv-skeleton-picker fade-slide-up" aria-label="Format du CV genere">
+              <div class="cv-skeleton-picker__head">
+                <h4 class="cv-skeleton-picker__title">Modeles de CV (style Canva)</h4>
+                <p class="cv-skeleton-picker__hint">
+                  Choisis un squelette colore : le contenu genere suivra la structure du modele (sections et ordre).
+                </p>
+              </div>
+              <div class="cv-skeleton-grid" role="list">
+                <button
+                  type="button"
+                  *ngFor="let sk of cvSkeletonOptions"
+                  role="listitem"
+                  class="cv-skeleton-card"
+                  [class.cv-skeleton-card--active]="selectedCvSkeletonId === sk.id"
+                  (click)="selectCvSkeleton(sk.id)"
+                >
+                  <div class="cv-skeleton-card__visual" aria-hidden="true">
+                    <ng-container *ngTemplateOutlet="cvCanvaTpl; context: { id: sk.id, size: 'sm' }"></ng-container>
+                  </div>
+                  <span class="cv-skeleton-card__palette">{{ sk.paletteLabel }}</span>
+                  <span class="cv-skeleton-card__label">{{ sk.label }}</span>
+                  <span class="cv-skeleton-card__desc">{{ sk.description }}</span>
+                </button>
+              </div>
+              <div class="cv-skeleton-showcase" *ngIf="selectedCvSkeleton as sel">
+                <div class="cv-skeleton-showcase__head">
+                  <span class="cv-skeleton-showcase__tag">Selection</span>
+                  <strong>{{ sel.label }}</strong>
+                  <span class="cv-skeleton-showcase__palette">{{ sel.paletteLabel }}</span>
+                </div>
+                <div class="cv-skeleton-showcase__mock" aria-hidden="true">
+                  <ng-container *ngTemplateOutlet="cvCanvaTpl; context: { id: sel.id, size: 'lg' }"></ng-container>
+                </div>
+              </div>
+            </section>
+
+            <ng-template #cvCanvaTpl let-id="id" let-size="size">
+              <ng-container [ngSwitch]="id">
+                <div *ngSwitchCase="'classic'" [ngClass]="canvaClasses(size, 'classic')">
+                  <div class="cv-canva__sheet">
+                    <div class="cv-canva__banner cv-canva__banner--indigo"></div>
+                    <div class="cv-canva__body">
+                      <div class="cv-canva__name"></div>
+                      <div class="cv-canva__gold-rule"></div>
+                      <div class="cv-canva__line"></div>
+                      <div class="cv-canva__line cv-canva__line--short"></div>
+                      <div class="cv-canva__chip-row">
+                        <span></span><span></span>
+                      </div>
+                      <div class="cv-canva__block"></div>
+                      <div class="cv-canva__line"></div>
+                      <div class="cv-canva__line cv-canva__line--med"></div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'skills-first'" [ngClass]="canvaClasses(size, 'tech')">
+                  <div class="cv-canva__sheet cv-canva__sheet--split">
+                    <div class="cv-canva__sidebar cv-canva__sidebar--ocean"></div>
+                    <div class="cv-canva__main">
+                      <div class="cv-canva__line cv-canva__line--bold"></div>
+                      <div class="cv-canva__pills">
+                        <span></span><span></span><span></span>
+                      </div>
+                      <div class="cv-canva__line"></div>
+                      <div class="cv-canva__line cv-canva__line--short"></div>
+                      <div class="cv-canva__mint-bar"></div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'compact'" [ngClass]="canvaClasses(size, 'compact')">
+                  <div class="cv-canva__sheet">
+                    <div class="cv-canva__hero cv-canva__hero--coral"></div>
+                    <div class="cv-canva__body cv-canva__body--tight">
+                      <div class="cv-canva__line cv-canva__line--hero"></div>
+                      <div class="cv-canva__bullets">
+                        <span></span><span></span><span></span>
+                      </div>
+                      <div class="cv-canva__line"></div>
+                      <div class="cv-canva__line cv-canva__line--short"></div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchCase="'academic'" [ngClass]="canvaClasses(size, 'academic')">
+                  <div class="cv-canva__sheet cv-canva__sheet--lavender">
+                    <div class="cv-canva__soft-header">
+                      <div class="cv-canva__avatar"></div>
+                      <div class="cv-canva__soft-lines">
+                        <div class="cv-canva__line cv-canva__line--soft"></div>
+                        <div class="cv-canva__line cv-canva__line--soft-short"></div>
+                      </div>
+                    </div>
+                    <div class="cv-canva__sage-card">
+                      <div class="cv-canva__line"></div>
+                      <div class="cv-canva__line cv-canva__line--short"></div>
+                    </div>
+                    <div class="cv-canva__sage-card cv-canva__sage-card--small">
+                      <div class="cv-canva__line cv-canva__line--tiny"></div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-template>
+
+            <section class="input-grid">
+              <cv-upload-card
+                [title]="'CV Upload'"
+                [cvText]="optimizerCvText"
+                [fileName]="optimizerFileName"
+                (cvChange)="onOptimizerCvChange($event)"
+              ></cv-upload-card>
+              <job-description-card
+                [title]="'Job Description'"
+                [value]="optimizerJobDescription"
+                (valueChange)="onOptimizerJobDescriptionChange($event)"
+              ></job-description-card>
+            </section>
+
+            <section class="profile-photo-block fade-slide-up">
+              <div class="profile-photo-block__head">
+                <h4 class="profile-photo-block__title">Photo de profil (optionnel)</h4>
+                <p class="profile-photo-block__hint">
+                  Importe une photo : Gemini tente une version plus professionnelle (fond neutre, lumiere) via le modele image.
+                  Si la generation d image n est pas disponible, tu recois des conseils personnalises sur ta photo.
+                </p>
+              </div>
+              <div class="profile-photo-block__actions">
+                <label class="profile-photo-file">
+                  <input type="file" accept="image/jpeg,image/png,image/webp,image/*" (change)="onProfilePhotoSelected($event)" />
+                  <span class="profile-photo-file__btn">Choisir une image</span>
+                </label>
+                <button *ngIf="profilePhotoDataUrl" type="button" class="profile-photo-clear" (click)="clearProfilePhoto()">
+                  Retirer la photo
+                </button>
+              </div>
+              <p class="profile-photo-block__name" *ngIf="profilePhotoLabel">{{ profilePhotoLabel }}</p>
+              <div class="profile-photo-compare" *ngIf="profilePhotoDataUrl || enhancedProfilePhotoDataUrl">
+                <figure *ngIf="profilePhotoDataUrl" class="profile-photo-figure">
+                  <figcaption>Originale</figcaption>
+                  <img [src]="profilePhotoDataUrl" alt="Photo importee" />
+                </figure>
+                <figure *ngIf="enhancedProfilePhotoDataUrl" class="profile-photo-figure profile-photo-figure--enhanced">
+                  <figcaption>Version professionnelle (IA)</figcaption>
+                  <img [src]="enhancedProfilePhotoDataUrl" alt="Photo professionnelle generee" />
+                  <a class="profile-photo-download" [href]="enhancedProfilePhotoDataUrl" download="photo-profil-pro.png">Telecharger</a>
+                </figure>
+              </div>
+            </section>
+
+            <loader *ngIf="optimizerLoading"></loader>
+
+            <p *ngIf="optimizerError" class="error-card fade-slide-up">{{ optimizerError }}</p>
+
+            <section class="results-area">
+              <div class="results-head">
+                <result-tabs
+                  [activeTab]="activeTab"
+                  [atsScore]="atsResult?.score ?? 0"
+                  (tabChange)="setActiveTab($event)"
+                ></result-tabs>
+                <p *ngIf="optimizerSuccess" class="success-badge">Generation complete</p>
+              </div>
+
+              <div *ngIf="profilePhotoAssistantMessage" class="photo-assistant-card fade-slide-up">
+                <h4 class="photo-assistant-card__title">Photo &amp; Gemini</h4>
+                <pre class="photo-assistant-card__text">{{ profilePhotoAssistantMessage }}</pre>
+              </div>
+
+              <div class="results-grid">
+                <result-card
+                  [title]="activeTitle"
+                  [content]="activeContent"
+                  (contentChange)="onResultChanged($event)"
+                  (downloadClick)="downloadPdf()"
+                ></result-card>
+
+                <aside class="ats-card fade-slide-up">
+                  <h3>ATS Insights</h3>
+                  <p>Compatibilite entre la description de poste et ton CV optimise.</p>
+
+                  <div class="ats-meter">
+                    <span [style.width.%]="atsResult?.score ?? 0"></span>
+                  </div>
+                  <strong class="ats-score">{{ atsResult?.score ?? 0 }}%</strong>
+
+                  <div class="ats-list">
+                    <h4>Matched keywords</h4>
+                    <div *ngIf="(atsResult?.matchedKeywords?.length ?? 0) > 0; else noMatched">
+                      <span *ngFor="let keyword of atsResult?.matchedKeywords">{{ keyword }}</span>
+                    </div>
+                    <ng-template #noMatched>
+                      <p class="ats-empty">Aucun mot-cle trouve pour le moment.</p>
+                    </ng-template>
+                  </div>
+
+                  <div class="ats-list">
+                    <h4>Missing keywords</h4>
+                    <div *ngIf="(atsResult?.missingKeywords?.length ?? 0) > 0; else noMissing">
+                      <span class="missing" *ngFor="let keyword of atsResult?.missingKeywords">{{ keyword }}</span>
+                    </div>
+                    <ng-template #noMissing>
+                      <p class="ats-empty">Aucun mot-cle manquant.</p>
+                    </ng-template>
+                  </div>
+                </aside>
+              </div>
+            </section>
+          </section>
+
+          <p class="hint final-hint" *ngIf="form.controls.cvDataUrl.value">CV attache: {{ attachedCvLabel || 'CV' }}</p>
+        </div>
+
+        <button class="submit" type="button" (click)="apply()">Envoyer ma candidature</button>
+      </div>
+    </div>
+
+    <div class="notfound" *ngIf="showNotFound">
+      <h2 class="comm-head mb16 apply-title">Offre introuvable</h2>
+      <div class="comm-txt"><p>Cette offre n'existe pas (ou a ete supprimee).</p></div>
+    </div>
+  </div>
+</section>

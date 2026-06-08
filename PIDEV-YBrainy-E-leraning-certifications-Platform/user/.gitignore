@@ -1,0 +1,39 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+tmp/face-biometric/97b2ee519756fb6d2dbe9b73cc03ffc438f06abeadb27679a55d3154e49a56ff.png
+tmp/face-biometric/c42c49c63eae60097d6017c1ef35f4bbefcdca171efc52be154dd435a3764924.png
+!angular/angular-app/src/assets/backoffice/vendor/jquery-steps/
+!angular/angular-app/src/assets/backoffice/vendor/jquery-steps/build/
+!angular/angular-app/src/assets/backoffice/vendor/jquery-steps/build/jquery.steps.min.js
+

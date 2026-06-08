@@ -1,0 +1,64 @@
+<app-backoffice-nav />
+
+<div class="bo-wrap">
+  <div class="bo-head">
+    <h1>Categories</h1>
+    <div class="bo-actions">
+      <button type="button" class="btn" (click)="startCreate()">New Category</button>
+      <button type="button" class="btn" (click)="load()">Refresh</button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="bo-card bo-error">{{ error }}</div>
+
+  <div class="bo-card" style="margin-bottom:16px;">
+    <h3 style="margin:0 0 12px 0;">{{ editingId === null ? 'Create' : 'Edit' }} Category</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="bo-form-row">
+        <label>Name</label>
+        <input formControlName="name" />
+      </div>
+
+      <div class="bo-form-row">
+        <label>Description</label>
+        <textarea formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="bo-actions">
+        <button type="submit" class="btn">{{ editingId === null ? 'Create' : 'Save' }}</button>
+        <button type="button" class="btn" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="loading" class="bo-card">Loading…</div>
+
+  <div *ngIf="!loading" class="bo-card">
+    <table class="bo-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of categories">
+          <td>{{ c.id }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.description }}</td>
+          <td>
+            <div class="bo-actions">
+              <button type="button" class="btn" (click)="startEdit(c)">Edit</button>
+              <button type="button" class="btn danger" (click)="delete(c)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="categories.length === 0" class="bo-empty">No categories.</div>
+  </div>
+</div>

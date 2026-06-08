@@ -1,0 +1,440 @@
+{
+  "forecast_context": {
+    "margin_pct": 27.06,
+    "margin_trend_pct": -23.32,
+    "top_revenue_source": "COURSE_SALE",
+    "watch_category": "SUPPORT",
+    "watch_growth_pct": 195.65,
+    "forecast_horizon": {
+      "from": "2026-07",
+      "to": "2026-12",
+      "months_ahead": 6,
+      "income_total": 253441.97,
+      "expenses_total": 184857.66,
+      "profit_total": 68584.3
+    }
+  },
+  "recommendation_scorecard": [
+    {
+      "metric": "training_rows",
+      "value": 2640.0
+    },
+    {
+      "metric": "train_rows",
+      "value": 2112.0
+    },
+    {
+      "metric": "test_rows",
+      "value": 528.0
+    },
+    {
+      "metric": "holdout_accuracy",
+      "value": 0.9261363636363636
+    },
+    {
+      "metric": "avg_prediction_confidence",
+      "value": 0.8870048920168702
+    },
+    {
+      "metric": "BOOST_MARKETING_precision",
+      "value": 0.9692737430167597
+    },
+    {
+      "metric": "BOOST_MARKETING_recall",
+      "value": 0.9327956989247311
+    },
+    {
+      "metric": "BOOST_MARKETING_f1",
+      "value": 0.9506849315068493
+    },
+    {
+      "metric": "INVEST_CONTENT_precision",
+      "value": 0.65
+    },
+    {
+      "metric": "INVEST_CONTENT_recall",
+      "value": 0.6842105263157895
+    },
+    {
+      "metric": "INVEST_CONTENT_f1",
+      "value": 0.6666666666666666
+    },
+    {
+      "metric": "OPTIMIZE_SALARY_precision",
+      "value": 0.8461538461538461
+    },
+    {
+      "metric": "OPTIMIZE_SALARY_recall",
+      "value": 0.9565217391304348
+    },
+    {
+      "metric": "OPTIMIZE_SALARY_f1",
+      "value": 0.8979591836734694
+    },
+    {
+      "metric": "STABILIZE_SUPPORT_precision",
+      "value": 0.8913043478260869
+    },
+    {
+      "metric": "STABILIZE_SUPPORT_recall",
+      "value": 0.9111111111111111
+    },
+    {
+      "metric": "STABILIZE_SUPPORT_f1",
+      "value": 0.9010989010989011
+    },
+    {
+      "metric": "macro avg_precision",
+      "value": 0.8391829842491733
+    },
+    {
+      "metric": "macro avg_recall",
+      "value": 0.8711597688705166
+    },
+    {
+      "metric": "macro avg_f1",
+      "value": 0.8541024207364716
+    },
+    {
+      "metric": "weighted avg_precision",
+      "value": 0.929686897538944
+    },
+    {
+      "metric": "weighted avg_recall",
+      "value": 0.9261363636363636
+    },
+    {
+      "metric": "weighted avg_f1",
+      "value": 0.927051433020122
+    }
+  ],
+  "executive_metrics": [
+    {
+      "metric": "months_at_risk_before",
+      "value": "5",
+      "notes": "Forecast months below margin target or with negative downside profit before recommendations.",
+      "status": "HIGH"
+    },
+    {
+      "metric": "months_at_risk_after",
+      "value": "5",
+      "notes": "Remaining months still at risk after applying the suggested actions.",
+      "status": "HIGH"
+    },
+    {
+      "metric": "avg_margin_uplift",
+      "value": "+3.45 pts",
+      "notes": "Average margin improvement across the 6-month horizon.",
+      "status": "LOW"
+    },
+    {
+      "metric": "avg_profit_uplift",
+      "value": "$1,945",
+      "notes": "Average monthly profit improvement expected from the recommendations.",
+      "status": "LOW"
+    },
+    {
+      "metric": "best_gain_window",
+      "value": "2026-10",
+      "notes": "Highest projected margin lift comes from 'Scale marketing on the strongest channels'.",
+      "status": "LOW"
+    },
+    {
+      "metric": "model_accuracy",
+      "value": "92.6%",
+      "notes": "Holdout accuracy of the recommendation classifier on scenario-based validation data.",
+      "status": "LOW"
+    }
+  ],
+  "model_feature_importance": [
+    {
+      "feature": "support_growth",
+      "importance": 0.1363503203818585
+    },
+    {
+      "feature": "margin",
+      "importance": 0.11335400891816298
+    },
+    {
+      "feature": "margin_buffer",
+      "importance": 0.11286856864697065
+    },
+    {
+      "feature": "content_growth",
+      "importance": 0.08654066884819227
+    },
+    {
+      "feature": "risk_gap",
+      "importance": 0.07937465913232135
+    },
+    {
+      "feature": "content_share",
+      "importance": 0.07382457713294888
+    },
+    {
+      "feature": "profit",
+      "importance": 0.06200426005986723
+    },
+    {
+      "feature": "marketing_growth",
+      "importance": 0.042962991449586804
+    },
+    {
+      "feature": "expense_growth",
+      "importance": 0.038504215015030506
+    },
+    {
+      "feature": "expenses",
+      "importance": 0.034038054694994206
+    }
+  ],
+  "user_playbook": [
+    {
+      "step": 1,
+      "window": "2026-07",
+      "priority": "LOW",
+      "action": "Stabilize support operations with automation",
+      "why": "support automation helps stop cost creep before it erodes profit; projected profit changes by +274 and margin by +0.55 pts",
+      "how": "Automate repetitive support flows, consolidate support tools, and move common issues into self-serve content.",
+      "expected_impact": "Profit 18905 -> 19179; margin 44.22% -> 44.77%.",
+      "success_signal": "Support cost growth slows while response quality remains acceptable.",
+      "target_metric": "support_ratio"
+    },
+    {
+      "step": 2,
+      "window": "2026-08",
+      "priority": "MEDIUM",
+      "action": "Scale marketing on the strongest channels",
+      "why": "downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2955 and margin by +4.29 pts",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_impact": "Profit 11467 -> 14421; margin 27.01% -> 31.30%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend.",
+      "target_metric": "income_growth"
+    },
+    {
+      "step": 3,
+      "window": "2026-09",
+      "priority": "MEDIUM",
+      "action": "Scale marketing on the strongest channels",
+      "why": "downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2852 and margin by +4.30 pts",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_impact": "Profit 10756 -> 13608; margin 25.90% -> 30.20%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend.",
+      "target_metric": "income_growth"
+    },
+    {
+      "step": 4,
+      "window": "2026-10",
+      "priority": "HIGH",
+      "action": "Scale marketing on the strongest channels",
+      "why": "margin is below the 25% safety target; downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2933 and margin by +4.48 pts",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_impact": "Profit 9886 -> 12820; margin 23.00% -> 27.48%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend.",
+      "target_metric": "income_growth"
+    },
+    {
+      "step": 5,
+      "window": "2026-11",
+      "priority": "HIGH",
+      "action": "Optimize salary and contractor load",
+      "why": "margin is below the 25% safety target; downside profit range turns negative; salary share is above the historical balance; rebalancing payroll protects margin in the weakest months",
+      "how": "Pause non-critical hiring, rebalance contractor load, and align payroll with the months showing the weakest margin.",
+      "expected_impact": "Profit 8702 -> 10012; margin 21.08% -> 24.63%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Salary ratio drops while delivery quality stays stable.",
+      "target_metric": "salary_ratio"
+    },
+    {
+      "step": 6,
+      "window": "2026-12",
+      "priority": "HIGH",
+      "action": "Optimize salary and contractor load",
+      "why": "margin is below the 25% safety target; downside profit range turns negative; salary share is above the historical balance; rebalancing payroll protects margin in the weakest months",
+      "how": "Pause non-critical hiring, rebalance contractor load, and align payroll with the months showing the weakest margin.",
+      "expected_impact": "Profit 8869 -> 10215; margin 20.90% -> 24.44%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Salary ratio drops while delivery quality stays stable.",
+      "target_metric": "salary_ratio"
+    }
+  ],
+  "charts": [
+    {
+      "title": "Margin Before vs After",
+      "file_name": "financial_recommendation_margin_path.png"
+    },
+    {
+      "title": "Projected Profit Uplift",
+      "file_name": "financial_recommendation_profit_uplift.png"
+    },
+    {
+      "title": "Urgency by Month",
+      "file_name": "financial_recommendation_urgency.png"
+    }
+  ],
+  "top_recommendations": [
+    {
+      "recommendation_rank": 1,
+      "title": "Optimize salary and contractor load",
+      "platform": "Finance AI",
+      "skill_category": "Cost Control",
+      "hybrid_final_score": 0.602,
+      "confidence_level": "MEDIUM",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "margin is below the 25% safety target; downside profit range turns negative; salary share is above the historical balance; rebalancing payroll protects margin in the weakest months",
+      "url": null,
+      "month": "2026-12",
+      "margin_before": 20.9,
+      "margin_after": 24.44,
+      "profit_before": 8868.91,
+      "profit_after": 10215.34,
+      "profit_low_before": -10628.55,
+      "profit_low_after": -9282.12,
+      "action_key": "OPTIMIZE_SALARY",
+      "target_metric": "salary_ratio",
+      "priority": "HIGH",
+      "how": "Pause non-critical hiring, rebalance contractor load, and align payroll with the months showing the weakest margin.",
+      "expected_outcome": "Profit 8869 -> 10215; margin 20.90% -> 24.44%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Salary ratio drops while delivery quality stays stable."
+    },
+    {
+      "recommendation_rank": 2,
+      "title": "Optimize salary and contractor load",
+      "platform": "Finance AI",
+      "skill_category": "Cost Control",
+      "hybrid_final_score": 0.6497,
+      "confidence_level": "MEDIUM",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "margin is below the 25% safety target; downside profit range turns negative; salary share is above the historical balance; rebalancing payroll protects margin in the weakest months",
+      "url": null,
+      "month": "2026-11",
+      "margin_before": 21.08,
+      "margin_after": 24.63,
+      "profit_before": 8702.17,
+      "profit_after": 10012.37,
+      "profit_low_before": -10243.74,
+      "profit_low_after": -8933.53,
+      "action_key": "OPTIMIZE_SALARY",
+      "target_metric": "salary_ratio",
+      "priority": "HIGH",
+      "how": "Pause non-critical hiring, rebalance contractor load, and align payroll with the months showing the weakest margin.",
+      "expected_outcome": "Profit 8702 -> 10012; margin 21.08% -> 24.63%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Salary ratio drops while delivery quality stays stable."
+    },
+    {
+      "recommendation_rank": 3,
+      "title": "Scale marketing on the strongest channels",
+      "platform": "Finance AI",
+      "skill_category": "Revenue Growth",
+      "hybrid_final_score": 0.8268,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "margin is below the 25% safety target; downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2933 and margin by +4.48 pts",
+      "url": null,
+      "month": "2026-10",
+      "margin_before": 23.0,
+      "margin_after": 27.48,
+      "profit_before": 9886.1,
+      "profit_after": 12819.51,
+      "profit_low_before": -9583.19,
+      "profit_low_after": -6649.78,
+      "action_key": "BOOST_MARKETING",
+      "target_metric": "income_growth",
+      "priority": "HIGH",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_outcome": "Profit 9886 -> 12820; margin 23.00% -> 27.48%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend."
+    },
+    {
+      "recommendation_rank": 4,
+      "title": "Scale marketing on the strongest channels",
+      "platform": "Finance AI",
+      "skill_category": "Revenue Growth",
+      "hybrid_final_score": 0.9685,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2852 and margin by +4.30 pts",
+      "url": null,
+      "month": "2026-09",
+      "margin_before": 25.9,
+      "margin_after": 30.2,
+      "profit_before": 10755.51,
+      "profit_after": 13607.63,
+      "profit_low_before": -7668.4,
+      "profit_low_after": -4816.28,
+      "action_key": "BOOST_MARKETING",
+      "target_metric": "income_growth",
+      "priority": "MEDIUM",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_outcome": "Profit 10756 -> 13608; margin 25.90% -> 30.20%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend."
+    },
+    {
+      "recommendation_rank": 5,
+      "title": "Scale marketing on the strongest channels",
+      "platform": "Finance AI",
+      "skill_category": "Revenue Growth",
+      "hybrid_final_score": 0.8529,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "downside profit range turns negative; the model sees room to buy growth while staying profitable; projected profit changes by +2955 and margin by +4.29 pts",
+      "url": null,
+      "month": "2026-08",
+      "margin_before": 27.01,
+      "margin_after": 31.3,
+      "profit_before": 11466.52,
+      "profit_after": 14421.2,
+      "profit_low_before": -7216.95,
+      "profit_low_after": -4262.27,
+      "action_key": "BOOST_MARKETING",
+      "target_metric": "income_growth",
+      "priority": "MEDIUM",
+      "how": "Shift budget into the channels already converting, push proven bundle offers, and track weekly CAC against profit lift.",
+      "expected_outcome": "Profit 11467 -> 14421; margin 27.01% -> 31.30%. This improves the plan, but downside risk is still present, so review the target metric weekly.",
+      "success_signal": "Revenue grows faster than added marketing spend."
+    },
+    {
+      "recommendation_rank": 6,
+      "title": "Stabilize support operations with automation",
+      "platform": "Finance AI",
+      "skill_category": "Service Efficiency",
+      "hybrid_final_score": 0.9956,
+      "confidence_level": "HIGH",
+      "impact_band": "WATCH",
+      "recommendation_reason": "support automation helps stop cost creep before it erodes profit; projected profit changes by +274 and margin by +0.55 pts",
+      "url": null,
+      "month": "2026-07",
+      "margin_before": 44.22,
+      "margin_after": 44.77,
+      "profit_before": 18905.09,
+      "profit_after": 19178.9,
+      "profit_low_before": 2448.1,
+      "profit_low_after": 2721.91,
+      "action_key": "STABILIZE_SUPPORT",
+      "target_metric": "support_ratio",
+      "priority": "LOW",
+      "how": "Automate repetitive support flows, consolidate support tools, and move common issues into self-serve content.",
+      "expected_outcome": "Profit 18905 -> 19179; margin 44.22% -> 44.77%.",
+      "success_signal": "Support cost growth slows while response quality remains acceptable."
+    }
+  ],
+  "improvement_actions": [
+    {
+      "priority": "HIGH",
+      "action": "Optimize salary and contractor load",
+      "rationale": "Recommended across 2026-11, 2026-12. Average projected margin uplift: +3.54 pts and profit uplift: +1328.",
+      "target_metric": "salary_ratio"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Scale marketing on the strongest channels",
+      "rationale": "Recommended across 2026-08, 2026-09, 2026-10. Average projected margin uplift: +4.36 pts and profit uplift: +2913.",
+      "target_metric": "income_growth"
+    },
+    {
+      "priority": "LOW",
+      "action": "Stabilize support operations with automation",
+      "rationale": "Recommended across 2026-07. Average projected margin uplift: +0.55 pts and profit uplift: +274.",
+      "target_metric": "support_ratio"
+    }
+  ],
+  "summary_text": "FINANCIAL RECOMMENDATIONS TO KEEP OUTCOMES POSITIVE\n--------------------------------\nForecast margin context: 27.06%\nForecast horizon: 2026-07 to 2026-12\nTop revenue source: COURSE_SALE\nHoldout accuracy: 92.6%\n\nPRIORITY RECOMMENDATIONS\n- 2026-12: Optimize salary and contractor load | margin 20.90% -> 24.44% | profit 8869 -> 10215\n- 2026-11: Optimize salary and contractor load | margin 21.08% -> 24.63% | profit 8702 -> 10012\n- 2026-10: Scale marketing on the strongest channels | margin 23.00% -> 27.48% | profit 9886 -> 12820\n- 2026-09: Scale marketing on the strongest channels | margin 25.90% -> 30.20% | profit 10756 -> 13608\n- 2026-08: Scale marketing on the strongest channels | margin 27.01% -> 31.30% | profit 11467 -> 14421\n- 2026-07: Stabilize support operations with automation | margin 44.22% -> 44.77% | profit 18905 -> 19179\n\nIMPROVEMENT ACTIONS\n- [HIGH] Optimize salary and contractor load -> Recommended across 2026-11, 2026-12. Average projected margin uplift: +3.54 pts and profit uplift: +1328.\n- [HIGH] Scale marketing on the strongest channels -> Recommended across 2026-08, 2026-09, 2026-10. Average projected margin uplift: +4.36 pts and profit uplift: +2913.\n- [LOW] Stabilize support operations with automation -> Recommended across 2026-07. Average projected margin uplift: +0.55 pts and profit uplift: +274.\n\nHISTORICAL BASELINE\n- 2026-01: income 21085, expenses 12570, profit 8515, margin 40.38%\n- 2026-02: income 24928, expenses 11185, profit 13743, margin 55.13%\n- 2026-03: income 37589, expenses 9711, profit 27878, margin 74.17%\n- 2026-04: income 37803, expenses 15728, profit 22075, margin 58.39%\n- 2026-05: income 43476, expenses 12670, profit 30806, margin 70.86%\n- 2026-06: income 34076, expenses 15439, profit 18637, margin 54.69%"
+}

@@ -1,0 +1,113 @@
+<div id="main-wrapper" class="show wallet-open active">
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr" style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">Job Offers</div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <app-backoffice-dashboard-sidebar></app-backoffice-dashboard-sidebar>
+
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="bo-wrap">
+        <div class="bo-top">
+          <div>
+            <h1>Offres d'emploi</h1>
+            <p class="muted">Gerer vos offres.</p>
+          </div>
+          <div class="actions">
+            <a class="btn" routerLink="/dashboard/cv-submissions">Candidatures</a>
+            <a class="btn primary" routerLink="/dashboard/job-offers/new">+ Nouvelle offre</a>
+            <button class="btn" type="button" (click)="resetDemo()">Rafraichir</button>
+          </div>
+        </div>
+
+        <div class="bo-filters">
+          <input class="input" type="search" placeholder="Rechercher (titre, societe, lieu, type)..." [(ngModel)]="query" (ngModelChange)="page = 1" />
+
+          <label class="inline">
+            <span>Partenaire</span>
+            <select class="select" [(ngModel)]="partnerId" (ngModelChange)="page = 1">
+              <option [ngValue]="''">Tous</option>
+              <option *ngFor="let p of partners" [ngValue]="p.id">{{ p.name }}</option>
+            </select>
+          </label>
+
+          <label class="inline">
+            <span>Page size</span>
+            <select class="select" [(ngModel)]="pageSize" (ngModelChange)="page = 1">
+              <option [ngValue]="6">6</option>
+              <option [ngValue]="8">8</option>
+              <option [ngValue]="12">12</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="empty-card" *ngIf="loadError">
+          <h3>Connexion backend indisponible</h3>
+          <p>{{ loadError }}</p>
+        </div>
+
+        <div class="offers-grid" *ngIf="filtered.length > 0">
+          <article class="offer-card" *ngFor="let o of paged">
+            <div class="offer-cover">
+              <img [src]="o.imageDataUrl || 'assets/frontoffice/www.ciklum.com/wp-content/uploads/2025/10/fi_6582502.png'" alt="offre" class="cover-img" />
+              <span class="pill" [class.off]="!o.isActive">{{ o.isActive ? 'Active' : 'Inactive' }}</span>
+            </div>
+
+            <div class="offer-body">
+              <p class="partner">{{ partnerName(o.partnershipId) }}</p>
+              <h3 class="offer-title">{{ o.title }}</h3>
+
+              <div class="meta-list">
+                <span class="meta-chip">{{ o.contractType }}</span>
+                <span class="meta-chip">{{ o.location || 'Lieu non precise' }}</span>
+                <span class="meta-chip">{{ o.salaryRange || 'Salaire non precise' }}</span>
+              </div>
+
+              <div class="offer-actions">
+                <a class="btn small" [routerLink]="['/dashboard/job-offers', o.id, 'edit']">Modifier</a>
+                <button class="btn small danger" type="button" (click)="delete(o.id)">Supprimer</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="empty-card" *ngIf="filtered.length === 0 && !loadError">
+          <h3>Aucune offre trouvee</h3>
+          <p>Essaie de changer les filtres ou cree une nouvelle offre.</p>
+          <a class="btn primary" routerLink="/dashboard/job-offers/new">+ Nouvelle offre</a>
+        </div>
+
+        <div class="pager">
+          <button class="btn small" type="button" (click)="page = 1" [disabled]="page <= 1">&lt;&lt;</button>
+          <button class="btn small" type="button" (click)="page = page - 1" [disabled]="page <= 1">&lt;</button>
+          <span class="muted">Page {{ page }} / {{ totalPages }}</span>
+          <button class="btn small" type="button" (click)="page = page + 1" [disabled]="page >= totalPages">&gt;</button>
+          <button class="btn small" type="button" (click)="page = totalPages" [disabled]="page >= totalPages">&gt;&gt;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

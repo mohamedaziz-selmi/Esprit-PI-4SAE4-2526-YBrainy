@@ -1,0 +1,21 @@
+<router-outlet />
+
+<ng-container *ngIf="focusMode.state$ | async as focusState">
+  <div class="focus-mode-alert" *ngIf="focusState.warning" role="alert">
+    <strong>Look back at the screen</strong>
+    <span>You have been away for {{ focusState.awaySeconds }} seconds.</span>
+  </div>
+
+  <div class="focus-mode-status" *ngIf="focusState.enabled">
+    <span class="focus-mode-status__dot" [class.active]="focusState.active"></span>
+    <span class="focus-mode-status__text">
+      <strong>Focus mode</strong>
+      <small *ngIf="focusState.starting">Starting...</small>
+      <small *ngIf="!focusState.starting && focusState.active">Focus {{ focusState.focusScore }}%</small>
+      <small *ngIf="!focusState.starting && !focusState.active">{{ focusState.unavailable || 'Standby' }}</small>
+    </span>
+    <button type="button" (click)="focusMode.stop()" aria-label="Stop focus mode">
+      <span aria-hidden="true"></span>
+    </button>
+  </div>
+</ng-container>

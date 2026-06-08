@@ -1,0 +1,688 @@
+.fo-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: fo-spin 0.8s linear infinite;
+}
+@keyframes fo-spin {
+  to { transform: rotate(360deg); }
+}
+
+.fo-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.fo-topbar {
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 18px;
+	flex-wrap: wrap;
+}
+
+.fo-topbar-title {
+	font-size: 22px;
+	font-weight: 900;
+	line-height: 1.2;
+}
+
+.fo-topbar-sub {
+	margin-top: 6px;
+	color: rgba(17, 24, 39, 0.65);
+	font-weight: 700;
+}
+
+.fo-topbar-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.fo-course-hero {
+  padding: 0;
+  overflow: hidden;
+}
+
+.fo-course-banner {
+	background: radial-gradient(1200px 520px at 20% 10%, rgba(54, 93, 247, 0.55), transparent 60%),
+		linear-gradient(135deg, rgba(17, 24, 39, 1), rgba(54, 93, 247, 0.95));
+	color: #fff;
+	padding: 22px 20px;
+}
+
+.fo-course-banner-inner {
+	max-width: 980px;
+}
+
+.fo-course-banner-title {
+	font-size: 22px;
+	font-weight: 900;
+	line-height: 1.2;
+}
+
+.fo-course-banner-sub {
+	margin-top: 6px;
+	font-size: 13px;
+	opacity: 0.85;
+	font-weight: 700;
+}
+
+.fo-course-hero-grid {
+  display: grid;
+	grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+	gap: 18px;
+	align-items: start;
+	padding: 18px;
+}
+
+@media (max-width: 1200px) {
+  .fo-course-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fo-course-media {
+  width: 100%;
+}
+
+.fo-course-thumb {
+  width: 100%;
+  height: 260px;
+  border-radius: 14px;
+  object-fit: contain;
+  background: #f3f4f6;
+  display: block;
+}
+
+.fo-course-thumb-placeholder {
+	width: 100%;
+	height: 260px;
+	border-radius: 14px;
+	background: #f3f4f6;
+	border: 1px dashed rgba(0, 0, 0, 0.12);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.fo-course-thumb-placeholder-inner {
+	font-weight: 800;
+	color: rgba(17, 24, 39, 0.55);
+}
+
+.fo-course-cta-card {
+	margin-top: 12px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 14px;
+	padding: 14px;
+	background: rgba(0, 0, 0, 0.02);
+}
+
+.fo-course-cta-hint {
+	margin-top: 10px;
+	font-size: 12px;
+	color: rgba(17, 24, 39, 0.65);
+}
+
+.fo-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.fo-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  background: rgba(54, 93, 247, 0.12);
+  color: var(--primary);
+}
+
+.fo-badge.dark {
+  background: rgba(17, 24, 39, 0.8);
+  color: #fff;
+}
+
+.fo-badge.light {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+}
+
+.fo-badge.publish {
+	background: rgba(59, 130, 246, 0.12);
+	color: #1d4ed8;
+}
+
+.fo-badge.publish.draft {
+	background: rgba(245, 158, 11, 0.12);
+	color: #b45309;
+}
+
+.fo-course-title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.fo-course-desc {
+  margin: 10px 0 0;
+  color: rgba(17, 24, 39, 0.75);
+}
+
+.fo-course-fields {
+	margin-top: 14px;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 10px;
+}
+
+@media (max-width: 1100px) {
+	.fo-course-fields {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 720px) {
+	.fo-course-fields {
+		grid-template-columns: 1fr;
+	}
+}
+
+.fo-field {
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 12px;
+	padding: 12px;
+	background: rgba(0, 0, 0, 0.02);
+}
+
+.fo-field-label {
+	font-size: 12px;
+	color: rgba(17, 24, 39, 0.6);
+	font-weight: 800;
+}
+
+.fo-field-value {
+	margin-top: 6px;
+	font-size: 15px;
+	font-weight: 900;
+	color: #111827;
+}
+
+.fo-field-muted {
+	font-weight: 800;
+	color: rgba(17, 24, 39, 0.55);
+}
+
+/* ===== New Course Detail Layout (professional refactor) ===== */
+
+.fo-course-detail-page {
+	padding: 18px 0 50px;
+}
+
+.fo-course-hero {
+	position: relative;
+	min-height: 220px;
+	overflow: hidden;
+	border-radius: 0;
+	margin: 0;
+}
+
+.fo-hero-bg {
+	position: absolute;
+	inset: 0;
+	background-size: cover;
+	background-position: center;
+	filter: blur(18px);
+	transform: scale(1.12);
+	opacity: 0.55;
+}
+
+.fo-hero-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, rgba(17, 24, 39, 0.92), rgba(54, 93, 247, 0.65));
+}
+
+.fo-hero-inner {
+	position: relative;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 28px 16px;
+}
+
+.fo-hero-top {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.fo-hero-text {
+	margin-top: 18px;
+}
+
+.fo-hero-title {
+	margin: 10px 0 0;
+	font-size: clamp(28px, 4vw, 44px);
+	line-height: 1.1;
+	font-weight: 950;
+	letter-spacing: -0.6px;
+	color: #fff;
+	text-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+	word-break: break-word;
+}
+
+.fo-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.fo-chip {
+	display: inline-flex;
+	align-items: center;
+	height: 28px;
+	padding: 0 12px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 900;
+	letter-spacing: 0.2px;
+	color: rgba(255, 255, 255, 0.92);
+	background: rgba(255, 255, 255, 0.14);
+	backdrop-filter: blur(10px);
+	text-transform: uppercase;
+}
+
+.fo-chip.dark {
+	background: rgba(17, 24, 39, 0.55);
+}
+
+.fo-chip.success {
+	background: rgba(16, 185, 129, 0.25);
+}
+
+.fo-chip.warn {
+	background: rgba(245, 158, 11, 0.25);
+}
+
+.fo-course-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 18px 16px 0;
+}
+
+.fo-course-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 380px;
+	gap: 18px;
+	align-items: start;
+}
+
+@media (max-width: 1100px) {
+	.fo-course-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.fo-media-card {
+	border-radius: 16px;
+	overflow: hidden;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 18px 50px rgba(12, 18, 38, 0.10);
+}
+
+.fo-media {
+	width: 100%;
+	height: min(440px, 60vh);
+	object-fit: contain;
+	background: #f3f4f6;
+	display: block;
+}
+
+.fo-media-placeholder {
+	width: 100%;
+	height: min(440px, 60vh);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f3f4f6;
+	color: rgba(17, 24, 39, 0.55);
+	font-weight: 900;
+}
+
+.fo-section {
+	margin-top: 16px;
+	padding: 16px;
+	border-radius: 16px;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 18px 50px rgba(12, 18, 38, 0.06);
+}
+
+.fo-section-title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 950;
+	letter-spacing: -0.2px;
+}
+
+.fo-desc {
+	margin: 10px 0 0;
+	font-size: 14px;
+	line-height: 1.65;
+	color: rgba(17, 24, 39, 0.78);
+	white-space: normal;
+	overflow-wrap: anywhere;
+}
+
+.fo-side-card {
+	position: sticky;
+	top: 18px;
+	border-radius: 16px;
+	background: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	box-shadow: 0 18px 50px rgba(12, 18, 38, 0.10);
+	padding: 16px;
+}
+
+@media (max-width: 1100px) {
+	.fo-side-card {
+		position: static;
+	}
+}
+
+.fo-price {
+	font-size: 22px;
+	font-weight: 950;
+	letter-spacing: -0.2px;
+	color: #111827;
+}
+
+.fo-primary {
+	width: 100%;
+	margin-top: 12px;
+	border: none;
+	background: linear-gradient(135deg, rgba(54, 93, 247, 1), rgba(54, 93, 247, 0.75));
+	color: #fff;
+	padding: 12px 14px;
+	border-radius: 12px;
+	font-weight: 950;
+	cursor: pointer;
+	box-shadow: 0 18px 45px rgba(54, 93, 247, 0.28);
+}
+
+.fo-primary:hover {
+	filter: brightness(0.98);
+}
+
+.fo-side-hint {
+	margin-top: 10px;
+	font-size: 12px;
+	line-height: 1.45;
+	color: rgba(17, 24, 39, 0.62);
+}
+
+.fo-stats {
+	margin-top: 14px;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 10px;
+}
+
+.fo-stat {
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 12px;
+	padding: 12px;
+	background: rgba(0, 0, 0, 0.02);
+}
+
+.fo-stat-label {
+	font-size: 12px;
+	font-weight: 900;
+	color: rgba(17, 24, 39, 0.6);
+}
+
+.fo-stat-value {
+	margin-top: 6px;
+	font-size: 14px;
+	font-weight: 950;
+	color: #111827;
+	overflow-wrap: anywhere;
+}
+
+.fo-muted {
+	font-weight: 900;
+	color: rgba(17, 24, 39, 0.55);
+}
+
+/* ── Action buttons ────────────────────────────────────── */
+.fo-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+
+.fo-btn-progress {
+  width: 100%;
+  padding: 11px 16px;
+  border: 2px solid rgba(54, 93, 247, 1);
+  color: rgba(54, 93, 247, 1);
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+  transition: background 140ms ease, color 140ms ease;
+}
+.fo-btn-progress:hover {
+  background: rgba(54, 93, 247, 1);
+  color: #fff;
+}
+
+.fo-btn-quiz {
+  width: 100%;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+  transition: filter 140ms ease;
+}
+.fo-btn-quiz:hover {
+  filter: brightness(0.94);
+}
+
+.fo-btn-reviews {
+  width: 100%;
+  padding: 11px 16px;
+  border: 2px solid rgba(245, 158, 11, 1);
+  color: rgba(180, 83, 9, 1);
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 900;
+  transition: background 140ms ease, color 140ms ease;
+}
+.fo-btn-reviews:hover {
+  background: rgba(245, 158, 11, 1);
+  color: #fff;
+}
+
+/* ── Disabled state for gated buttons ─────────────────── */
+.fo-btn-progress:disabled,
+.fo-btn-quiz:disabled,
+.fo-btn-reviews:disabled,
+.fo-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.fo-loading-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+/* ── Enrollment section ────────────────────────────────── */
+.fo-enroll-wrap {
+  margin-top: 14px;
+}
+
+.fo-btn-enroll {
+  width: 100%;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  transition: filter 140ms ease;
+}
+
+.fo-btn-enroll:hover {
+  filter: brightness(0.94);
+}
+
+.fo-btn-enroll:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fo-enroll-error {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+.fo-enrolled-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  color: #059669;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.fo-reader-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px 16px;
+  border: 1.5px solid rgba(17, 24, 39, 0.14);
+  border-radius: 8px;
+  background: rgba(17, 24, 39, 0.04);
+  color: #111827;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.fo-reader-btn:hover:not(:disabled) {
+  background: rgba(54, 93, 247, 0.08);
+  border-color: rgba(54, 93, 247, 0.28);
+}
+
+.fo-reader-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.fo-reader-error {
+  margin-top: 8px;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.fo-reader-dock {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 70;
+  width: min(390px, calc(100vw - 28px));
+  height: min(600px, calc(100vh - 36px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #0b1220;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+}
+
+.fo-reader-dock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  background: rgba(17, 24, 39, 0.96);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.fo-reader-dock-title {
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.fo-reader-dock-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.fo-reader-close {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.fo-reader-frame {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #0b1220;
+}
+
+@media (max-width: 720px) {
+  .fo-reader-dock {
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
+    width: auto;
+    height: min(560px, calc(100vh - 20px));
+  }
+}

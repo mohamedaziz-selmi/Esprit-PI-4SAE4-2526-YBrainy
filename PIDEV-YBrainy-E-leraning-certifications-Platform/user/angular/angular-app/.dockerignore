@@ -1,0 +1,12 @@
+node_modules
+dist
+.angular
+.git
+.vscode
+.env
+.env.local
+*.log
+edge-*.txt
+edge-*.err.txt
+edge-*.out.txt
+tmp_*.png

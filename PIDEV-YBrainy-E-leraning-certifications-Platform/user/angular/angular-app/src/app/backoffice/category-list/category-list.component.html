@@ -1,0 +1,271 @@
+<!-- Preloader start -->
+<div id="preloader" style="display: none;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+<!-- Preloader end -->
+
+<!-- Main wrapper start -->
+<div id="main-wrapper" class="show">
+
+  <!-- Nav header start -->
+  <div class="nav-header">
+    <a href="index.html" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr"
+        style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+      </div>
+    </div>
+  </div>
+  <!-- Nav header end -->
+
+  <!-- Header start -->
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">
+              Pack Categories
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- Header end -->
+
+  <!-- Sidebar start -->
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">home</i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);" onclick="window.top.location.href='/dashboard'">Dashboard</a></li>
+            <li><a href="javascript:void(0);" onclick="window.top.location.href='/dashboard/finance'">Finance</a></li>
+          </ul>
+
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Student</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Student</a></li>
+            <li><a href="javascript:void(0);">Student Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Student</a></li>
+
+          </ul>
+
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">person</i>
+            <span class="nav-text">Teacher</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">Teacher</a></li>
+            <li><a href="javascript:void(0);">Teacher Detail</a></li>
+            <li><a href="javascript:void(0);">Add New Teacher</a></li>
+
+          </ul>
+
+        </li>
+        <li><a href="javascript:void(0);" onclick="window.top.location.href='/dashboard/packs'">
+            <i class="material-icons">shopping_cart</i>
+            <span class="nav-text">Shop</span>
+          </a>
+        </li>
+        <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Courses</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a href="javascript:void(0);">All Courses</a></li>
+            <li><a href="javascript:void(0);">Lessons</a></li>
+            <li><a href="javascript:void(0);">Calendar</a></li>
+          </ul>
+
+        </li>
+        <!-- Reduced sidebar items for brevity, matching key sections -->
+      </ul>
+    </div>
+  </div>
+  <!-- Sidebar end -->
+
+  <!-- Content body start -->
+  <div class="content-body">
+    <div class="container-fluid">
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-black font-w600 mb-0">Pack Categories</h2>
+        <button (click)="openNewCategoryModal()" class="btn btn-primary">
+          <i class="bi bi-plus-lg me-1"></i> New Category
+        </button>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading categories...</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+        <button class="btn btn-sm btn-outline-danger ms-3" (click)="loadCategories()">Retry</button>
+      </div>
+
+      <!-- Table -->
+      <div *ngIf="!loading && !error" class="card category-table-card">
+        <div class="card-header border-0 d-flex justify-content-between align-items-center flex-wrap">
+          <h4 class="card-title mb-0">
+            <i class="material-icons me-2 align-middle text-primary">category</i>
+            Category Management
+          </h4>
+          <span class="category-total-badge">{{ categories.length }} total</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive category-table-wrap">
+            <table class="table mb-0 category-table">
+              <thead>
+                <tr>
+                  <th class="ps-4">#</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Packs</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th class="text-center pe-4">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="categories.length === 0">
+                  <td colspan="7" class="text-center text-muted py-5 category-empty-row">
+                    No categories found. Create one to get started.
+                  </td>
+                </tr>
+                <tr *ngFor="let cat of categories; let i = index">
+                  <td class="ps-4">
+                    <span class="category-index-pill">{{ i + 1 }}</span>
+                  </td>
+                  <td>
+                    <div class="category-name-cell">
+                      <span class="category-icon-wrap">
+                        <i [class]="'bi ' + (cat.icon || 'bi-folder')"></i>
+                      </span>
+                      <span class="category-name">{{ cat.name }}</span>
+                    </div>
+                  </td>
+                  <td class="category-description">{{ cat.description || '-' }}</td>
+                  <td><span class="category-pack-badge">{{ cat.packCount }}</span></td>
+                  <td>
+                    <button type="button" class="badge border-0 category-status-chip" [ngClass]="{
+                        'status-active': cat.status === 'ACTIVE',
+                        'status-inactive': cat.status === 'INACTIVE'
+                      }" (click)="toggleStatus(cat)">
+                      {{ cat.status }}
+                    </button>
+                  </td>
+                  <td class="category-created">{{ cat.createdAt | date:'mediumDate' }}</td>
+                  <td class="text-center pe-4">
+                    <div class="category-actions">
+                      <button type="button" (click)="openEditCategoryModal(cat)"
+                        class="btn btn-primary shadow btn-xs category-action-btn action-edit me-1" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                      <button type="button" class="btn btn-danger shadow btn-xs category-action-btn action-delete"
+                        (click)="deleteCategory(cat)" title="Delete">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Content body end -->
+
+</div>
+<!-- Main wrapper end -->
+
+<!-- Custom Delete Confirmation Modal -->
+<div class="category-delete-overlay" *ngIf="isDeleteModalOpen" (click)="closeDeleteModal()">
+  <div class="category-delete-modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteCategoryTitle"
+    (click)="$event.stopPropagation()">
+    <div class="category-delete-headline">
+      <span class="category-delete-icon-wrap">
+        <i class="material-icons">delete_forever</i>
+      </span>
+      <div>
+        <h4 id="deleteCategoryTitle">Delete Category</h4>
+        <p>This will remove the category from the list.</p>
+      </div>
+    </div>
+
+    <div class="category-delete-body">
+      <p class="category-delete-question">
+        Are you sure you want to delete
+        <span class="category-delete-name">"{{ categoryToDelete?.name }}"</span>?
+      </p>
+      <div *ngIf="deleteError" class="category-delete-error">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        {{ deleteError }}
+      </div>
+    </div>
+
+    <div class="category-delete-actions">
+      <button type="button" class="btn btn-light category-delete-cancel" (click)="closeDeleteModal()"
+        [disabled]="deletingCategory">
+        Keep Category
+      </button>
+      <button type="button" class="btn category-delete-confirm" (click)="confirmDeleteCategory()"
+        [disabled]="deletingCategory">
+        <span *ngIf="deletingCategory" class="spinner-border spinner-border-sm me-2"></span>
+        {{ deletingCategory ? 'Deleting...' : 'Yes, Delete It' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Modal -->
+<div class="modal show" *ngIf="showModal" style="display: block;" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom">
+        <h5 class="modal-title" id="categoryModalLabel">{{ isEditMode ? 'Edit Category' : 'New Category' }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onCategoryFormClosed()"></button>
+      </div>
+      <div class="modal-body">
+        <app-category-form 
+          [isModal]="true"
+          [category]="selectedCategory"
+          (saved)="onCategorySaved($event)"
+          (closed)="onCategoryFormClosed()">
+        </app-category-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showModal"></div>
+

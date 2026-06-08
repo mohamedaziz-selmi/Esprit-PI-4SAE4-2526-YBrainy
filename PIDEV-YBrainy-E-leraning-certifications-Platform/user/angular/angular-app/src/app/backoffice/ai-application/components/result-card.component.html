@@ -1,0 +1,15 @@
+<section class="result-card fade-slide-up">
+  <header class="result-card__header">
+    <h3>{{ title }}</h3>
+    <div class="result-card__actions">
+      <button type="button" (click)="copyToClipboard()">{{ copied ? 'Copied' : 'Copy' }}</button>
+      <button type="button" (click)="downloadClick.emit()">Download PDF</button>
+    </div>
+  </header>
+
+  <textarea
+    [ngModel]="content"
+    (ngModelChange)="contentChange.emit($event)"
+    placeholder="Generated content will appear here..."
+  ></textarea>
+</section>

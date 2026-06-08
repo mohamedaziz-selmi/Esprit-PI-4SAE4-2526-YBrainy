@@ -1,0 +1,159 @@
+<div class="cp-page">
+  <div class="cp-container">
+    <div class="cp-header">
+      <div>
+        <div class="cp-title">Create post</div>
+        <div class="cp-sub">Share something with the community</div>
+      </div>
+      <div class="cp-header-actions">
+        <button type="button" class="cp-drafts-btn" (click)="goToDrafts()">My Drafts</button>
+        <a class="cp-link" routerLink="/forum">Back to forum</a>
+      </div>
+    </div>
+
+    <div *ngIf="draftSaved" class="cp-draft-saved">Draft saved</div>
+
+    <div
+      *ngIf="currentDraftId && (imageFile || attachedFile)"
+      class="cp-draft-saved"
+      style="background:#f0f2ff;border-color:#6366f1;color:#4f46e5;">
+      yForumy pre-loaded {{ imageFile && attachedFile ? '2 files' : 'a file' }} from your AI draft
+    </div>
+
+    <div *ngIf="error" class="cp-card cp-error">{{ error }}</div>
+
+    <div class="cp-grid">
+      <div class="cp-card cp-main">
+        <div class="cp-row">
+          <select
+            class="cp-select"
+            [value]="form.value.categoryId ?? ''"
+            (change)="form.get('categoryId')?.setValue(($any($event.target).value || null))">
+            <option value="">Select a community (optional)</option>
+            <option *ngFor="let c of categories" [value]="c.id">r/{{ c.name }}</option>
+          </select>
+
+          <div class="cp-tabs">
+            <button type="button" class="cp-tab" [class.active]="activeTab==='TEXT'" (click)="setTab('TEXT')">Text</button>
+            <button type="button" class="cp-tab" [class.active]="activeTab==='IMAGE'" (click)="setTab('IMAGE')">Image</button>
+          </div>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="openChecker()" class="cp-form">
+          <div class="cp-field-wrap">
+            <div class="cp-title-row">
+              <input
+                class="cp-input"
+                formControlName="title"
+                placeholder="Title *"
+                [class.cp-input-invalid]="form.get('title')?.invalid && form.get('title')?.touched" />
+              <button
+                type="button"
+                class="cp-btn cp-btn-ai"
+                (click)="generateBody()"
+                [disabled]="generating"
+                title="Generate body text with AI based on your title">
+                <span *ngIf="!generating">AI Generate</span>
+                <span *ngIf="generating" class="cp-ai-spinner">Generating...</span>
+              </button>
+            </div>
+            <div class="cp-field-error" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+              <span *ngIf="form.get('title')?.errors?.['required']">Title is required.</span>
+              <span *ngIf="form.get('title')?.errors?.['minlength']">Title must be at least 5 characters.</span>
+              <span *ngIf="form.get('title')?.errors?.['maxlength']">Title cannot exceed 300 characters.</span>
+            </div>
+          </div>
+
+          <div *ngIf="aiError" class="cp-ai-error">{{ aiError }}</div>
+
+          <ng-container *ngIf="activeTab==='TEXT'">
+            <div class="cp-body-label">
+              <span>Body</span>
+            </div>
+            <textarea
+              class="cp-textarea"
+              formControlName="body"
+              placeholder="What do you want to say? Add the details of your question, what you tried, and what kind of help you need."></textarea>
+          </ng-container>
+
+          <ng-container *ngIf="activeTab==='IMAGE'">
+            <div
+              class="cp-dropzone"
+              [class.active]="dropActive"
+              (dragover)="onDropOver($event)"
+              (dragleave)="onDropLeave($event)"
+              (drop)="onDrop($event)">
+              <div class="cp-dropzone-top">
+                <div class="cp-dropzone-title">Upload an image</div>
+                <button type="button" class="cp-btn" (click)="imgInput.click()">Choose file</button>
+              </div>
+
+              <input #imgInput type="file" accept="image/*" style="display:none" (change)="onImageInputChange($event)" />
+
+              <div *ngIf="!imagePreviewUrl" class="cp-muted">Drag and drop an image here, or click Choose file</div>
+
+              <div *ngIf="imagePreviewUrl" class="cp-preview">
+                <img [src]="imagePreviewUrl" alt="Preview" />
+                <button type="button" class="cp-btn cp-btn-danger" (click)="clearImage()">Remove</button>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="cp-attach-section">
+            <div class="cp-attach-header">
+              <span class="cp-attach-label">Attach Video or PDF <span class="cp-attach-optional">(optional)</span></span>
+              <div class="cp-attach-btns">
+                <button *ngIf="attachedFile" type="button" class="cp-btn cp-btn-sm cp-btn-danger" (click)="clearAttachment()">Remove</button>
+                <button type="button" class="cp-btn cp-btn-sm" (click)="attachInput.click()">Browse</button>
+              </div>
+              <input #attachInput type="file" accept="video/mp4,video/webm,video/ogg,application/pdf" style="display:none" (change)="onAttachmentChange($event)" />
+            </div>
+
+            <div *ngIf="attachedFile" class="cp-attach-info">
+              <span [class]="'cp-file-badge ' + (attachedFileIsPdf ? 'cp-file-badge-pdf' : 'cp-file-badge-video')">
+                {{ attachedFileIsPdf ? 'PDF' : 'Video' }}
+              </span>
+              <span class="cp-attach-filename">{{ attachedFile.name }}</span>
+              <span class="cp-attach-size">{{ formatFileSize(attachedFile.size) }}</span>
+            </div>
+
+            <video *ngIf="attachedFileIsVideo && attachedFileObjectUrl" [src]="attachedFileObjectUrl" controls class="cp-attach-video"></video>
+
+            <div *ngIf="!attachedFile" class="cp-attach-hint">Upload a video (MP4, WebM, OGG) or PDF document</div>
+          </div>
+
+          <div class="cp-actions">
+            <button type="submit" class="cp-btn cp-btn-primary" [disabled]="submitting">
+              {{ submitting ? 'Posting...' : 'Review and publish' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="cp-side">
+        <div class="cp-card">
+          <div class="cp-side-title">AI Assist</div>
+          <div class="cp-muted" style="margin-top:4px;">Type a title and click <strong>AI Generate</strong> to automatically write a well-structured question body for your thread.</div>
+        </div>
+
+        <div class="cp-card">
+          <div class="cp-side-title">Writing Tips</div>
+          <div class="cp-muted" style="margin-top:4px;">Explain the problem clearly, share what you already tried, and attach an image, video, or PDF when it helps others answer faster.</div>
+        </div>
+
+        <div class="cp-card">
+          <div class="cp-side-title">Community Rules</div>
+          <div class="cp-muted" style="margin-top:4px;">Be respectful, stay on topic, and keep it constructive.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<app-ai-thread-checker-modal
+  [title]="form.value.title ?? ''"
+  [body]="form.value.body ?? ''"
+  [visible]="checkerVisible"
+  (confirm)="onCheckerConfirm()"
+  (closed)="onCheckerClosed()">
+</app-ai-thread-checker-modal>

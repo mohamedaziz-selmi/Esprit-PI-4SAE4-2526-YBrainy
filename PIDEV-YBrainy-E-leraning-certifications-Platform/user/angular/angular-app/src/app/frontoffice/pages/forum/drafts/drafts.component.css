@@ -1,0 +1,159 @@
+.rd-page {
+  background: #dae0e6;
+  min-height: 100vh;
+  padding: 24px 0 40px;
+}
+
+.rd-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.draft-page-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.draft-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.draft-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1c1c1c;
+  margin: 0 0 4px;
+}
+
+.draft-page-sub {
+  font-size: 13px;
+  color: #7c7c7c;
+  margin: 0;
+}
+
+/* Empty state */
+.draft-empty {
+  background: #fff;
+  border-radius: 10px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.draft-empty-icon { font-size: 40px; margin-bottom: 12px; }
+.draft-empty-title { font-size: 18px; font-weight: 700; color: #1c1c1c; }
+.draft-empty-sub { font-size: 13px; color: #7c7c7c; margin-top: 6px; }
+
+/* Draft list */
+.draft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.draft-card {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #edeff1;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+
+.draft-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.draft-card-body {
+  flex: 1;
+  padding: 16px 20px;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.draft-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1c1c1c;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.draft-card-preview {
+  font-size: 13px;
+  color: #7c7c7c;
+  line-height: 1.5;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.draft-card-meta {
+  font-size: 11px;
+  color: #9a9a9a;
+  margin-top: 8px;
+}
+
+.draft-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  justify-content: center;
+  border-left: 1px solid #edeff1;
+}
+
+.draft-btn-edit,
+.draft-btn-delete {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+}
+
+.draft-btn-edit {
+  background: #0079d3;
+  color: #fff;
+}
+.draft-btn-edit:hover { background: #006cbf; }
+
+.draft-btn-delete {
+  background: #ffeaea;
+  color: #d93025;
+}
+.draft-btn-delete:hover { background: #ffd6d6; }
+
+/* shared btn */
+.rd-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.rd-btn-primary {
+  background: #ff4500;
+  color: #fff;
+}
+.rd-btn-primary:hover { background: #e03d00; }

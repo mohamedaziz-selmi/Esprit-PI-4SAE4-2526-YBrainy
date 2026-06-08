@@ -1,0 +1,4 @@
+.bo-nav{display:flex;gap:12px;align-items:center;padding:12px 24px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08);position:sticky;top:0;z-index:2;}
+.bo-nav-brand{font-weight:900;color:#1a1a1b;text-decoration:none;margin-right:10px;}
+.bo-nav-link{color:#1a1a1b;text-decoration:none;padding:6px 10px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#f6f7f8;}
+.bo-nav-link.active{border-color:#0079d3;color:#0079d3;background:#fff;}

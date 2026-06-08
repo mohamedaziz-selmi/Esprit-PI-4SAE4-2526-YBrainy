@@ -1,0 +1,53 @@
+<div class="face-dialog-shell" (click)="close()">
+  <section class="face-dialog" role="dialog" aria-modal="true" [attr.aria-label]="title" (click)="$event.stopPropagation()">
+    <header class="face-dialog-header">
+      <div>
+        <p class="face-dialog-eyebrow">Biometric sign-in</p>
+        <h2>{{ title }}</h2>
+        <p class="face-dialog-subtitle">{{ subtitle }}</p>
+      </div>
+      <button type="button" class="face-dialog-close" (click)="close()" [disabled]="busy" aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="face-dialog-stage">
+      <video #videoElement *ngIf="!previewUrl" autoplay muted playsinline></video>
+      <img *ngIf="previewUrl" [src]="previewUrl" alt="Captured face preview" />
+      <canvas #canvasElement hidden></canvas>
+
+      <div class="face-target" aria-hidden="true">
+        <div class="face-target-ring"></div>
+        <div class="face-target-copy">
+          {{ continuousCapture ? 'Live scan is active. Keep your face centered and hold still for a moment.' : 'Face the camera with even lighting and no heavy blur.' }}
+        </div>
+      </div>
+    </div>
+
+    <p *ngIf="errorMessage" class="face-dialog-error">{{ errorMessage }}</p>
+    <p *ngIf="!errorMessage && continuousCapture" class="face-dialog-status">
+      <span class="face-dialog-status-dot" [class.is-busy]="busy"></span>
+      {{ statusMessage }}
+    </p>
+
+    <div class="face-dialog-actions" *ngIf="!continuousCapture">
+      <label class="face-upload-button">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" [disabled]="busy" hidden />
+        Upload photo
+      </label>
+
+      <button type="button" class="face-secondary-button" *ngIf="previewUrl" (click)="retake()" [disabled]="busy">
+        Retake
+      </button>
+      <button type="button" class="face-secondary-button" *ngIf="!previewUrl" (click)="capture()" [disabled]="busy">
+        Capture
+      </button>
+
+      <button type="button" class="face-primary-button" (click)="submit()" [disabled]="busy || !previewUrl">
+        {{ busy ? 'Working...' : confirmLabel }}
+      </button>
+    </div>
+  </section>
+</div>

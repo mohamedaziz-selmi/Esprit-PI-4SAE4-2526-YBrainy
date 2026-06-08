@@ -1,0 +1,12 @@
+metric,value,notes
+courses_scored,125,Total unique courses ranked
+unique_skills_scored,12,Breadth of skill coverage
+top_recommendations_exported,25,Rows exported in top recommendation file
+avg_hybrid_score_top,0.9131,Average score among top recommendations
+high_confidence_in_top,20,Count of high-confidence recommendations
+demand_integration_method,gradient_boosting,Gradient boosting or weighted scoring
+demand_model_mae,0.0139,Validation MAE for demand integration
+demand_model_rmse,0.0178,Validation RMSE for demand integration
+demand_model_r2,0.9725,Validation R2 for demand integration
+forecast_margin_context_pct,27.06,6-month forecast margin used as context
+expense_watch_context,SUPPORT,Expense pressure context from forecast

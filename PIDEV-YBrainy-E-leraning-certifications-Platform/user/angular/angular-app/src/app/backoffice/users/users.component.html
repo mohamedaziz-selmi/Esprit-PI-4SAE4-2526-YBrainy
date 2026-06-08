@@ -1,0 +1,706 @@
+﻿<div class="admin-users-shell">
+  <div class="admin-layout">
+    <aside class="dashboard-sidebar-shell" aria-label="Backoffice navigation">
+      <div class="nav-header">
+        <a routerLink="/dashboard" class="brand-logo" aria-label="Back to dashboard">
+          <img src="src\main\resources\mail\assets\logo-full.png" alt="YBrainy" class="logo-abbr" />
+          <div class="brand-title">
+            <h3>YBrainy</h3>
+          </div>
+        </a>
+      </div>
+
+      <div class="dlabnav">
+        <div class="dlabnav-scroll">
+          <ul class="metismenu">
+            <li class="mm-active">
+              <a class="has-arrow" href="javascript:void(0);" aria-expanded="true">
+                <span class="sidebar-group-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                    <circle cx="9" cy="8" r="3"></circle>
+                    <circle cx="16.5" cy="9" r="2.5"></circle>
+                    <path d="M3 18c0-3.1 2.7-5.5 6-5.5s6 2.4 6 5.5v1H3z"></path>
+                    <path d="M13 19c.2-2.3 2.2-4.1 4.7-4.1 2.3 0 4.3 1.6 4.3 4.1v0H13z"></path>
+                  </svg>
+                </span>
+                <span class="nav-text">User Management</span>
+              </a>
+              <ul aria-expanded="true" class="mm-show">
+                <li><a routerLink="/dashboard/users" class="mm-active">User Moderation</a></li>
+                <li><a routerLink="/dashboard/forum/threads">Forum Threads</a></li>
+                <li><a routerLink="/dashboard/forum/categories">Forum Categories</a></li>
+                <li><a routerLink="/dashboard/profile">My Profile</a></li>
+                <li><a routerLink="/dashboard">Template Dashboard</a></li>
+                <li><button type="button" class="sidebar-logout" (click)="logoutAdmin()">Logout</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <header class="topbar admin-header">
+        <div class="topbar-copy">
+          <h1>User Moderation</h1>
+          <p>Monitor users, issue warnings, manage bans, and verify teachers/enterprise accounts.</p>
+        </div>
+
+        <details class="admin-menu">
+          <summary class="admin-menu-trigger">
+            <span class="admin-menu-name">{{ adminDisplayName }}</span>
+            <span class="admin-menu-caret" aria-hidden="true"></span>
+          </summary>
+          <div class="admin-menu-list">
+            <a routerLink="/dashboard" class="admin-menu-item">Template Dashboard</a>
+            <a routerLink="/dashboard/users" class="admin-menu-item">User Moderation</a>
+            <a routerLink="/dashboard/forum/threads" class="admin-menu-item">Forum Threads</a>
+            <a routerLink="/dashboard/forum/categories" class="admin-menu-item">Forum Categories</a>
+            <a routerLink="/dashboard/profile" class="admin-menu-item">My Profile</a>
+            <button type="button" class="admin-menu-item danger" (click)="logoutAdmin()">Log Out</button>
+          </div>
+        </details>
+      </header>
+
+      <section class="toolbar-row">
+    <div class="search-box" [formGroup]="searchForm">
+      <input type="text" formControlName="search" placeholder="Search username, email, company, city..." />
+    </div>
+    <div class="helper-note">
+      Admin can moderate users only. Edit your own account from <a routerLink="/dashboard/profile">My Profile</a>.
+    </div>
+      </section>
+
+      <section class="filter-row" aria-label="User filters">
+    @for (filter of filters; track filter.key) {
+      <button
+        type="button"
+        class="filter-chip"
+        [class.active]="activeFilter === filter.key"
+        (click)="setFilter(filter.key)">
+        {{ filter.label }}
+      </button>
+    }
+      </section>
+
+      <div *ngIf="error" class="banner error">{{ error }}</div>
+      <div *ngIf="successMessage" class="banner success">{{ successMessage }}</div>
+
+      <section class="summary-grid">
+        <article class="summary-card attention">
+          <span class="summary-label">Pending Verification</span>
+          <span class="summary-value">{{ pendingVerificationCount() }}</span>
+        </article>
+        <article class="summary-card danger">
+          <span class="summary-label">Banned Users</span>
+          <span class="summary-value">{{ bannedCount() }}</span>
+        </article>
+        <article class="summary-card warning">
+          <span class="summary-label">Warned Users</span>
+          <span class="summary-value">{{ warnedCount() }}</span>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Active (30d)</span>
+          <span class="summary-value">{{ activeRecentlyCount() }}</span>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">Visible Users</span>
+          <span class="summary-value">{{ totalUsers }}</span>
+        </article>
+        <article class="summary-card attention">
+          <span class="summary-label">Pending Appeals</span>
+          <span class="summary-value">{{ pendingAppealCount() }}</span>
+        </article>
+        <article class="summary-card warning">
+          <span class="summary-label">Unviewed Appeals</span>
+          <span class="summary-value">{{ unviewedAppealCount() }}</span>
+        </article>
+      </section>
+
+      <section class="card appeal-queue-card">
+        <div class="card-head">
+          <h3>Ban Appeal Inbox</h3>
+          <div class="appeal-queue-head-actions">
+            <button type="button" class="btn soft small" (click)="refreshAppealQueue()" [disabled]="loadingAppealQueue">
+              {{ loadingAppealQueue ? 'Refreshing...' : 'Refresh' }}
+            </button>
+            <span class="muted" *ngIf="loadingAppealQueue">Loading appeals...</span>
+            <span class="muted" *ngIf="!loadingAppealQueue">{{ appealQueue.length }} total</span>
+          </div>
+        </div>
+
+        <div class="appeal-queue-filters" aria-label="Ban appeal queue filters">
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="appealQueueFilter === 'unviewed'"
+            (click)="setAppealQueueFilter('unviewed')">
+            Unviewed ({{ unviewedAppealCount() }})
+          </button>
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="appealQueueFilter === 'pending'"
+            (click)="setAppealQueueFilter('pending')">
+            Pending ({{ pendingAppealCount() }})
+          </button>
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="appealQueueFilter === 'resolved'"
+            (click)="setAppealQueueFilter('resolved')">
+            Resolved ({{ resolvedAppealCount() }})
+          </button>
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="appealQueueFilter === 'all'"
+            (click)="setAppealQueueFilter('all')">
+            All
+          </button>
+        </div>
+
+        <div *ngIf="queueError" class="banner error">{{ queueError }}</div>
+
+        <div *ngIf="appealQueueItems().length === 0" class="empty slim">
+          No appeals in this queue view.
+        </div>
+
+        <div class="appeal-queue-list" *ngIf="appealQueueItems().length > 0">
+          @for (appeal of appealQueueItems(); track appeal.appealId) {
+            <article class="appeal-queue-row">
+              <div class="appeal-main">
+                <div class="appeal-topline">
+                  <span
+                    class="pill"
+                    [class.warn]="isAppealPending(appeal)"
+                    [class.ok]="(appeal.appealStatus || '').toUpperCase() === 'APPROVED'"
+                    [class.danger]="(appeal.appealStatus || '').toUpperCase() === 'REJECTED'"
+                  >
+                    {{ appeal.appealStatus || 'PENDING' }}
+                  </span>
+                  <span class="pill" [class.ok]="appeal.viewed" [class.warn]="!appeal.viewed">
+                    {{ appeal.viewed ? 'Viewed' : 'Unviewed' }}
+                  </span>
+                  <span class="muted">#{{ appeal.appealId }}</span>
+                  <span class="muted">{{ appealUserLabel(appeal) }}</span>
+                </div>
+                <p class="appeal-description">{{ appeal.description }}</p>
+                <p class="appeal-meta">
+                  Submitted {{ appeal.submittedDate ? (appeal.submittedDate | date:'medium') : 'Unknown date' }}
+                  <span *ngIf="appeal.viewedBy"> · Viewed by {{ appeal.viewedBy }}</span>
+                  <span *ngIf="appeal.viewedAt"> · {{ appeal.viewedAt | date:'short' }}</span>
+                  <span *ngIf="appeal.reviewedBy"> · Reviewed by {{ appeal.reviewedBy }}</span>
+                </p>
+              </div>
+
+              <div class="appeal-actions">
+                <button
+                  type="button"
+                  class="btn soft small"
+                  (click)="focusAppealUser(appeal)"
+                  [disabled]="isProcessingAppeal(appeal)">
+                  Open User
+                </button>
+                <button
+                  type="button"
+                  class="btn soft small"
+                  *ngIf="!appeal.viewed"
+                  (click)="markAppealViewed(appeal)"
+                  [disabled]="isProcessingAppeal(appeal)">
+                  {{ isProcessingAppeal(appeal) ? 'Working...' : 'Mark Viewed' }}
+                </button>
+                <button
+                  type="button"
+                  class="btn soft small"
+                  *ngIf="appeal.viewed"
+                  (click)="markAppealUnviewed(appeal)"
+                  [disabled]="isProcessingAppeal(appeal)">
+                  {{ isProcessingAppeal(appeal) ? 'Working...' : 'Mark Unviewed' }}
+                </button>
+                <button
+                  type="button"
+                  class="btn primary small"
+                  *ngIf="isAppealPending(appeal)"
+                  (click)="approveAppeal(appeal)"
+                  [disabled]="isProcessingAppeal(appeal)">
+                  {{ isProcessingAppeal(appeal) ? 'Working...' : 'Approve' }}
+                </button>
+                <button
+                  type="button"
+                  class="btn danger small"
+                  *ngIf="isAppealPending(appeal)"
+                  (click)="rejectAppeal(appeal)"
+                  [disabled]="isProcessingAppeal(appeal)">
+                  {{ isProcessingAppeal(appeal) ? 'Working...' : 'Reject' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="workspace">
+    <aside class="user-list-pane">
+      <div class="pane-header">
+        <h2>Users</h2>
+        <span *ngIf="loadingList" class="muted">Loading...</span>
+      </div>
+
+      <div *ngIf="!loadingList && users.length === 0" class="empty">
+        No users found for this filter.
+      </div>
+
+      <div class="user-list">
+        @for (user of pagedUsers(); track user.userId) {
+          <button
+            type="button"
+            class="user-row"
+            [class.selected]="isSelected(user)"
+            (click)="selectUser(user)">
+            <div class="avatar">
+              <img *ngIf="user.profilePicture" [src]="user.profilePicture" alt="" />
+              <span *ngIf="!user.profilePicture">{{ getInitials(user) }}</span>
+            </div>
+
+            <div class="row-main">
+              <div class="row-title-line">
+                <strong>{{ getUserDisplayName(user) }}</strong>
+                <span class="role-tag" [class.enterprise]="user.role === 'ENTERPRISE_USER'" [class.instructor]="user.role === 'INSTRUCTOR'">
+                  {{ user.role }}
+                </span>
+              </div>
+              <div class="row-sub">{{ user.email }}</div>
+              <div class="row-meta">
+                <span class="pill" *ngIf="user.verificationRequired" [class.ok]="user.verificationApproved" [class.warn]="!user.verificationApproved">
+                  {{ user.verificationApproved ? 'Verified' : 'Needs verification' }}
+                </span>
+                <span class="pill danger" *ngIf="user.banned">Banned</span>
+                <span class="pill" [class.warn]="user.warningCount > 0">Warnings: {{ user.warningCount }}</span>
+                <span class="pill">{{ getStatusLabel(user.status) }}</span>
+              </div>
+            </div>
+          </button>
+        }
+      </div>
+
+      <div class="user-pagination" *ngIf="users.length > 0">
+        <div class="pagination-meta">
+          Showing {{ userPageStartIndex() }}-{{ userPageEndIndex() }} of {{ totalUsers }}
+        </div>
+        <div class="pagination-controls">
+          <label class="page-size-control">
+            <span>Rows</span>
+            <select [value]="userPageSize" (change)="setUserPageSize(+$any($event.target).value)">
+              @for (size of userPageSizeOptions; track size) {
+                <option [value]="size">{{ size }}</option>
+              }
+            </select>
+          </label>
+
+          <div class="pagination-actions">
+            <button
+              type="button"
+              class="btn soft small"
+              (click)="goToPreviousUserPage()"
+              [disabled]="loadingList || !canGoToPreviousUserPage()">
+              Previous
+            </button>
+            <span class="pagination-page">Page {{ userPage }} / {{ userTotalPages() }}</span>
+            <button
+              type="button"
+              class="btn soft small"
+              (click)="goToNextUserPage()"
+              [disabled]="loadingList || !canGoToNextUserPage()">
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="detail-pane">
+      <div *ngIf="!selectedUser && !loadingDetails" class="empty detail-empty">
+        Select a user to review verification, warnings, bans, and privacy-limited activity.
+      </div>
+
+      <div *ngIf="loadingDetails" class="empty detail-empty">Loading user details...</div>
+      <div *ngIf="detailError" class="banner error">{{ detailError }}</div>
+
+      <ng-container *ngIf="selectedUser as user">
+        <section class="detail-header card">
+          <div class="detail-avatar">
+            <img *ngIf="user.profilePicture" [src]="user.profilePicture" alt="" />
+            <span *ngIf="!user.profilePicture">{{ getInitials(user) }}</span>
+          </div>
+          <div class="detail-identity">
+            <h2>{{ getUserDisplayName(user) }}</h2>
+            <p>&#64;{{ user.username }} · {{ user.email }}</p>
+            <div class="detail-badges">
+              <span class="role-tag" [class.enterprise]="user.role === 'ENTERPRISE_USER'" [class.instructor]="user.role === 'INSTRUCTOR'">
+                {{ user.role }}
+              </span>
+              <span class="pill" *ngIf="requiresVerification(user)" [class.ok]="verificationApproved(user)" [class.warn]="!verificationApproved(user)">
+                {{ verificationApproved(user) ? 'Verified by admin' : 'Pending admin verification' }}
+              </span>
+              <span class="pill danger" *ngIf="isBanned(user)">Banned</span>
+              <span class="pill" [class.warn]="warnings.length > 0">Warnings: {{ warnings.length }}</span>
+              <span class="pill">{{ getStatusLabel(user.status) }}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-grid">
+          <section class="card">
+            <div class="card-head">
+              <h3>User Snapshot (Read-only)</h3>
+              <span class="muted">No profile edits here</span>
+            </div>
+
+            <div class="readonly-grid">
+              <div class="kv">
+                <span class="kv-key">Username</span>
+                <span class="kv-val">{{ user.username }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Role</span>
+                <span class="kv-val">{{ user.role }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">First Name</span>
+                <span class="kv-val">{{ user.firstName || 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Last Name</span>
+                <span class="kv-val">{{ user.lastName || 'â€”' }}</span>
+              </div>
+              <div class="kv wide">
+                <span class="kv-key">Email</span>
+                <span class="kv-val break">{{ user.email }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Age</span>
+                <span class="kv-val">{{ user.age ?? 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Sex</span>
+                <span class="kv-val">{{ user.sex || 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Date of Birth</span>
+                <span class="kv-val">{{ user.dateOfBirth ? (user.dateOfBirth | date:'mediumDate') : 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">City</span>
+                <span class="kv-val">{{ user.city || 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Country</span>
+                <span class="kv-val">{{ user.country || 'â€”' }}</span>
+              </div>
+              <div class="kv wide">
+                <span class="kv-key">Address</span>
+                <span class="kv-val break">{{ user.address || 'â€”' }}</span>
+              </div>
+              <div class="kv wide" *ngIf="isEnterpriseUser(user)">
+                <span class="kv-key">Company</span>
+                <span class="kv-val">{{ user.companyName || 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Joined</span>
+                <span class="kv-val">{{ user.accountCreatedAt ? (user.accountCreatedAt | date:'medium') : 'â€”' }}</span>
+              </div>
+              <div class="kv">
+                <span class="kv-key">Last Login</span>
+                <span class="kv-val">{{ user.lastLogin ? (user.lastLogin | date:'medium') : 'â€”' }}</span>
+              </div>
+              <div class="kv wide">
+                <span class="kv-key">Last Profile Update</span>
+                <span class="kv-val">{{ user.lastProfileUpdate ? (user.lastProfileUpdate | date:'medium') : 'â€”' }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <h3>Verification & Ban Controls</h3>
+            </div>
+
+            <div class="stack">
+              <div class="moderation-block" *ngIf="requiresVerification(user)">
+                <div>
+                  <h4>Admin Verification</h4>
+                  <p class="muted">Teachers and enterprise users need admin verification.</p>
+                  <p class="meta-line" *ngIf="user.adminVerifiedAt || user.adminVerifiedBy">
+                    Last verification change:
+                    <span *ngIf="user.adminVerifiedAt">{{ user.adminVerifiedAt | date:'medium' }}</span>
+                    <span *ngIf="user.adminVerifiedAt && user.adminVerifiedBy"> · </span>
+                    <span *ngIf="user.adminVerifiedBy">{{ user.adminVerifiedBy }}</span>
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  class="btn"
+                  [class.primary]="!verificationApproved(user)"
+                  [class.soft]="verificationApproved(user)"
+                  (click)="toggleVerification()"
+                  [disabled]="savingModeration">
+                  {{ verificationApproved(user) ? 'Revoke Verification' : 'Approve Verification' }}
+                </button>
+              </div>
+
+              <div class="moderation-block">
+                <div>
+                  <h4>Ban Controls</h4>
+                  <p class="muted">Use bans/warnings and activity metadata for moderation. Do not inspect private content.</p>
+                  <p class="meta-line" *ngIf="isBanned(user)">
+                    Locked until: {{ user.lockedUntil | date:'medium' }}<br />
+                    Reason: {{ user.reasonForBan || 'No reason provided' }}
+                  </p>
+                </div>
+              </div>
+
+              <form [formGroup]="banForm" class="ban-grid">
+                <label class="field field-wide">
+                  <span>Ban Reason</span>
+                  <textarea
+                    rows="3"
+                    formControlName="reasonForBan"
+                    placeholder="Policy violation, repeated abuse, spam, impersonation..."
+                    maxlength="500"
+                  ></textarea>
+                  <small class="field-error" *ngIf="showBanReasonError()">{{ banReasonErrorMessage() }}</small>
+                </label>
+                <label class="field">
+                  <span>Ban Period (days)</span>
+                  <input type="number" formControlName="banPeriodDays" min="1" max="3650" />
+                  <small class="field-error" *ngIf="showBanPeriodError()">{{ banPeriodErrorMessage() }}</small>
+                </label>
+                <div class="ban-actions">
+                  <button type="button" class="btn danger" (click)="banSelectedUser()" [disabled]="savingModeration">
+                    {{ savingModeration ? 'Working...' : 'Ban User' }}
+                  </button>
+                  <button type="button" class="btn soft" (click)="unbanSelectedUser()" [disabled]="savingModeration || !isBanned(user)">
+                    Unban User
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </section>
+
+        <section class="detail-grid detail-grid-bottom">
+          <section class="card">
+            <div class="card-head">
+              <h3>Warnings</h3>
+              <span class="muted">{{ warnings.length }} total</span>
+            </div>
+
+            <form [formGroup]="warningForm" class="warning-form">
+              <label class="field field-wide">
+                <span>Warning Reason</span>
+                  <textarea rows="3" formControlName="reason" placeholder="Describe the warning reason clearly" maxlength="500"></textarea>
+                  <small class="field-error" *ngIf="showWarningReasonError()">{{ warningReasonErrorMessage() }}</small>
+                </label>
+              <label class="field">
+                <span>Severity</span>
+                <select formControlName="severity">
+                  @for (severity of warningSeverities; track severity) {
+                    <option [value]="severity">{{ severity }}</option>
+                  }
+                </select>
+              </label>
+              <div class="warning-actions">
+                <button type="button" class="btn warn" (click)="issueWarning()" [disabled]="warningForm.invalid || savingWarning">
+                  {{ savingWarning ? 'Issuing...' : 'Issue Warning' }}
+                </button>
+              </div>
+            </form>
+
+            <div *ngIf="warnings.length === 0" class="empty slim">
+              No warnings for this user.
+            </div>
+
+            <div class="warning-list" *ngIf="warnings.length > 0">
+              @for (warning of warnings; track warning.warningId) {
+                <article class="warning-row">
+                  <ng-container *ngIf="!isEditingWarning(warning); else editWarningTpl">
+                    <div class="warning-main">
+                      <div class="warning-topline">
+                        <span class="severity-pill" [ngClass]="warningSeverityClass(warning.severity)">{{ warning.severity }}</span>
+                        <span class="muted">#{{ warning.warningId }}</span>
+                      </div>
+                      <p class="warning-reason">{{ warning.reason }}</p>
+                      <p class="warning-meta">
+                        {{ warning.issuedDate ? (warning.issuedDate | date:'medium') : 'Unknown date' }}
+                        <span *ngIf="warning.issuedBy"> · {{ warning.issuedBy }}</span>
+                      </p>
+                    </div>
+                    <div class="warning-actions-row">
+                      <button
+                        type="button"
+                        class="btn soft small"
+                        (click)="editWarning(warning)"
+                        [disabled]="deletingWarningId != null || savingEditWarning">
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        class="btn soft small danger"
+                        (click)="deleteWarning(warning)"
+                        [disabled]="isDeletingWarning(warning)">
+                        {{ isDeletingWarning(warning) ? 'Removing...' : 'Delete' }}
+                      </button>
+                    </div>
+                  </ng-container>
+                  <ng-template #editWarningTpl>
+                    <form [formGroup]="editWarningForm" class="warning-edit-form">
+                      <label class="field field-wide">
+                        <span>Reason</span>
+                        <textarea rows="3" formControlName="reason" maxlength="500"></textarea>
+                        <small class="field-error" *ngIf="showEditWarningReasonError()">Warning reason must be 3–500 characters.</small>
+                      </label>
+                      <label class="field">
+                        <span>Severity</span>
+                        <select formControlName="severity">
+                          @for (severity of warningSeverities; track severity) {
+                            <option [value]="severity">{{ severity }}</option>
+                          }
+                        </select>
+                      </label>
+                      <div class="warning-actions-row">
+                        <button type="button" class="btn primary small" (click)="saveEditWarning(warning)" [disabled]="savingEditWarning">
+                          {{ savingEditWarning ? 'Saving...' : 'Save' }}
+                        </button>
+                        <button type="button" class="btn soft small" (click)="cancelEditWarning()" [disabled]="savingEditWarning">
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </ng-template>
+                </article>
+              }
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <h3>Ban Appeals</h3>
+              <span class="muted">{{ appeals.length }} total</span>
+            </div>
+
+            <div *ngIf="appeals.length === 0" class="empty slim">
+              No appeals submitted for this user.
+            </div>
+
+            <div class="appeal-list" *ngIf="appeals.length > 0">
+              @for (appeal of appeals; track appeal.appealId) {
+                <article class="appeal-row">
+                  <div class="appeal-main">
+                    <div class="appeal-topline">
+                      <span
+                        class="pill"
+                        [class.warn]="isAppealPending(appeal)"
+                        [class.ok]="(appeal.appealStatus || '').toUpperCase() === 'APPROVED'"
+                        [class.danger]="(appeal.appealStatus || '').toUpperCase() === 'REJECTED'"
+                      >
+                        {{ appeal.appealStatus || 'PENDING' }}
+                      </span>
+                      <span class="pill" [class.ok]="appeal.viewed" [class.warn]="!appeal.viewed">
+                        {{ appeal.viewed ? 'Viewed' : 'Unviewed' }}
+                      </span>
+                      <span class="muted">#{{ appeal.appealId }}</span>
+                    </div>
+                    <p class="appeal-description">{{ appeal.description }}</p>
+                    <p class="appeal-meta">
+                      Submitted {{ appeal.submittedDate ? (appeal.submittedDate | date:'medium') : 'Unknown date' }}
+                      <span *ngIf="appeal.viewedBy"> · Viewed by {{ appeal.viewedBy }}</span>
+                      <span *ngIf="appeal.viewedAt"> · {{ appeal.viewedAt | date:'short' }}</span>
+                      <span *ngIf="appeal.reviewedBy"> · Reviewed by {{ appeal.reviewedBy }}</span>
+                      <span *ngIf="appeal.resolvedDate"> · Resolved {{ appeal.resolvedDate | date:'medium' }}</span>
+                    </p>
+                  </div>
+                  <div class="appeal-actions">
+                    <button
+                      type="button"
+                      class="btn soft small"
+                      *ngIf="!appeal.viewed"
+                      (click)="markAppealViewed(appeal)"
+                      [disabled]="isProcessingAppeal(appeal)"
+                    >
+                      {{ isProcessingAppeal(appeal) ? 'Working...' : 'Mark Viewed' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="btn soft small"
+                      *ngIf="appeal.viewed"
+                      (click)="markAppealUnviewed(appeal)"
+                      [disabled]="isProcessingAppeal(appeal)"
+                    >
+                      {{ isProcessingAppeal(appeal) ? 'Working...' : 'Mark Unviewed' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="btn primary small"
+                      *ngIf="isAppealPending(appeal)"
+                      (click)="approveAppeal(appeal)"
+                      [disabled]="isProcessingAppeal(appeal)"
+                    >
+                      {{ isProcessingAppeal(appeal) ? 'Working...' : 'Approve' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="btn danger small"
+                      *ngIf="isAppealPending(appeal)"
+                      (click)="rejectAppeal(appeal)"
+                      [disabled]="isProcessingAppeal(appeal)"
+                    >
+                      {{ isProcessingAppeal(appeal) ? 'Working...' : 'Reject' }}
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <h3>Recent Activity (Privacy-Limited)</h3>
+              <span class="muted">Event type, route, timestamps, duration only</span>
+            </div>
+
+            <div *ngIf="activities.length === 0" class="empty slim">
+              No tracked activity for this user yet.
+            </div>
+
+            <div class="activity-list" *ngIf="activities.length > 0">
+              <div class="activity-row header-row">
+                <span>When</span>
+                <span>Event</span>
+                <span>Route</span>
+                <span>Duration</span>
+              </div>
+              @for (activity of activities; track activity.id) {
+                <div class="activity-row">
+                  <span>{{ (activity.receivedAt || activity.occurredAtEpochMs) | date:'short' }}</span>
+                  <span>{{ activity.eventType }}</span>
+                  <span class="route">{{ activity.route || '-' }}</span>
+                  <span>{{ activity.durationMs != null ? (activity.durationMs + ' ms') : '-' }}</span>
+                </div>
+              }
+            </div>
+          </section>
+        </section>
+      </ng-container>
+    </main>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

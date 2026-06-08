@@ -1,0 +1,210 @@
+<div class="cart-orbit-overlay" *ngIf="isOpen" (click)="close()">
+  <div class="cart-orbit-particles" aria-hidden="true">
+    <span
+      class="cart-orbit-particle"
+      *ngFor="let particle of particles"
+      [style.--i]="particle">
+    </span>
+  </div>
+
+  <aside
+    class="cart-orbit-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cartOverlayTitle"
+    (click)="$event.stopPropagation()">
+    <div class="cart-orbit-scanline" aria-hidden="true"></div>
+
+    <header class="cart-orbit-header">
+      <div class="cart-orbit-brand">
+        <div class="cart-brand-mark">
+          <span class="mark-ring"></span>
+          <span class="mark-core"></span>
+        </div>
+        <div>
+          <p class="cart-orbit-eyebrow">Shopping Capsule</p>
+          <h2 id="cartOverlayTitle">{{ activeTab === 'cart' ? 'My Cart' : 'Cart History' }}</h2>
+          <p class="cart-orbit-subtitle">
+            {{ activeTab === 'cart'
+              ? 'A live cart drawer that keeps your picks close without leaving the pack page.'
+              : 'A quick timeline of every pack you added, removed, or checked out.' }}
+          </p>
+        </div>
+      </div>
+
+      <button type="button" class="cart-orbit-close" (click)="close()" aria-label="Close cart popup">
+        <span>&times;</span>
+      </button>
+    </header>
+
+    <div class="cart-orbit-tabs">
+      <button
+        type="button"
+        class="cart-orbit-tab"
+        [class.is-active]="activeTab === 'cart'"
+        (click)="switchTab('cart')">
+        <span>Cart</span>
+        <strong>{{ totalItems }}</strong>
+      </button>
+      <button
+        type="button"
+        class="cart-orbit-tab"
+        [class.is-active]="activeTab === 'history'"
+        (click)="switchTab('history')">
+        <span>History</span>
+        <strong>{{ history.length }}</strong>
+      </button>
+    </div>
+
+    <div class="cart-orbit-body">
+      <ng-container *ngIf="activeTab === 'cart'">
+        <div class="cart-orbit-flash" *ngIf="justAddedPackTitle">
+          <div>
+            <span class="flash-badge">Added Now</span>
+            <h3>{{ justAddedPackTitle }}</h3>
+            <p>It landed in your cart instantly. You can review items here or switch to history for the activity trail.</p>
+          </div>
+        </div>
+
+        <div class="cart-orbit-stats">
+          <article class="stat-card">
+            <span>Total Items</span>
+            <strong>{{ totalItems }}</strong>
+          </article>
+          <article class="stat-card">
+            <span>Cart Total</span>
+            <strong>${{ totalAmount | number:'1.2-2' }}</strong>
+          </article>
+          <article class="stat-card">
+            <span>Checkouts</span>
+            <strong>{{ checkoutCount }}</strong>
+          </article>
+        </div>
+
+        <div *ngIf="cartError" class="orbit-alert orbit-alert-error">{{ cartError }}</div>
+
+        <div *ngIf="cartLoading" class="orbit-state">
+          <div class="orbit-spinner"></div>
+          <h3>Loading your cart</h3>
+          <p>Pulling your latest pack selections into the drawer.</p>
+        </div>
+
+        <div *ngIf="!cartLoading && !hasItems" class="orbit-state">
+          <div class="orbit-state-icon">
+            <i class="bi bi-bag-x"></i>
+          </div>
+          <h3>Your cart is empty</h3>
+          <p>Add a learning pack and it will appear here instantly.</p>
+          <a routerLink="/packs" class="orbit-cta" (click)="close()">Browse Packs</a>
+        </div>
+
+        <div *ngIf="!cartLoading && hasItems" class="cart-orbit-stack">
+          <article class="cart-item-orbit" *ngFor="let item of cart?.items">
+            <div class="cart-item-copy">
+              <span class="cart-item-badge">Learning Pack</span>
+              <h3>{{ item.packTitle }}</h3>
+              <p>{{ item.quantity }} {{ item.quantity === 1 ? 'seat' : 'seats' }} selected</p>
+            </div>
+
+            <div class="cart-item-side">
+              <div class="cart-item-prices">
+                <span>Subtotal</span>
+                <strong>${{ item.subtotal | number:'1.2-2' }}</strong>
+                <small>${{ item.priceAtPurchase | number:'1.2-2' }} each</small>
+              </div>
+
+              <button
+                type="button"
+                class="cart-item-remove"
+                (click)="removeItem(item)"
+                [disabled]="removingItemId === item.id">
+                {{ removingItemId === item.id ? 'Removing...' : 'Remove' }}
+              </button>
+            </div>
+          </article>
+
+          <section class="cart-orbit-summary">
+            <div class="summary-line">
+              <span>Status</span>
+              <strong>{{ getStatusLabel(cart?.status) }}</strong>
+            </div>
+            <div class="summary-line">
+              <span>Total amount</span>
+              <strong>${{ totalAmount | number:'1.2-2' }}</strong>
+            </div>
+
+            <div class="summary-actions">
+              <button
+                type="button"
+                class="summary-primary"
+                (click)="startCheckout()"
+                [disabled]="checkoutInProgress || !hasItems">
+                {{ checkoutInProgress ? 'Redirecting...' : 'Checkout' }}
+              </button>
+              <button
+                type="button"
+                class="summary-secondary"
+                (click)="clearCart()"
+                [disabled]="clearing || checkoutInProgress">
+                {{ clearing ? 'Clearing...' : 'Clear Cart' }}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="summary-link"
+              (click)="switchTab('history')">
+              Open History
+            </button>
+          </section>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'history'">
+        <div class="cart-orbit-history-top">
+          <article class="history-mini-stat">
+            <span>Events</span>
+            <strong>{{ history.length }}</strong>
+          </article>
+          <article class="history-mini-stat">
+            <span>Checkouts</span>
+            <strong>{{ checkoutCount }}</strong>
+          </article>
+        </div>
+
+        <div *ngIf="historyError" class="orbit-alert orbit-alert-error">{{ historyError }}</div>
+
+        <div *ngIf="historyLoading" class="orbit-state">
+          <div class="orbit-spinner"></div>
+          <h3>Loading your history</h3>
+          <p>Gathering your cart activity timeline.</p>
+        </div>
+
+        <div *ngIf="!historyLoading && !history.length" class="orbit-state">
+          <div class="orbit-state-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <h3>No history yet</h3>
+          <p>Your add, remove, and checkout activity will appear here once you start using the cart.</p>
+          <button type="button" class="orbit-cta" (click)="switchTab('cart')">Back To Cart</button>
+        </div>
+
+        <div *ngIf="!historyLoading && history.length" class="history-orbit-list">
+          <article class="history-orbit-card" *ngFor="let record of history; trackBy: trackHistory">
+            <div class="history-orbit-head">
+              <span class="history-pill" [ngClass]="getActionTone(record.action)">{{ getActionLabel(record.action) }}</span>
+              <strong>{{ record.createdAt | date:'MMM d, y - h:mm a' }}</strong>
+            </div>
+            <h3>{{ record.packTitle || 'Cart activity' }}</h3>
+            <p>{{ record.description }}</p>
+            <div class="history-orbit-meta">
+              <span>Cart #{{ record.cartId }}</span>
+              <span>{{ getStatusLabel(record.cartStatus) }}</span>
+              <span>${{ record.totalAmount | number:'1.2-2' }}</span>
+            </div>
+          </article>
+        </div>
+      </ng-container>
+    </div>
+  </aside>
+</div>

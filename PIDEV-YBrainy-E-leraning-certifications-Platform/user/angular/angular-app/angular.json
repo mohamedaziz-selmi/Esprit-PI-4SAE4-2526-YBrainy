@@ -1,0 +1,152 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular-app": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/angular-app",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "../../../payment/forcasting/outputs",
+                "output": "/assets/forecasting"
+              },
+              {
+                "glob": "**/*",
+                "input": "../../../payment/forcasting recommendations/outputs",
+                "output": "/assets/forecasting-recommendations"
+              }
+            ],
+            "styles": [
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.css",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.2.0/magnific-popup.css",
+              "src/assets/frontoffice/unpkg.com/lenis@1.3.11/dist/lenis.css",
+              "src/assets/frontoffice/www.ciklum.com/wp-content/themes/ciklum/assets/css/main.css",
+              "src/styles.css"
+            ],
+            "scripts": [
+              "src/assets/frontoffice/code.jquery.com/jquery-3.6.0.min.js",
+              "src/assets/frontoffice/www.ciklum.com/wp-includes/js/jquery/jquery-migrate.min.js",
+              "src/assets/frontoffice/unpkg.com/lenis@1.1.4/dist/lenis.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/bodymovin/5.13.0/lottie.min.js",
+              "src/assets/frontoffice/cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.2.0/jquery.magnific-popup.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "100kB",
+                  "maximumError": "300kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "angular-app:build:production"
+            },
+            "development": {
+              "buildTarget": "angular-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "../../../payment/forcasting/outputs",
+                "output": "/assets/forecasting"
+              },
+              {
+                "glob": "**/*",
+                "input": "../../../payment/forcasting recommendations/outputs",
+                "output": "/assets/forecasting-recommendations"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

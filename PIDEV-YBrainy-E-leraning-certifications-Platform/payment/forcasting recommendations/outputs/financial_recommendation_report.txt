@@ -1,0 +1,27 @@
+FINANCIAL RECOMMENDATIONS TO KEEP OUTCOMES POSITIVE
+--------------------------------
+Forecast margin context: 27.06%
+Forecast horizon: 2026-07 to 2026-12
+Top revenue source: COURSE_SALE
+Holdout accuracy: 92.6%
+
+PRIORITY RECOMMENDATIONS
+- 2026-12: Optimize salary and contractor load | margin 20.90% -> 24.44% | profit 8869 -> 10215
+- 2026-11: Optimize salary and contractor load | margin 21.08% -> 24.63% | profit 8702 -> 10012
+- 2026-10: Scale marketing on the strongest channels | margin 23.00% -> 27.48% | profit 9886 -> 12820
+- 2026-09: Scale marketing on the strongest channels | margin 25.90% -> 30.20% | profit 10756 -> 13608
+- 2026-08: Scale marketing on the strongest channels | margin 27.01% -> 31.30% | profit 11467 -> 14421
+- 2026-07: Stabilize support operations with automation | margin 44.22% -> 44.77% | profit 18905 -> 19179
+
+IMPROVEMENT ACTIONS
+- [HIGH] Optimize salary and contractor load -> Recommended across 2026-11, 2026-12. Average projected margin uplift: +3.54 pts and profit uplift: +1328.
+- [HIGH] Scale marketing on the strongest channels -> Recommended across 2026-08, 2026-09, 2026-10. Average projected margin uplift: +4.36 pts and profit uplift: +2913.
+- [LOW] Stabilize support operations with automation -> Recommended across 2026-07. Average projected margin uplift: +0.55 pts and profit uplift: +274.
+
+HISTORICAL BASELINE
+- 2026-01: income 21085, expenses 12570, profit 8515, margin 40.38%
+- 2026-02: income 24928, expenses 11185, profit 13743, margin 55.13%
+- 2026-03: income 37589, expenses 9711, profit 27878, margin 74.17%
+- 2026-04: income 37803, expenses 15728, profit 22075, margin 58.39%
+- 2026-05: income 43476, expenses 12670, profit 30806, margin 70.86%
+- 2026-06: income 34076, expenses 15439, profit 18637, margin 54.69%

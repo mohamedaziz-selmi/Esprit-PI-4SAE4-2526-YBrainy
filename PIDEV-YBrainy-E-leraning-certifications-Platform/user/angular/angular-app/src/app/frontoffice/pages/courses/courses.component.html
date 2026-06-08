@@ -1,0 +1,656 @@
+<div class="cl-page">
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       SECTION 1 — Hero Search Header
+  ═══════════════════════════════════════════════════════════════ -->
+  <header class="cl-hero">
+    <div class="cl-hero-inner">
+      <h1 class="cl-hero-title">Expand Your Knowledge</h1>
+      <p class="cl-hero-sub">{{ totalElements }} courses available</p>
+
+      <!-- Search pill -->
+      <div class="cl-search-wrap">
+        <svg class="cl-search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M13 13L17 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <input
+          class="cl-search-input"
+          type="text"
+          [value]="search"
+          (input)="onSearchChange($any($event.target).value)"
+          placeholder="Search courses..." />
+      </div>
+
+      <!-- PART 2 — Category auto-scroll carousel with arrows -->
+      <div class="cl-cat-carousel">
+        <button type="button" class="cl-carousel-btn" (click)="scrollCarousel(-1)" aria-label="Scroll left">&#9664;</button>
+        <div class="cl-cat-carousel-outer">
+          <div
+            #catCarousel
+            class="cl-cat-track"
+            (mouseenter)="pauseCarousel()"
+            (mouseleave)="resumeCarousel()">
+            <!-- First copy -->
+            <button
+              *ngFor="let c of categories"
+              type="button"
+              class="cl-chip"
+              [class.cl-chip-active]="category === c.value"
+              (click)="selectCategory(c.value)">
+              {{ c.label }}
+            </button>
+            <!-- Duplicate for seamless CSS animation loop -->
+            <button
+              *ngFor="let c of categories"
+              type="button"
+              class="cl-chip"
+              aria-hidden="true"
+              [class.cl-chip-active]="category === c.value"
+              (click)="selectCategory(c.value)">
+              {{ c.label }}
+            </button>
+          </div>
+        </div>
+        <button type="button" class="cl-carousel-btn" (click)="scrollCarousel(1)" aria-label="Scroll right">&#9654;</button>
+      </div>
+
+      <!-- CHANGE 1 — Collapsible filters toggle -->
+      <div class="cl-filter-toggle-wrap">
+        <button
+          type="button"
+          class="cl-filter-toggle"
+          [class.cl-filter-toggle-active]="activeFilters.length > 0"
+          (click)="filtersExpanded = !filtersExpanded">
+          <span *ngIf="!filtersExpanded">
+            🎛️ Filters<ng-container *ngIf="activeFilters.length > 0">&nbsp;({{ activeFilters.length }})</ng-container>
+          </span>
+          <span *ngIf="filtersExpanded">Hide Filters</span>
+          <svg
+            class="cl-filter-toggle-chevron"
+            [class.cl-filter-toggle-chevron-open]="filtersExpanded"
+            viewBox="0 0 16 16" width="12" height="12"
+            fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M4 6l4 4 4-4"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- PART 8 — Glassmorphism filter panel (collapsible) -->
+      <div class="cl-glass-panel" *ngIf="filtersExpanded">
+
+        <!-- Row: Level + Sort chips -->
+        <div class="cl-filter-group">
+          <span class="cl-filter-label">Level</span>
+          <div class="cl-chips-scroll">
+            <button
+              *ngFor="let l of levels"
+              type="button"
+              class="cl-chip cl-chip-sm"
+              [class.cl-chip-active]="level === l.value"
+              (click)="selectLevel(l.value)">
+              {{ l.label }}
+            </button>
+          </div>
+          <span class="cl-filter-divider"></span>
+          <!-- PART 3 — Sort chips replacing dropdown -->
+          <span class="cl-filter-label">Sort</span>
+          <div class="cl-chips-scroll">
+            <button
+              *ngFor="let s of sortChips"
+              type="button"
+              class="cl-chip cl-chip-sm"
+              [class.cl-chip-active]="sortField === s.field"
+              (click)="toggleSort(s.field)">
+              {{ s.label }}&nbsp;{{ sortField === s.field ? (sortDir === 'DESC' ? '↓' : '↑') : '↕' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Row: Rating filter -->
+        <div class="cl-filter-group">
+          <span class="cl-filter-label">Rating</span>
+          <!-- PART 4 — Star rating chips -->
+          <div class="cl-chips-scroll">
+            <button
+              *ngFor="let r of ratingFilters"
+              type="button"
+              class="cl-chip cl-chip-sm"
+              [class.cl-chip-active]="selectedRating === r.min"
+              (click)="applyRatingFilter(r.min)">
+              {{ r.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Row: Price filter -->
+        <div class="cl-filter-group cl-filter-group-col">
+          <div class="cl-filter-row-inline">
+            <span class="cl-filter-label">Price</span>
+            <!-- PART 5 — Price quick chips -->
+            <div class="cl-chips-scroll">
+              <button
+                *ngFor="let p of priceChips"
+                type="button"
+                class="cl-chip cl-chip-sm"
+                [class.cl-chip-active]="selectedPriceChip === p.key"
+                (click)="applyPriceFilter(p.key)">
+                {{ p.label }}
+              </button>
+            </div>
+          </div>
+          <!-- Dual-handle price range slider -->
+          <div class="cl-price-range">
+            <div class="cl-range-display">
+              <span>${{ priceMin }}</span>
+              <span class="cl-range-label">Custom range</span>
+              <span>${{ priceMax }}{{ priceMax >= 200 ? '+' : '' }}</span>
+            </div>
+            <div class="cl-dual-range-wrap">
+              <div class="cl-range-bg"></div>
+              <div
+                class="cl-range-fill"
+                [style.left.%]="priceMin / 2"
+                [style.width.%]="(priceMax - priceMin) / 2">
+              </div>
+              <input
+                type="range"
+                class="cl-range-input"
+                min="0" max="200" step="5"
+                [value]="priceMin"
+                (input)="onPriceMinChange(+$any($event.target).value)" />
+              <input
+                type="range"
+                class="cl-range-input"
+                min="0" max="200" step="5"
+                [value]="priceMax"
+                (input)="onPriceMaxChange(+$any($event.target).value)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Row: Duration filter -->
+        <div class="cl-filter-group">
+          <span class="cl-filter-label">Duration</span>
+          <!-- PART 6 — Duration chips -->
+          <div class="cl-chips-scroll">
+            <button
+              *ngFor="let d of durationChips"
+              type="button"
+              class="cl-chip cl-chip-sm"
+              [class.cl-chip-active]="selectedDuration === d.value"
+              (click)="selectDuration(d.value)">
+              {{ d.label }}
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /cl-glass-panel -->
+
+      <!-- PART 7 — Active filters bar -->
+      <div class="cl-active-filters" *ngIf="activeFilters.length > 0">
+        <div class="cl-active-filter-chips">
+          <span class="cl-active-filter-label">Active:</span>
+          <span *ngFor="let f of activeFilters" class="cl-active-badge">
+            {{ f.label }}
+            <button
+              type="button"
+              class="cl-active-badge-remove"
+              (click)="removeFilter(f.key)"
+              [attr.aria-label]="'Remove ' + f.label">
+              ×
+            </button>
+          </span>
+        </div>
+        <button type="button" class="cl-clear-all" (click)="clearAllFilters()">Clear All</button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       AI SEARCH SECTION
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="cl-ai-search-wrap">
+    <div class="cl-ai-search-bar">
+      <span class="cl-ai-icon">✨</span>
+      <input
+        type="text"
+        class="cl-ai-input"
+        placeholder="Ask AI: e.g. I want to learn Python for beginners..."
+        [(ngModel)]="aiSearchQuery"
+        (keyup.enter)="performAiSearch()"
+      />
+      <button
+        class="cl-ai-btn"
+        [disabled]="aiSearchLoading || !aiSearchQuery.trim()"
+        (click)="performAiSearch()">
+        <span *ngIf="!aiSearchLoading">Ask AI ✨</span>
+        <span *ngIf="aiSearchLoading">Thinking...</span>
+      </button>
+      <button
+        *ngIf="aiSearchMode"
+        class="cl-ai-clear"
+        (click)="clearAiSearch()">
+        ✕ Clear
+      </button>
+    </div>
+
+    <!-- AI understood your query -->
+    <div *ngIf="aiSearchResult" class="cl-ai-intent">
+      <span class="cl-ai-brain">🧠</span>
+      <span class="cl-ai-explanation">
+        {{ aiSearchResult.explanation }}
+      </span>
+      <span *ngIf="aiSearchResult.detectedCategory"
+            class="cl-ai-tag">
+        {{ aiSearchResult.detectedCategory }}
+      </span>
+      <span *ngIf="aiSearchResult.detectedLevel"
+            class="cl-ai-tag">
+        {{ aiSearchResult.detectedLevel }}
+      </span>
+    </div>
+
+    <div *ngIf="aiSearchError" class="cl-ai-error">
+      {{ aiSearchError }}
+    </div>
+  </div>
+
+  <!-- AI search results grid -->
+  <div *ngIf="aiSearchMode && aiSearchResult" class="cl-ai-results">
+    <div class="cl-ai-results-header">
+      <h3>AI Search Results
+        <span class="cl-ai-count">
+          ({{ aiSearchResult.results.totalElements }} courses found)
+        </span>
+      </h3>
+    </div>
+
+    <div *ngIf="aiSearchResult.results.content.length === 0"
+         class="cl-ai-empty">
+      🔍 No courses found for your query. Try rephrasing.
+    </div>
+
+    <div class="cl-grid">
+      <div *ngFor="let course of aiSearchResult.results.content"
+           class="cl-card"
+           [routerLink]="['/courses', course.id]">
+        <img *ngIf="course.thumbnailUrl"
+             [src]="normalizeThumbnail(course.thumbnailUrl)"
+             class="cl-card-img"
+             alt="{{ course.title }}"/>
+        <div *ngIf="!course.thumbnailUrl"
+             class="cl-card-img-placeholder">
+          📚
+        </div>
+        <div class="cl-card-body">
+          <div class="cl-card-category">{{ course.category }}</div>
+          <h3 class="cl-card-title">{{ course.title }}</h3>
+          <p class="cl-card-desc">{{ course.description }}</p>
+          <div class="cl-card-meta">
+            <span>{{ course.level }}</span>
+            <span *ngIf="course.price > 0">${{ course.price }}</span>
+            <span *ngIf="!course.price || course.price === 0">Free</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ML TRIGGER BUTTON ═══ -->
+  <div class="ml-reco-trigger-wrap"
+       *ngIf="mlRecommendations.length > 0">
+    <button class="ml-reco-trigger-btn"
+            (click)="openMLOverlay()">
+      <div class="ml-trigger-glow"></div>
+      <span class="ml-trigger-ai-dot"></span>
+      <span class="ml-trigger-icon">🧠</span>
+      <div class="ml-trigger-text">
+        <span class="ml-trigger-label">AI Recommendations</span>
+        <span class="ml-trigger-sub">
+          {{ mlRecommendations.length }} courses picked for you · excluding enrolled
+          <ng-container *ngIf="mlBasedOn">
+            · {{ mlBasedOn.category }} · {{ mlBasedOn.level }}
+          </ng-container>
+        </span>
+      </div>
+      <div class="ml-trigger-arrow">
+        <span>Explore</span>
+        <span class="ml-trigger-chevron">✦</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- ═══ ML HOLOGRAPHIC OVERLAY ═══ -->
+  <div class="ml-holo-overlay"
+       *ngIf="mlOverlayOpen"
+       [class.ml-holo-closing]="mlOverlayClosing"
+       (click)="closeMLOverlay()">
+
+    <!-- Backdrop particles -->
+    <div class="ml-holo-particles">
+      <span class="ml-holo-p"
+            *ngFor="let p of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"
+            [style.--i]="p">
+      </span>
+    </div>
+
+    <!-- Main panel — stop propagation so clicking inside doesn't close -->
+    <div class="ml-holo-panel"
+         (click)="$event.stopPropagation()">
+
+      <!-- Panel header -->
+      <div class="ml-holo-header">
+        <div class="ml-holo-header-left">
+          <div class="ml-holo-logo">
+            <span class="ml-holo-logo-ring"></span>
+            <span class="ml-holo-logo-icon">🧠</span>
+          </div>
+          <div>
+            <div class="ml-holo-title">Recommended For You</div>
+            <div class="ml-holo-subtitle">
+              <span class="ml-holo-model-tag">KNN + Cosine Similarity</span>
+              <span class="ml-holo-dot-sep">·</span>
+              <span *ngIf="mlBasedOn">
+                Based on <strong>{{ mlBasedOn.category }}</strong>
+              </span>
+              <span class="ml-holo-dot-sep">·</span>
+              <span>excluding enrolled</span>
+            </div>
+          </div>
+        </div>
+        <button class="ml-holo-close" (click)="closeMLOverlay()">
+          <span>✕</span>
+        </button>
+      </div>
+
+      <!-- Scan line effect -->
+      <div class="ml-holo-scanline"></div>
+
+      <!-- Cards grid -->
+      <div class="ml-holo-grid">
+        <div *ngFor="let rec of mlRecommendations; let i = index"
+             class="ml-holo-card"
+             [style.animation-delay]="(i * 100) + 'ms'"
+             [class.ml-holo-card-1]="i === 0"
+             (mouseenter)="hoveredRecommendation = i"
+             (mouseleave)="hoveredRecommendation = null">
+
+          <!-- Glowing top border -->
+          <div class="ml-holo-card-glow"
+               [style.background]="getCategoryColor(rec.category)">
+          </div>
+
+          <!-- Card header with category gradient -->
+          <div class="ml-holo-card-header"
+               [style.background]="getCategoryColor(rec.category)">
+            <div class="ml-holo-card-icon">
+              {{ rec.category === 'PROGRAMMING' ? '💻' :
+                 rec.category === 'DESIGN' ? '🎨' :
+                 rec.category === 'BUSINESS' ? '💼' :
+                 rec.category === 'SCIENCE' ? '🔬' :
+                 rec.category === 'MATH' ? '📐' :
+                 rec.category === 'LANGUAGE' ? '🌍' :
+                 rec.category === 'MUSIC' ? '🎵' : '📚' }}
+            </div>
+            <div class="ml-holo-match"
+                 [style.border-color]="getMatchColor(getMatchScore(rec, i))">
+              <span class="ml-holo-match-num">{{ getMatchScore(rec, i) }}%</span>
+              <span class="ml-holo-match-txt">match</span>
+            </div>
+            <div class="ml-holo-level">{{ rec.level }}</div>
+          </div>
+
+          <!-- Card body -->
+          <div class="ml-holo-card-body">
+            <h3 class="ml-holo-card-title">{{ rec.title }}</h3>
+            <div class="ml-holo-card-stats">
+              <span>📖 {{ rec.numLectures }} lectures</span>
+              <span>⭐ {{ rec.rating | number:'1.1-1' }}</span>
+            </div>
+
+            <!-- Animated match bar -->
+            <div class="ml-holo-bar-wrap">
+              <div class="ml-holo-bar-label">
+                <span>{{ getMatchLabel(getMatchScore(rec, i)) }}</span>
+                <span>{{ getMatchScore(rec, i) }}%</span>
+              </div>
+              <div class="ml-holo-bar-track">
+                <div class="ml-holo-bar-fill"
+                     [style.width.%]="mlOverlayOpen ? getMatchScore(rec, i) : 0"
+                     [style.background]="getMatchColor(getMatchScore(rec, i))">
+                </div>
+              </div>
+            </div>
+
+            <!-- Price + explore -->
+            <div class="ml-holo-card-footer">
+              <span class="ml-holo-price" *ngIf="rec.price > 0">
+                ${{ rec.price | number:'1.2-2' }}
+              </span>
+              <span class="ml-holo-free" *ngIf="!rec.price || rec.price === 0">
+                FREE
+              </span>
+              <button class="ml-holo-explore"
+                      (click)="searchByRecommendation(rec); closeMLOverlay()">
+                Explore →
+              </button>
+            </div>
+          </div>
+
+          <!-- Why tooltip -->
+          <div class="ml-holo-why" *ngIf="hoveredRecommendation === i">
+            <span>🧠</span>
+            <span>Matched on
+              <strong>{{ rec.category }}</strong> ·
+              <strong>{{ rec.level }}</strong>
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="ml-holo-footer">
+        <span class="ml-holo-footer-text">
+          Powered by YBrainy ML Engine · DSO2 Hybrid Recommender
+        </span>
+        <button class="ml-holo-footer-close" (click)="closeMLOverlay()">
+          Close ✕
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <!-- ═══ END ML HOLOGRAPHIC OVERLAY ═══ -->
+
+  <!-- Learning Path nav link -->
+  <div class="cl-lp-nav">
+    <a routerLink="/learning-paths" class="cl-lp-link">
+      🗺️ Want a personalized course roadmap? <strong>Try AI Learning Paths →</strong>
+    </a>
+  </div>
+
+  <!-- Async wrapper: renders results bar + grid + pagination -->
+  <ng-container *ngIf="courses$ | async as courses">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 2 — Results bar
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="cl-results-bar">
+      <span class="cl-results-count">
+        Showing <strong>{{ courses.length }}</strong> of {{ totalElements }} courses
+      </span>
+      <div class="cl-toggle-wrap">
+        <button
+          type="button"
+          class="cl-toggle-btn"
+          [class.cl-toggle-active]="gridView"
+          (click)="gridView = true"
+          title="Grid view">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+            <rect x="0" y="0" width="6" height="6" rx="1"/><rect x="10" y="0" width="6" height="6" rx="1"/>
+            <rect x="0" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="cl-toggle-btn"
+          [class.cl-toggle-active]="!gridView"
+          (click)="gridView = false"
+          title="List view">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+            <rect x="0" y="1" width="16" height="2" rx="1"/><rect x="0" y="7" width="16" height="2" rx="1"/>
+            <rect x="0" y="13" width="16" height="2" rx="1"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SECTION 3 — Course cards grid
+    ═══════════════════════════════════════════════════════════ -->
+    <div class="cl-body">
+
+      <div *ngIf="loading" class="cl-grid">
+        <div *ngFor="let i of [1,2,3,4,5,6]" class="cl-card cl-skeleton">
+          <div class="cl-skeleton-img"></div>
+          <div class="cl-skeleton-line cl-skeleton-title"></div>
+          <div class="cl-skeleton-line"></div>
+          <div class="cl-skeleton-line cl-skeleton-short"></div>
+        </div>
+      </div>
+
+      <div
+        *ngIf="!loading && courses.length > 0"
+        class="cl-grid"
+        [class.cl-grid-list]="!gridView">
+
+        <div
+          *ngFor="let course of courses"
+          class="cl-card"
+          [class.cl-card-high-quality]="isHighQuality(course.id)"
+          [class.cl-card-low-quality]="!isHighQuality(course.id) && courseQualityMap[course.id]"
+          role="button"
+          tabindex="0"
+          (click)="goToDetail(course)"
+          (keydown.enter)="goToDetail(course)">
+
+          <!-- ── Thumbnail ───────────────────────────────────── -->
+          <div class="cl-card-thumb">
+            <img
+              *ngIf="course.thumbnailUrl"
+              [src]="course.thumbnailUrl"
+              [alt]="course.title"
+              class="cl-card-img" />
+            <div *ngIf="!course.thumbnailUrl" class="cl-card-placeholder">
+              <span>{{ course.title.charAt(0) }}</span>
+            </div>
+            <span class="cl-cat-badge">{{ course.category }}</span>
+            <span class="cl-cert-badge" *ngIf="course.offersCertificate">🎓 Certificate</span>
+          </div>
+
+          <!-- ── Card body ───────────────────────────────────── -->
+          <div class="cl-card-body">
+            <span class="cl-level-badge" [ngClass]="levelClass(course.level)">
+              {{ levelLabel(course.level) }}
+            </span>
+            <span *ngIf="courseQualityMap[course.id] as quality"
+                  class="cl-quality-chip"
+                  [class.cl-quality-high]="quality.isHighQuality"
+                  [class.cl-quality-low]="!quality.isHighQuality"
+                  [title]="quality.qualityLabel + ' quality · ' + (quality.confidencePercentage | number:'1.0-0') + '% confidence'">
+              <span *ngIf="quality.isHighQuality">⚡ Verified Quality</span>
+              <span *ngIf="!quality.isHighQuality">📋 Standard</span>
+            </span>
+
+            <h3 class="cl-card-title">{{ course.title }}</h3>
+            <p class="cl-card-desc">{{ course.description }}</p>
+
+            <div class="cl-card-meta">
+              <span class="cl-meta-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M2 3h12v2H2zM2 7h12v2H2zM2 11h8v2H2z"/>
+                </svg>
+                {{ course.lessonCount }} lessons
+              </span>
+              <span class="cl-meta-item" *ngIf="course.approximateDurationMinutes > 0">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/>
+                </svg>
+                {{ formatDuration(course.approximateDurationMinutes) }}
+              </span>
+            </div>
+
+            <div class="cl-card-rating">
+              <span class="cl-stars">{{ ratingStars(course.rating) }}</span>
+              <span class="cl-rating-num">{{ course.rating | number:'1.1-1' }}</span>
+              <span class="cl-rating-count" *ngIf="course.ratingCount > 0">({{ course.ratingCount }})</span>
+            </div>
+
+            <div class="cl-card-price">
+              <span class="cl-price-free" *ngIf="course.price === 0">FREE</span>
+              <span class="cl-price-paid" *ngIf="course.price > 0">{{ formatPrice(course.price) }}</span>
+            </div>
+          </div>
+
+          <!-- ── Card footer ─────────────────────────────────── -->
+          <div class="cl-card-footer">
+            <button
+              type="button"
+              class="cl-card-view-btn"
+              (click)="$event.stopPropagation(); goToDetail(course)">
+              View Course →
+            </button>
+          </div>
+
+        </div><!-- /cl-card -->
+      </div><!-- /cl-grid -->
+
+      <!-- Empty state -->
+      <div *ngIf="!loading && courses.length === 0" class="cl-empty">
+        <div class="cl-empty-icon">🔍</div>
+        <p>No courses match your filters.</p>
+        <button type="button" class="cl-empty-reset" (click)="clearAllFilters()">
+          Clear filters
+        </button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════
+           SECTION 4 — Pagination
+      ═══════════════════════════════════════════════════════ -->
+      <div *ngIf="courses.length > 0 && totalPages > 1" class="cl-pagination">
+        <button
+          type="button"
+          class="cl-page-btn"
+          (click)="prevPage()"
+          [disabled]="page <= 0">
+          ← Prev
+        </button>
+
+        <button
+          *ngFor="let p of pageNumbers"
+          type="button"
+          class="cl-page-btn"
+          [class.cl-page-active]="p === page"
+          (click)="goToPage(p)">
+          {{ p + 1 }}
+        </button>
+
+        <button
+          type="button"
+          class="cl-page-btn"
+          (click)="nextPage()"
+          [disabled]="page >= totalPages - 1">
+          Next →
+        </button>
+
+        <span class="cl-page-label">Page {{ page + 1 }} of {{ totalPages }}</span>
+      </div>
+
+    </div><!-- /cl-body -->
+
+  </ng-container>
+
+</div><!-- /cl-page -->

@@ -1,0 +1,432 @@
+<div class="signup-wrap">
+    <div class="signup-layout">
+
+        <!-- LEFT ASIDE -->
+        <div class="signup-aside">
+            <div class="aside-top">
+                <div class="aside-logo">
+                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                        <rect width="36" height="36" rx="10" fill="rgba(255,255,255,0.15)" />
+                        <path d="M18 8L26 13V23L18 28L10 23V13L18 8Z" stroke="white" stroke-width="2" fill="none" />
+                        <circle cx="18" cy="18" r="4" fill="white" />
+                    </svg>
+                    <span class="aside-logo-text">YbrainY</span>
+                </div>
+                <h2 class="aside-heading">Get Started!</h2>
+                <p class="aside-sub">User Experience &amp; Interface Design<br />Strategy SaaS Solutions</p>
+            </div>
+
+            <div class="aside-illustration">
+                <div class="float-card card-1">
+                    <div class="card-dot green"></div>
+                    <div class="card-lines"><span></span><span style="width:60%"></span></div>
+                </div>
+
+                <div class="aside-steps">
+                    <div class="step-item active">
+                        <div class="step-circle">1</div>
+                        <div class="step-text">
+                            <strong>Create account</strong>
+                            <span>Fill in your details</span>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item">
+                        <div class="step-circle">2</div>
+                        <div class="step-text">
+                            <strong>Verify email</strong>
+                            <span>Check your inbox</span>
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step-item">
+                        <div class="step-circle">3</div>
+                        <div class="step-text">
+                            <strong>Start learning</strong>
+                            <span>Access your dashboard</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="float-card card-2">
+                    <div class="card-dot blue"></div>
+                    <div class="card-lines"><span style="width:70%"></span><span style="width:45%"></span></div>
+                </div>
+
+                <div class="aside-stats">
+                    <div class="stat-pill">
+                        <span class="stat-dot"></span>
+                        <span>12k Active Users</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-dot orange"></span>
+                        <span>Free to join</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT FORM -->
+        <div class="signup-form-area">
+            <div class="signup-card">
+                <div class="signup-card-header">
+                    <h3>Create Account</h3>
+                    <span>Join Your Social Campaigns</span>
+                </div>
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                    <!-- Username -->
+                    <div class="field-group">
+                        <label for="username">Username <span class="req">*</span></label>
+                        <input type="text" id="username" formControlName="username" autocomplete="username"
+                            placeholder="e.g. johndoe"
+                            [class.is-invalid]="form.get('username')?.invalid && form.get('username')?.touched" />
+                        <div class="field-error" *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+                            Username must be between 3 and 50 characters.
+                        </div>
+                    </div>
+
+                    <!-- First & Last Name -->
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" id="firstName" formControlName="firstName" autocomplete="given-name" />
+                        </div>
+                        <div class="field-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" id="lastName" formControlName="lastName" autocomplete="family-name" />
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="field-group">
+                        <label for="email">Email address <span class="req">*</span></label>
+                        <input type="email" id="email" formControlName="email" autocomplete="email"
+                            placeholder="you@example.com"
+                            [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched" />
+                        <div class="field-error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="field-group">
+                        <label for="password">Password <span class="req">*</span></label>
+                        <div class="input-password-wrap">
+                            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                                autocomplete="new-password" placeholder="Min. 6 characters"
+                                [class.is-invalid]="form.get('password')?.invalid && form.get('password')?.touched" />
+                            <button type="button" class="toggle-pw" (click)="showPassword = !showPassword"
+                                tabindex="-1">
+                                <svg *ngIf="!showPassword" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg *ngIf="showPassword" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="field-error"
+                            *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+                            Password is required.
+                        </div>
+                        <div class="field-error"
+                            *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')">
+                            Password must be at least 8 characters.
+                        </div>
+                        <div class="field-error"
+                            *ngIf="form.get('password')?.touched && form.get('password')?.hasError('passwordPolicy')">
+                            Password must include an uppercase letter, a lowercase letter, and a number.
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="field-group">
+                        <label for="confirmPassword">Confirm Password <span class="req">*</span></label>
+                        <div class="input-password-wrap">
+                            <input [type]="showConfirm ? 'text' : 'password'" id="confirmPassword"
+                                formControlName="confirmPassword" autocomplete="new-password"
+                                placeholder="Re-enter your password"
+                                [class.is-invalid]="form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched" />
+                            <button type="button" class="toggle-pw" (click)="showConfirm = !showConfirm" tabindex="-1">
+                                <svg *ngIf="!showConfirm" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg *ngIf="showConfirm" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="field-error"
+                            *ngIf="form.hasError('passwordMismatch') && form.get('confirmPassword')?.touched">
+                            Passwords do not match.
+                        </div>
+                    </div>
+
+                    <!-- Date of Birth & Age -->
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" formControlName="dateOfBirth" [max]="maxBirthDate" />
+                        </div>
+                        <div class="field-group">
+                            <label for="age">Age (auto-calculated)</label>
+                            <input type="number" id="age" formControlName="age" min="1" placeholder="Calculated from DOB"
+                                readonly
+                                [class.is-invalid]="form.get('age')?.invalid && form.get('age')?.touched" />
+                            <div class="field-error" *ngIf="form.get('age')?.invalid && form.get('age')?.touched">
+                                Age must be between 6 and 120.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sex / City -->
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="sex">Sex</label>
+                            <select id="sex" formControlName="sex">
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" formControlName="city" autocomplete="address-level2"
+                                placeholder="e.g. Tunis" />
+                        </div>
+                    </div>
+
+                    <!-- Country / Address -->
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country" formControlName="country" autocomplete="country-name"
+                                placeholder="e.g. Tunisia" />
+                        </div>
+                        <div class="field-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" formControlName="address" autocomplete="street-address"
+                                placeholder="Your address (optional)" />
+                        </div>
+                    </div>
+
+                    <!-- Profile Picture -->
+                    <div class="field-group">
+                        <label for="profilePictureFile">Profile Picture (Image File)</label>
+                        <div class="file-upload-card">
+                            <div class="file-upload-row">
+                                <label class="file-select-btn" for="profilePictureFile">Choose image</label>
+                                <input
+                                    id="profilePictureFile"
+                                    type="file"
+                                    accept="image/*"
+                                    (change)="onProfilePictureFileSelected($event)"
+                                />
+                                <span class="file-name" *ngIf="profilePictureFileName; else noSignupImageSelected">
+                                    {{ profilePictureFileName }}
+                                    <span *ngIf="uploadingProfilePicture"> (uploading...)</span>
+                                </span>
+                                <ng-template #noSignupImageSelected>
+                                    <span class="file-name muted-file">No image selected</span>
+                                </ng-template>
+                                <button
+                                    *ngIf="form.controls.profilePicture.value"
+                                    type="button"
+                                    class="file-clear-btn"
+                                    (click)="clearProfilePicture()">
+                                    Remove
+                                </button>
+                            </div>
+
+                            <div class="image-preview" *ngIf="profilePicturePreview; else emptyPreview">
+                                <img [src]="profilePicturePreview" alt="Selected profile preview" />
+                                <span>Preview</span>
+                            </div>
+                            <ng-template #emptyPreview>
+                                <div class="image-preview image-preview-empty">
+                                    <span>Upload a profile image from your device</span>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+
+                    <!-- Company Name -->
+                    <div class="field-group" *ngIf="isEnterpriseRole">
+                        <label for="companyName">Company Name <span class="req">*</span></label>
+                        <input type="text" id="companyName" formControlName="companyName" autocomplete="organization"
+                            placeholder="Your company"
+                            [class.is-invalid]="form.get('companyName')?.invalid && form.get('companyName')?.touched" />
+                        <div class="field-error" *ngIf="form.get('companyName')?.invalid && form.get('companyName')?.touched">
+                            Company name is required for enterprise users.
+                        </div>
+                    </div>
+
+                    <!-- Role -->
+                    <div class="field-group">
+                        <label for="role">Role</label>
+                        <select id="role" formControlName="role">
+                            <option value="INSTRUCTOR">Instructor</option>
+                            <option value="STUDENT">Student</option>
+                            <option value="ENTERPRISE_USER">Enterprise User</option>
+                            <option value="ADMIN">Admin</option>
+                        </select>
+                    </div>
+
+                    <section class="challenge-card">
+                        <div class="challenge-header">
+                            <div>
+                                <p class="challenge-eyebrow">Personalized security check</p>
+                                <h4>Choose the challenge style that suits you</h4>
+                                <p class="challenge-copy">
+                                    Choose your age and country first, then click Do captcha. We will suggest one strong challenge and up to two alternatives.
+                                </p>
+                            </div>
+                            <span class="challenge-badge" *ngIf="signUpChallenge">
+                                {{ signUpChallenge.recommendedMode | titlecase }} suggested
+                            </span>
+                        </div>
+
+                        <div class="challenge-actions-row">
+                            <button
+                                type="button"
+                                class="challenge-trigger-button"
+                                [disabled]="challengeLoading || !canStartChallenge"
+                                (click)="onDoCaptcha()">
+                                {{ challengeTriggerLabel }}
+                            </button>
+                            <p class="challenge-prereq" *ngIf="!canStartChallenge">
+                                Choose your date of birth and country first.
+                            </p>
+                        </div>
+
+                        <p class="challenge-refresh-banner" *ngIf="challengeNeedsRefresh">
+                            Your age or country changed. Click Do captcha again to get a new personalized challenge.
+                        </p>
+
+                        <p class="challenge-profile" *ngIf="signUpChallenge?.profileHint">
+                            {{ signUpChallenge?.profileHint }}
+                        </p>
+                        <p class="challenge-reason" *ngIf="signUpChallenge?.recommendationReason">
+                            {{ signUpChallenge?.recommendationReason }}
+                        </p>
+
+                        <div class="challenge-loading" *ngIf="challengeLoading">
+                            <span class="challenge-loading-spinner"></span>
+                            Preparing your personalized challenge...
+                        </div>
+
+                        <ng-container *ngIf="challengeRequested && signUpChallenge && !challengeLoading">
+                            <p class="challenge-switch-label">Try a different challenge:</p>
+                            <div class="challenge-mode-grid">
+                                <button
+                                    *ngFor="let mode of signUpChallenge.availableModes"
+                                    type="button"
+                                    class="challenge-mode-button"
+                                    [class.is-active]="mode.key === signUpChallenge.selectedMode"
+                                    (click)="onChallengeModeSelected(mode.key)">
+                                    <span class="challenge-mode-title-row">
+                                        <span class="challenge-mode-title">{{ mode.label }}</span>
+                                        <span class="challenge-mode-tag" *ngIf="mode.recommended">Suggested</span>
+                                    </span>
+                                    <span class="challenge-mode-description">{{ mode.description }}</span>
+                                </button>
+                            </div>
+
+                            <div class="challenge-body">
+                                <p class="challenge-prompt">{{ signUpChallenge.prompt }}</p>
+                                <p class="challenge-helper" *ngIf="signUpChallenge.helperText">
+                                    {{ signUpChallenge.helperText }}
+                                </p>
+
+                                <ng-container *ngIf="!isJigsawMode; else jigsawChallenge">
+                                    <div class="challenge-choice-grid">
+                                        <button
+                                            *ngFor="let choice of signUpChallenge.choices"
+                                            type="button"
+                                            class="challenge-choice-button"
+                                            [class.is-selected]="selectedChallengeAnswer === choice.id"
+                                            (click)="selectChallengeAnswer(choice.id)">
+                                            {{ choice.label }}
+                                        </button>
+                                    </div>
+                                </ng-container>
+
+                                <ng-template #jigsawChallenge>
+                                    <div class="challenge-jigsaw-meta">
+                                        <span>Flag jigsaw: {{ signUpChallenge.flagJigsaw?.countryName }}</span>
+                                        <span class="challenge-solved" *ngIf="selectedChallengeAnswer; else unsolvedJigsaw">
+                                            Solved. You can create your account now.
+                                        </span>
+                                        <ng-template #unsolvedJigsaw>
+                                            <span>Swap two pieces until the flag is complete.</span>
+                                        </ng-template>
+                                    </div>
+
+                                    <div class="challenge-jigsaw-board">
+                                        <button
+                                            *ngFor="let piece of jigsawPieces"
+                                            type="button"
+                                            class="challenge-jigsaw-piece"
+                                            [class.is-selected]="selectedJigsawPieceId === piece.id"
+                                            [ngStyle]="getJigsawTileStyle(piece)"
+                                            (click)="onJigsawPieceClicked(piece.id)">
+                                            <span class="visually-hidden">Flag piece {{ piece.correctIndex + 1 }}</span>
+                                        </button>
+                                    </div>
+                                </ng-template>
+
+                                <div class="field-error" *ngIf="challengeTouched && !selectedChallengeAnswer">
+                                    Complete the captcha to continue.
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="field-error" *ngIf="challengeError">
+                            {{ challengeError }}
+                        </div>
+                    </section>
+
+                    <button type="submit" class="btn-submit" [disabled]="form.invalid || submitting || uploadingProfilePicture || challengeLoading || !isChallengeReady">
+                        <span *ngIf="!submitting">Create Account</span>
+                        <span *ngIf="submitting" class="spinner"></span>
+                    </button>
+
+                    <div class="error-banner" *ngIf="errorMessage">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                        </svg>
+                        {{ errorMessage }}
+                    </div>
+
+                    <div class="success-banner" *ngIf="successMessage">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14l-4-4 1.41-1.41L10 13.17l6.59-6.59L18 8l-8 8z" />
+                        </svg>
+                        {{ successMessage }}
+                    </div>
+                </form>
+
+                <p class="signin-prompt">
+                    Already have an account?
+                    <a routerLink="/login">Sign in</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>

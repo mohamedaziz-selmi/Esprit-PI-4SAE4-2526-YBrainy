@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inscription-service-config
+data:
+  SERVER_PORT: "9002"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql.ybrainy.svc.cluster.local:3306/inscription_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  YBRAINY_EUREKA_URL: "http://eureka-server.ybrainy.svc.cluster.local:8761/eureka/"
+  SPRING_RABBITMQ_HOST: "rabbitmq.ybrainy.svc.cluster.local"
+  SPRING_RABBITMQ_PORT: "5672"
+  SPRING_RABBITMQ_USERNAME: "guest"
+  ZIPKIN_URL: "http://zipkin.ybrainy.svc.cluster.local:9411"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus,metrics"
+  MANAGEMENT_ENDPOINT_PROMETHEUS_ENABLED: "true"
+  MANAGEMENT_METRICS_TAGS_APPLICATION: "inscription-service"
+  YBRAINY_LOGO_PATH: "/app/assets/logos.svg"

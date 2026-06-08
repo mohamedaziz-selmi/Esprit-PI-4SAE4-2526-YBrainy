@@ -1,0 +1,43 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/resources/target/
+!**/src/test/resources/target/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/resources/build/
+!**/src/test/resources/build/
+
+### VS Code ###
+.vscode/
+
+### Others ###
+*.class
+*.log
+*.ctxt
+*.mtj.tmp/
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+### OS generated files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

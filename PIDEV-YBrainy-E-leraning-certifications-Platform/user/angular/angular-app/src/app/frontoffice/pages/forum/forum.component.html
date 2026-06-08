@@ -1,0 +1,276 @@
+<div class="rd-page">
+  <div class="rd-container">
+    <div class="rd-layout">
+      <!-- ── Left Sidebar ─────────────────────────────────────── -->
+      <aside class="rd-sidebar rd-sidebar-left">
+
+        <!-- User profile card -->
+        <div class="rd-card rd-user-card">
+          <div class="rd-user-top">
+            <div class="rd-user-avatar">{{ userInitials }}</div>
+            <div class="rd-user-info">
+              <div class="rd-user-name">{{ profile?.username ?? 'User' }}</div>
+              <div class="rd-user-xp">⚡ {{ profile?.xp ?? 0 }} XP · Lv {{ profile?.level ?? 1 }}</div>
+            </div>
+          </div>
+          <div class="rd-user-progress" *ngIf="profile">
+            <div class="rd-progress-bar">
+              <div class="rd-progress-fill" [style.width.%]="profile.progressPercent"></div>
+            </div>
+            <div class="rd-progress-label">{{ profile.progressPercent }}% to next level</div>
+          </div>
+          <nav class="rd-user-nav">
+            <a routerLink="/forum/profile" class="rd-user-nav-item">
+              <span class="rd-nav-icon">👤</span> My Profile
+            </a>
+            <a routerLink="/wishlist" class="rd-user-nav-item">
+              <span class="rd-nav-icon">🔖</span> My Wishlist
+            </a>
+            <a routerLink="/forum/drafts" class="rd-user-nav-item">
+              <span class="rd-nav-icon">📝</span> My Drafts
+            </a>
+            <a routerLink="/my-dashboard" class="rd-user-nav-item rd-user-nav-item--dashboard">
+              <span class="rd-nav-icon">📊</span> Mon Dashboard
+            </a>
+          </nav>
+        </div>
+
+        <!-- Create CTA -->
+        <div class="rd-card">
+          <div class="rd-card-title">Start a Discussion</div>
+          <div class="rd-muted" style="margin-bottom:12px;font-size:13px;line-height:1.5;">
+            Share your knowledge or ask the community a question.
+          </div>
+          <a class="rd-btn rd-btn-primary rd-btn-block" routerLink="/forum/create">+ Create Thread</a>
+        </div>
+
+        <!-- Categories -->
+        <div class="rd-card rd-categories-card">
+          <div class="rd-cat-header">
+            <div class="rd-card-title" style="margin-bottom:0;">🏷️ Categories</div>
+            <button type="button" class="rd-cat-add-btn" [class.rd-cat-add-active]="showAddCategory"
+              (click)="toggleAddCategory()">
+              {{ showAddCategory ? '✕' : '+ Add' }}
+            </button>
+          </div>
+
+          <!-- Add category inline form -->
+          <form *ngIf="showAddCategory" [formGroup]="addCategoryForm" (ngSubmit)="submitAddCategory()" class="rd-cat-form">
+            <div class="rd-field-wrap">
+              <input class="rd-input rd-input-full" formControlName="name"
+                placeholder="Category name *"
+                [class.rd-input-invalid]="addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched" />
+              <div class="rd-field-error" *ngIf="addCategoryForm.get('name')?.invalid && addCategoryForm.get('name')?.touched">
+                <span *ngIf="addCategoryForm.get('name')?.errors?.['required']">Name is required.</span>
+                <span *ngIf="addCategoryForm.get('name')?.errors?.['minlength']">At least 2 characters.</span>
+                <span *ngIf="addCategoryForm.get('name')?.errors?.['maxlength']">Max 100 characters.</span>
+              </div>
+            </div>
+            <div class="rd-field-wrap">
+              <textarea class="rd-textarea rd-textarea-sm" formControlName="description"
+                rows="2" placeholder="Description (optional)"
+                [class.rd-input-invalid]="addCategoryForm.get('description')?.invalid && addCategoryForm.get('description')?.touched">
+              </textarea>
+              <div class="rd-field-error" *ngIf="addCategoryForm.get('description')?.invalid && addCategoryForm.get('description')?.touched">
+                <span *ngIf="addCategoryForm.get('description')?.errors?.['maxlength']">Max 300 characters.</span>
+              </div>
+            </div>
+            <div class="rd-field-error rd-field-error-top" *ngIf="addCategoryError">{{ addCategoryError }}</div>
+            <div class="rd-cat-form-actions">
+              <button type="submit" class="rd-btn rd-btn-primary rd-btn-sm" [disabled]="addCategoryLoading">
+                {{ addCategoryLoading ? 'Creating…' : 'Create' }}
+              </button>
+              <button type="button" class="rd-btn rd-btn-sm" (click)="toggleAddCategory()">Cancel</button>
+            </div>
+          </form>
+
+          <!-- Category filter list -->
+          <div class="rd-cat-list">
+            <button type="button" class="rd-cat-item" [class.rd-cat-active]="selectedCategoryId === null"
+              (click)="onCategoryFilterChange('')">
+              <span class="rd-cat-bullet">●</span>
+              <span class="rd-cat-name">All threads</span>
+              <span class="rd-cat-badge">{{ threads.length }}</span>
+            </button>
+            <button type="button" *ngFor="let c of categories" class="rd-cat-item"
+              [class.rd-cat-active]="selectedCategoryId === c.id"
+              (click)="onCategoryFilterChange(c.id.toString())">
+              <span class="rd-cat-bullet">●</span>
+              <span class="rd-cat-name">{{ c.name }}</span>
+              <span class="rd-cat-badge">{{ countByCategory(c.id) }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Forum stats -->
+        <div class="rd-card">
+          <div class="rd-card-title">Forum Stats</div>
+          <div class="rd-stat-row">
+            <span class="rd-stat-label">📝 Threads</span>
+            <span class="rd-stat-val">{{ threads.length }}</span>
+          </div>
+          <div class="rd-stat-row">
+            <span class="rd-stat-label">🏷️ Categories</span>
+            <span class="rd-stat-val">{{ categories.length }}</span>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ── Main ────────────────────────────────────────────── -->
+      <div class="rd-main">
+
+        <!-- ── Search bar ───────────────────────────────────── -->
+        <div class="rd-search-bar">
+          <div class="rd-search-wrap">
+            <svg class="rd-search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="9" cy="9" r="7" stroke="#878A8C" stroke-width="1.8"/>
+              <path d="M14.5 14.5L18 18" stroke="#878A8C" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <input
+              class="rd-search-input"
+              [value]="searchQuery"
+              (input)="onSearchChange($any($event.target).value)"
+              placeholder="Search threads, authors, categories…"
+              autocomplete="off"
+            />
+            <button *ngIf="searchQuery" type="button" class="rd-search-clear" (click)="onSearchChange('')" title="Clear">✕</button>
+          </div>
+        </div>
+
+        <!-- ── Status filter pills ──────────────────────────── -->
+        <div class="rd-filter-row">
+          <span class="rd-filter-label">Filter:</span>
+          <button type="button" class="rd-filter-pill"
+            [class.active]="selectedStatus === 'ALL'" (click)="onStatusChange('ALL')">All</button>
+          <button type="button" class="rd-filter-pill rd-filter-open"
+            [class.active]="selectedStatus === 'OPEN'" (click)="onStatusChange('OPEN')">● Open</button>
+          <button type="button" class="rd-filter-pill rd-filter-closed"
+            [class.active]="selectedStatus === 'CLOSED'" (click)="onStatusChange('CLOSED')">● Closed</button>
+          <button type="button" class="rd-filter-pill rd-filter-locked"
+            [class.active]="selectedStatus === 'LOCKED'" (click)="onStatusChange('LOCKED')">🔒 Locked</button>
+        </div>
+
+        <!-- ── Sort / per-page bar ───────────────────────────── -->
+        <div class="rd-sort-bar">
+          <button type="button" class="rd-sort-tab" [class.active]="selectedSort === 'hot'" (click)="onSortChange('hot')">
+            🔥 Hot
+          </button>
+          <button type="button" class="rd-sort-tab" [class.active]="selectedSort === 'top'" (click)="onSortChange('top')">
+            ⬆ Top
+          </button>
+          <button type="button" class="rd-sort-tab" [class.active]="selectedSort === 'new'" (click)="onSortChange('new')">
+            ✨ New
+          </button>
+          <div class="rd-sort-spacer"></div>
+          <span class="rd-thread-count">{{ filteredThreads.length }} thread{{ filteredThreads.length !== 1 ? 's' : '' }}</span>
+          <label class="rd-label">Per page</label>
+          <select class="rd-select rd-select-sm" [value]="pageSize" (change)="onPageSizeChange($any($event.target).value)">
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="20">20</option>
+          </select>
+        </div>
+
+        <!-- ── States ────────────────────────────────────────── -->
+        <div *ngIf="loading" class="rd-card rd-loading">
+          <div class="rd-loading-dots"><span></span><span></span><span></span></div>
+          Loading threads…
+        </div>
+        <div *ngIf="!loading && error" class="rd-card rd-error">
+          <div>{{ error }}</div>
+          <button type="button" class="rd-btn" (click)="fetchThreads()">Retry</button>
+        </div>
+
+        <!-- ── Thread list ─────────────────────────────────── -->
+        <div *ngIf="!loading && !error">
+          <div *ngIf="filteredThreads.length === 0" class="rd-card rd-empty">
+            <div class="rd-empty-icon">🔍</div>
+            No threads found. Try adjusting your search or filters.
+          </div>
+
+          <div *ngFor="let t of pagedThreads" class="rd-thread" (click)="goToThread(t.id)">
+            <!-- Vote column — disabled for own threads -->
+            <div class="rd-thread-vote">
+              <button type="button" class="rd-vote-btn"
+                [class.rd-vote-active]="getInteraction(t.id).userVote === 'UPVOTE'"
+                [disabled]="isOwnThread(t)"
+                [title]="isOwnThread(t) ? 'You cannot vote on your own thread' : 'Upvote'"
+                (click)="onVote($event, t, 'UPVOTE')">👍</button>
+              <div class="rd-vote-score"
+                [class.rd-score-pos]="getInteraction(t.id).voteScore > 0"
+                [class.rd-score-neg]="getInteraction(t.id).voteScore < 0">
+                {{ getInteraction(t.id).voteScore }}
+              </div>
+              <button type="button" class="rd-vote-btn"
+                [class.rd-vote-active]="getInteraction(t.id).userVote === 'DOWNVOTE'"
+                [disabled]="isOwnThread(t)"
+                [title]="isOwnThread(t) ? 'You cannot vote on your own thread' : 'Downvote'"
+                (click)="onVote($event, t, 'DOWNVOTE')">👎</button>
+            </div>
+
+            <div class="rd-thread-body">
+              <div class="rd-thread-meta">
+                <span class="rd-chip rd-chip-category" *ngIf="t.category">{{ t.category.name }}</span>
+                <span [ngClass]="'rd-chip rd-chip-' + t.status.toLowerCase()">{{ t.status }}</span>
+                <span class="rd-muted">by {{ t.author?.username ?? 'Unknown user' }} • {{ t.createdAt | date:'mediumDate' }}</span>
+                <span *ngIf="isOwnThread(t)" class="rd-own-badge">Your thread</span>
+              </div>
+              <div class="rd-thread-title">{{ t.title }}</div>
+              <div class="rd-thread-text">{{ t.body }}</div>
+
+              <a *ngIf="t.imageUrl" class="rd-media" [href]="media.url(t.imageUrl)" target="_blank" rel="noopener" (click)="$event.stopPropagation()">
+                <img class="rd-thread-image" [src]="media.url(t.imageUrl)" alt="Thread image" />
+              </a>
+
+              <div class="rd-thread-actions">
+                <span class="rd-action">💬 {{ getPostCount(t.id) }} posts</span>
+                <button type="button" class="rd-reaction-btn"
+                  [class.rd-reaction-active]="getInteraction(t.id).userReaction === 'LIKE'"
+                  [disabled]="isOwnThread(t)"
+                  [title]="isOwnThread(t) ? 'You cannot react to your own thread' : 'Like'"
+                  (click)="onReact($event, t, 'LIKE')">
+                  ❤️ {{ getInteraction(t.id).likeCount }}
+                </button>
+                <button type="button" class="rd-reaction-btn"
+                  [class.rd-reaction-active]="getInteraction(t.id).userReaction === 'DISLIKE'"
+                  [disabled]="isOwnThread(t)"
+                  [title]="isOwnThread(t) ? 'You cannot react to your own thread' : 'Dislike'"
+                  (click)="onReact($event, t, 'DISLIKE')">
+                  😠 {{ getInteraction(t.id).dislikeCount }}
+                </button>
+                <button type="button" class="rd-wishlist-btn"
+                  [class.rd-wishlist-active]="getInteraction(t.id).wishlisted"
+                  (click)="onToggleWishlist($event, t)" title="Save to wishlist">
+                  {{ getInteraction(t.id).wishlisted ? '🔖 Saved' : '🔖 Save' }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="rd-pagination" *ngIf="filteredThreads.length > 0">
+            <button type="button" class="rd-btn" (click)="prevPage()" [disabled]="pageIndex <= 1">‹ Prev</button>
+            <div class="rd-pageinfo">Page {{ pageIndex }} / {{ totalPages }}</div>
+            <button type="button" class="rd-btn" (click)="nextPage()" [disabled]="pageIndex >= totalPages">Next ›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Right Sidebar ───────────────────────────────────── -->
+      <aside class="rd-sidebar rd-sidebar-right">
+
+        <!-- Forum rules -->
+        <div class="rd-card">
+          <div class="rd-card-title">Forum Rules</div>
+          <ol class="rd-rules-list">
+            <li>Be respectful and constructive</li>
+            <li>Stay on topic</li>
+            <li>No spam or self-promotion</li>
+            <li>Use proper categories</li>
+          </ol>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</div>

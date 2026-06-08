@@ -1,0 +1,271 @@
+<div class="checker-backdrop" *ngIf="visible" (click)="onClose()"></div>
+
+<div class="checker-panel" *ngIf="visible">
+  <div class="checker-header">
+    <span class="checker-title">Thread review before publishing</span>
+    <button type="button" class="checker-close" (click)="onClose()">X</button>
+  </div>
+
+  <div class="checker-summary">
+    <span class="checker-pill" [class.pill-ok]="rulesOk" [class.pill-err]="!rulesOk">
+      {{ rulesOk ? 'OK' : 'Fix' }} Rules
+      <span *ngIf="rulesResult && rulesResult.blocking.length > 0">({{ rulesResult.blocking.length }})</span>
+    </span>
+    <span class="checker-pill" [class.pill-ok]="grammarOk" [class.pill-warn]="!grammarOk">
+      {{ grammarOk ? 'OK' : 'Check' }} Grammar
+      <span *ngIf="grammarResult && grammarResult.issues.length > 0">({{ grammarResult.issues.length }})</span>
+    </span>
+    <span class="checker-pill pill-ai" *ngIf="aiResult?.analysisAvailable">
+      AI: {{ score?.overall }}/10 - {{ score?.label }}
+    </span>
+  </div>
+
+  <div class="checker-tabs">
+    <button type="button" class="ctab" [class.ctab-active]="activeTab === 'rules'" (click)="setTab('rules')">
+      Rules
+      <span class="ctab-badge" *ngIf="rulesResult && rulesResult.blocking.length > 0" style="background:#ef4444">
+        {{ rulesResult.blocking.length }}
+      </span>
+      <span
+        class="ctab-badge"
+        *ngIf="rulesResult && rulesResult.blocking.length === 0 && rulesResult.warnings.length > 0"
+        style="background:#f59e0b">
+        {{ rulesResult.warnings.length }}
+      </span>
+    </button>
+    <button type="button" class="ctab" [class.ctab-active]="activeTab === 'grammar'" (click)="setTab('grammar')">
+      Grammar
+      <span class="ctab-badge" *ngIf="grammarResult && grammarResult.issues.length > 0" style="background:#f59e0b">
+        {{ grammarResult.issues.length }}
+      </span>
+    </button>
+    <button type="button" class="ctab" [class.ctab-active]="activeTab === 'ai'" (click)="setTab('ai')">
+      AI analysis
+    </button>
+    <button type="button" class="ctab" [class.ctab-active]="activeTab === 'ml'" (click)="setTab('ml')">
+      ML prediction
+    </button>
+  </div>
+
+  <div class="checker-body" *ngIf="activeTab === 'rules'">
+    <ng-container *ngIf="rulesResult">
+      <div *ngIf="rulesResult.blocking.length > 0" class="rule-section">
+        <div class="rule-section-title err-title">Blocking issues</div>
+        <div *ngFor="let item of rulesResult.blocking; trackBy: trackById" class="rule-item rule-blocking">
+          <span class="rule-icon">X</span>
+          <div>
+            <div class="rule-msg">{{ item.message }}</div>
+            <div class="rule-detail" *ngIf="item.detail">{{ item.detail }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="rulesResult.warnings.length > 0" class="rule-section">
+        <div class="rule-section-title warn-title">Warnings</div>
+        <div *ngFor="let item of rulesResult.warnings; trackBy: trackById" class="rule-item rule-warning">
+          <span class="rule-icon">!</span>
+          <div>
+            <div class="rule-msg">{{ item.message }}</div>
+            <div class="rule-detail" *ngIf="item.detail">{{ item.detail }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="rulesResult.tips.length > 0" class="rule-section">
+        <div class="rule-section-title tip-title">Tips</div>
+        <div *ngFor="let item of rulesResult.tips; trackBy: trackById" class="rule-item rule-tip">
+          <span class="rule-icon">i</span>
+          <div>
+            <div class="rule-msg">{{ item.message }}</div>
+            <div class="rule-detail" *ngIf="item.detail">{{ item.detail }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="rulesResult.violations.length === 0" class="checker-ok-msg">
+        No rule issues found. This thread is ready to publish.
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="checker-body" *ngIf="activeTab === 'grammar'">
+    <ng-container *ngIf="grammarResult">
+      <div class="grammar-score-row">
+        <span class="grammar-score-label">Writing score:</span>
+        <span
+          class="grammar-score-val"
+          [style.color]="grammarResult.score >= 80 ? '#22c55e' : grammarResult.score >= 50 ? '#f59e0b' : '#ef4444'">
+          {{ grammarResult.score }}/100
+        </span>
+      </div>
+
+      <div *ngIf="grammarResult.issues.length === 0" class="checker-ok-msg">
+        No obvious grammar issues found.
+      </div>
+
+      <div *ngFor="let issue of grammarResult.issues; trackBy: trackById" class="grammar-item">
+        <div class="grammar-issue-type">{{ issue.type | titlecase }}</div>
+        <div class="grammar-issue-msg">{{ issue.message }}</div>
+        <div class="grammar-issue-example" *ngIf="issue.example">{{ issue.example }}</div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="checker-body" *ngIf="activeTab === 'ai'">
+    <div *ngIf="!aiResult && !aiLoading && !aiError" class="ai-intro">
+      <p>The AI check reviews clarity, detail, and usefulness, then suggests how to improve the thread.</p>
+      <button type="button" class="ai-analyze-btn" (click)="runAiAnalysis()">Run AI analysis</button>
+    </div>
+
+    <div *ngIf="aiLoading" class="ai-loading">
+      <span class="ai-spinner"></span>
+      <span>Analyzing thread...</span>
+    </div>
+
+    <div *ngIf="aiError && !aiLoading" class="ai-error-msg">
+      {{ aiError }}
+      <button type="button" class="ai-retry-btn" (click)="runAiAnalysis()">Retry</button>
+    </div>
+
+    <ng-container *ngIf="aiResult && !aiLoading">
+      <div *ngIf="!aiResult.analysisAvailable" class="ai-error-msg">
+        AI analysis is not available right now.
+        <button type="button" class="ai-retry-btn" (click)="runAiAnalysis()">Retry</button>
+      </div>
+
+      <ng-container *ngIf="aiResult.analysisAvailable && score">
+        <div class="ai-score-row">
+          <span class="ai-score-badge" [style.background]="score.labelColor">
+            {{ score.overall }}/10 - {{ score.label }}
+          </span>
+          <span class="ai-summary">{{ score.summary }}</span>
+        </div>
+
+        <div class="ai-bars">
+          <div class="ai-bar-row">
+            <span class="ai-bar-label">Clarity</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill" [style.width.%]="scoreBar(score.clarity)" [style.background]="score.labelColor"></div>
+            </div>
+            <span class="ai-bar-val">{{ score.clarity }}/10</span>
+          </div>
+          <div class="ai-bar-row">
+            <span class="ai-bar-label">Detail</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill" [style.width.%]="scoreBar(score.detail)" [style.background]="score.labelColor"></div>
+            </div>
+            <span class="ai-bar-val">{{ score.detail }}/10</span>
+          </div>
+          <div class="ai-bar-row">
+            <span class="ai-bar-label">Usefulness</span>
+            <div class="ai-bar-track">
+              <div class="ai-bar-fill" [style.width.%]="scoreBar(score.usefulness)" [style.background]="score.labelColor"></div>
+            </div>
+            <span class="ai-bar-val">{{ score.usefulness }}/10</span>
+          </div>
+        </div>
+
+        <div *ngIf="score.strengths?.length" class="ai-list-section">
+          <div class="ai-list-title">Strengths</div>
+          <ul class="ai-list ai-strengths">
+            <li *ngFor="let item of score.strengths">{{ item }}</li>
+          </ul>
+        </div>
+
+        <div *ngIf="score.improvements?.length" class="ai-list-section">
+          <div class="ai-list-title">Suggested improvements</div>
+          <ul class="ai-list ai-improvements">
+            <li *ngFor="let item of score.improvements">{{ item }}</li>
+          </ul>
+        </div>
+
+        <div *ngIf="score.improvedVersion" class="ai-improved-section">
+          <div class="ai-list-title">Improved version</div>
+          <div class="ai-improved-body">{{ score.improvedVersion }}</div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="checker-body" *ngIf="activeTab === 'ml'">
+    <div *ngIf="!mlEnriched && !mlLoading && !mlError" class="ai-intro">
+      <div class="ml-intro-icon">ML</div>
+      <p>The ML model predicts whether the thread looks strong, needs editing, or may struggle with engagement.</p>
+      <button type="button" class="ai-analyze-btn ml-predict-btn" (click)="runMlPredict()">Run ML prediction</button>
+    </div>
+
+    <div *ngIf="mlLoading" class="ai-loading">
+      <span class="ai-spinner"></span>
+      <span>Running ML prediction...</span>
+    </div>
+
+    <div *ngIf="mlError && !mlLoading" class="ai-error-msg">
+      {{ mlError }}
+      <button type="button" class="ai-retry-btn" (click)="runMlPredict()">Retry</button>
+    </div>
+
+    <ng-container *ngIf="mlEnriched && !mlLoading">
+      <div *ngIf="!mlEnriched.mlRaw.available" class="ai-error-msg">
+        ML prediction is offline.
+        <button type="button" class="ai-retry-btn" (click)="runMlPredict()">Retry</button>
+      </div>
+
+      <ng-container *ngIf="mlEnriched.mlRaw.available">
+        <div class="ml-verdict-card" [style.border-color]="verdictColor">
+          <div class="ml-verdict-header">
+            <span class="ml-verdict-icon">{{ verdictIcon }}</span>
+            <span class="ml-verdict-label" [style.color]="verdictColor">{{ verdictLabel }}</span>
+            <span class="ml-confidence-badge" [style.background]="verdictColor + '22'" [style.color]="verdictColor">
+              {{ confidencePercent() }}% confidence
+            </span>
+          </div>
+          <p class="ml-explanation">{{ mlEnriched.explanation }}</p>
+        </div>
+
+        <div class="ml-proba-section">
+          <div class="ml-proba-title">Probability breakdown</div>
+
+          <div class="ml-proba-row">
+            <span class="ml-proba-label">High quality</span>
+            <div class="ml-proba-track">
+              <div class="ml-proba-fill ml-proba-fill--hq" [style.width.%]="probabilityPercent('HQ')"></div>
+            </div>
+            <span class="ml-proba-pct">{{ probabilityPercent('HQ') }}%</span>
+          </div>
+
+          <div class="ml-proba-row">
+            <span class="ml-proba-label">Needs editing</span>
+            <div class="ml-proba-track">
+              <div class="ml-proba-fill ml-proba-fill--edit" [style.width.%]="probabilityPercent('LQ_EDIT')"></div>
+            </div>
+            <span class="ml-proba-pct">{{ probabilityPercent('LQ_EDIT') }}%</span>
+          </div>
+
+          <div class="ml-proba-row">
+            <span class="ml-proba-label">Likely to struggle</span>
+            <div class="ml-proba-track">
+              <div class="ml-proba-fill ml-proba-fill--close" [style.width.%]="probabilityPercent('LQ_CLOSE')"></div>
+            </div>
+            <span class="ml-proba-pct">{{ probabilityPercent('LQ_CLOSE') }}%</span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div *ngIf="submitBlockedByAi" class="checker-ai-gate">
+    AI score is below the recommended quality threshold. You can still publish, but improving the thread is recommended.
+  </div>
+
+  <div class="checker-footer">
+    <button type="button" class="checker-btn-cancel" (click)="onClose()">Keep editing</button>
+    <button
+      type="button"
+      class="checker-btn-submit"
+      [disabled]="!canSubmit"
+      [title]="!canSubmit ? 'Fix the blocking issues first.' : ''"
+      (click)="onConfirm()">
+      Publish thread
+    </button>
+  </div>
+</div>

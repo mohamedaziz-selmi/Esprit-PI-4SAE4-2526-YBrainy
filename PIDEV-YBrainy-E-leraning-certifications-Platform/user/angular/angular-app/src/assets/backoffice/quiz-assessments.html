@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>YBrainy — Quiz Assessments</title>
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	<link href="vendor/wow-master/css/libs/animate.css" rel="stylesheet">
+	<link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="vendor/jquery-nice-select/css/nice-select.css">
+	<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<style>
+		.bt-buy-now,.bt-support-now,#DZScript{display:none!important}
+		.quiz-card{transition:.3s;border-radius:14px;border:1px solid rgba(0,0,0,.08);cursor:pointer}
+		.quiz-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+		.diff-easy{background:#d1fae5;color:#065f46}.diff-medium{background:#fef3c7;color:#92400e}.diff-hard{background:#fee2e2;color:#991b1b}
+		.q-option{padding:8px 14px;border-radius:8px;margin:4px 0;background:#f8f9fa;border:1px solid #e9ecef;transition:.2s}
+		.q-option.correct{background:#d1fae5;border-color:#10b981;font-weight:600}
+		.q-number{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}
+		.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+	</style>
+</head>
+<body>
+	<div id="preloader"><div class="loader"><div class="dots"><div class="dot mainDot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div>
+	<div id="main-wrapper">
+		<!-- Nav header -->
+		<div class="nav-header">
+			<a href="index.html" class="brand-logo">
+				<img src="images/logo-full.png" alt="Logo" class="logo-abbr" style="max-height:60px;max-width:200px;width:auto;height:auto;object-fit:contain;">
+				<div class="brand-title"><h3 style="color:white;margin:0;font-size:24px;font-weight:bold;">YBrainy</h3></div>
+			</a>
+			<div class="nav-control"><div class="hamburger"><span class="line"></span><span class="line"></span><span class="line"></span>
+				<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A"/><rect x="11" width="4" height="4" rx="2" fill="#2A353A"/><rect x="22" width="4" height="4" rx="2" fill="#2A353A"/><rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A"/><rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A"/><rect width="4" height="4" rx="2" fill="#2A353A"/><rect y="11" width="4" height="4" rx="2" fill="#2A353A"/><rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A"/><rect y="22" width="4" height="4" rx="2" fill="#2A353A"/></svg>
+			</div></div>
+		</div>
+
+		<!-- Header -->
+		<div class="header"><div class="header-content"><nav class="navbar navbar-expand"><div class="collapse navbar-collapse justify-content-between">
+			<div class="header-left"><div class="dashboard_bar">Quiz Assessments</div></div>
+			<ul class="navbar-nav header-right">
+				<li class="nav-item dropdown notification_dropdown"><a class="nav-link bell dz-theme-mode" href="javascript:void(0);"><i id="icon-light-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></i><i id="icon-dark-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></i></a></li>
+				<li class="nav-item dropdown notification_dropdown"><a class="nav-link bell dz-fullscreen" href="javascript:void(0);"><svg id="icon-full-1" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg><svg id="icon-minimize-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="A098AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg></a></li>
+			</ul>
+		</div></nav></div></div>
+
+		<!-- Sidebar -->
+		<div class="dlabnav"><div class="dlabnav-scroll"><ul class="metismenu" id="menu">
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-symbols-outlined">home</i><span class="nav-text">Dashboard</span></a>
+				<ul aria-expanded="false"><li><a href="index.html">Dashboard Page</a></li>
+<li><a href="finance.html">Finance</a></li></ul></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-symbols-outlined">school</i><span class="nav-text">Student</span></a>
+				<ul aria-expanded="false"><li><a href="student.html">Student</a></li><li><a href="student-detail.html">Student Detail</a></li><li><a href="add-student.html">Add New Student</a></li></ul></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-symbols-outlined">person</i><span class="nav-text">Teacher</span></a>
+				<ul aria-expanded="false"><li><a href="teacher.html">Teacher</a></li><li><a href="teacher-detail.html">Teacher Detail</a></li><li><a href="add-teacher.html">Add New Teacher</a></li></ul></li>
+								<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">shopping_cart</i>
+							<span class="nav-text">Shop</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="ecom-product-list.html">E-Learning Packs</a></li>
+							<li><a href="ecom-product-order.html">Order</a></li>
+							<li><a href="ecom-checkout.html">Checkout</a></li>
+							<li><a href="ecom-invoice.html">Invoice</a></li>
+							<li><a href="ecom-customers.html">Customers</a></li>
+						</ul>
+					</li>
+<li><a class="has-arrow" href="javascript:void(0);"><i class="material-symbols-outlined">school</i><span class="nav-text">Courses</span></a>
+				<ul aria-expanded="false"><li><a href="courses.html">All Courses</a></li><li><a href="lessons.html">Lessons</a></li><li><a href="app-calender.html">Calendar</a></li></ul></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-icons">verified</i><span class="nav-text">Assessment &amp; Certification</span></a>
+				<ul aria-expanded="false"><li><a href="certifications.html">Certifications</a></li><li><a href="quiz-assessments.html">Quiz Assessments</a></li></ul></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-icons">assessment</i><span class="nav-text">Reports</span></a>
+				<ul aria-expanded="false"><li><a href="student-reports.html">Student Reports</a></li><li><a href="teacher-reports.html">Teacher Reports</a></li></ul></li>
+			<li><a href="cv-list.html"><i class="material-icons">contact_page</i><span class="nav-text">CV Submissions</span></a></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-icons">folder</i><span class="nav-text">File Manager</span></a>
+				<ul aria-expanded="false"><li><a href="file-manager.html">File Manager</a></li><li><a href="user.html">User</a></li><li><a href="celandar.html">Calendar</a></li><li><a href="chat.html">Chat</a></li><li><a href="activity.html">Activity</a></li></ul></li>
+			<li><a class="has-arrow" href="javascript:void(0);"><i class="material-icons">app_registration</i><span class="nav-text">Apps</span></a>
+				<ul aria-expanded="false"><li><a href="app-profile.html">Profile</a></li><li><a href="edit-profile.html">Edit Profile</a></li><li><a href="post-details.html">Post Details</a></li>
+				<li><a class="has-arrow" href="javascript:void(0);">Email</a><ul aria-expanded="false"><li><a href="email-compose.html">Compose</a></li><li><a href="email-inbox.html">Inbox</a></li><li><a href="email-read.html">Read</a></li></ul></li></ul></li>
+		</ul></div></div>
+
+		<!-- Content body -->
+		<div class="content-body">
+			<div class="container-fluid">
+				<div class="row page-titles">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+						<li class="breadcrumb-item"><a href="javascript:void(0)">Assessment &amp; Certification</a></li>
+						<li class="breadcrumb-item active"><a href="javascript:void(0)">Quiz Assessments</a></li>
+					</ol>
+				</div>
+
+				<!-- Stats -->
+				<div class="row">
+					<div class="col-xl-3 col-sm-6">
+						<div class="card"><div class="card-body d-flex align-items-center gap-3">
+							<div class="stat-icon bg-primary"><i class="material-icons text-white">quiz</i></div>
+							<div><h3 class="mb-0" id="statTotal">0</h3><small class="text-muted">Total Quizzes</small></div>
+						</div></div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card"><div class="card-body d-flex align-items-center gap-3">
+							<div class="stat-icon bg-success"><i class="material-icons text-white">publish</i></div>
+							<div><h3 class="mb-0" id="statPublished">0</h3><small class="text-muted">Published</small></div>
+						</div></div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card"><div class="card-body d-flex align-items-center gap-3">
+							<div class="stat-icon bg-warning"><i class="material-icons text-white">edit_note</i></div>
+							<div><h3 class="mb-0" id="statDraft">0</h3><small class="text-muted">Draft</small></div>
+						</div></div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card"><div class="card-body d-flex align-items-center gap-3">
+							<div class="stat-icon bg-secondary"><i class="material-icons text-white">archive</i></div>
+							<div><h3 class="mb-0" id="statArchived">0</h3><small class="text-muted">Archived</small></div>
+						</div></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- Create Quiz Form -->
+					<div class="col-xl-4">
+						<div class="card">
+							<div class="card-header border-0 pb-0"><h4 class="card-title"><i class="material-icons align-middle me-1 text-primary">add_circle</i> <span id="quizFormTitle">Create Quiz</span></h4></div>
+							<div class="card-body">
+								<form id="quizForm">
+									<input type="hidden" id="editQuizId">
+									<div class="mb-3">
+										<label class="form-label fw-bold">Title <span class="text-danger">*</span></label>
+										<input type="text" class="form-control" id="qTitle" required placeholder="Quiz title">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Certification</label>
+										<select class="form-select" id="qCertId"><option value="">None (standalone)</option></select>
+									</div>
+									<div class="row">
+										<div class="col-4 mb-3">
+											<label class="form-label fw-bold">Time (min)</label>
+											<input type="number" class="form-control" id="qTime" value="30" min="0">
+										</div>
+										<div class="col-4 mb-3">
+											<label class="form-label fw-bold">Pass %</label>
+											<input type="number" class="form-control" id="qPass" value="70" min="0" max="100">
+										</div>
+										<div class="col-4 mb-3">
+											<label class="form-label fw-bold">Attempts</label>
+											<input type="number" class="form-control" id="qAttempts" value="3" min="0">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Difficulty</label>
+											<select class="form-select" id="qDiff">
+												<option value="easy">Easy</option>
+												<option value="medium" selected>Medium</option>
+												<option value="hard">Hard</option>
+											</select>
+										</div>
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Status</label>
+											<select class="form-select" id="qStatus">
+												<option value="draft">Draft</option>
+												<option value="published">Published</option>
+												<option value="archived">Archived</option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Description</label>
+										<textarea class="form-control" id="qDesc" rows="2" placeholder="Describe this quiz..."></textarea>
+									</div>
+									<div class="d-flex gap-2">
+										<button type="submit" class="btn btn-primary flex-grow-1" id="quizSubmitBtn"><i class="material-icons align-middle" style="font-size:16px">save</i> Create Quiz</button>
+										<button type="button" class="btn btn-outline-secondary d-none" id="quizCancelBtn" onclick="resetQuizForm()">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+
+						<!-- Add Question (shown when quiz selected) -->
+						<div class="card d-none" id="addQuestionCard">
+							<div class="card-header border-0 pb-0"><h4 class="card-title"><i class="material-icons align-middle me-1 text-success">help_outline</i> Add Question</h4></div>
+							<div class="card-body">
+								<form id="questionForm">
+									<div class="mb-3">
+										<label class="form-label fw-bold">Question <span class="text-danger">*</span></label>
+										<textarea class="form-control" id="qqText" rows="2" required placeholder="Type the question..."></textarea>
+									</div>
+									<div class="mb-2">
+										<label class="form-label fw-bold">Option A</label>
+										<input type="text" class="form-control" id="qqA" required>
+									</div>
+									<div class="mb-2">
+										<label class="form-label fw-bold">Option B</label>
+										<input type="text" class="form-control" id="qqB" required>
+									</div>
+									<div class="mb-2">
+										<label class="form-label fw-bold">Option C</label>
+										<input type="text" class="form-control" id="qqC">
+									</div>
+									<div class="mb-2">
+										<label class="form-label fw-bold">Option D</label>
+										<input type="text" class="form-control" id="qqD">
+									</div>
+									<div class="row">
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Correct Answer</label>
+											<select class="form-select" id="qqCorrect" required>
+												<option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+											</select>
+										</div>
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Points</label>
+											<input type="number" class="form-control" id="qqPoints" value="1" min="1">
+										</div>
+									</div>
+									<button type="submit" class="btn btn-success w-100"><i class="material-icons align-middle" style="font-size:16px">add</i> Add Question</button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Quiz List -->
+					<div class="col-xl-8">
+						<div class="card">
+							<div class="card-header border-0 pb-0 d-flex justify-content-between align-items-center flex-wrap">
+								<h4 class="card-title"><i class="material-icons align-middle me-1 text-primary">quiz</i> All Quizzes</h4>
+								<div class="d-flex gap-2 flex-wrap mt-2 mt-md-0">
+									<button class="btn btn-sm btn-outline-primary qf active" data-f="all">All</button>
+									<button class="btn btn-sm btn-outline-success qf" data-f="published">Published</button>
+									<button class="btn btn-sm btn-outline-warning qf" data-f="draft">Draft</button>
+									<button class="btn btn-sm btn-outline-secondary qf" data-f="archived">Archived</button>
+								</div>
+							</div>
+							<div class="card-body" id="quizzesContainer">
+								<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>
+							</div>
+						</div>
+
+						<!-- Questions Panel (shown when quiz selected) -->
+						<div class="card d-none" id="questionsPanel">
+							<div class="card-header border-0 pb-0 d-flex justify-content-between align-items-center">
+								<h4 class="card-title"><i class="material-icons align-middle me-1 text-success">help_outline</i> Questions — <span id="qPanelQuizTitle"></span></h4>
+								<button class="btn btn-sm btn-outline-secondary" onclick="closeQuestionsPanel()"><i class="material-icons align-middle" style="font-size:16px">close</i></button>
+							</div>
+							<div class="card-body" id="questionsContainer"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+	<script>
+	/* ═══════════════════════════════════════════════
+	 *  STATIC DATA — no backend needed
+	 * ═══════════════════════════════════════════════ */
+	let nextQuizId = 6;
+	let nextQuestionId = 100;
+
+	// Static questions per quiz (keyed by quiz id)
+	const allQuestions = {
+		1: [
+			{id:1, questionText:"Which HTML5 element is used to define navigation links?", optionA:"<nav>", optionB:"<navigation>", optionC:"<links>", optionD:"<menu>", correctAnswer:"A", points:2},
+			{id:2, questionText:"In CSS, what does 'display: flex' do?", optionA:"Makes the element invisible", optionB:"Creates a flexible box layout container", optionC:"Fixes the element position", optionD:"Stretches the element to full width", correctAnswer:"B", points:2},
+			{id:3, questionText:"What is the correct way to declare a constant in JavaScript ES6?", optionA:"var x = 5", optionB:"let x = 5", optionC:"const x = 5", optionD:"constant x = 5", correctAnswer:"C", points:2},
+			{id:4, questionText:"In React, which hook is used to manage component state?", optionA:"useEffect", optionB:"useContext", optionC:"useReducer", optionD:"useState", correctAnswer:"D", points:3},
+			{id:5, questionText:"What HTTP method is typically used to update an existing resource in a REST API?", optionA:"GET", optionB:"POST", optionC:"PUT", optionD:"DELETE", correctAnswer:"C", points:3}
+		],
+		2: [
+			{id:10, questionText:"Which Python library is primarily used for data manipulation and analysis?", optionA:"NumPy", optionB:"Pandas", optionC:"Matplotlib", optionD:"Scikit-learn", correctAnswer:"B", points:2},
+			{id:11, questionText:"What type of machine learning is 'Linear Regression'?", optionA:"Unsupervised Learning", optionB:"Reinforcement Learning", optionC:"Supervised Learning", optionD:"Semi-supervised Learning", correctAnswer:"C", points:2},
+			{id:12, questionText:"Which metric is best suited for evaluating a classification model with imbalanced classes?", optionA:"Accuracy", optionB:"F1 Score", optionC:"Mean Squared Error", optionD:"R² Score", correctAnswer:"B", points:3},
+			{id:13, questionText:"What does the 'fit()' method do in Scikit-learn?", optionA:"Makes predictions", optionB:"Transforms data", optionC:"Trains the model on data", optionD:"Evaluates model performance", correctAnswer:"C", points:2},
+			{id:14, questionText:"In a Neural Network, what is the purpose of an activation function?", optionA:"To initialize weights", optionB:"To introduce non-linearity", optionC:"To normalize input data", optionD:"To reduce overfitting", correctAnswer:"B", points:3}
+		],
+		3: [
+			{id:20, questionText:"What programming language does Flutter use?", optionA:"Kotlin", optionB:"Swift", optionC:"Dart", optionD:"JavaScript", correctAnswer:"C", points:1},
+			{id:21, questionText:"Which widget is used to create a scrollable list of items in Flutter?", optionA:"Column", optionB:"ListView", optionC:"Stack", optionD:"GridView", correctAnswer:"B", points:2},
+			{id:22, questionText:"What is the difference between StatelessWidget and StatefulWidget?", optionA:"StatelessWidget can change over time", optionB:"StatefulWidget cannot be rebuilt", optionC:"StatefulWidget maintains mutable state", optionD:"There is no difference", correctAnswer:"C", points:2},
+			{id:23, questionText:"Which state management solution is officially recommended by the Flutter team?", optionA:"Redux", optionB:"Provider", optionC:"MobX", optionD:"Bloc only", correctAnswer:"B", points:2}
+		],
+		4: [
+			{id:30, questionText:"What does SQL injection attack target?", optionA:"Network layer", optionB:"Database layer", optionC:"Physical layer", optionD:"Transport layer", correctAnswer:"B", points:2},
+			{id:31, questionText:"Which protocol provides secure communication over the internet?", optionA:"HTTP", optionB:"FTP", optionC:"HTTPS/TLS", optionD:"SMTP", correctAnswer:"C", points:2},
+			{id:32, questionText:"What is the primary purpose of a firewall?", optionA:"Encrypt data", optionB:"Filter network traffic based on rules", optionC:"Detect malware", optionD:"Backup data", correctAnswer:"B", points:3},
+			{id:33, questionText:"What type of attack involves overwhelming a server with excessive requests?", optionA:"Phishing", optionB:"Man-in-the-Middle", optionC:"DDoS", optionD:"Brute Force", correctAnswer:"C", points:2}
+		],
+		5: [
+			{id:40, questionText:"What is the first step in the Design Thinking process?", optionA:"Prototype", optionB:"Define", optionC:"Empathize", optionD:"Test", correctAnswer:"C", points:1},
+			{id:41, questionText:"What is a wireframe?", optionA:"A high-fidelity design mockup", optionB:"A low-fidelity structural layout of a page", optionC:"A coded prototype", optionD:"A user flow diagram", correctAnswer:"B", points:2},
+			{id:42, questionText:"Which tool is most commonly used for collaborative UI design?", optionA:"Photoshop", optionB:"Microsoft Word", optionC:"Figma", optionD:"Excel", correctAnswer:"C", points:2}
+		]
+	};
+
+	let allQuizzes = [
+		{id:1, title:"Full-Stack Web Development — Final Assessment", description:"Comprehensive quiz covering HTML, CSS, JavaScript, React, Node.js, and REST APIs. You must score 70% or higher to earn your certificate.", certificationTitle:"Full-Stack Web Development Certificate", timeLimit:60, passingScore:70, maxAttempts:3, difficulty:"medium", status:"published", attemptCount:312, averageScore:76.5, questions:allQuestions[1]},
+		{id:2, title:"Data Science — Python & Machine Learning Quiz", description:"Test your knowledge of Python data analysis, Pandas, Scikit-learn, and machine learning fundamentals.", certificationTitle:"Data Science Professional Certificate", timeLimit:45, passingScore:75, maxAttempts:2, difficulty:"hard", status:"published", attemptCount:198, averageScore:68.3, questions:allQuestions[2]},
+		{id:3, title:"Flutter & Dart — Fundamentals Quiz", description:"Assess your understanding of Dart language basics, Flutter widgets, state management, and navigation.", certificationTitle:"Flutter Mobile Developer Certificate", timeLimit:30, passingScore:70, maxAttempts:3, difficulty:"easy", status:"published", attemptCount:245, averageScore:82.1, questions:allQuestions[3]},
+		{id:4, title:"Cybersecurity Fundamentals — Assessment", description:"Evaluate your knowledge of network security, encryption, ethical hacking, and incident response procedures.", certificationTitle:"Cybersecurity Fundamentals Certificate", timeLimit:40, passingScore:80, maxAttempts:2, difficulty:"medium", status:"published", attemptCount:120, averageScore:71.8, questions:allQuestions[4]},
+		{id:5, title:"UI/UX Design — Practice Quiz", description:"Test your understanding of user experience principles, design thinking, wireframing, and prototyping.", certificationTitle:"UI/UX Design Essentials Certificate", timeLimit:25, passingScore:65, maxAttempts:5, difficulty:"easy", status:"draft", attemptCount:0, averageScore:0, questions:allQuestions[5]}
+	];
+
+	let qFilter = 'all';
+	let activeQuizId = null;
+
+	// ─── Stats (computed from static array) ───
+	function loadStats() {
+		document.getElementById('statTotal').textContent = allQuizzes.length;
+		document.getElementById('statPublished').textContent = allQuizzes.filter(q=>q.status==='published').length;
+		document.getElementById('statDraft').textContent = allQuizzes.filter(q=>q.status==='draft').length;
+		document.getElementById('statArchived').textContent = allQuizzes.filter(q=>q.status==='archived').length;
+	}
+
+	// ─── Load static certifications for dropdown ───
+	function loadCerts() {
+		const certs = [
+			{id:1, title:"Full-Stack Web Development Certificate"},
+			{id:2, title:"Data Science Professional Certificate"},
+			{id:3, title:"Flutter Mobile Developer Certificate"},
+			{id:4, title:"Cybersecurity Fundamentals Certificate"},
+			{id:5, title:"UI/UX Design Essentials Certificate"},
+			{id:6, title:"Cloud Computing with AWS (Coming Soon)"}
+		];
+		const sel = document.getElementById('qCertId');
+		certs.forEach(c => { const o = document.createElement('option'); o.value = c.title; o.textContent = c.title; sel.appendChild(o); });
+	}
+
+	// ─── Render Quizzes ───
+	function renderQuizzes() {
+		const c = document.getElementById('quizzesContainer');
+		let list = allQuizzes;
+		if (qFilter !== 'all') list = list.filter(q => q.status === qFilter);
+		if (!list.length) { c.innerHTML = '<div class="text-center py-5"><i class="material-icons text-muted" style="font-size:64px">quiz</i><h5 class="text-muted mt-2">No quizzes found</h5></div>'; return; }
+
+		c.innerHTML = list.map(q => {
+			const diffClass = q.difficulty==='easy'?'diff-easy':q.difficulty==='hard'?'diff-hard':'diff-medium';
+			const statusMap = {published:'success',draft:'warning',archived:'secondary'};
+			const qCount = q.questions ? q.questions.length : 0;
+			return `
+			<div class="card quiz-card mb-3 border" onclick="selectQuiz(${q.id})">
+				<div class="card-body p-3">
+					<div class="d-flex justify-content-between align-items-start flex-wrap">
+						<div class="flex-grow-1">
+							<div class="d-flex align-items-center gap-2 mb-1">
+								<h6 class="mb-0">${q.title}</h6>
+								<span class="badge bg-${statusMap[q.status]||'secondary'} badge-sm">${(q.status||'').charAt(0).toUpperCase()+(q.status||'').slice(1)}</span>
+							</div>
+							${q.certificationTitle ? `<small class="text-primary"><i class="material-icons align-middle" style="font-size:14px">verified</i> ${q.certificationTitle}</small><br>` : ''}
+							<small class="text-muted">${q.description ? q.description.substring(0,100)+'...' : ''}</small>
+						</div>
+						<div class="d-flex gap-2 mt-2 mt-md-0">
+							<button class="btn btn-sm btn-outline-primary" onclick="event.stopPropagation();editQuiz(${q.id})" title="Edit"><i class="material-icons" style="font-size:16px">edit</i></button>
+							<button class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();deleteQuiz(${q.id})" title="Delete"><i class="material-icons" style="font-size:16px">delete</i></button>
+						</div>
+					</div>
+					<div class="d-flex flex-wrap gap-2 mt-2">
+						<span class="badge ${diffClass}">${(q.difficulty||'medium').charAt(0).toUpperCase()+(q.difficulty||'').slice(1)}</span>
+						<span class="badge bg-light text-dark"><i class="material-icons align-middle" style="font-size:12px">timer</i> ${q.timeLimit||30} min</span>
+						<span class="badge bg-light text-dark"><i class="material-icons align-middle" style="font-size:12px">grade</i> Pass: ${q.passingScore||70}%</span>
+						<span class="badge bg-light text-dark"><i class="material-icons align-middle" style="font-size:12px">replay</i> ${q.maxAttempts||3} attempts</span>
+						<span class="badge bg-primary">${qCount} question${qCount!==1?'s':''}</span>
+						${q.attemptCount ? `<span class="badge bg-info">${q.attemptCount} taken · avg ${(q.averageScore||0).toFixed(1)}%</span>` : ''}
+					</div>
+				</div>
+			</div>`;
+		}).join('');
+	}
+
+	// ─── Filters ───
+	document.querySelectorAll('.qf').forEach(b => b.addEventListener('click', function() {
+		document.querySelectorAll('.qf').forEach(x => x.classList.remove('active'));
+		this.classList.add('active');
+		qFilter = this.dataset.f;
+		renderQuizzes();
+	}));
+
+	// ─── Select Quiz → Show questions ───
+	function selectQuiz(id) {
+		activeQuizId = id;
+		document.getElementById('addQuestionCard').classList.remove('d-none');
+		document.getElementById('questionsPanel').classList.remove('d-none');
+		const quiz = allQuizzes.find(q => q.id === id);
+		document.getElementById('qPanelQuizTitle').textContent = quiz ? quiz.title : '';
+		renderQuestions(id);
+	}
+
+	function closeQuestionsPanel() {
+		activeQuizId = null;
+		document.getElementById('questionsPanel').classList.add('d-none');
+		document.getElementById('addQuestionCard').classList.add('d-none');
+	}
+
+	// ─── Render Questions from static data ───
+	function renderQuestions(quizId) {
+		const c = document.getElementById('questionsContainer');
+		const quiz = allQuizzes.find(q => q.id === quizId);
+		const qs = quiz ? quiz.questions : [];
+		if (!qs || !qs.length) { c.innerHTML = '<div class="text-center py-3"><p class="text-muted">No questions yet. Add one using the form on the left!</p></div>'; return; }
+		c.innerHTML = qs.map((q, i) => {
+			const opts = [
+				{l:'A', t:q.optionA}, {l:'B', t:q.optionB},
+				{l:'C', t:q.optionC}, {l:'D', t:q.optionD}
+			].filter(o => o.t);
+			return `
+			<div class="card bg-light mb-3 border">
+				<div class="card-body p-3">
+					<div class="d-flex align-items-start gap-3">
+						<div class="q-number bg-primary text-white">${i+1}</div>
+						<div class="flex-grow-1">
+							<div class="d-flex justify-content-between">
+								<h6 class="mb-2">${q.questionText}</h6>
+								<div class="d-flex gap-1">
+									<span class="badge bg-light text-dark">${q.points||1} pt${(q.points||1)>1?'s':''}</span>
+									<button class="btn btn-xs btn-outline-danger" onclick="deleteQuestion(${q.id})" title="Delete"><i class="material-icons" style="font-size:14px">close</i></button>
+								</div>
+							</div>
+							${opts.map(o => `<div class="q-option ${o.l===q.correctAnswer?'correct':''}">${o.l}. ${o.t} ${o.l===q.correctAnswer?'<i class="material-icons align-middle text-success" style="font-size:16px">check_circle</i>':''}</div>`).join('')}
+						</div>
+					</div>
+				</div>
+			</div>`;
+		}).join('');
+	}
+
+	// ─── Create / Update Quiz (in-memory) ───
+	document.getElementById('quizForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		const editId = document.getElementById('editQuizId').value;
+		const data = {
+			title: document.getElementById('qTitle').value,
+			certificationTitle: document.getElementById('qCertId').value||null,
+			timeLimit: parseInt(document.getElementById('qTime').value)||30,
+			passingScore: parseInt(document.getElementById('qPass').value)||70,
+			maxAttempts: parseInt(document.getElementById('qAttempts').value)||3,
+			difficulty: document.getElementById('qDiff').value,
+			status: document.getElementById('qStatus').value,
+			description: document.getElementById('qDesc').value||null
+		};
+
+		if (editId) {
+			const idx = allQuizzes.findIndex(q => q.id == editId);
+			if (idx !== -1) { Object.assign(allQuizzes[idx], data); }
+			showToast('Quiz updated!','success');
+		} else {
+			data.id = nextQuizId++;
+			data.attemptCount = 0;
+			data.averageScore = 0;
+			data.questions = [];
+			allQuestions[data.id] = [];
+			allQuizzes.unshift(data);
+			showToast('Quiz created!','success');
+		}
+		resetQuizForm();
+		renderQuizzes(); loadStats();
+	});
+
+	// ─── Edit Quiz ───
+	function editQuiz(id) {
+		const q = allQuizzes.find(x => x.id === id);
+		if (!q) return;
+		document.getElementById('editQuizId').value = q.id;
+		document.getElementById('qTitle').value = q.title||'';
+		document.getElementById('qCertId').value = q.certificationTitle||'';
+		document.getElementById('qTime').value = q.timeLimit||30;
+		document.getElementById('qPass').value = q.passingScore||70;
+		document.getElementById('qAttempts').value = q.maxAttempts||3;
+		document.getElementById('qDiff').value = q.difficulty||'medium';
+		document.getElementById('qStatus').value = q.status||'draft';
+		document.getElementById('qDesc').value = q.description||'';
+		document.getElementById('quizFormTitle').textContent = 'Edit Quiz';
+		document.getElementById('quizSubmitBtn').innerHTML = '<i class="material-icons align-middle" style="font-size:16px">save</i> Update Quiz';
+		document.getElementById('quizCancelBtn').classList.remove('d-none');
+		window.scrollTo({top:0,behavior:'smooth'});
+	}
+
+	// ─── Delete Quiz ───
+	function deleteQuiz(id) {
+		if (!confirm('Delete this quiz and all its questions?')) return;
+		allQuizzes = allQuizzes.filter(q => q.id !== id);
+		delete allQuestions[id];
+		if (activeQuizId === id) closeQuestionsPanel();
+		renderQuizzes(); loadStats();
+		showToast('Quiz deleted','warning');
+	}
+
+	function resetQuizForm() {
+		document.getElementById('quizForm').reset();
+		document.getElementById('editQuizId').value = '';
+		document.getElementById('qTime').value = 30;
+		document.getElementById('qPass').value = 70;
+		document.getElementById('qAttempts').value = 3;
+		document.getElementById('quizFormTitle').textContent = 'Create Quiz';
+		document.getElementById('quizSubmitBtn').innerHTML = '<i class="material-icons align-middle" style="font-size:16px">save</i> Create Quiz';
+		document.getElementById('quizCancelBtn').classList.add('d-none');
+	}
+
+	// ─── Add Question (in-memory) ───
+	document.getElementById('questionForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		if (!activeQuizId) { showToast('Select a quiz first','warning'); return; }
+		const q = {
+			id: nextQuestionId++,
+			questionText: document.getElementById('qqText').value,
+			optionA: document.getElementById('qqA').value,
+			optionB: document.getElementById('qqB').value,
+			optionC: document.getElementById('qqC').value||null,
+			optionD: document.getElementById('qqD').value||null,
+			correctAnswer: document.getElementById('qqCorrect').value,
+			points: parseInt(document.getElementById('qqPoints').value)||1
+		};
+		const quiz = allQuizzes.find(x => x.id === activeQuizId);
+		if (quiz) {
+			if (!quiz.questions) quiz.questions = [];
+			quiz.questions.push(q);
+		}
+		this.reset(); document.getElementById('qqPoints').value = 1;
+		renderQuestions(activeQuizId); renderQuizzes();
+		showToast('Question added!','success');
+	});
+
+	// ─── Delete Question (in-memory) ───
+	function deleteQuestion(id) {
+		if (!confirm('Delete this question?')) return;
+		const quiz = allQuizzes.find(x => x.id === activeQuizId);
+		if (quiz && quiz.questions) {
+			quiz.questions = quiz.questions.filter(q => q.id !== id);
+		}
+		renderQuestions(activeQuizId); renderQuizzes();
+		showToast('Question deleted','warning');
+	}
+
+	function showToast(msg, type) {
+		const html = `<div class="position-fixed top-0 end-0 p-3" style="z-index:9999"><div class="alert alert-${type} alert-dismissible fade show shadow">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>`;
+		document.body.insertAdjacentHTML('beforeend', html);
+		setTimeout(()=>{ const el=document.querySelector('.position-fixed.top-0.end-0'); if(el) el.remove(); },3000);
+	}
+
+	loadStats(); loadCerts(); renderQuizzes();
+	</script>
+</body>
+</html>
+

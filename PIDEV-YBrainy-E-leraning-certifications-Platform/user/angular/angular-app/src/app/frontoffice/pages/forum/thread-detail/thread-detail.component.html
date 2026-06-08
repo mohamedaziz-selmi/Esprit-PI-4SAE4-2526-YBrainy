@@ -1,0 +1,370 @@
+<div class="rd-page">
+  <div class="rd-container">
+    <a class="rd-back" routerLink="/forum">← Back to all threads</a>
+
+    <div class="rd-layout">
+      <div class="rd-main">
+        <div *ngIf="loading" class="rd-card">Loading…</div>
+        <div *ngIf="!loading && error" class="rd-card rd-error">
+          <div>{{ error }}</div>
+          <button type="button" class="rd-btn" (click)="load()">Retry</button>
+        </div>
+
+        <!-- Thread card -->
+        <div *ngIf="!loading && !error && thread" class="rd-card rd-threadcard">
+          <div class="rd-thread-layout">
+            <!-- Vote column — disabled for own thread -->
+            <div class="rd-vote-col">
+              <button type="button" class="rd-vote-btn"
+                [class.rd-vote-active]="interaction.userVote === 'UPVOTE'"
+                [disabled]="isOwnThread"
+                [title]="isOwnThread ? 'You cannot vote on your own thread' : 'Upvote'"
+                (click)="onVote('UPVOTE')">👍</button>
+              <div class="rd-vote-score"
+                [class.rd-score-pos]="interaction.voteScore > 0"
+                [class.rd-score-neg]="interaction.voteScore < 0">
+                {{ interaction.voteScore }}
+              </div>
+              <button type="button" class="rd-vote-btn"
+                [class.rd-vote-active]="interaction.userVote === 'DOWNVOTE'"
+                [disabled]="isOwnThread"
+                [title]="isOwnThread ? 'You cannot vote on your own thread' : 'Downvote'"
+                (click)="onVote('DOWNVOTE')">👎</button>
+            </div>
+
+            <div class="rd-thread-content">
+              <div class="rd-thread-meta">
+                <span class="rd-chip rd-chip-category" *ngIf="thread.category">{{ thread.category.name }}</span>
+                <span [ngClass]="'rd-chip rd-chip-' + thread.status.toLowerCase()">{{ thread.status }}</span>
+                <span class="rd-muted">Posted by {{ thread.author?.username ?? 'Unknown user' }} • {{ thread.createdAt | date:'medium' }}</span>
+              </div>
+
+              <!-- Owner-only actions -->
+              <div *ngIf="isOwnThread" class="rd-thread-actions" style="margin-top:0;border-top:none;padding-top:0;margin-bottom:8px;">
+                <button type="button" class="rd-btn rd-btn-sm" (click)="startEditThread()" [disabled]="isLocked">✏️ Edit</button>
+                <button type="button" class="rd-btn rd-btn-sm" (click)="lockThread()" [disabled]="thread.status === 'LOCKED'">🔒 Lock</button>
+                <button type="button" class="rd-btn rd-btn-sm" (click)="unlockThread()" [disabled]="thread.status !== 'LOCKED'">🔓 Unlock</button>
+                <button type="button" class="rd-btn rd-btn-sm" (click)="closeThread()" [disabled]="thread.status === 'CLOSED'">✖ Close</button>
+                <button type="button" class="rd-btn rd-btn-sm" (click)="reopenThread()" [disabled]="thread.status === 'OPEN'">↺ Reopen</button>
+                <button type="button" class="rd-btn rd-btn-sm rd-btn-danger" (click)="deleteThread()">🗑 Delete</button>
+                <span class="rd-muted" *ngIf="isLocked" style="margin-left:4px;">Thread is locked</span>
+              </div>
+
+              <!-- Thread content view -->
+              <div *ngIf="!editingThread">
+                <div class="rd-thread-title">{{ thread.title }}</div>
+                <div class="rd-thread-text-full" [innerHTML]="thread.body"></div>
+
+                <!-- Image -->
+                <a *ngIf="thread.imageUrl" class="rd-media" [href]="media.url(thread.imageUrl)" target="_blank" rel="noopener">
+                  <img class="rd-thread-image" [src]="media.url(thread.imageUrl)" alt="Thread image" />
+                </a>
+
+                <!-- Attached video -->
+                <div *ngIf="thread.fileUrl && isVideo(thread.fileType)" class="rd-file-viewer">
+                  <video controls [src]="media.url(thread.fileUrl)" class="rd-file-video"></video>
+                </div>
+
+                <!-- Attached PDF -->
+                <div *ngIf="thread.fileUrl && isPdf(thread.fileType)" class="rd-file-viewer rd-pdf-viewer">
+                  <div class="rd-pdf-toolbar">
+                    <span class="rd-pdf-label">📄 PDF Document</span>
+                    <div class="rd-pdf-controls">
+                      <span class="rd-pdf-size-label">{{ threadPdfHeight }}px</span>
+                      <input type="range" min="200" max="1200" step="50" [value]="threadPdfHeight"
+                             (input)="threadPdfHeight = +$any($event.target).value" class="rd-pdf-slider" />
+                      <a [href]="media.url(thread.fileUrl)" target="_blank" rel="noopener" class="rd-btn rd-btn-sm">↗ Open</a>
+                    </div>
+                  </div>
+                  <iframe [src]="safeUrl(media.url(thread.fileUrl))" [style.height.px]="threadPdfHeight" class="rd-pdf-frame"></iframe>
+                </div>
+              </div>
+
+              <!-- Thread edit form -->
+              <form *ngIf="editingThread" [formGroup]="threadEditForm" (ngSubmit)="saveThread()" class="rd-form" style="margin-top:10px;">
+                <div class="rd-field-wrap">
+                  <input class="rd-input" formControlName="title" placeholder="Title *"
+                    [class.rd-input-invalid]="threadEditForm.get('title')?.invalid && threadEditForm.get('title')?.touched" />
+                  <div class="rd-field-error" *ngIf="threadEditForm.get('title')?.invalid && threadEditForm.get('title')?.touched">
+                    <span *ngIf="threadEditForm.get('title')?.errors?.['required']">Title is required.</span>
+                    <span *ngIf="threadEditForm.get('title')?.errors?.['minlength']">At least 5 characters.</span>
+                    <span *ngIf="threadEditForm.get('title')?.errors?.['maxlength']">Max 200 characters.</span>
+                  </div>
+                </div>
+                <div class="rd-field-wrap">
+                  <textarea class="rd-textarea" formControlName="body" rows="6" placeholder="Body *"
+                    [class.rd-input-invalid]="threadEditForm.get('body')?.invalid && threadEditForm.get('body')?.touched"></textarea>
+                  <div class="rd-field-error" *ngIf="threadEditForm.get('body')?.invalid && threadEditForm.get('body')?.touched">
+                    <span *ngIf="threadEditForm.get('body')?.errors?.['required']">Body is required.</span>
+                    <span *ngIf="threadEditForm.get('body')?.errors?.['minlength']">At least 10 characters.</span>
+                  </div>
+                </div>
+                <input class="rd-input" formControlName="categoryId" type="number" placeholder="Category ID (optional)" />
+                <div class="rd-row">
+                  <button type="submit" class="rd-btn rd-btn-primary">Save</button>
+                  <button type="button" class="rd-btn" (click)="cancelEditThread()">Cancel</button>
+                </div>
+              </form>
+
+              <!-- Interaction error banner -->
+              <div *ngIf="interactionError" class="rd-card rd-error" style="margin-bottom:8px;padding:8px 12px;font-size:0.9em;">
+                {{ interactionError }}
+                <button type="button" style="margin-left:8px;cursor:pointer;background:none;border:none;font-weight:bold;" (click)="interactionError=null">✕</button>
+              </div>
+
+              <!-- Reactions & Wishlist — reactions disabled for own thread -->
+              <div class="rd-thread-actions">
+                <button type="button" class="rd-reaction-btn"
+                  [class.rd-reaction-active]="interaction.userReaction === 'LIKE'"
+                  [disabled]="isOwnThread"
+                  [title]="isOwnThread ? 'You cannot react to your own thread' : 'Like'"
+                  (click)="onReact('LIKE')">❤️ {{ interaction.likeCount }}</button>
+                <button type="button" class="rd-reaction-btn"
+                  [class.rd-reaction-active]="interaction.userReaction === 'DISLIKE'"
+                  [disabled]="isOwnThread"
+                  [title]="isOwnThread ? 'You cannot react to your own thread' : 'Dislike'"
+                  (click)="onReact('DISLIKE')">😠 {{ interaction.dislikeCount }}</button>
+                <button type="button" class="rd-wishlist-btn"
+                  [class.rd-wishlist-active]="interaction.wishlisted"
+                  (click)="onToggleWishlist()" title="Save to wishlist">
+                  {{ interaction.wishlisted ? '🔖 Saved' : '🔖 Save' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Composer — hidden when user is thread owner -->
+        <div *ngIf="!loading && !error && thread && !isOwnThread" class="rd-card rd-composer">
+          <div class="rd-composer-header">
+            <div class="rd-card-title">Add a post</div>
+            <button type="button" class="rd-btn-ai" (click)="generatePostBody()"
+              [disabled]="generatingPost" title="Generate an AI answer based on this thread's question">
+              <span *ngIf="!generatingPost">✨ AI Answer</span>
+              <span *ngIf="generatingPost" class="rd-ai-spinner">⏳ Generating…</span>
+            </button>
+          </div>
+          <div *ngIf="postAiError" class="rd-ai-error">{{ postAiError }}</div>
+          <form [formGroup]="postForm" (ngSubmit)="submitPost()" class="rd-form">
+            <div class="rd-field-wrap">
+              <textarea class="rd-textarea" formControlName="body" rows="4" placeholder="What are your thoughts? *"
+                [class.rd-input-invalid]="postForm.get('body')?.invalid && postForm.get('body')?.touched"></textarea>
+              <div class="rd-field-error" *ngIf="postForm.get('body')?.invalid && postForm.get('body')?.touched">
+                <span *ngIf="postForm.get('body')?.errors?.['required']">Post body is required.</span>
+                <span *ngIf="postForm.get('body')?.errors?.['minlength']">At least 2 characters.</span>
+              </div>
+            </div>
+
+            <!-- Image dropzone -->
+            <div class="rd-dropzone" [class.rd-dropzone-active]="postDropActive"
+              (dragover)="onPostDropOver($event)" (dragleave)="onPostDropLeave($event)" (drop)="onPostDrop($event)">
+              <div class="rd-dropzone-top">
+                <div class="rd-dropzone-title">Image (optional)</div>
+                <button type="button" class="rd-btn rd-btn-sm" (click)="postFileInput.click()">Choose file</button>
+              </div>
+              <input #postFileInput type="file" accept="image/*" style="display:none" (change)="onPostImageInputChange($event)" />
+              <div *ngIf="!postImagePreviewUrl" class="rd-dropzone-hint">Drag & drop an image here, or click Choose file</div>
+              <div *ngIf="postImagePreviewUrl" class="rd-preview">
+                <img [src]="postImagePreviewUrl" alt="Preview" />
+                <button type="button" class="rd-btn rd-btn-sm rd-btn-danger" (click)="clearPostImage()">Remove image</button>
+              </div>
+            </div>
+
+            <!-- File attachment (video / PDF) -->
+            <div class="rd-attach-section">
+              <div class="rd-attach-header">
+                <span class="rd-attach-label">📎 Attach Video or PDF <span class="rd-attach-optional">(optional)</span></span>
+                <div class="rd-attach-btns">
+                  <button *ngIf="postAttachedFile" type="button" class="rd-btn rd-btn-sm rd-btn-danger" (click)="clearPostAttachment()">✕ Remove</button>
+                  <button type="button" class="rd-btn rd-btn-sm" (click)="postAttachInput.click()">Browse</button>
+                </div>
+                <input #postAttachInput type="file" accept="video/mp4,video/webm,video/ogg,application/pdf" style="display:none" (change)="onPostAttachmentChange($event)" />
+              </div>
+              <div *ngIf="postAttachedFile" class="rd-attach-info">
+                <span [class]="'rd-file-badge ' + (postAttachedIsPdf ? 'rd-file-badge-pdf' : 'rd-file-badge-video')">
+                  {{ postAttachedIsPdf ? '📄 PDF' : '🎬 Video' }}
+                </span>
+                <span class="rd-attach-filename">{{ postAttachedFile.name }}</span>
+                <span class="rd-attach-size">{{ formatFileSize(postAttachedFile.size) }}</span>
+              </div>
+              <video *ngIf="postAttachedIsVideo && postAttachedFileObjectUrl" [src]="postAttachedFileObjectUrl" controls class="rd-attach-video"></video>
+              <div *ngIf="!postAttachedFile" class="rd-attach-hint">Upload a video (MP4, WebM, OGG) or PDF</div>
+            </div>
+
+            <div class="rd-row">
+              <button type="submit" class="rd-btn rd-btn-primary" [disabled]="isLocked || submittingPost || postForm.invalid">Post</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Owner notice: cannot post in own thread -->
+        <div *ngIf="!loading && !error && thread && isOwnThread" class="rd-card rd-own-notice">
+          <span>🔒</span>
+          <span>This is your thread. Other users can post replies and comments here. You can create a <a routerLink="/forum/create">new thread</a>.</span>
+        </div>
+
+        <div *ngIf="!loading && !error && canSummarize" class="rd-card rd-summary-card">
+          <div class="rd-summary-header">
+            <div class="rd-summary-title">
+              <span class="rd-summary-icon">AI</span>
+              <span>Discussion Summary</span>
+              <span class="rd-summary-badge">{{ posts.length }} posts</span>
+            </div>
+            <button
+              *ngIf="!aiSummary && !aiSummaryLoading"
+              type="button"
+              class="rd-btn-summarize"
+              (click)="summarize()">
+              Summarize discussion
+            </button>
+            <button
+              *ngIf="aiSummary && !aiSummaryLoading"
+              type="button"
+              class="rd-btn-summarize rd-btn-summarize-refresh"
+              (click)="summarize()">
+              Refresh
+            </button>
+          </div>
+
+          <div *ngIf="aiSummaryLoading" class="rd-summary-loading">
+            <span class="rd-summary-spinner"></span>
+            <span>Analyzing {{ posts.length }} posts...</span>
+          </div>
+
+          <div *ngIf="aiSummaryError && !aiSummaryLoading" class="rd-summary-error">
+            {{ aiSummaryError }}
+          </div>
+
+          <div *ngIf="aiSummary && !aiSummaryLoading" class="rd-summary-result">
+            <p class="rd-summary-text">{{ aiSummary }}</p>
+            <p class="rd-summary-meta" *ngIf="aiSummaryPostCount !== null">
+              Generated from {{ aiSummaryPostCount }} post{{ aiSummaryPostCount === 1 ? '' : 's' }}.
+            </p>
+          </div>
+        </div>
+
+        <!-- Posts list -->
+        <div *ngIf="!loading && !error" class="rd-posts">
+          <div *ngIf="posts.length === 0" class="rd-card rd-empty">No posts yet. Be the first to respond!</div>
+
+          <div *ngFor="let p of posts" class="rd-card rd-post">
+            <div class="rd-muted">{{ p.author?.username ?? 'Unknown user' }} • {{ p.createdAt | date:'medium' }}</div>
+            <div *ngIf="p.author?.id === auth.currentUserId" class="rd-post-actions">
+              <button type="button" class="rd-btn rd-btn-sm" (click)="ensurePostEditForm(p)" [disabled]="isLocked">✏️ Edit</button>
+              <button type="button" class="rd-btn rd-btn-sm rd-btn-danger" (click)="deletePost(p)">🗑 Delete</button>
+            </div>
+
+            <div *ngIf="!postEditForms[p.id]" class="rd-post-body">{{ p.body }}</div>
+
+            <!-- Post image -->
+            <a *ngIf="p.imageUrl" class="rd-media" [href]="media.url(p.imageUrl)" target="_blank" rel="noopener">
+              <img class="rd-post-image" [src]="media.url(p.imageUrl)" alt="Post image" />
+            </a>
+
+            <!-- Post attached video -->
+            <div *ngIf="p.fileUrl && isVideo(p.fileType)" class="rd-file-viewer">
+              <video controls [src]="media.url(p.fileUrl)" class="rd-file-video"></video>
+            </div>
+
+            <!-- Post attached PDF -->
+            <div *ngIf="p.fileUrl && isPdf(p.fileType)" class="rd-file-viewer rd-pdf-viewer">
+              <div class="rd-pdf-toolbar">
+                <span class="rd-pdf-label">📄 PDF Document</span>
+                <div class="rd-pdf-controls">
+                  <span class="rd-pdf-size-label">{{ getPostPdfHeight(p.id) }}px</span>
+                  <input type="range" min="200" max="1200" step="50" [value]="getPostPdfHeight(p.id)"
+                         (input)="setPostPdfHeight(p.id, $event)" class="rd-pdf-slider" />
+                  <a [href]="media.url(p.fileUrl)" target="_blank" rel="noopener" class="rd-btn rd-btn-sm">↗ Open</a>
+                </div>
+              </div>
+              <iframe [src]="safeUrl(media.url(p.fileUrl))" [style.height.px]="getPostPdfHeight(p.id)" class="rd-pdf-frame"></iframe>
+            </div>
+
+            <!-- Post edit form -->
+            <form *ngIf="postEditForms[p.id]" [formGroup]="postEditForms[p.id]" (ngSubmit)="savePost(p)" class="rd-form" style="margin-top:10px;">
+              <div class="rd-field-wrap">
+                <textarea class="rd-textarea" formControlName="body" rows="4"
+                  [class.rd-input-invalid]="postEditForms[p.id].get('body')?.invalid && postEditForms[p.id].get('body')?.touched"></textarea>
+                <div class="rd-field-error" *ngIf="postEditForms[p.id].get('body')?.invalid && postEditForms[p.id].get('body')?.touched">
+                  <span *ngIf="postEditForms[p.id].get('body')?.errors?.['required']">Body is required.</span>
+                  <span *ngIf="postEditForms[p.id].get('body')?.errors?.['minlength']">At least 2 characters.</span>
+                </div>
+              </div>
+              <div class="rd-row">
+                <button type="submit" class="rd-btn rd-btn-primary">Save</button>
+                <button type="button" class="rd-btn" (click)="cancelPostEdit(p)">Cancel</button>
+              </div>
+            </form>
+
+            <!-- Comments section -->
+            <div class="rd-comments">
+              <div class="rd-card-title">Comments ({{ (commentsByPostId[p.id] || []).length }})</div>
+
+              <div *ngIf="(commentsByPostId[p.id] || []).length === 0" class="rd-muted">No comments yet.</div>
+
+              <div *ngFor="let c of (commentsByPostId[p.id] || [])" class="rd-comment">
+                <div class="rd-muted">{{ c.author?.username ?? 'Unknown user' }} • {{ c.createdAt | date:'medium' }}</div>
+                <div *ngIf="c.author?.id === auth.currentUserId" class="rd-comment-actions">
+                  <button type="button" class="rd-btn rd-btn-sm" (click)="ensureCommentEditForm(c)" [disabled]="isLocked">✏️ Edit</button>
+                  <button type="button" class="rd-btn rd-btn-sm rd-btn-danger" (click)="deleteComment(c)">🗑 Delete</button>
+                </div>
+                <div *ngIf="!commentEditForms[c.id]" class="rd-comment-body">{{ c.body }}</div>
+                <form *ngIf="commentEditForms[c.id]" [formGroup]="commentEditForms[c.id]" (ngSubmit)="saveComment(c)" class="rd-form" style="margin-top:10px;">
+                  <div class="rd-field-wrap">
+                    <input class="rd-input" formControlName="body"
+                      [class.rd-input-invalid]="commentEditForms[c.id].get('body')?.invalid && commentEditForms[c.id].get('body')?.touched" />
+                    <div class="rd-field-error" *ngIf="commentEditForms[c.id].get('body')?.invalid && commentEditForms[c.id].get('body')?.touched">
+                      <span *ngIf="commentEditForms[c.id].get('body')?.errors?.['required']">Comment is required.</span>
+                      <span *ngIf="commentEditForms[c.id].get('body')?.errors?.['minlength']">At least 2 characters.</span>
+                    </div>
+                  </div>
+                  <div class="rd-row">
+                    <button type="submit" class="rd-btn rd-btn-primary">Save</button>
+                    <button type="button" class="rd-btn" (click)="cancelCommentEdit(c)">Cancel</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- New comment form — hidden for thread owner -->
+              <div *ngIf="!isOwnThread; else ownerCommentBlock">
+                <form [formGroup]="ensureCommentForm(p.id)" (ngSubmit)="submitComment(p.id)" class="rd-form rd-comment-form">
+                  <div class="rd-field-wrap">
+                    <input class="rd-input" formControlName="body" placeholder="Add a comment… *"
+                      [class.rd-input-invalid]="ensureCommentForm(p.id).get('body')?.invalid && ensureCommentForm(p.id).get('body')?.touched" />
+                    <div class="rd-field-error" *ngIf="ensureCommentForm(p.id).get('body')?.invalid && ensureCommentForm(p.id).get('body')?.touched">
+                      <span *ngIf="ensureCommentForm(p.id).get('body')?.errors?.['required']">Comment is required.</span>
+                      <span *ngIf="ensureCommentForm(p.id).get('body')?.errors?.['minlength']">At least 2 characters.</span>
+                    </div>
+                  </div>
+                  <div class="rd-row">
+                    <button type="submit" class="rd-btn" [disabled]="isLocked">Comment</button>
+                  </div>
+                </form>
+              </div>
+              <ng-template #ownerCommentBlock>
+                <div class="rd-own-notice rd-own-notice-sm">You cannot comment in your own thread.</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="rd-sidebar">
+        <div class="rd-card" *ngIf="thread">
+          <div class="rd-card-title">About this thread</div>
+          <div class="rd-muted">Category</div>
+          <div class="rd-pill">{{ thread.category?.name ?? 'No category' }}</div>
+          <div class="rd-muted" style="margin-top:10px;">Status</div>
+          <span [ngClass]="'rd-chip rd-chip-' + thread.status.toLowerCase()" style="margin-top:4px;display:inline-block;">{{ thread.status }}</span>
+          <div class="rd-muted" style="margin-top:10px;">Score</div>
+          <div class="rd-pill"
+            [class.rd-score-pos]="interaction.voteScore > 0"
+            [class.rd-score-neg]="interaction.voteScore < 0">
+            {{ interaction.voteScore }} pts
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

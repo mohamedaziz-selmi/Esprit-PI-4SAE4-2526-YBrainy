@@ -1,0 +1,366 @@
+{
+  "forecast_context": {
+    "margin_pct": 27.06,
+    "margin_trend_pct": -23.32,
+    "top_revenue_source": "COURSE_SALE",
+    "watch_category": "SUPPORT",
+    "watch_growth_pct": 312.76,
+    "forecast_horizon": {
+      "from": "2026-07",
+      "to": "2026-12",
+      "months_ahead": 6,
+      "income_total": 253441.97,
+      "expenses_total": 184857.66,
+      "profit_total": 68584.31
+    }
+  },
+  "input_files": {
+    "courses_file": "D:\\4eme\\ml\\scrap\\result\\elearning_outputs\\courses_20260226_090600.csv",
+    "skill_trends_file": "D:\\4eme\\ml\\scrap\\result\\elearning_outputs\\skill_trends_20260226_090600.csv"
+  },
+  "algorithms": {
+    "content_similarity": "TF-IDF + Cosine Similarity",
+    "personalization": "KNN + SVD",
+    "demand_integration": "gradient_boosting",
+    "final_ranking": "Hybrid Weighted Model"
+  },
+  "demand_integration_metrics": {
+    "mae": 0.013854646992923662,
+    "rmse": 0.01775435523574504,
+    "r2": 0.9724936513279058
+  },
+  "recommendation_scorecard": [
+    {
+      "metric": "courses_scored",
+      "value": 125,
+      "notes": "Total unique courses ranked"
+    },
+    {
+      "metric": "unique_skills_scored",
+      "value": 12,
+      "notes": "Breadth of skill coverage"
+    },
+    {
+      "metric": "top_recommendations_exported",
+      "value": 25,
+      "notes": "Rows exported in top recommendation file"
+    },
+    {
+      "metric": "avg_hybrid_score_top",
+      "value": 0.9131,
+      "notes": "Average score among top recommendations"
+    },
+    {
+      "metric": "high_confidence_in_top",
+      "value": 20,
+      "notes": "Count of high-confidence recommendations"
+    },
+    {
+      "metric": "demand_integration_method",
+      "value": "gradient_boosting",
+      "notes": "Gradient boosting or weighted scoring"
+    },
+    {
+      "metric": "demand_model_mae",
+      "value": 0.0139,
+      "notes": "Validation MAE for demand integration"
+    },
+    {
+      "metric": "demand_model_rmse",
+      "value": 0.0178,
+      "notes": "Validation RMSE for demand integration"
+    },
+    {
+      "metric": "demand_model_r2",
+      "value": 0.9725,
+      "notes": "Validation R2 for demand integration"
+    },
+    {
+      "metric": "forecast_margin_context_pct",
+      "value": 27.06,
+      "notes": "6-month forecast margin used as context"
+    },
+    {
+      "metric": "expense_watch_context",
+      "value": "SUPPORT",
+      "notes": "Expense pressure context from forecast"
+    }
+  ],
+  "top_skill_clusters": [
+    {
+      "skill_category": "machine-learning",
+      "top_courses": 9,
+      "avg_hybrid_score": 0.9136411202080984,
+      "avg_roi_score": 99.0,
+      "avg_content_similarity": 0.5032844544227544,
+      "high_conf_count": 8
+    },
+    {
+      "skill_category": "python",
+      "top_courses": 16,
+      "avg_hybrid_score": 0.9127961584352804,
+      "avg_roi_score": 99.4375,
+      "avg_content_similarity": 0.31152614242136883,
+      "high_conf_count": 12
+    }
+  ],
+  "improvement_actions": [
+    {
+      "priority": "high",
+      "action": "Expand course portfolio in 'python'",
+      "rationale": "16 top-ranked courses with average hybrid score 0.913",
+      "target_metric": "Increase enrollments and conversion in this skill cluster"
+    },
+    {
+      "priority": "high",
+      "action": "Expand course portfolio in 'machine-learning'",
+      "rationale": "9 top-ranked courses with average hybrid score 0.914",
+      "target_metric": "Increase enrollments and conversion in this skill cluster"
+    },
+    {
+      "priority": "high",
+      "action": "Control SUPPORT cost growth",
+      "rationale": "Forecast flags SUPPORT at +312.76% growth pressure",
+      "target_metric": "Reduce cost growth while keeping 6-month margin stable"
+    },
+    {
+      "priority": "medium",
+      "action": "Run marketing on top-10 hybrid courses",
+      "rationale": "Align campaign with strongest ranked courses and revenue source COURSE_SALE",
+      "target_metric": "Improve course sales conversion and ROI"
+    },
+    {
+      "priority": "medium",
+      "action": "Create bundled paths for python, machine-learning, data-science",
+      "rationale": "Top trend-demand skills should be packaged as progression tracks",
+      "target_metric": "Increase bundle share and learner retention"
+    }
+  ],
+  "top_recommendations": [
+    {
+      "recommendation_rank": 1,
+      "title": "Python for Data Science and Machine Learning Bootcamp",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9504651442263603,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 2,
+      "title": "Complete A.I. & Machine Learning, Data Science Bootcamp",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9461311051320518,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 3,
+      "title": "Python for Data Science: The Complete Data Science Bootcamp",
+      "skill_category": "python",
+      "hybrid_final_score": 0.942684507058535,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 4,
+      "title": "Python for Machine Learning & Data Science Masterclass",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9406093379849862,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 5,
+      "title": "Python Data Science: Unsupervised Machine Learning",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9337316442253776,
+      "confidence_level": "HIGH",
+      "impact_band": "IMMEDIATE",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 6,
+      "title": "Python Data Science: Regression & Forecasting",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9215435922664745,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 7,
+      "title": "Data Science and Machine Learning Fundamentals [2026]",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9196574625395275,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 8,
+      "title": "Data Analytics, Data Science, & Machine Learning - All in 1",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9190089547804836,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 9,
+      "title": "Deployment of Machine Learning Models",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9171862308413339,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 10,
+      "title": "Mathematical Foundations of Machine Learning",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9163498592093697,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 11,
+      "title": "The Complete Machine Learning Course with Python",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9113283026547006,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 12,
+      "title": "Python - Complete Python, Django, Data Science and ML Guide",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9106582191389287,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 13,
+      "title": "Machine Learning & Data Science: The Complete Visual Guide",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9067127527496519,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 14,
+      "title": "Data Science & AI Masters 2026 - From Python To Gen AI",
+      "skill_category": "python",
+      "hybrid_final_score": 0.904865779851314,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 15,
+      "title": "Machine Learning for Absolute Beginners - Level 1",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9047260841727935,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 16,
+      "title": "Python Programming: Beginner to Professional Complete Course",
+      "skill_category": "python",
+      "hybrid_final_score": 0.902177849291202,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 17,
+      "title": "Machine Learning Practical: 6 Real-World Applications",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.9019534269130975,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 18,
+      "title": "Machine Learning, Data Science & AI Engineering with Python",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9010717691217942,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 19,
+      "title": "Learn Python Programming - Beginner to Master",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9007922648192033,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 20,
+      "title": "Learn Python Programming Masterclass",
+      "skill_category": "python",
+      "hybrid_final_score": 0.9006834074138672,
+      "confidence_level": "HIGH",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 21,
+      "title": "Complete 2026 Python Bootcamp: Learn Python from Scratch",
+      "skill_category": "python",
+      "hybrid_final_score": 0.8999080566281747,
+      "confidence_level": "MEDIUM",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 22,
+      "title": "Master Python for Data Handling [2026]",
+      "skill_category": "python",
+      "hybrid_final_score": 0.8951101328174658,
+      "confidence_level": "MEDIUM",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 23,
+      "title": "Python and Machine Learning for Complete Beginners",
+      "skill_category": "python",
+      "hybrid_final_score": 0.8946307790896486,
+      "confidence_level": "MEDIUM",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 24,
+      "title": "Complete Python Programming Masterclass Beginner to Advanced",
+      "skill_category": "python",
+      "hybrid_final_score": 0.8944777483764528,
+      "confidence_level": "MEDIUM",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    },
+    {
+      "recommendation_rank": 25,
+      "title": "Google Cloud Machine Learning Engineer Certification Prep",
+      "skill_category": "machine-learning",
+      "hybrid_final_score": 0.8910442055345762,
+      "confidence_level": "MEDIUM",
+      "impact_band": "STRONG",
+      "recommendation_reason": "strong market demand; strong personalization fit; high ROI potential"
+    }
+  ]
+}

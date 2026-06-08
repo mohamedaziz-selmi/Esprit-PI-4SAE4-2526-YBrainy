@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Lesson Details</title>
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+	<link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link href="vendor/wow-master/css/libs/animate.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="preloader"><div class="sk-three-bounce"><div class="sk-child sk-bounce1"></div><div class="sk-child sk-bounce2"></div><div class="sk-child sk-bounce3"></div></div></div>
+
+	<div id="main-wrapper">
+		<div class="content-body" style="margin-left:0;">
+			<div class="container-fluid">
+
+				<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap">
+					<div>
+						<h3 class="mb-1">
+							<i class="material-icons align-middle me-2" style="font-size:32px;color:var(--primary);">description</i>
+							Lesson Details
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a id="backToLessons" href="lessons.html">Lessons</a></li>
+								<li class="breadcrumb-item active" id="lessonBreadcrumb">Lesson</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="d-flex gap-2 mt-2 mt-md-0">
+						<a id="backToCourse" class="btn btn-outline-primary" href="courses.html">Back to Course</a>
+						<a id="manageLessons" class="btn btn-primary" href="lessons.html">Manage Lessons</a>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xl-8">
+						<div class="card">
+							<div class="card-body">
+								<div class="d-flex align-items-start justify-content-between flex-wrap">
+									<div>
+										<h2 class="mb-1" id="lessonTitle">Loading...</h2>
+										<div class="d-flex align-items-center gap-2 flex-wrap">
+											<span class="badge badge-primary" id="lessonType">--</span>
+											<span class="badge badge-light" id="lessonDuration">--</span>
+											<span class="text-muted" id="lessonCreated">--</span>
+										</div>
+									</div>
+								</div>
+
+								<p class="text-muted mt-3" id="lessonDescription"></p>
+
+								<hr class="my-4">
+
+								<div id="contentArea">
+									<div class="text-center py-5 text-muted">
+										<div class="spinner-border text-primary" role="status"></div>
+										<p class="mt-3">Loading content...</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-4">
+						<div class="card">
+							<div class="card-header border-0 pb-0">
+								<h4 class="mb-0">Course</h4>
+							</div>
+							<div class="card-body">
+								<div class="d-flex align-items-center">
+									<div class="me-3">
+										<img id="courseThumb" src="images/coures/pic1.jpg" class="rounded" style="width:70px;height:70px;object-fit:cover;" alt="Course">
+									</div>
+									<div>
+										<h5 class="mb-0" id="courseTitle">--</h5>
+										<small class="text-muted" id="courseMeta">--</small>
+									</div>
+								</div>
+								<hr class="my-3">
+								<a id="openCourse" href="courses.html" class="btn btn-outline-primary w-100">Open Course</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="vendor/wow-master/dist/wow.min.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+	<script>
+	const COURSE_API = 'http://localhost:8089/api/courses';
+	const params = new URLSearchParams(window.location.search);
+	const courseId = params.get('courseId');
+	const lessonId = params.get('lessonId');
+
+	if (!courseId || !lessonId) {
+		document.getElementById('lessonTitle').textContent = 'Missing courseId or lessonId';
+		document.getElementById('contentArea').innerHTML = '<div class="alert alert-danger">Invalid URL. Expected ?courseId=...&lessonId=...</div>';
+	} else {
+		document.getElementById('backToLessons').href = 'lessons.html?courseId=' + courseId;
+		document.getElementById('backToCourse').href = 'course-details.html?id=' + courseId;
+		document.getElementById('manageLessons').href = 'lessons.html?courseId=' + courseId;
+		document.getElementById('openCourse').href = 'course-details.html?id=' + courseId;
+		loadCourse();
+		loadLesson();
+	}
+
+	async function loadCourse() {
+		try {
+			const res = await fetch(COURSE_API + '/' + courseId);
+			if (!res.ok) return;
+			const course = await res.json();
+			document.getElementById('courseTitle').textContent = course.title || '--';
+			document.getElementById('courseMeta').textContent = `${course.category || 'General'} • ${course.level || ''}`;
+			if (course.thumbnailUrl) {
+				document.getElementById('courseThumb').src = 'http://localhost:8089/api/courses/files/' + course.thumbnailUrl;
+			}
+		} catch (_) {
+			// ignore
+		}
+	}
+
+	async function loadLesson() {
+		try {
+			const res = await fetch(`${COURSE_API}/${courseId}/lessons/${lessonId}`);
+			if (!res.ok) throw new Error('Not found');
+			const lesson = await res.json();
+
+			document.getElementById('lessonTitle').textContent = lesson.title || 'Lesson';
+			document.getElementById('lessonBreadcrumb').textContent = lesson.title || 'Lesson';
+			document.getElementById('lessonDescription').textContent = lesson.description || '';
+			document.getElementById('lessonType').textContent = lesson.type || '--';
+			document.getElementById('lessonDuration').textContent = (typeof lesson.durationMinutes === 'number' && lesson.durationMinutes > 0) ? (lesson.durationMinutes + ' min') : '--';
+			if (lesson.createdAt) {
+				const d = new Date(lesson.createdAt);
+				document.getElementById('lessonCreated').textContent = 'Created ' + d.toLocaleDateString();
+			}
+
+			renderContent(lesson);
+		} catch (e) {
+			document.getElementById('lessonTitle').textContent = 'Lesson not found';
+			document.getElementById('contentArea').innerHTML = '<div class="alert alert-danger">Failed to load lesson details.</div>';
+		}
+	}
+
+	function resolveCourseFileUrl(u) {
+		if (!u) return '';
+		const s = String(u);
+		if (s.startsWith('http://') || s.startsWith('https://') || s.startsWith('blob:') || s.startsWith('data:')) return s;
+		if (s.startsWith('/api/')) return s;
+		if (s.startsWith('/')) return s;
+		return 'http://localhost:8089/api/courses/files/' + s;
+	}
+
+	function renderContent(lesson) {
+		const area = document.getElementById('contentArea');
+		const contents = Array.isArray(lesson.contents) ? lesson.contents : [];
+		const legacy = (lesson.contentUrl && lesson.type)
+			? [{ type: lesson.type, contentUrl: lesson.contentUrl }]
+			: [];
+		const all = contents.length ? contents : legacy;
+		if (!all.length) {
+			area.innerHTML = '<div class="alert alert-warning">No content attached to this lesson.</div>';
+			return;
+		}
+
+		const videos = all.filter(c => c && c.type === 'VIDEO_UPLOAD' && c.contentUrl);
+		const pdfs = all.filter(c => c && c.type === 'PDF' && c.contentUrl);
+		const images = all.filter(c => c && c.type === 'IMAGE' && c.contentUrl);
+		const yts = all.filter(c => c && c.type === 'YOUTUBE_EMBED' && c.contentUrl);
+
+		const renderVideo = (c) => {
+			const url = resolveCourseFileUrl(c.contentUrl);
+			return `
+				<div class="card mb-3">
+					<div class="card-header border-0 pb-0"><h5 class="mb-0">Video</h5></div>
+					<div class="card-body">
+						<video controls class="w-100" style="border-radius:12px;max-height:520px;background:#000;">
+							<source src="${url}" type="video/mp4">
+						</video>
+					</div>
+				</div>`;
+		};
+
+		const renderPdf = (c, idx) => {
+			const url = resolveCourseFileUrl(c.contentUrl);
+			return `
+				<div class="card mb-3">
+					<div class="card-header border-0 pb-0 d-flex align-items-center justify-content-between flex-wrap">
+						<h5 class="mb-0">PDF ${idx + 1}</h5>
+						<a class="btn btn-outline-primary btn-sm" href="${url}" target="_blank">Open</a>
+					</div>
+					<div class="card-body">
+						<iframe src="${url}" class="w-100" style="height:520px;border:1px solid #eee;border-radius:12px;"></iframe>
+					</div>
+				</div>`;
+		};
+
+		const renderImage = (c, idx) => {
+			const url = resolveCourseFileUrl(c.contentUrl);
+			return `
+				<div class="card mb-3">
+					<div class="card-header border-0 pb-0"><h5 class="mb-0">Image ${idx + 1}</h5></div>
+					<div class="card-body">
+						<img src="${url}" class="w-100 rounded" style="max-height:520px;object-fit:contain;background:#fff;" alt="Lesson Image">
+					</div>
+				</div>`;
+		};
+
+		const renderYoutube = (c, idx) => {
+			return `
+				<div class="card mb-3">
+					<div class="card-header border-0 pb-0"><h5 class="mb-0">YouTube ${idx + 1}</h5></div>
+					<div class="card-body">
+						<div class="ratio ratio-16x9">
+							<iframe src="${c.contentUrl}" title="YouTube" allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>`;
+		};
+
+		area.innerHTML = [
+			...videos.map(renderVideo),
+			...pdfs.map(renderPdf),
+			...images.map(renderImage),
+			...yts.map(renderYoutube)
+		].join('');
+	}
+	</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'Docker image tag from CI')
+    }
+
+    environment {
+        GIT_CREDENTIALS    = 'ybrainy-token'
+        DOCKER_USER        = 'hos77'
+        APP_NAME           = 'feedback-service'
+        IMAGE_NAME         = "${DOCKER_USER}/${APP_NAME}"
+        K8S_NAMESPACE      = 'ybrainy'
+        NOTIFICATION_EMAIL = 'jacemjouili@gmail.com'
+    }
+
+    stages {
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo "Deploying image ${IMAGE_NAME}:${params.DOCKER_TAG}"
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events') {
+                    bat """
+                        wsl kubectl apply -f feedback-service/k8s -n ${K8S_NAMESPACE}
+
+                        wsl kubectl set image deployment/feedback-service ^
+                        feedback-service=${IMAGE_NAME}:${params.DOCKER_TAG} ^
+                        -n ${K8S_NAMESPACE}
+
+                        wsl kubectl rollout status deployment/feedback-service -n ${K8S_NAMESPACE} --timeout=5m
+
+                        wsl kubectl get pods -n ${K8S_NAMESPACE}
+                    """
+                }
+            }
+        }
+
+        stage('Monitoring') {
+            steps {
+                dir('PIDEV-YBrainy-E-leraning-certifications-Platform/ybrainy events') {
+                    bat """
+                        wsl kubectl apply -f monitoring/prometheus-config.yaml
+                        wsl kubectl apply -f monitoring/grafana-dashboard-provider.yaml
+                        wsl kubectl apply -f monitoring/grafana-events-dashboard.yaml
+                        wsl kubectl rollout restart deployment/prometheus -n monitoring
+                        wsl kubectl rollout restart deployment/grafana -n monitoring
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '========================================'
+            echo "CD SUCCESS - feedback-service:${params.DOCKER_TAG} deployed"
+            echo '========================================'
+        }
+        failure {
+            echo 'CD FAILED - check Console Output'
+            emailext(
+                subject: "FAILED: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """feedback-service CD failed.
+
+Build URL: ${env.BUILD_URL}
+Image tag: ${params.DOCKER_TAG}
+
+Please review the deployment logs in Jenkins.
+""",
+                to: "${env.NOTIFICATION_EMAIL}"
+            )
+        }
+    }
+}

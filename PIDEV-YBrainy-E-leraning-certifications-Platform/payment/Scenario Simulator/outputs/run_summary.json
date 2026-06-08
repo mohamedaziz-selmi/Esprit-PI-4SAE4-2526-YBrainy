@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-04-09T12:56:31.075211",
+  "training_rows": 9600,
+  "income_seed_rows": 500,
+  "expense_seed_rows": 500,
+  "scenario_seed_rows": 6,
+  "recommended_scenario": "AI Expansion",
+  "recommended_profit_total": 140770.07,
+  "recommended_margin_pct": 41.61,
+  "model_metrics": {
+    "algorithm": "Hybrid rule engine + RandomForest regressors/classifier",
+    "random_seed": 42,
+    "scenarios_per_month": 1600,
+    "training_rows": 7200,
+    "test_rows": 2400,
+    "income_mae": 1031.22,
+    "expense_mae": 1047.35,
+    "income_r2": 0.9587,
+    "expense_r2": 0.8671,
+    "risk_accuracy": 0.95
+  }
+}

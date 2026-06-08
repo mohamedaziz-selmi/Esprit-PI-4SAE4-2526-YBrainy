@@ -1,0 +1,65 @@
+<app-backoffice-nav />
+
+<div class="bo-wrap">
+  <div class="bo-head">
+    <div>
+      <button type="button" class="btn" (click)="back()">Back</button>
+    </div>
+    <div class="bo-actions">
+      <button type="button" class="btn" (click)="load()">Refresh</button>
+      <button type="button" class="btn" (click)="lock()">Lock</button>
+      <button type="button" class="btn" (click)="unlock()">Unlock</button>
+      <button type="button" class="btn" (click)="close()">Close</button>
+      <button type="button" class="btn" (click)="reopen()">Reopen</button>
+      <button type="button" class="btn danger" (click)="deleteThread()">Delete Thread</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="bo-card">Loading…</div>
+
+  <div *ngIf="!loading && error" class="bo-card bo-error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && thread" class="bo-card">
+    <h2 style="margin:0 0 8px 0;">#{{ thread.id }} — {{ thread.title }}</h2>
+    <div style="opacity:.75; font-size:12px; margin-bottom:12px;">
+      {{ thread.author?.username ?? 'Unknown user' }} • {{ thread.status }} • {{ thread.createdAt | date:'medium' }}
+    </div>
+    <div>{{ thread.body }}</div>
+  </div>
+
+  <div *ngIf="!loading && !error" class="bo-card" style="margin-top:16px;">
+    <h3 style="margin:0 0 12px 0;">Posts</h3>
+
+    <div *ngIf="posts.length === 0" class="bo-empty">No posts.</div>
+
+    <div *ngFor="let p of posts" class="bo-subcard">
+      <div class="bo-subhead">
+        <div>
+          <strong>#{{ p.id }}</strong>
+          <span style="opacity:.7; font-size:12px;"> — {{ p.author?.username ?? 'Unknown user' }} • {{ p.createdAt | date:'medium' }}</span>
+        </div>
+        <div>
+          <button type="button" class="btn danger" (click)="deletePost(p)">Delete Post</button>
+        </div>
+      </div>
+      <div style="margin-top:8px;">{{ p.body }}</div>
+
+      <div style="margin-top:12px; padding-left:16px;">
+        <h4 style="margin:0 0 8px 0;">Comments</h4>
+
+        <div *ngIf="(commentsByPostId[p.id] ?? []).length === 0" class="bo-empty">No comments.</div>
+
+        <div *ngFor="let c of (commentsByPostId[p.id] ?? [])" class="bo-comment">
+          <div>
+            <strong>#{{ c.id }}</strong>
+            <span style="opacity:.7; font-size:12px;"> — {{ c.author?.username ?? 'Unknown user' }} • {{ c.createdAt | date:'medium' }}</span>
+          </div>
+          <div style="margin-top:6px;">{{ c.body }}</div>
+          <div style="margin-top:8px;">
+            <button type="button" class="btn danger" (click)="deleteComment(c)">Delete Comment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

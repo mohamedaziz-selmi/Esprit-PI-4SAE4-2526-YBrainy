@@ -1,0 +1,393 @@
+:host {
+  display: block;
+  background: #0f0f1a;
+  min-height: 100vh;
+  padding: 24px 0 48px;
+}
+
+/* ── Enrollment gate ─────────────────────────────────────── */
+.fo-rv-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.fo-rv-gate-icon {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.fo-rv-gate-msg {
+  font-size: 15px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+/* ── Page shell ──────────────────────────────────────────── */
+.fo-rv-page {
+  min-height: 100vh;
+  background: #0f0f1a;
+  padding-bottom: 60px;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.fo-rv-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.fo-rv-heading {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -0.3px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── Body wrapper ────────────────────────────────────────── */
+.fo-rv-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Form card ───────────────────────────────────────────── */
+.fo-rv-form-card {
+  padding: 24px 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+}
+
+.fo-rv-form-card p {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.fo-rv-form-title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: -0.3px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.fo-rv-alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.07);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.fo-rv-success {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #059669;
+  font-size: 13px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+/* Star rating buttons */
+.fo-rv-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.fo-rv-star-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 120ms ease, transform 100ms ease;
+}
+
+.fo-rv-star-btn:hover,
+.fo-rv-star-active {
+  color: #f59e0b;
+  transform: scale(1.15);
+}
+
+.fo-rv-star-hint {
+  margin-left: 8px;
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Textarea */
+.fo-rv-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.05);
+  resize: vertical;
+  outline: none;
+  transition: border-color 140ms ease, background 140ms ease;
+  margin-bottom: 14px;
+  font-family: inherit;
+}
+
+.fo-rv-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.fo-rv-textarea:focus {
+  border-color: rgba(102, 126, 234, 0.5);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Submit button */
+.fo-rv-submit-btn {
+  border: none;
+  background: linear-gradient(135deg, rgba(54, 93, 247, 1), rgba(54, 93, 247, 0.78));
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(54, 93, 247, 0.28);
+  transition: filter 140ms ease;
+}
+
+.fo-rv-submit-btn:hover {
+  filter: brightness(0.96);
+}
+
+/* ── Review list ─────────────────────────────────────────── */
+.fo-rv-list {}
+
+.fo-rv-section-title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 950;
+  letter-spacing: -0.2px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fo-rv-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(54, 93, 247, 0.1);
+  color: rgba(54, 93, 247, 1);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.fo-rv-empty {
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.fo-rv-card {
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.fo-rv-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.fo-rv-stars {
+  font-size: 18px;
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+
+.fo-rv-date {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.fo-rv-comment {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* ── Rating summary block ─────────────────────────────────── */
+.fo-rv-stats {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  background: linear-gradient(135deg,
+    rgba(102,126,234,0.08),
+    rgba(118,75,162,0.06));
+  border: 1px solid rgba(102,126,234,0.18);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(8px);
+}
+
+.fo-rv-stats-score {
+  text-align: center;
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fo-rv-score-big {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #fbbf24;
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(251,191,36,0.4);
+}
+
+.fo-rv-score-stars {
+  display: flex;
+  gap: 2px;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  letter-spacing: 3px;
+}
+
+.fo-rv-score-star { color: rgba(255,255,255,0.12); }
+.fo-rv-score-star-full {
+  color: #fbbf24;
+  text-shadow: 0 0 8px rgba(251,191,36,0.5);
+}
+.fo-rv-score-star-half { color: #fbbf24; opacity: 0.5; }
+
+.fo-rv-score-total {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.fo-rv-stats-bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fo-rv-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.fo-rv-bar-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.4);
+  min-width: 28px;
+  text-align: right;
+}
+
+.fo-rv-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.fo-rv-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg,#fbbf24,#f59e0b);
+  box-shadow: 0 0 8px rgba(251,191,36,0.3);
+  transition: width 1s cubic-bezier(0.34,1.56,0.64,1);
+  animation: rv-bar-grow 1s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes rv-bar-grow {
+  from { width: 0 !important; }
+}
+
+.fo-rv-bar-count {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.25);
+  min-width: 16px;
+  text-align: right;
+}
+
+/* ── Validation ─────────────────────────────────────────── */
+.validation-error {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+.validation-error span {
+  color: #ef4444;
+  font-size: 0.8rem;
+  font-weight: 600;
+  animation: fadeInDown 0.3s ease;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.input-error {
+  border: 2px solid #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15) !important;
+  animation: shake 0.4s ease;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  15%      { transform: translateX(-8px); }
+  30%      { transform: translateX(8px); }
+  45%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+}

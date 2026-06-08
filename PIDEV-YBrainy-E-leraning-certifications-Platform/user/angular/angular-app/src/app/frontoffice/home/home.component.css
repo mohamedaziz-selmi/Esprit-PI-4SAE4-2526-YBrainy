@@ -1,0 +1,5 @@
+/* Home component - all section styles handled by global main.css */
+:host {
+  display: block;
+  width: 100%;
+}

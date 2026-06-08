@@ -1,0 +1,199 @@
+<div class="login-wrap">
+  <div class="login-layout">
+
+    <!-- LEFT ASIDE -->
+    <div class="login-aside">
+      <div class="aside-top">
+        <div class="aside-logo">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <rect width="36" height="36" rx="10" fill="rgba(255,255,255,0.15)" />
+            <path d="M18 8L26 13V23L18 28L10 23V13L18 8Z" stroke="white" stroke-width="2" fill="none" />
+            <circle cx="18" cy="18" r="4" fill="white" />
+          </svg>
+          <span class="aside-logo-text">YbrainY</span>
+        </div>
+        <h2 class="aside-heading">Welcome back!</h2>
+        <p class="aside-sub">User Experience &amp; Interface Design<br />Strategy SaaS Solutions</p>
+      </div>
+
+      <div class="aside-illustration">
+        <div class="float-card card-1">
+          <div class="card-dot green"></div>
+          <div class="card-lines">
+            <span></span><span style="width:60%"></span>
+          </div>
+        </div>
+        <div class="float-card card-2">
+          <div class="card-dot blue"></div>
+          <div class="card-lines">
+            <span style="width:70%"></span><span style="width:45%"></span>
+          </div>
+        </div>
+        <div class="aside-avatar">
+          <div class="avatar-ring"></div>
+          <div class="avatar-inner">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="24" r="14" fill="rgba(255,255,255,0.25)" />
+              <ellipse cx="32" cy="54" rx="22" ry="14" fill="rgba(255,255,255,0.15)" />
+            </svg>
+          </div>
+        </div>
+        <div class="aside-stats">
+          <div class="stat-pill">
+            <span class="stat-dot"></span>
+            <span>12k Active Users</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-dot orange"></span>
+            <span>98% Satisfaction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT FORM -->
+    <div class="login-form-area">
+      <div class="login-card">
+        <div class="login-card-header">
+          <h3>Sign In</h3>
+          <span>Your Social Campaigns</span>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+          <!-- Social Buttons -->
+          <div class="social-row">
+            <button type="button" class="btn-social" (click)="onGoogleLogin()">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
+                  fill="#4285F4" />
+                <path
+                  d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"
+                  fill="#34A853" />
+                <path
+                  d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"
+                  fill="#FBBC05" />
+                <path
+                  d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"
+                  fill="#EA4335" />
+              </svg>
+              <span>Continue with Google</span>
+            </button>
+            <button type="button" class="btn-social" (click)="onFaceIdLogin()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path
+                  d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <span>Continue with Face Login</span>
+            </button>
+          </div>
+
+          <div class="divider"><span>or with email</span></div>
+
+          <!-- Email -->
+          <div class="field-group">
+            <label for="loginEmail">Email address</label>
+            <input type="email" id="loginEmail" formControlName="email" autocomplete="email"
+              placeholder="you@example.com"
+              [class.is-invalid]="form.get('email')?.touched && form.get('email')?.invalid" />
+            <div class="field-error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+              Please enter a valid email address.
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="field-group">
+            <div class="field-label-row">
+              <label for="loginPassword">Password</label>
+              <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
+            </div>
+            <div class="input-password-wrap">
+              <input [type]="showPassword ? 'text' : 'password'" id="loginPassword" formControlName="password"
+                autocomplete="current-password" placeholder="••••••••"
+                [class.is-invalid]="form.get('password')?.touched && form.get('password')?.invalid" />
+              <button type="button" class="toggle-pw" (click)="showPassword = !showPassword" tabindex="-1">
+                <svg *ngIf="!showPassword" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg *ngIf="showPassword" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path
+                    d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+            <div class="field-error"
+              *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">
+              Password is required.
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" [disabled]="form.invalid || submitting">
+            <span *ngIf="!submitting">Sign In</span>
+            <span *ngIf="submitting" class="spinner"></span>
+          </button>
+
+          <div class="error-banner" *ngIf="errorMessage">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+            </svg>
+            {{ errorMessage }}
+          </div>
+
+          <div class="ban-appeal-card" *ngIf="showBanAppealForm">
+            <div class="ban-appeal-title">Account restricted</div>
+            <p class="ban-appeal-copy">
+              If you believe this restriction is a mistake, submit an appeal for admin review.
+            </p>
+            <label class="ban-appeal-label" for="banAppealDescription">Appeal description</label>
+            <textarea
+              id="banAppealDescription"
+              class="ban-appeal-textarea"
+              [(ngModel)]="banAppealDescription"
+              name="banAppealDescription"
+              [ngModelOptions]="{ standalone: true }"
+              rows="4"
+              maxlength="1000"
+              placeholder="Explain why your account should be reviewed."
+              [disabled]="banAppealSubmitting"
+            ></textarea>
+            <button
+              type="button"
+              class="btn-submit ban-appeal-btn"
+              (click)="submitBanAppeal()"
+              [disabled]="banAppealSubmitting"
+            >
+              {{ banAppealSubmitting ? 'Submitting Appeal...' : 'Submit Ban Appeal' }}
+            </button>
+            <div class="ban-appeal-message" *ngIf="banAppealMessage">{{ banAppealMessage }}</div>
+          </div>
+        </form>
+
+        <p class="signup-prompt">
+          Don't have an account?
+          <a routerLink="/signup">Sign up</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-face-capture-dialog
+  *ngIf="faceDialogOpen"
+  title="Face login"
+  subtitle="Keep your face in the frame. The live camera checks a fresh frame every 1.5 seconds and signs you in as soon as your enrolled face is matched."
+  confirmLabel="Sign in with face"
+  [continuousCapture]="true"
+  [captureIntervalMs]="1500"
+  [infoMessage]="faceScanMessage"
+  [busy]="faceSubmitting"
+  (canceled)="closeFaceDialog()"
+  (confirmed)="onFaceImageConfirmed($event)"
+></app-face-capture-dialog>

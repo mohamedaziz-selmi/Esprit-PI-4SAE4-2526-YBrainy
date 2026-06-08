@@ -1,0 +1,269 @@
+<div class="sd-page">
+  <div class="sd-wrap">
+
+    <header class="sd-header sd-anim" style="--d:0s">
+      <div class="sd-eyebrow">My Learning</div>
+      <h1 class="sd-title">Dashboard</h1>
+      <p class="sd-sub">Track your progress, certificates and learning journey</p>
+    </header>
+
+    <ng-container *ngIf="loading">
+      <div class="sd-skeleton">
+        <div class="sk-row">
+          <div class="sk-b shimmer"></div><div class="sk-b shimmer"></div>
+          <div class="sk-b shimmer"></div><div class="sk-b shimmer"></div>
+        </div>
+        <div class="sk-row2">
+          <div class="sk-c shimmer"></div><div class="sk-c shimmer"></div>
+        </div>
+        <div class="sk-row">
+          <div class="sk-d shimmer"></div><div class="sk-d shimmer"></div><div class="sk-d shimmer"></div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loading && dashboard">
+
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#6366F1"/>
+            <stop offset="100%" stop-color="#8B5CF6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="sd-stats sd-anim" style="--d:0.05s">
+        <div class="scard c-blue">
+          <div class="scard-top">
+            <div class="scard-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="scard-trend">↑</div>
+          </div>
+          <div class="scard-val">{{ dashboard.totalEnrolled }}</div>
+          <div class="scard-key">Enrolled Courses</div>
+          <div class="scard-bar"><div class="scard-bar-fill"></div></div>
+        </div>
+
+        <div class="scard c-amber">
+          <div class="scard-top">
+            <div class="scard-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="scard-trend">→</div>
+          </div>
+          <div class="scard-val">{{ dashboard.totalInProgress }}</div>
+          <div class="scard-key">In Progress</div>
+          <div class="scard-bar"><div class="scard-bar-fill"></div></div>
+        </div>
+
+        <div class="scard c-emerald">
+          <div class="scard-top">
+            <div class="scard-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="scard-trend">✓</div>
+          </div>
+          <div class="scard-val">{{ dashboard.totalCompleted }}</div>
+          <div class="scard-key">Completed</div>
+          <div class="scard-bar"><div class="scard-bar-fill"></div></div>
+        </div>
+
+        <div class="scard c-violet">
+          <div class="scard-top">
+            <div class="scard-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            </div>
+            <div class="scard-trend">★</div>
+          </div>
+          <div class="scard-val">{{ dashboard.totalCertificates }}</div>
+          <div class="scard-key">Certificates</div>
+          <div class="scard-bar"><div class="scard-bar-fill"></div></div>
+        </div>
+      </div>
+
+      <div class="sd-mid sd-anim" style="--d:0.1s">
+
+        <div class="ring-card">
+          <div class="ring-label">Overall Progress</div>
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 140 140">
+              <circle class="ring-track" cx="70" cy="70" r="58"/>
+              <circle class="ring-fg" cx="70" cy="70" r="58"
+                      [style.stroke-dashoffset]="364.42 - (364.42 * (dashboard.averageProgress || 0) / 100)"/>
+            </svg>
+            <div class="ring-inner">
+              <div class="ring-num">{{ dashboard.averageProgress | number:'1.0-0' }}</div>
+              <div class="ring-unit">%</div>
+            </div>
+          </div>
+          <div class="ring-sub">Across all courses</div>
+        </div>
+
+        <div class="insight-card" *ngIf="conversionInsight">
+          <div class="ic-header">
+            <div>
+              <div class="ic-label">AI Learning Insight</div>
+              <div class="ic-hint">Powered by machine learning analysis</div>
+            </div>
+            <span class="ic-badge"
+                  [class.b-low]="conversionInsight.conversionLabel === 'LOW'"
+                  [class.b-med]="conversionInsight.conversionLabel === 'MEDIUM'"
+                  [class.b-high]="conversionInsight.conversionLabel === 'HIGH'">
+              <span class="b-dot"></span>
+              {{ conversionInsight.conversionLabel }}
+            </span>
+          </div>
+
+          <div class="ic-metrics">
+            <div class="ic-m">
+              <div class="ic-m-ring">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle class="icr-track" cx="30" cy="30" r="24"/>
+                  <circle class="icr-fill c-blue-stroke" cx="30" cy="30" r="24"
+                          [style.stroke-dashoffset]="150.8 - (150.8 * (conversionInsight.percentage || 0) / 100)"/>
+                </svg>
+                <div class="ic-m-val">{{ conversionInsight.percentage | number:'1.0-0' }}%</div>
+              </div>
+              <div class="ic-m-key">Conversion</div>
+            </div>
+            <div class="ic-m">
+              <div class="ic-m-ring">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle class="icr-track" cx="30" cy="30" r="24"/>
+                  <circle class="icr-fill c-amber-stroke" cx="30" cy="30" r="24"
+                          [style.stroke-dashoffset]="150.8 - (150.8 * (conversionInsight.avgCompletionRate || 0) / 100)"/>
+                </svg>
+                <div class="ic-m-val">{{ conversionInsight.avgCompletionRate | number:'1.0-0' }}%</div>
+              </div>
+              <div class="ic-m-key">Avg Completion</div>
+            </div>
+            <div class="ic-m">
+              <div class="ic-m-ring">
+                <svg viewBox="0 0 60 60" width="60" height="60">
+                  <circle class="icr-track" cx="30" cy="30" r="24"/>
+                  <circle class="icr-fill c-emerald-stroke" cx="30" cy="30" r="24"
+                          style="stroke-dashoffset: 150.8"/>
+                </svg>
+                <div class="ic-m-val">{{ conversionInsight.paidEnrollments }}</div>
+              </div>
+              <div class="ic-m-key">Paid Courses</div>
+            </div>
+          </div>
+
+          <div class="ic-tip">
+            <div class="ic-tip-icon">💡</div>
+            <span *ngIf="conversionInsight.conversionLabel === 'LOW'">Complete more lessons to boost your learning score</span>
+            <span *ngIf="conversionInsight.conversionLabel === 'MEDIUM'">Good momentum — keep completing courses</span>
+            <span *ngIf="conversionInsight.conversionLabel === 'HIGH'">Excellent engagement — you are a top learner</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sd-tabs-wrap sd-anim" style="--d:0.15s">
+        <div class="sd-tabs">
+          <button class="sd-tab" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
+            All
+            <span class="tc">{{ dashboard.totalEnrolled }}</span>
+          </button>
+          <button class="sd-tab" [class.active]="activeTab === 'active'" (click)="activeTab = 'active'">
+            In Progress
+            <span class="tc">{{ dashboard.totalInProgress }}</span>
+          </button>
+          <button class="sd-tab" [class.active]="activeTab === 'completed'" (click)="activeTab = 'completed'">
+            Completed
+            <span class="tc">{{ dashboard.totalCompleted }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sd-grid sd-anim" style="--d:0.2s" *ngIf="filteredCourses.length > 0">
+        <div class="ccard" *ngFor="let course of filteredCourses"
+             [class.ccard-done]="course.enrollmentStatus === 'COMPLETED'"
+             (mousemove)="onCardTilt($event)"
+             (mouseleave)="onCardReset($event)">
+
+          <div class="ccard-img">
+            <img *ngIf="getThumbnailUrl(course)"
+                 [src]="getThumbnailUrl(course)"
+                 [alt]="course.courseTitle"
+                 (error)="$any($event.target).style.display='none'">
+            <div class="ccard-img-fallback" *ngIf="!getThumbnailUrl(course)">
+              {{ course.category?.charAt(0) || 'C' }}
+            </div>
+            <div class="ccard-status"
+                 [class.s-active]="course.enrollmentStatus === 'ACTIVE'"
+                 [class.s-done]="course.enrollmentStatus === 'COMPLETED'">
+              <span class="s-dot"></span>
+              {{ course.enrollmentStatus === 'ACTIVE' ? 'Active' : 'Done' }}
+            </div>
+          </div>
+
+          <div class="ccard-body">
+            <div class="ccard-chips">
+              <span class="ch-cat" *ngIf="course.category">{{ course.category }}</span>
+              <span class="ch-lvl" *ngIf="course.level">{{ course.level }}</span>
+            </div>
+            <div class="ccard-title">{{ course.courseTitle }}</div>
+
+            <div class="ccard-prog-wrap">
+              <div class="cpp-labels">
+                <span>{{ course.completedLessons }}/{{ course.totalLessons }} lessons</span>
+                <span class="cpp-pct">{{ course.completionPercentage | number:'1.0-0' }}%</span>
+              </div>
+              <div class="cpp-track">
+                <div class="cpp-fill"
+                     [class.cpp-fill-done]="course.enrollmentStatus === 'COMPLETED'"
+                     [style.width.%]="course.completionPercentage">
+                </div>
+              </div>
+            </div>
+
+            <div class="ccard-quiz" *ngIf="course.bestQuizScore != null">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Best quiz: <strong>{{ course.bestQuizScore | number:'1.0-1' }}%</strong>
+            </div>
+
+            <div class="ccard-actions">
+              <button class="ca-main" (click)="goToProgress(course.courseId)">
+                {{ course.enrollmentStatus === 'COMPLETED' ? 'Review' : 'Continue' }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="ca-sec" (click)="goToCourse(course.courseId)">Details</button>
+              <button class="ca-cert"
+                      *ngIf="course.enrollmentStatus === 'COMPLETED' && course.certificateId"
+                      [disabled]="certDownloading"
+                      (click)="downloadCertificate(course)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                {{ certDownloading ? 'Downloading…' : 'Certificate' }}
+              </button>
+            </div>
+            <div class="cert-error" *ngIf="certError">{{ certError }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sd-empty" *ngIf="filteredCourses.length === 0">
+        <div class="empty-ico">📭</div>
+        <h3>Nothing here yet</h3>
+        <p *ngIf="activeTab === 'all'">You have not enrolled in any courses yet.</p>
+        <p *ngIf="activeTab === 'active'">No courses in progress.</p>
+        <p *ngIf="activeTab === 'completed'">No completed courses yet.</p>
+        <a routerLink="/courses" class="btn-browse">Browse Courses</a>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="!loading && !dashboard">
+      <div class="sd-empty">
+        <div class="empty-ico">📚</div>
+        <h3>No courses enrolled</h3>
+        <p>Start your learning journey today!</p>
+        <a routerLink="/courses" class="btn-browse">Browse Courses</a>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

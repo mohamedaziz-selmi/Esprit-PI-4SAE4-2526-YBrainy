@@ -1,0 +1,4881 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from akademi.dexignlab.com/xhtml/celandar.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 22 Jan 2026 01:09:59 GMT -->
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="DexignLab">
+	<meta name="robots" content="">
+	<meta name="keywords"
+		content="school, school admin, education, academy, admin dashboard, college, college management, education management, institute, school management, school management system, student management, teacher management, university, university management">
+	<meta name="description"
+		content="Discover Akademi - the ultimate admin dashboard and Bootstrap 5 template. Specially designed for professionals, and for business. Akademi provides advanced features and an easy-to-use interface for creating a top-quality website with School and Education Dashboard">
+	<meta property="og:title" content="Akademi : School and Education Management Admin Dashboard Template">
+	<meta property="og:description"
+		content="Akademi - the ultimate admin dashboard and Bootstrap 5 template. Specially designed for professionals, and for business. Akademi provides advanced features and an easy-to-use interface for creating a top-quality website with School and Education Dashboard">
+	<meta property="og:image" content="social-image.png">
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Page Title Here -->
+	<title>YBrainy: School and Education Management Admin Dashboard Template</title>
+
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	<link rel="stylesheet" href="vendor/fullcalendar-5.11.0/lib/main.css">
+	<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+	<link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+	<link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="vendor/jquery-nice-select/css/nice-select.css">
+	<link href="vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
+	<!-- Style css -->
+	<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+
+	<style>
+		.bt-buy-now,
+		.bt-support-now,
+		#DZScript {
+			display: none !important;
+		}
+
+		.yb-msg-overlay {
+			position: fixed;
+			inset: 0;
+			background: rgba(13, 22, 39, 0.55);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 20000;
+			padding: 16px;
+		}
+
+		.yb-msg-overlay.show {
+			display: flex;
+		}
+
+		.yb-msg-box {
+			background: #fff;
+			border-radius: 14px;
+			padding: 18px 18px 14px;
+			width: min(360px, 100%);
+			box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+			text-align: center;
+		}
+
+		.yb-msg-text {
+			margin: 10px 0 14px;
+			color: #1f2b57;
+			font-weight: 600;
+			line-height: 1.35;
+			font-size: 14px;
+			word-break: break-word;
+		}
+
+		.yb-msg-close {
+			border: 0;
+			background: #eef1ff;
+			color: #4b3fb8;
+			border-radius: 8px;
+			padding: 8px 14px;
+			font-weight: 600;
+		}
+
+		.yb-ai-status {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 12px;
+			padding: 10px 12px;
+			border-radius: 14px;
+			border: 1px solid rgba(90, 100, 160, 0.12);
+			background: linear-gradient(135deg, rgba(81, 95, 219, 0.08), rgba(89, 214, 255, 0.06)), #f8faff;
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+			transition: all 0.22s ease;
+		}
+
+		.yb-ai-status[data-state="generating"] {
+			background: linear-gradient(135deg, rgba(88, 92, 246, 0.13), rgba(74, 222, 128, 0.08)), #f7f9ff;
+			border-color: rgba(86, 92, 214, 0.22);
+			box-shadow: 0 14px 34px rgba(76, 84, 182, 0.12);
+		}
+
+		.yb-ai-status[data-state="success"] {
+			border-color: rgba(54, 181, 125, 0.18);
+			background: linear-gradient(135deg, rgba(54, 181, 125, 0.08), rgba(73, 203, 255, 0.05)), #f8fefb;
+		}
+
+		.yb-ai-status[data-state="warning"] {
+			border-color: rgba(218, 138, 56, 0.24);
+			background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(255, 227, 189, 0.16)), #fffaf2;
+		}
+
+		.yb-ai-status-orb {
+			width: 12px;
+			height: 12px;
+			border-radius: 999px;
+			background: linear-gradient(135deg, #5b62f1, #64d9ff);
+			box-shadow: 0 0 0 6px rgba(91, 98, 241, 0.12);
+			flex: 0 0 auto;
+		}
+
+		.yb-ai-status[data-state="success"] .yb-ai-status-orb {
+			background: linear-gradient(135deg, #11b981, #57d88f);
+			box-shadow: 0 0 0 6px rgba(17, 185, 129, 0.12);
+		}
+
+		.yb-ai-status[data-state="warning"] .yb-ai-status-orb {
+			background: linear-gradient(135deg, #e89b28, #f6b056);
+			box-shadow: 0 0 0 6px rgba(232, 155, 40, 0.12);
+		}
+
+		.yb-ai-status-copy {
+			flex: 1 1 auto;
+			font-size: 12.5px;
+			line-height: 1.5;
+			font-weight: 600;
+			color: #58648e;
+		}
+
+		.yb-ai-status-wave {
+			display: inline-flex;
+			align-items: flex-end;
+			gap: 4px;
+			min-width: 28px;
+			opacity: 0;
+			transform: translateY(2px);
+			transition: all 0.2s ease;
+		}
+
+		.yb-ai-status[data-state="generating"] .yb-ai-status-wave {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.yb-ai-status-wave span {
+			width: 4px;
+			height: 10px;
+			border-radius: 999px;
+			background: linear-gradient(180deg, #6a72ff, #4bc2ff);
+			animation: ybAiWave 1.15s ease-in-out infinite;
+		}
+
+		.yb-ai-status-wave span:nth-child(2) {
+			animation-delay: 0.16s;
+		}
+
+		.yb-ai-status-wave span:nth-child(3) {
+			animation-delay: 0.32s;
+		}
+
+		.yb-event-image-preview {
+			display: none;
+			border-radius: 22px;
+			overflow: hidden;
+			border: 1px solid rgba(96, 112, 173, 0.12);
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 249, 255, 0.96));
+			box-shadow: 0 12px 28px rgba(18, 28, 61, 0.08);
+			min-height: 220px;
+		}
+
+		.yb-event-image-preview.has-image {
+			display: block;
+		}
+
+		.yb-event-image-preview img {
+			display: block;
+			width: 100%;
+			height: 260px;
+			object-fit: cover;
+		}
+
+		.yb-image-actions {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.yb-image-upload-btn {
+			display: inline-flex;
+			align-items: center;
+			border-radius: 999px;
+			padding: 9px 14px;
+			font-weight: 700;
+		}
+
+		@keyframes ybAiWave {
+			0%, 100% {
+				height: 9px;
+				opacity: 0.5;
+			}
+			50% {
+				height: 18px;
+				opacity: 1;
+			}
+		}
+
+		.yb-event-modal-dialog {
+			max-width: 1040px;
+		}
+
+		.yb-event-modal-content {
+			border: 0;
+			border-radius: 28px;
+			overflow: hidden;
+			background:
+				radial-gradient(circle at top right, rgba(103, 120, 255, 0.12), transparent 28%),
+				linear-gradient(180deg, #ffffff, #f8faff);
+			box-shadow: 0 34px 80px rgba(19, 32, 77, 0.22);
+		}
+
+		.yb-event-modal-content .modal-header,
+		.yb-event-modal-content .modal-footer {
+			border-color: rgba(96, 112, 173, 0.12);
+			background: transparent;
+		}
+
+		.yb-event-modal-content .modal-header {
+			padding: 24px 28px 18px;
+		}
+
+		.yb-event-modal-content .modal-body {
+			padding: 10px 28px 26px;
+		}
+
+		.yb-event-modal-content .modal-footer {
+			padding: 16px 28px 24px;
+		}
+
+		.yb-modal-section-title {
+			font-size: 12px;
+			font-weight: 800;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: #7b87b1;
+			margin-bottom: 10px;
+		}
+
+		.yb-location-picker {
+			padding: 18px;
+			border-radius: 24px;
+			border: 1px solid rgba(92, 104, 163, 0.14);
+			background:
+				radial-gradient(circle at top right, rgba(93, 112, 255, 0.1), transparent 26%),
+				linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.98));
+			box-shadow: 0 20px 44px rgba(29, 42, 97, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+		}
+
+		.yb-location-picker-head {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			gap: 14px;
+			margin-bottom: 14px;
+		}
+
+		.yb-location-picker-head h6 {
+			margin: 0;
+			font-size: 20px;
+			font-weight: 800;
+			color: #233465;
+		}
+
+		.yb-location-picker-head p {
+			margin: 6px 0 0;
+			font-size: 13px;
+			line-height: 1.55;
+			color: #6e7aa6;
+			max-width: 480px;
+		}
+
+		.yb-location-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 8px 12px;
+			border-radius: 999px;
+			background: rgba(90, 100, 215, 0.09);
+			color: #4957c8;
+			font-size: 12px;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.yb-location-badge::before {
+			content: "";
+			width: 8px;
+			height: 8px;
+			border-radius: 999px;
+			background: linear-gradient(135deg, #4f59de, #61d0ff);
+			box-shadow: 0 0 0 5px rgba(95, 108, 236, 0.12);
+		}
+
+		.yb-location-layout {
+			display: grid;
+			grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.15fr);
+			gap: 18px;
+		}
+
+		.yb-location-search {
+			display: flex;
+			gap: 10px;
+			align-items: stretch;
+		}
+
+		.yb-location-search .form-control {
+			flex: 1 1 auto;
+			height: 52px;
+			border-radius: 16px;
+			border-color: rgba(94, 107, 172, 0.14);
+			background: rgba(255, 255, 255, 0.92);
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+		}
+
+		.yb-location-search-btn {
+			min-width: 138px;
+			border: 0;
+			border-radius: 16px;
+			background: linear-gradient(135deg, #4d56d8, #6a7cff);
+			color: #fff;
+			font-weight: 700;
+			box-shadow: 0 14px 28px rgba(77, 86, 216, 0.24);
+		}
+
+		.yb-location-helper {
+			display: block;
+			margin-top: 10px;
+			font-size: 12px;
+			line-height: 1.5;
+			color: #7380aa;
+		}
+
+		.yb-location-search-card,
+		.yb-location-map-card {
+			padding: 14px;
+			border-radius: 20px;
+			background: rgba(255, 255, 255, 0.78);
+			border: 1px solid rgba(96, 112, 173, 0.12);
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.76);
+		}
+
+		.yb-location-map-card {
+			background:
+				radial-gradient(circle at top right, rgba(104, 137, 255, 0.1), transparent 28%),
+				rgba(255, 255, 255, 0.82);
+			position: relative;
+		}
+
+		.yb-location-results {
+			margin-top: 12px;
+			padding: 8px;
+			border-radius: 16px;
+			background: rgba(236, 241, 255, 0.85);
+			border: 1px solid rgba(92, 104, 163, 0.12);
+			max-height: 252px;
+			overflow: auto;
+			display: block;
+			min-height: 132px;
+		}
+
+		.yb-location-results:not(.show) {
+			opacity: 0.75;
+		}
+
+		.yb-location-result {
+			width: 100%;
+			border: 0;
+			background: #fff;
+			border-radius: 12px;
+			padding: 10px 12px;
+			text-align: left;
+			color: #30406f;
+			font-weight: 600;
+			line-height: 1.45;
+			margin-bottom: 8px;
+			box-shadow: 0 8px 20px rgba(26, 39, 94, 0.06);
+			transition: transform 0.18s ease, box-shadow 0.18s ease;
+		}
+
+		.yb-location-result:last-child {
+			margin-bottom: 0;
+		}
+
+		.yb-location-result:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 12px 24px rgba(26, 39, 94, 0.1);
+		}
+
+		.yb-location-map {
+			margin-top: 0;
+			height: 312px;
+			border-radius: 22px;
+			overflow: hidden;
+			border: 1px solid rgba(92, 104, 163, 0.16);
+			box-shadow: 0 16px 32px rgba(28, 39, 91, 0.08);
+			background:
+				radial-gradient(circle at 18% 16%, rgba(95, 120, 255, 0.2), transparent 22%),
+				linear-gradient(180deg, #edf4ff, #f8fbff);
+			position: relative;
+		}
+
+		.yb-location-map::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+			z-index: 400;
+		}
+
+		.yb-location-map .maplibregl-ctrl-group {
+			border: 0;
+			border-radius: 14px;
+			box-shadow: 0 12px 28px rgba(24, 37, 84, 0.14);
+			overflow: hidden;
+		}
+
+		.yb-location-map .maplibregl-ctrl button {
+			width: 38px;
+			height: 38px;
+		}
+
+		.yb-location-map .maplibregl-ctrl button .maplibregl-ctrl-icon {
+			opacity: 0.85;
+		}
+
+		.yb-location-map .maplibregl-ctrl-top-right,
+		.yb-location-map .maplibregl-ctrl-top-left {
+			top: 14px;
+		}
+
+		.yb-location-map .maplibregl-popup-content {
+			border-radius: 16px;
+			padding: 12px 14px;
+			font: 600 13px/1.55 "Poppins", sans-serif;
+			color: #2c3a68;
+			box-shadow: 0 16px 34px rgba(26, 39, 91, 0.16);
+		}
+
+		.yb-location-map .maplibregl-popup-tip {
+			border-top-color: #fff;
+			border-bottom-color: #fff;
+		}
+
+		.yb-location-map .maplibregl-ctrl-attrib {
+			background: rgba(255, 255, 255, 0.82);
+			backdrop-filter: blur(10px);
+			border-top-left-radius: 10px;
+			padding: 4px 8px;
+			color: #6a77a7;
+		}
+
+		.yb-location-pin {
+			width: 18px;
+			height: 18px;
+			border-radius: 999px 999px 999px 0;
+			transform: rotate(-45deg);
+			background: linear-gradient(135deg, #5662f0, #62d1ff);
+			border: 3px solid rgba(255, 255, 255, 0.95);
+			box-shadow: 0 12px 26px rgba(74, 92, 218, 0.28);
+			position: relative;
+		}
+
+		.yb-location-pin::after {
+			content: "";
+			position: absolute;
+			top: 4px;
+			left: 4px;
+			width: 4px;
+			height: 4px;
+			border-radius: 999px;
+			background: #fff;
+		}
+
+		.yb-location-map-card::before {
+			content: "";
+			position: absolute;
+			top: 18px;
+			left: 18px;
+			right: 18px;
+			height: 46px;
+			border-radius: 16px 16px 0 0;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0));
+			pointer-events: none;
+			z-index: 401;
+		}
+
+		.yb-location-status {
+			margin-top: 10px;
+			font-size: 12px;
+			font-weight: 700;
+			color: #60709f;
+		}
+
+		.yb-location-empty {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			text-align: center;
+			padding: 20px 16px;
+			color: #7c88b1;
+			font-size: 13px;
+			font-weight: 600;
+			line-height: 1.6;
+		}
+
+		@media (max-width: 991.98px) {
+			.yb-event-modal-dialog {
+				max-width: 94vw;
+			}
+
+			.yb-location-layout {
+				grid-template-columns: 1fr;
+			}
+
+			.yb-location-map {
+				height: 250px;
+			}
+		}
+
+		/* Loader design (scoped version of your Uiverse snippet) */
+		.yb-msg-loader {
+			display: flex;
+			position: relative;
+			justify-items: center;
+			align-items: center;
+			gap: 0.8rem;
+			height: 55px;
+			width: 200px;
+			overflow: hidden;
+			margin: 0 auto;
+		}
+
+		.yb-msg-loader .yb-msg-container {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			height: 200px;
+			position: relative;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.yb-msg-loader .yb-msg-carousel {
+			display: flex;
+			gap: 0.8rem;
+			flex-direction: column;
+			position: absolute;
+			width: 100%;
+			transform-origin: center;
+			animation-delay: 2s;
+			align-items: center;
+		}
+
+		.yb-msg-loader .yb-msg-container:nth-child(3) {
+			justify-content: flex-start;
+			justify-items: flex-start;
+			animation: yb-scroll-up 4s infinite ease-in-out;
+			animation-delay: 0.2s;
+		}
+
+		.yb-msg-loader .yb-msg-container:nth-child(2) {
+			justify-content: flex-end;
+			justify-items: flex-end;
+			animation: yb-scroll-down 4s infinite ease-in-out;
+			animation-delay: 0.2s;
+		}
+
+		.yb-msg-loader .yb-msg-container:nth-child(1) {
+			justify-content: flex-end;
+			justify-items: flex-end;
+			animation: yb-scroll-down 3s infinite ease-in-out;
+			animation-delay: 0.2s;
+		}
+
+		.yb-love {
+			background: red;
+			display: flex;
+			width: 24px;
+			height: 24px;
+			position: relative;
+			align-items: center;
+			justify-content: center;
+			left: 8px;
+			margin: 0.4rem 4px;
+			transform: rotate(45deg);
+		}
+
+		.yb-love::before,
+		.yb-love::after {
+			content: '';
+			position: absolute;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			background: red;
+		}
+
+		.yb-love::before {
+			left: -12px;
+		}
+
+		.yb-love::after {
+			top: -12px;
+		}
+
+		.yb-death {
+			display: flex;
+			width: 100%;
+			height: 40px;
+			position: relative;
+			align-items: center;
+			justify-content: center;
+			animation: yb-rotation 3s infinite ease-in-out;
+		}
+
+		.yb-death:after {
+			content: '';
+			height: 44px;
+			position: absolute;
+			border-left: 9px solid red;
+			transform: rotate(45deg);
+			border-radius: 8px;
+			top: -4px;
+		}
+
+		.yb-death:before {
+			content: '';
+			height: 42px;
+			position: absolute;
+			border-left: 9px solid red;
+			transform: rotate(-45deg);
+		}
+
+		.yb-robots {
+			display: flex;
+			width: 100%;
+			height: 40px;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+			background-color: #ff0000;
+			border-radius: 0 8px 8px;
+			padding: 8px;
+			position: relative;
+		}
+
+		.yb-robots::after,
+		.yb-robots::before {
+			content: '';
+			width: 10px;
+			height: 10px;
+			background-color: #ffffff;
+			border-radius: 50%;
+			animation: yb-blink 0.5s 2 forwards;
+			position: static;
+		}
+
+		@keyframes yb-scroll-up {
+			0% {
+				transform: translateY(0);
+				filter: blur(0);
+			}
+
+			30% {
+				transform: translateY(-150%);
+				filter: blur(10px);
+			}
+
+			60% {
+				transform: translateY(0);
+				filter: blur(0);
+			}
+		}
+
+		@keyframes yb-scroll-down {
+			0% {
+				transform: translateY(0);
+				filter: blur(0);
+			}
+
+			30% {
+				transform: translateY(150%);
+				filter: blur(10px);
+			}
+
+			60% {
+				transform: translateY(0);
+				filter: blur(0);
+			}
+		}
+
+		@keyframes yb-rotation {
+			20%,
+			100% {
+				transform: rotate(180deg);
+			}
+		}
+
+		@keyframes yb-blink {
+			0% {
+				height: 0;
+			}
+
+			20% {
+				height: 10px;
+			}
+
+			100% {
+				height: 10px;
+			}
+		}
+
+		/* Event card design (Uiverse-inspired) */
+		.yb-event-cards-grid {
+			position: relative;
+			min-height: 520px;
+			padding: 16px 8px 6px;
+			overflow: hidden;
+		}
+
+		.yb-events-control-card,
+		.yb-calendar-card {
+			overflow: hidden;
+			border-radius: 28px;
+			border: 1px solid rgba(117, 128, 167, 0.14);
+			box-shadow: 0 20px 50px rgba(16, 24, 52, 0.08);
+			background:
+				radial-gradient(circle at top right, rgba(103, 232, 249, 0.08), transparent 34%),
+				linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(246, 248, 253, 0.98));
+		}
+
+		.yb-events-control-card .card-body {
+			padding: 22px;
+		}
+
+		.yb-side-intro {
+			color: #707998;
+			font-size: 0.94rem;
+			line-height: 1.6;
+		}
+
+		.yb-events-control-card .form-label {
+			color: #67708f;
+			font-size: 0.79rem;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+		}
+
+		.yb-calendar-card-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 14px;
+			padding: 18px 18px 0;
+		}
+
+		.yb-calendar-card-head p {
+			font-size: 0.88rem;
+		}
+
+		.yb-calendar-card-body {
+			padding: 12px 14px 14px;
+		}
+
+		.yb-calendar-expand-btn {
+			width: 42px;
+			height: 42px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0;
+			border-radius: 50%;
+			font-weight: 700;
+			flex: 0 0 42px;
+		}
+
+		.yb-expand-icon {
+			transition: transform 200ms ease, opacity 200ms ease;
+		}
+
+		.yb-expand-close {
+			display: none;
+		}
+
+		.yb-calendar-card.is-expanded .yb-expand-open {
+			display: none;
+		}
+
+		.yb-calendar-card.is-expanded .yb-expand-close {
+			display: inline-block;
+		}
+
+		.yb-compact-calendar {
+			position: relative;
+			transform-origin: top center;
+			padding: 12px;
+			border-radius: 22px;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 252, 0.92)),
+				radial-gradient(circle at top right, rgba(64, 84, 232, 0.08), transparent 34%);
+			border: 1px solid rgba(123, 134, 172, 0.14);
+		}
+
+		.yb-compact-calendar .fc .fc-toolbar.fc-header-toolbar {
+			margin-bottom: 0.8rem;
+		}
+
+		.yb-compact-calendar .fc .fc-toolbar-title {
+			font-size: 1.02rem;
+			font-weight: 800;
+			color: #1d2447;
+		}
+
+		.yb-compact-calendar .fc .fc-button {
+			padding: 0.28rem 0.52rem;
+			font-size: 0.74rem;
+			border-radius: 12px;
+		}
+
+		.yb-compact-calendar .fc .fc-col-header-cell-cushion,
+		.yb-compact-calendar .fc .fc-daygrid-day-number,
+		.yb-compact-calendar .fc .fc-timegrid-axis-cushion {
+			font-size: 0.72rem;
+			color: #66708d;
+		}
+
+		.yb-compact-calendar .fc .fc-daygrid-day-frame {
+			min-height: 56px;
+		}
+
+		.yb-compact-calendar .fc .fc-scrollgrid,
+		.yb-compact-calendar .fc-theme-standard td,
+		.yb-compact-calendar .fc-theme-standard th {
+			border-color: rgba(144, 154, 185, 0.14);
+		}
+
+		.yb-compact-calendar .fc-event {
+			border-radius: 8px;
+			padding: 1px 4px;
+			font-size: 0.68rem;
+		}
+
+		.yb-compact-calendar .fc .fc-daygrid-day-top {
+			justify-content: center;
+		}
+
+		.yb-compact-calendar .fc .fc-daygrid-day-number {
+			padding-top: 4px;
+		}
+
+		body.yb-calendar-expanded {
+			overflow: hidden;
+		}
+
+		.yb-calendar-card.is-expanded {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 2500;
+			width: min(1320px, calc(100vw - 56px));
+			max-width: min(1320px, calc(100vw - 56px));
+			height: min(860px, calc(100vh - 72px));
+			max-height: calc(100vh - 72px);
+			margin: 0 !important;
+			border-radius: 34px;
+			box-shadow: 0 42px 110px rgba(11, 16, 37, 0.36);
+		}
+
+		.yb-calendar-card.is-expanded .yb-calendar-card-body {
+			height: calc(100% - 84px);
+			padding: 18px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar,
+		.yb-calendar-card.is-expanded #calendar {
+			height: 100%;
+		}
+
+		.yb-calendar-card.is-expanded::after {
+			content: "";
+			position: fixed;
+			inset: 0;
+			background: rgba(10, 15, 31, 0.42);
+			backdrop-filter: blur(10px);
+			z-index: -1;
+		}
+
+		.event-card-notification {
+			--card-accent: linear-gradient(135deg, #67e8f9 0%, #6d7cff 52%, #8b5cf6 100%);
+			--card-glow: rgba(103, 232, 249, 0.22);
+			position: absolute;
+			top: 16px;
+			left: 50%;
+			display: flex;
+			flex-direction: column;
+			width: min(320px, calc(100% - 24px));
+			min-height: 430px;
+			padding: 18px 18px 16px;
+			border-radius: 26px;
+			overflow: hidden;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)),
+				#12141d;
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			box-shadow: 0 22px 60px rgba(11, 16, 37, 0.18);
+			color: #eef2ff;
+			isolation: isolate;
+			transform-origin: center center;
+			transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 360ms ease, border-color 260ms ease, opacity 260ms ease;
+		}
+
+		.event-card-notification.is-featured {
+			--card-accent: linear-gradient(135deg, #7cf29a 0%, #42d4c8 55%, #5079ff 100%);
+			--card-glow: rgba(124, 242, 154, 0.24);
+		}
+
+		.event-card-notification.is-terminated {
+			--card-accent: linear-gradient(135deg, #ffb36b 0%, #ff6c7e 55%, #7a4d87 100%);
+			--card-glow: rgba(255, 108, 126, 0.22);
+		}
+
+		.event-card-notification:hover {
+			border-color: rgba(255, 255, 255, 0.16);
+			box-shadow: 0 28px 72px rgba(11, 16, 37, 0.26);
+		}
+
+		.event-card-notification.is-active {
+			transform: translateX(-50%) translateY(0) scale(1);
+			z-index: 5;
+		}
+
+		.event-card-notification.is-left {
+			transform: translateX(-93%) translateY(24px) scale(0.9);
+			opacity: 0.88;
+			z-index: 4;
+		}
+
+		.event-card-notification.is-left-far {
+			transform: translateX(-128%) translateY(42px) scale(0.82);
+			opacity: 0.62;
+			z-index: 3;
+		}
+
+		.event-card-notification.is-right {
+			transform: translateX(-7%) translateY(24px) scale(0.9);
+			opacity: 0.88;
+			z-index: 4;
+		}
+
+		.event-card-notification.is-right-far {
+			transform: translateX(28%) translateY(42px) scale(0.82);
+			opacity: 0.62;
+			z-index: 3;
+		}
+
+		.event-card-notification:before {
+			position: absolute;
+			content: "";
+			inset: 0;
+			background:
+				radial-gradient(circle at top right, var(--card-glow), transparent 38%),
+				linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+			z-index: 0;
+		}
+
+		.event-card-notification:after {
+			position: absolute;
+			content: "";
+			inset: 0;
+			border-radius: 26px;
+			padding: 1px;
+			background: var(--card-accent);
+			-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+			-webkit-mask-composite: xor;
+			mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+			mask-composite: exclude;
+			opacity: 0.5;
+			z-index: 1;
+		}
+
+		.event-card-backdrop {
+			position: absolute;
+			right: -24px;
+			bottom: -24px;
+			width: 170px;
+			height: 170px;
+			border-radius: 50%;
+			background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 70%);
+			z-index: 0;
+		}
+
+		.event-card-topline,
+		.event-card-title,
+		.event-card-body {
+			position: relative;
+			z-index: 2;
+		}
+
+		.event-card-topline {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			margin-bottom: 16px;
+		}
+
+		.event-card-chip,
+		.event-card-badge {
+			display: inline-flex;
+			align-items: center;
+			padding: 7px 12px;
+			border-radius: 999px;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.event-card-chip {
+			background: rgba(255, 255, 255, 0.08);
+			color: #8ff4ff;
+			border: 1px solid rgba(143, 244, 255, 0.18);
+		}
+
+		.event-card-badge {
+			background: rgba(255, 255, 255, 0.92);
+			color: #151a31;
+		}
+
+		.event-card-badge.subtle {
+			background: rgba(255, 255, 255, 0.08);
+			color: rgba(238, 242, 255, 0.86);
+		}
+
+		.event-card-title {
+			font-size: 1.7rem;
+			font-weight: 700;
+			line-height: 1.05;
+			margin-bottom: 14px;
+			max-width: 90%;
+		}
+
+		.event-card-body {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
+
+		.event-card-location {
+			margin: 0 0 16px;
+			color: rgba(238, 242, 255, 0.72);
+			font-size: 0.98rem;
+		}
+
+		.event-card-meta-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 12px;
+			margin-bottom: 18px;
+		}
+
+		.event-card-description {
+			position: relative;
+			margin-bottom: 18px;
+			padding: 20px 20px 22px;
+			border-radius: 24px;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)),
+				radial-gradient(circle at bottom center, rgba(103, 232, 249, 0.14), rgba(255, 255, 255, 0) 56%);
+			border: 1px solid rgba(255, 255, 255, 0.08);
+			color: rgba(238, 242, 255, 0.86);
+			font-size: 0.95rem;
+			line-height: 1.65;
+			min-height: 148px;
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+		}
+
+		.event-card-meta-item {
+			padding: 12px 13px;
+			border-radius: 16px;
+			background: rgba(255, 255, 255, 0.045);
+			border: 1px solid rgba(255, 255, 255, 0.06);
+		}
+
+		.event-card-meta-item span,
+		.event-card-status span {
+			display: block;
+			margin-bottom: 6px;
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: rgba(238, 242, 255, 0.5);
+		}
+
+		.event-card-meta-item strong,
+		.event-card-status strong {
+			display: block;
+			color: #ffffff;
+			font-size: 0.98rem;
+			font-weight: 700;
+			line-height: 1.35;
+		}
+
+		.event-card-footer {
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 14px;
+			margin-top: auto;
+		}
+
+		.event-card-status {
+			min-width: 0;
+		}
+
+		.event-card-actions {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: 10px;
+		}
+
+		.event-card-actions .btn {
+			padding: 0.5rem 0.95rem;
+			border-radius: 999px;
+			font-size: 0.8rem;
+			font-weight: 700;
+		}
+
+		.event-card-glow,
+		.event-card-border-glow {
+			position: absolute;
+			width: 220px;
+			height: 220px;
+			border-radius: 50%;
+			background: radial-gradient(circle closest-side at center, var(--card-glow), transparent);
+			opacity: 0;
+			transition: opacity 260ms ease, transform 260ms ease;
+			z-index: 0;
+		}
+
+		.event-card-glow {
+			top: 30px;
+			right: -40px;
+		}
+
+		.event-card-border-glow {
+			bottom: -60px;
+			left: -30px;
+		}
+
+		.event-card-notification:hover .event-card-glow,
+		.event-card-notification:hover .event-card-border-glow {
+			opacity: 1;
+			transform: scale(1.08);
+		}
+
+		.yb-pagination-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 18px;
+			margin-top: 18px;
+			padding: 14px 16px;
+			border-radius: 20px;
+			background: rgba(255, 255, 255, 0.72);
+			border: 1px solid rgba(89, 102, 146, 0.12);
+			backdrop-filter: blur(10px);
+		}
+
+		.yb-pagination-copy {
+			color: #69718f;
+			font-size: 0.93rem;
+			font-weight: 600;
+		}
+
+		.yb-pagination-copy strong {
+			color: #21274d;
+		}
+
+		.yb-pagination-controls,
+		.yb-page-dots {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.yb-page-arrow,
+		.yb-page-dot {
+			border: 0;
+			border-radius: 999px;
+			transition: transform 180ms ease, background 180ms ease, color 180ms ease, opacity 180ms ease;
+		}
+
+		.yb-page-arrow {
+			width: 42px;
+			height: 42px;
+			background: #151a31;
+			color: #fff;
+			font-size: 1.35rem;
+			line-height: 1;
+		}
+
+		.yb-page-arrow[disabled] {
+			opacity: 0.34;
+			cursor: not-allowed;
+		}
+
+		.yb-page-arrow:hover:not([disabled]) {
+			transform: translateY(-1px);
+		}
+
+		.yb-carousel-progress {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			padding: 10px 16px;
+			border-radius: 999px;
+			background: rgba(33, 39, 77, 0.08);
+			color: #21274d;
+		}
+
+		.yb-carousel-progress span {
+			font-size: 0.74rem;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: #7f86a4;
+		}
+
+		.yb-carousel-progress strong {
+			font-size: 0.98rem;
+			font-weight: 800;
+			color: #1c2244;
+		}
+
+		.yb-empty-state {
+			grid-column: 1 / -1;
+			padding: 18px 0 4px;
+		}
+
+		.yb-empty-state-inner {
+			padding: 38px 24px;
+			border-radius: 28px;
+			background: linear-gradient(180deg, #131723 0%, #1b2034 100%);
+			color: #eef2ff;
+			text-align: center;
+			box-shadow: 0 22px 50px rgba(13, 18, 39, 0.22);
+		}
+
+		.yb-empty-kicker {
+			display: inline-block;
+			margin-bottom: 12px;
+			padding: 7px 12px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.08);
+			color: #90f3ff;
+			font-size: 11px;
+			font-weight: 700;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.yb-empty-state-inner h4 {
+			color: #fff;
+			font-size: 1.55rem;
+			margin-bottom: 10px;
+		}
+
+		.yb-empty-state-inner p {
+			margin: 0;
+			color: rgba(238, 242, 255, 0.7);
+		}
+
+		@media (max-width: 1399px) {
+			.yb-events-control-card,
+			.yb-calendar-card {
+				border-radius: 24px;
+			}
+		}
+
+		@media (max-width: 1199px) {
+			.yb-event-cards-grid {
+				min-height: 430px;
+			}
+
+			.event-card-notification {
+				width: min(300px, calc(100% - 12px));
+			}
+
+			.event-card-notification.is-left-far,
+			.event-card-notification.is-right-far {
+				opacity: 0.35;
+			}
+		}
+
+		@media (max-width: 575px) {
+			.event-card-meta-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.event-card-footer,
+			.yb-pagination-bar {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.event-card-actions,
+			.yb-pagination-controls {
+				justify-content: center;
+			}
+
+			.yb-event-cards-grid {
+				min-height: 400px;
+			}
+
+			.event-card-notification {
+				width: calc(100% - 12px);
+				min-height: 380px;
+			}
+
+			.event-card-notification.is-left,
+			.event-card-notification.is-left-far,
+			.event-card-notification.is-right,
+			.event-card-notification.is-right-far {
+				display: none;
+			}
+
+			.yb-calendar-card.is-expanded {
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: calc(100vw - 24px);
+				max-width: calc(100vw - 24px);
+				height: calc(100vh - 24px);
+				max-height: calc(100vh - 24px);
+			}
+
+			.yb-calendar-card-head {
+				flex-direction: column;
+				align-items: stretch;
+			}
+		}
+		/* Backoffice schedule redesign override */
+		#ybEventsSideRow {
+			align-items: flex-start;
+			height: 100%;
+		}
+
+		#ybEventsSideRow>.col-xl-12 {
+			width: 100%;
+		}
+
+		.yb-events-column {
+			display: flex;
+		}
+
+		.yb-side-column {
+			display: flex;
+			flex-direction: column;
+			padding-top: 0;
+		}
+
+		#eventListContainer {
+			display: flex;
+			flex-direction: column;
+			min-height: 100%;
+		}
+
+		.yb-events-control-card,
+		.yb-calendar-card {
+			height: auto;
+		}
+
+		.yb-events-control-card {
+			margin-bottom: 12px;
+			max-width: 360px;
+			width: 100%;
+			margin-left: auto;
+		}
+
+		.yb-calendar-card {
+			margin-top: 12px !important;
+			border-radius: 26px;
+			max-width: 360px;
+			width: 100%;
+			margin-left: auto;
+			background:
+				radial-gradient(circle at top right, rgba(126, 211, 255, 0.12), transparent 34%),
+				linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 255, 0.98));
+			border: 1px solid rgba(124, 136, 178, 0.12);
+			box-shadow: 0 18px 44px rgba(18, 28, 61, 0.1);
+		}
+
+			.yb-overview-shell {
+				margin-bottom: 28px;
+				padding: 0;
+				background: transparent;
+				border: 0;
+				box-shadow: none;
+				overflow: visible;
+			}
+
+			.yb-overview-header {
+				display: flex;
+				align-items: flex-start;
+				justify-content: space-between;
+				gap: 18px;
+				padding: 26px 30px 0;
+				margin-bottom: 22px;
+			}
+
+		.yb-overview-eyebrow {
+			display: inline-block;
+			margin-bottom: 8px;
+			color: #18244d;
+			font-size: 2rem;
+			font-weight: 800;
+			letter-spacing: -0.04em;
+		}
+
+		.yb-overview-header h3 {
+			margin: 0 0 8px;
+			color: #1a2452;
+			font-size: 1rem;
+			font-weight: 500;
+			line-height: 1.65;
+		}
+
+		.yb-overview-header p {
+			margin: 0;
+			max-width: 680px;
+			color: #76809f;
+			font-size: 0.96rem;
+			line-height: 1.7;
+		}
+
+		.yb-overview-link {
+			border: 0;
+			background: transparent;
+			color: #4c46db;
+			font-weight: 700;
+			padding: 10px 0;
+			white-space: nowrap;
+		}
+
+		.yb-overview-link::after {
+			content: " \2192";
+			font-size: 1rem;
+		}
+
+			.yb-overview-stats {
+				display: grid;
+				grid-template-columns: repeat(5, minmax(0, 1fr));
+				gap: 18px;
+				padding: 0;
+			}
+
+			.yb-overview-stat {
+				padding: 0;
+				border-radius: 22px;
+				border: 1px solid rgba(124, 136, 178, 0.09);
+				background: #fff;
+				box-shadow: 0 12px 26px rgba(17, 24, 52, 0.05);
+				min-height: 128px;
+			}
+
+			.yb-overview-stat .content-box {
+				display: flex;
+				align-items: flex-start;
+				justify-content: space-between;
+				gap: 18px;
+				padding: 22px 24px;
+				min-height: 100%;
+			}
+
+			.yb-overview-stat-icon {
+				width: 70px;
+				height: 70px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 999px;
+				font-size: 1.35rem;
+				flex: 0 0 auto;
+				margin-left: auto;
+			}
+
+			.yb-overview-chart-num {
+				flex: 1 1 auto;
+				min-width: 0;
+			}
+
+			.yb-overview-stat-value {
+				color: #000;
+				font-size: 2.2rem;
+				font-weight: 800;
+				line-height: 1;
+				margin-bottom: 10px;
+			}
+
+			.yb-overview-stat-label {
+				margin: 0 0 6px;
+				color: #8f97b2;
+				font-size: 1rem;
+				font-weight: 500;
+				line-height: 1.35;
+			}
+
+			.yb-overview-stat-meta {
+				display: block;
+				color: #24336e;
+				font-size: 0.82rem;
+				font-weight: 600;
+				line-height: 1.3;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat {
+				border-color: rgba(255, 255, 255, 0.08);
+				background: linear-gradient(180deg, rgba(33, 40, 72, 0.96), rgba(24, 31, 58, 0.98));
+				box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-value {
+				color: #f7f8ff;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-label {
+				color: #aeb7d8;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-meta {
+				color: #dfe5ff;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-icon.event-data {
+				background: linear-gradient(135deg, #6d63ff, #5046d9);
+				color: #ffffff;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-icon.std-data {
+				background: linear-gradient(135deg, #5147c8, #39438c);
+				color: #ffffff;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-icon.teach-data {
+				background: linear-gradient(135deg, #ff8a63, #ff6f57);
+				color: #ffffff;
+			}
+
+			[data-theme-version="dark"] .yb-overview-stat-icon.food-data {
+				background: linear-gradient(135deg, #3f4a96, #2f3879);
+				color: #ffffff;
+			}
+
+			.yb-calendar-toolbar {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				gap: 16px;
+				flex-wrap: nowrap;
+				overflow: visible;
+			}
+
+			.yb-calendar-toolbar-actions {
+				display: flex;
+				align-items: center;
+				flex-wrap: nowrap;
+				gap: 6px;
+				width: 100%;
+				justify-content: flex-start;
+				min-width: 0;
+				overflow: visible;
+			}
+
+			.yb-calendar-search-wrap {
+				flex: 1 1 300px;
+				min-width: 250px;
+				max-width: 360px;
+			}
+
+			.yb-calendar-search-wrap #eventSearchTop {
+				width: 100%;
+			}
+
+			.yb-toolbar-select {
+				min-width: 124px;
+				max-width: 132px;
+				flex: 0 0 132px;
+			}
+
+			#calendarMonthFilter,
+			#calendarYearFilter {
+				min-width: 108px;
+				max-width: 108px;
+				flex: 0 0 108px;
+			}
+
+			.yb-calendar-toolbar .btn.btn-primary {
+				flex: 0 0 auto;
+				white-space: nowrap;
+			}
+
+			.yb-analytics-row {
+				margin-bottom: 24px;
+			}
+
+			.yb-analytics-card {
+				border-radius: 20px;
+				border: 1px solid rgba(123, 136, 178, 0.08);
+				box-shadow: 0 12px 34px rgba(82, 63, 105, 0.05);
+			}
+
+			.yb-analytics-card .card-header {
+				padding: 26px 28px 0;
+				border: 0;
+				background: transparent;
+			}
+
+			.yb-analytics-card .card-body {
+				padding: 0 18px 16px;
+			}
+
+			.yb-analytics-title {
+				font-size: 16px;
+				font-weight: 700;
+				color: #24336e;
+			}
+
+			.yb-analytics-stats {
+				display: flex;
+				align-items: center;
+				gap: 24px;
+				flex-wrap: wrap;
+			}
+
+			.yb-analytics-stat {
+				display: inline-flex;
+				align-items: flex-start;
+				gap: 10px;
+				color: #24336e;
+				font-weight: 700;
+			}
+
+			.yb-analytics-stat i {
+				font-size: 12px;
+				margin-top: 5px;
+			}
+
+			.yb-analytics-stat span {
+				display: block;
+				color: #24336e;
+				font-size: 14px;
+				font-weight: 500;
+				margin-bottom: 2px;
+			}
+
+			.yb-analytics-stat strong {
+				display: block;
+				font-size: 18px;
+				font-weight: 700;
+			}
+
+			.yb-analytics-tabs {
+				gap: 10px;
+			}
+
+			.yb-analytics-tabs .nav-link {
+				border: 0;
+				border-radius: 12px;
+				color: #24336e;
+				font-weight: 600;
+				padding: 10px 18px;
+			}
+
+			.yb-analytics-tabs .nav-link.active {
+				background: rgba(92, 74, 255, 0.1);
+				color: var(--primary);
+			}
+
+			#ybEventTrendChart,
+			#ybEventOverviewChart {
+				min-height: 320px;
+			}
+
+			#eventSortFilter + .bootstrap-select,
+			#eventStatusFilter + .bootstrap-select,
+			#eventDateFilter + .bootstrap-select {
+				flex: 0 0 132px !important;
+				width: 132px !important;
+				margin-bottom: 0;
+			}
+
+			#calendarMonthFilter + .bootstrap-select,
+			#calendarYearFilter + .bootstrap-select {
+				flex: 0 0 108px !important;
+				width: 108px !important;
+				margin-bottom: 0;
+			}
+
+		.yb-event-cards-grid {
+			position: static;
+			display: grid;
+			gap: 10px;
+			min-height: 0;
+			padding: 0;
+			overflow: visible;
+			flex: 1 1 auto;
+			align-content: start;
+		}
+
+		.event-card-notification {
+			--event-accent: #7c88ff;
+			font-family: "Poppins", sans-serif;
+			position: relative;
+			top: auto;
+			left: auto;
+			width: 100%;
+			min-height: 0;
+			display: grid;
+			grid-template-columns: 110px minmax(0, 1fr) 210px;
+			align-items: center;
+			gap: 16px;
+			padding: 16px;
+			border-radius: 26px;
+			background: #ffffff;
+			border: 1px solid rgba(184, 194, 225, 0.34);
+			box-shadow: 0 20px 45px rgba(20, 32, 72, 0.09);
+			color: #16213f;
+			transform: none !important;
+			opacity: 1 !important;
+			transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+		}
+
+		.event-card-notification::before {
+			content: "";
+			position: absolute;
+			left: 16px;
+			right: 16px;
+			bottom: 0;
+			height: 4px;
+			border-radius: 999px 999px 0 0;
+			background: linear-gradient(90deg, color-mix(in srgb, var(--event-accent) 88%, #ffffff 12%), color-mix(in srgb, var(--event-accent) 58%, #ffffff 42%));
+			box-shadow: 0 10px 24px color-mix(in srgb, var(--event-accent) 18%, transparent);
+			display: block !important;
+		}
+
+		.event-card-notification.is-featured {
+			box-shadow: 0 24px 54px rgba(27, 44, 96, 0.12);
+		}
+
+		.event-card-notification.is-terminated {
+			--event-accent: #ff9d79;
+			background: linear-gradient(180deg, #ffffff 0%, #fff8f5 100%);
+		}
+
+		.event-card-notification.type-hackathon {
+			--event-accent: #8f6dff;
+		}
+
+		.event-card-notification.type-webinaire {
+			--event-accent: #34d1b6;
+		}
+
+		.event-card-notification.type-atelier {
+			--event-accent: #00b7a8;
+		}
+
+		.event-card-notification.type-formation {
+			--event-accent: #ff8b5e;
+		}
+
+		.event-card-notification.type-default {
+			--event-accent: #7c88ff;
+		}
+
+		.event-card-notification:hover {
+			transform: translateY(-3px) !important;
+			border-color: rgba(99, 118, 255, 0.22);
+			box-shadow: 0 28px 56px rgba(20, 32, 72, 0.14);
+		}
+
+		.event-card-notification::after,
+		.event-card-backdrop,
+		.event-card-glow,
+		.event-card-border-glow {
+			display: none;
+		}
+
+		.event-card-date { display: none; }
+
+		.event-card-month {
+			display: block;
+			margin-bottom: 4px;
+			color: rgba(239, 242, 255, 0.82);
+			font-size: 0.6rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.event-card-day {
+			display: block;
+			color: #fff;
+			font-size: 1.38rem;
+			font-weight: 800;
+			line-height: 1;
+		}
+
+		.event-card-main {
+			min-width: 0;
+		}
+
+		.event-card-topline {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-bottom: 10px;
+		}
+
+		.event-card-chip,
+		.event-card-reference,
+		.event-card-badge {
+			padding: 3px 8px;
+			border-radius: 999px;
+			font-size: 0.56rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.event-card-chip {
+			background: color-mix(in srgb, var(--event-accent) 12%, #ffffff 88%);
+			border: 1px solid color-mix(in srgb, var(--event-accent) 18%, #ffffff 82%);
+			color: color-mix(in srgb, var(--event-accent) 86%, #2a3d92 14%);
+		}
+
+		.event-card-reference {
+			background: #f6f8ff;
+			border: 1px solid #e3e9fb;
+			color: #7280a8;
+			font-family: "Poppins", sans-serif;
+			letter-spacing: 0.06em;
+		}
+
+		.event-card-badge {
+			background: #eef1ff;
+			color: #5a66da;
+		}
+
+		.event-card-badge.subtle {
+			background: #fff0e8;
+			color: #e17f58;
+		}
+
+		.event-card-date-inline {
+			color: #7d86a8;
+			font-size: 0.72rem;
+			font-weight: 700;
+		}
+
+		.event-card-title-wrap {
+			min-width: 0;
+			margin-bottom: 10px;
+		}
+
+		.event-card-title {
+			margin: 0 0 6px;
+			color: #223055;
+			font-size: 1.32rem;
+			font-weight: 800;
+			line-height: 1.15;
+			letter-spacing: -0.03em;
+		}
+
+		.event-card-description {
+			margin: 0;
+			padding: 0;
+			min-height: 0;
+			background: transparent;
+			border: 0;
+			box-shadow: none;
+			color: #7682a3;
+			font-size: 0.86rem;
+			font-weight: 500;
+			line-height: 1.45;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+
+		.event-card-meta-line {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 14px;
+			margin-bottom: 12px;
+		}
+
+		.event-card-meta-line span {
+			display: inline-flex;
+			align-items: center;
+			gap: 5px;
+			color: #667392;
+			font-size: 0.76rem;
+			font-weight: 600;
+		}
+
+		.event-card-meta-line i {
+			color: color-mix(in srgb, var(--event-accent) 74%, #4a5ae8 26%);
+			font-size: 0.72rem;
+		}
+
+		.event-card-summary-row {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.event-card-summary-pill {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 8px 12px;
+			border-radius: 999px;
+			background: #f7f8fe;
+			color: #7380a3;
+			font-size: 0.76rem;
+			font-weight: 700;
+		}
+
+		.event-card-summary-pill strong {
+			color: #27345d;
+		}
+
+		.event-card-body,
+		.event-card-meta-grid,
+		.event-card-location,
+		.event-card-footer,
+		.event-card-status {
+			display: contents;
+		}
+
+		.event-card-side {
+			display: grid;
+			gap: 12px;
+			justify-items: stretch;
+		}
+
+		.event-card-visual {
+			position: relative;
+			min-height: 108px;
+			height: 108px;
+			border-radius: 22px;
+			overflow: hidden;
+			border: 1px solid rgba(176, 190, 229, 0.22);
+			background:
+				linear-gradient(160deg, rgba(249, 250, 255, 0.98), rgba(236, 240, 255, 0.92)),
+				linear-gradient(135deg, rgba(91, 110, 255, 0.18), rgba(39, 201, 255, 0.08));
+			box-shadow: 0 12px 30px rgba(32, 48, 96, 0.08);
+		}
+
+		.event-card-visual.has-image {
+			background: #dfe6fb;
+		}
+
+		.event-card-visual img {
+			display: block;
+			width: 100%;
+			height: 108px;
+			object-fit: cover;
+		}
+
+		.event-card-visual::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(18, 24, 48, 0.1));
+			pointer-events: none;
+		}
+
+		.event-card-visual-fallback {
+			position: absolute;
+			inset: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 6px;
+			color: #627095;
+			font-size: 0.72rem;
+			font-weight: 700;
+			letter-spacing: 0.03em;
+		}
+
+		.event-card-visual-fallback i {
+			font-size: 1.15rem;
+			opacity: 0.86;
+		}
+
+		.event-card-fill-panel {
+			padding: 14px 16px;
+			border-radius: 18px;
+			background: #f7f8fe;
+			border: 1px solid #e5eaf8;
+		}
+
+		.event-card-fill-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			margin-bottom: 10px;
+		}
+
+		.event-card-fill-head span {
+			color: #4a5579;
+			font-size: 0.82rem;
+			font-weight: 800;
+		}
+
+		.event-card-fill-head strong {
+			color: #7a82a1;
+			font-size: 0.76rem;
+			font-weight: 800;
+		}
+
+		.event-card-progress {
+			height: 7px;
+			border-radius: 999px;
+			background: #dfe4f2;
+			overflow: hidden;
+		}
+
+		.event-card-progress span {
+			display: block;
+			height: 100%;
+			border-radius: inherit;
+			background: linear-gradient(90deg, color-mix(in srgb, var(--event-accent) 92%, #ffffff 8%), color-mix(in srgb, var(--event-accent) 74%, #5a6cf0 26%));
+		}
+
+		.event-card-actions {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		.event-card-action-icons {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 8px;
+		}
+
+		.event-card-actions .btn {
+			width: 100%;
+			padding: 0.5rem 0.8rem;
+			border-radius: 12px;
+			font-size: 0.68rem;
+			font-weight: 800;
+			border: 1px solid transparent;
+			box-shadow: 0 12px 24px rgba(9, 16, 39, 0.18);
+			transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+		}
+
+		.event-card-manage-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+			min-height: 44px;
+			background: linear-gradient(135deg, rgba(103, 86, 255, 0.12), rgba(129, 106, 255, 0.04));
+			color: #5b4fe6;
+			border-color: rgba(108, 92, 255, 0.14);
+			box-shadow: none;
+		}
+
+		.event-card-manage-btn i {
+			font-size: 0.9rem;
+		}
+
+		.event-card-icon-btn {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 42px;
+			padding: 0;
+			font-size: 0.95rem;
+		}
+
+		.event-card-icon-btn i {
+			font-size: 0.95rem;
+			line-height: 1;
+		}
+
+		.event-card-icon-btn svg {
+			width: 18px;
+			height: 18px;
+			display: block;
+			fill: none;
+			stroke: currentColor;
+			stroke-width: 1.9;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+		}
+
+		.event-card-actions .btn:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 16px 28px rgba(37, 50, 95, 0.14);
+		}
+
+		.event-card-actions .btn-primary {
+			background: linear-gradient(135deg, rgba(91, 110, 255, 0.12), rgba(143, 157, 255, 0.05));
+			color: #5f6cf0;
+			border-color: rgba(129, 144, 255, 0.2);
+		}
+
+		.event-card-actions .btn-info {
+			background: linear-gradient(135deg, rgba(79, 195, 247, 0.12), rgba(43, 167, 214, 0.05));
+			color: #1691c4;
+			border-color: rgba(78, 170, 218, 0.18);
+		}
+
+		.event-card-actions .btn-warning {
+			background: linear-gradient(135deg, rgba(255, 186, 102, 0.16), rgba(255, 121, 98, 0.06));
+			color: #e08c4a;
+			border-color: rgba(255, 198, 129, 0.18);
+		}
+
+		[data-theme-version="dark"] .event-card-notification {
+			background:
+				radial-gradient(circle at top right, rgba(95, 114, 255, 0.14), transparent 34%),
+				linear-gradient(180deg, #1b2238 0%, #151c31 100%);
+			border-color: rgba(112, 126, 170, 0.2);
+			box-shadow: 0 24px 56px rgba(7, 11, 24, 0.34);
+			color: #eef2ff;
+		}
+
+		[data-theme-version="dark"] .event-card-notification.is-terminated {
+			background:
+				radial-gradient(circle at top right, rgba(255, 135, 105, 0.12), transparent 36%),
+				linear-gradient(180deg, #262435 0%, #211f2e 100%);
+		}
+
+		[data-theme-version="dark"] .event-card-title {
+			color: #f4f7ff;
+		}
+
+		[data-theme-version="dark"] .event-card-description {
+			color: rgba(225, 232, 255, 0.72);
+		}
+
+		[data-theme-version="dark"] .event-card-date-inline,
+		[data-theme-version="dark"] .event-card-reference,
+		[data-theme-version="dark"] .event-card-meta-line span,
+		[data-theme-version="dark"] .event-card-fill-head strong,
+		[data-theme-version="dark"] .event-card-summary-pill {
+			color: rgba(219, 226, 252, 0.72);
+		}
+
+		[data-theme-version="dark"] .event-card-badge {
+			background: rgba(113, 128, 255, 0.16);
+			color: #dfe4ff;
+		}
+
+		[data-theme-version="dark"] .event-card-badge.subtle {
+			background: rgba(255, 122, 122, 0.12);
+			color: #ffd1d1;
+		}
+
+		[data-theme-version="dark"] .event-card-reference,
+		[data-theme-version="dark"] .event-card-summary-pill,
+		[data-theme-version="dark"] .event-card-fill-panel {
+			background: rgba(255, 255, 255, 0.05);
+			border-color: rgba(255, 255, 255, 0.08);
+		}
+
+		[data-theme-version="dark"] .event-card-visual {
+			border-color: rgba(255, 255, 255, 0.08);
+			background:
+				linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+				linear-gradient(135deg, rgba(91, 110, 255, 0.22), rgba(39, 201, 255, 0.1));
+			box-shadow: 0 14px 30px rgba(7, 11, 24, 0.22);
+		}
+
+		[data-theme-version="dark"] .event-card-visual.has-image {
+			background: #11182b;
+		}
+
+		[data-theme-version="dark"] .event-card-visual::after {
+			background: linear-gradient(180deg, rgba(6, 10, 24, 0.04), rgba(6, 10, 24, 0.26));
+		}
+
+		[data-theme-version="dark"] .event-card-visual-fallback {
+			color: rgba(230, 236, 255, 0.78);
+		}
+
+		[data-theme-version="dark"] .event-card-fill-head span,
+		[data-theme-version="dark"] .event-card-summary-pill strong {
+			color: #f4f7ff;
+		}
+
+		[data-theme-version="dark"] .event-card-progress {
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		[data-theme-version="dark"] .event-card-manage-btn {
+			background: linear-gradient(135deg, rgba(103, 86, 255, 0.18), rgba(129, 106, 255, 0.06));
+			color: #dfe4ff;
+			border-color: rgba(122, 134, 255, 0.18);
+		}
+
+		[data-theme-version="dark"] .event-card-actions .btn-primary {
+			background: linear-gradient(135deg, rgba(91, 110, 255, 0.18), rgba(143, 157, 255, 0.08));
+			color: #dfe4ff;
+			border-color: rgba(129, 144, 255, 0.22);
+		}
+
+		[data-theme-version="dark"] .event-card-actions .btn-info {
+			background: linear-gradient(135deg, rgba(79, 195, 247, 0.18), rgba(43, 167, 214, 0.08));
+			color: #ccefff;
+			border-color: rgba(78, 170, 218, 0.22);
+		}
+
+		[data-theme-version="dark"] .event-card-actions .btn-warning {
+			background: linear-gradient(135deg, rgba(255, 186, 102, 0.18), rgba(255, 121, 98, 0.08));
+			color: #ffe6b1;
+			border-color: rgba(255, 198, 129, 0.2);
+		}
+
+		.yb-pagination-bar {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			flex-wrap: wrap;
+			gap: 12px;
+			margin-top: auto;
+			padding: 12px 16px;
+			border-radius: 18px;
+			background: rgba(255, 255, 255, 0.82);
+			border: 1px solid rgba(112, 126, 170, 0.12);
+			box-shadow: 0 14px 35px rgba(16, 24, 52, 0.08);
+		}
+
+		.yb-pagination-copy {
+			color: #6e7997;
+			font-size: 0.9rem;
+			font-weight: 700;
+		}
+
+		.yb-pagination-copy strong,
+		.yb-carousel-progress strong {
+			color: #182450;
+		}
+
+		.yb-pagination-controls {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-left: auto;
+			justify-content: flex-end;
+		}
+
+		.yb-page-switcher {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.yb-page-arrow {
+			width: 36px;
+			height: 36px;
+			border: 0;
+			border-radius: 12px;
+			background: linear-gradient(135deg, #4a42db, #6d74ff);
+			color: #fff;
+			font-size: 1rem;
+			font-weight: 800;
+			box-shadow: 0 10px 24px rgba(76, 70, 219, 0.22);
+		}
+
+		.yb-page-arrow[disabled] {
+			opacity: 0.42;
+			cursor: not-allowed;
+			box-shadow: none;
+		}
+
+		.yb-page-indicator {
+			padding: 8px 12px;
+			border-radius: 12px;
+			background: rgba(76, 70, 219, 0.08);
+			color: #33406b;
+			font-size: 0.8rem;
+			font-weight: 700;
+		}
+
+		.yb-carousel-progress {
+			padding: 8px 12px;
+			border-radius: 12px;
+			background: rgba(76, 70, 219, 0.08);
+			color: #6f7a99;
+		}
+
+		.yb-carousel-progress span {
+			font-size: 0.6rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: #8590af;
+		}
+
+		.yb-carousel-progress strong {
+			font-size: 0.84rem;
+		}
+
+		.yb-calendar-card-head {
+			padding: 16px 16px 10px;
+			border-bottom: 0;
+		}
+
+		.yb-calendar-card-head h4 {
+			font-family: "Poppins", sans-serif;
+			font-weight: 800;
+			letter-spacing: -0.02em;
+		}
+
+		.yb-calendar-card-head .heading {
+			margin-bottom: 4px !important;
+			color: #243166;
+			font-size: 1rem;
+		}
+
+		.yb-calendar-card-head .text-muted {
+			font-size: 0.74rem;
+			line-height: 1.2;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: #8a95b8 !important;
+			max-width: 220px;
+		}
+
+		.yb-calendar-card-body {
+			padding: 0 16px 16px;
+		}
+
+		.yb-compact-calendar {
+			padding: 0;
+			border-radius: 0;
+			background: transparent;
+			border: 0;
+			box-shadow: none;
+		}
+
+		.yb-compact-calendar .fc .fc-toolbar.fc-header-toolbar {
+			display: none;
+		}
+
+		.yb-compact-calendar .fc .fc-scrollgrid {
+			border-radius: 0;
+			overflow: visible;
+			background: transparent;
+			border: 0 !important;
+		}
+
+		.yb-compact-calendar .fc .fc-daygrid-day-frame {
+			min-height: 34px;
+			padding: 2px 0;
+		}
+
+		.yb-compact-calendar .fc .fc-col-header-cell-cushion,
+		.yb-compact-calendar .fc .fc-daygrid-day-number {
+			font-size: 0.68rem;
+			font-weight: 700;
+			color: #8390b3;
+		}
+
+		.yb-compact-calendar .fc .fc-col-header-cell {
+			background: transparent;
+		}
+
+		.yb-compact-calendar .fc .fc-col-header-cell-cushion {
+			padding: 4px 0 10px;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+		}
+
+		.yb-compact-calendar .fc .fc-day-today {
+			background: transparent !important;
+		}
+
+		.yb-compact-calendar .fc .fc-day-today .fc-daygrid-day-number {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 34px;
+			height: 34px;
+			padding: 0 10px;
+			border-radius: 12px;
+			background: linear-gradient(135deg, #4d47d9, #6b75ff);
+			color: #ffffff;
+			box-shadow: 0 10px 22px rgba(77, 71, 217, 0.2);
+		}
+
+		.yb-compact-calendar .fc .fc-day-other .fc-daygrid-day-number {
+			opacity: 0.45;
+		}
+
+		.yb-compact-calendar .fc-theme-standard td,
+		.yb-compact-calendar .fc-theme-standard th {
+			border-color: transparent;
+		}
+
+		.yb-compact-calendar .fc-event {
+			width: 6px;
+			height: 6px;
+			min-height: 0;
+			padding: 0;
+			border-radius: 999px;
+			border: 0;
+			background: #5a4fe0 !important;
+			box-shadow: none;
+			overflow: hidden;
+			color: transparent !important;
+			margin: 3px auto 0 6px;
+		}
+
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-event-title,
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-event-time,
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-daygrid-event-dot,
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-daygrid-more-link {
+			display: none !important;
+		}
+
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-h-event .fc-event-main,
+		.yb-calendar-card:not(.is-expanded) .yb-compact-calendar .fc-daygrid-event-harness {
+			width: 8px;
+			min-height: 8px;
+		}
+
+		.yb-compact-calendar .fc-h-event .fc-event-main {
+			padding: 0;
+		}
+
+		.yb-calendar-card-footer {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 10px;
+			padding-top: 12px;
+		}
+
+		.yb-calendar-today-summary {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			color: #44516f;
+			font-size: 0.88rem;
+			font-weight: 700;
+		}
+
+		.yb-calendar-today-dot {
+			width: 8px;
+			height: 8px;
+			border-radius: 999px;
+			background: #4d47d9;
+			box-shadow: 0 0 0 4px rgba(77, 71, 217, 0.08);
+		}
+
+		.yb-calendar-view-all {
+			border: 0;
+			background: transparent;
+			color: #4d47d9;
+			font-size: 0.88rem;
+			font-weight: 800;
+			padding: 0;
+		}
+
+		[data-theme-version="dark"] .yb-events-control-card,
+		[data-theme-version="dark"] .yb-calendar-card {
+			border-color: rgba(255, 255, 255, 0.08);
+			background:
+				radial-gradient(circle at top right, rgba(103, 232, 249, 0.08), transparent 34%),
+				linear-gradient(180deg, rgba(27, 34, 56, 0.98), rgba(20, 26, 44, 0.98));
+			box-shadow: 0 22px 48px rgba(0, 0, 0, 0.3);
+		}
+
+		[data-theme-version="dark"] .yb-events-control-card .heading,
+		[data-theme-version="dark"] .yb-calendar-card-head .heading,
+		[data-theme-version="dark"] #ybCompactCalendarMonth,
+		[data-theme-version="dark"] #eventFilterInfo {
+			color: #eef2ff !important;
+		}
+
+		[data-theme-version="dark"] .yb-side-intro,
+		[data-theme-version="dark"] .yb-calendar-card-head p,
+		[data-theme-version="dark"] .yb-calendar-today-summary {
+			color: #aeb7d8 !important;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-view-all {
+			color: #cfd6ff;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-expand-btn {
+			border-color: rgba(255, 255, 255, 0.1);
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+			color: #eef2ff;
+		}
+
+		.yb-calendar-expand-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 14px;
+			border: 1px solid rgba(110, 122, 165, 0.18);
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 248, 255, 0.96));
+			color: #7a87ac;
+			box-shadow: 0 8px 18px rgba(20, 28, 56, 0.06);
+		}
+
+		.yb-calendar-expand-btn:hover {
+			border-color: rgba(77, 71, 217, 0.2);
+			color: #4d47d9;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(241, 245, 255, 0.98));
+		}
+
+		.yb-calendar-card.is-expanded .yb-calendar-card-head {
+			border-bottom: 1px solid rgba(126, 139, 179, 0.12);
+		}
+
+		.yb-calendar-card.is-expanded .yb-calendar-card-body {
+			padding: 12px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar {
+			padding: 10px;
+			border-radius: 20px;
+			background:
+				linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 249, 255, 0.96)),
+				radial-gradient(circle at top right, rgba(92, 104, 255, 0.06), transparent 36%);
+			border: 1px solid rgba(124, 136, 178, 0.12);
+			box-shadow:
+				inset 0 1px 0 rgba(255, 255, 255, 0.55),
+				0 10px 24px rgba(20, 28, 56, 0.05);
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar.fc-header-toolbar {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				"nav title"
+				"views views";
+			align-items: center;
+			margin-bottom: 0.7rem;
+			gap: 8px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-chunk:nth-child(1) {
+			grid-area: nav;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-chunk:nth-child(2) {
+			grid-area: title;
+			justify-self: end;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-chunk:nth-child(3) {
+			grid-area: views;
+			justify-self: start;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-title {
+			font-size: 1.9rem;
+			font-weight: 800;
+			letter-spacing: -0.03em;
+			color: #29356f;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button {
+			height: 42px;
+			padding: 0 1rem;
+			font-size: 0.88rem;
+			font-weight: 700;
+			border-radius: 14px;
+			border: 1px solid rgba(123, 135, 176, 0.14);
+			background: #ffffff;
+			color: #4d587f;
+			box-shadow: none;
+			text-transform: lowercase;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-primary:not(:disabled).fc-button-active,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-primary:not(:disabled):active,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-primary:hover {
+			background: linear-gradient(135deg, #4d47d9, #6c75ff);
+			border-color: transparent;
+			color: #fff;
+			box-shadow: 0 8px 18px rgba(77, 71, 217, 0.22);
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-group {
+			display: inline-flex;
+			padding: 3px;
+			border-radius: 13px;
+			background: rgba(78, 89, 143, 0.08);
+			gap: 4px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-group>.fc-button {
+			margin: 0 !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-chunk:nth-child(1) .fc-button {
+			min-width: 42px;
+			padding-inline: 0.9rem;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid {
+			border-radius: 16px;
+			overflow: hidden;
+			background: rgba(255, 255, 255, 0.86);
+			border: 1px solid rgba(124, 136, 178, 0.12) !important;
+			width: 100% !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-view-harness,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-body,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-body table,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid-sync-table,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid table {
+			width: 100% !important;
+			min-width: 100% !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid table,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-body table,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid-sync-table {
+			table-layout: fixed !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-body-natural {
+			width: 100% !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc colgroup col {
+			width: calc(100% / 7) !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-day,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-col-header-cell {
+			width: calc(100% / 7) !important;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-day-frame {
+			min-height: 112px;
+			padding: 8px;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-col-header-cell {
+			background: rgba(245, 247, 255, 0.92);
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-col-header-cell-cushion,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-day-number,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-timegrid-axis-cushion {
+			font-size: 1rem;
+			font-weight: 700;
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc-theme-standard td,
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc-theme-standard th {
+			border-color: rgba(139, 150, 185, 0.12);
+		}
+
+		.yb-calendar-card.is-expanded .yb-compact-calendar .fc-event {
+			width: auto;
+			height: auto;
+			min-height: 0;
+			padding: 4px 8px;
+			border-radius: 999px;
+			background: #5a4fe0 !important;
+			box-shadow: 0 3px 10px rgba(74, 66, 219, 0.16);
+			color: #fff !important;
+			margin: 0;
+			font-size: 0.84rem;
+		}
+
+		.yb-calendar-card.is-expanded .yb-calendar-card-footer {
+			display: none;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded {
+			background:
+				radial-gradient(circle at top right, rgba(93, 109, 255, 0.14), transparent 34%),
+				linear-gradient(180deg, rgba(21, 27, 45, 0.98), rgba(16, 22, 38, 0.98));
+			box-shadow: 0 42px 110px rgba(0, 0, 0, 0.48);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-calendar-card-head {
+			border-bottom-color: rgba(255, 255, 255, 0.08);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar {
+			background:
+				linear-gradient(180deg, rgba(24, 31, 52, 0.98), rgba(19, 25, 42, 0.96)),
+				radial-gradient(circle at top right, rgba(92, 104, 255, 0.1), transparent 36%);
+			border-color: rgba(255, 255, 255, 0.08);
+			box-shadow:
+				inset 0 1px 0 rgba(255, 255, 255, 0.04),
+				0 14px 30px rgba(0, 0, 0, 0.22);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-toolbar-title {
+			color: #eef2ff;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button {
+			border-color: rgba(255, 255, 255, 0.08);
+			background: rgba(255, 255, 255, 0.05);
+			color: #cfd7f7;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-button-group {
+			background: rgba(255, 255, 255, 0.06);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-scrollgrid {
+			background: rgba(14, 20, 35, 0.82);
+			border-color: rgba(255, 255, 255, 0.08) !important;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-col-header-cell {
+			background: rgba(255, 255, 255, 0.04);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-col-header-cell-cushion,
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-daygrid-day-number,
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-timegrid-axis-cushion {
+			color: #dce3ff;
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-day-other .fc-daygrid-day-number {
+			color: rgba(220, 227, 255, 0.38);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc-theme-standard td,
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc-theme-standard th {
+			border-color: rgba(255, 255, 255, 0.07);
+		}
+
+		[data-theme-version="dark"] .yb-calendar-card.is-expanded .yb-compact-calendar .fc .fc-day-today {
+			background: rgba(97, 89, 255, 0.12);
+		}
+
+		.yb-events-control-card .card-body {
+			padding: 18px;
+		}
+
+			@media (max-width: 1399px) {
+			.yb-side-column {
+				padding-top: 0;
+			}
+
+			.yb-overview-stats {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.event-card-notification {
+				grid-template-columns: 96px minmax(0, 1fr);
+			}
+
+			.event-card-side {
+				grid-column: 1 / -1;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.event-card-visual {
+				grid-column: auto;
+			}
+
+			.event-card-actions {
+				flex-direction: row;
+				grid-column: 1 / -1;
+			}
+
+			.yb-page-switcher {
+				margin-left: 0;
+			}
+
+			.yb-pagination-controls {
+				margin-left: 0;
+			}
+
+			.yb-calendar-card {
+				max-width: 100%;
+			}
+		}
+
+			@media (max-width: 767px) {
+				.yb-overview-header {
+					flex-direction: column;
+					padding: 22px 20px 0;
+				}
+
+				.yb-overview-stats {
+					grid-template-columns: 1fr;
+					padding: 0 20px 20px;
+				}
+
+				.yb-overview-stat .content-box {
+					padding: 20px;
+				}
+
+				.event-card-notification {
+					grid-template-columns: 1fr;
+			}
+
+			.event-card-visual img,
+			.event-card-visual {
+				min-height: 168px;
+				height: 168px;
+			}
+
+			.event-card-side,
+			.yb-pagination-bar {
+				grid-template-columns: 1fr;
+				flex-direction: column;
+			}
+
+			.event-card-actions {
+				flex-direction: column;
+			}
+
+			.yb-pagination-controls {
+				flex-direction: column;
+				align-items: stretch;
+			}
+
+			.yb-page-switcher {
+				justify-content: center;
+			}
+		}
+
+		.event-card-action-count {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 20px;
+			height: 20px;
+			padding: 0 6px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.18);
+			color: inherit;
+			font-size: 11px;
+			font-weight: 700;
+			line-height: 1;
+		}
+
+		.yb-waitlist-modal-dialog {
+			max-width: 760px;
+		}
+
+		.yb-waitlist-modal-content {
+			border: 0;
+			border-radius: 28px;
+			overflow: hidden;
+			background:
+				radial-gradient(circle at top right, rgba(101, 119, 255, 0.14), transparent 30%),
+				linear-gradient(180deg, #ffffff, #f7f9ff);
+			box-shadow: 0 28px 72px rgba(20, 32, 71, 0.26);
+		}
+
+		.yb-waitlist-modal-content .modal-header,
+		.yb-waitlist-modal-content .modal-footer {
+			border-color: rgba(87, 104, 182, 0.12);
+			background: transparent;
+			padding-left: 28px;
+			padding-right: 28px;
+		}
+
+		.yb-waitlist-modal-content .modal-header {
+			padding-top: 24px;
+			padding-bottom: 16px;
+		}
+
+		.yb-waitlist-modal-content .modal-body {
+			padding: 8px 28px 28px;
+		}
+
+		.yb-waitlist-modal-title {
+			font-size: 28px;
+			font-weight: 800;
+			letter-spacing: -0.03em;
+			color: #23366f;
+			margin: 0;
+		}
+
+		.yb-waitlist-modal-subtitle {
+			margin-top: 6px;
+			color: #7683ae;
+			font-size: 14px;
+			line-height: 1.6;
+		}
+
+		.yb-waitlist-loading,
+		.yb-waitlist-empty {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 16px;
+			min-height: 240px;
+			padding: 28px;
+			border-radius: 24px;
+			background: linear-gradient(180deg, rgba(245, 247, 255, 0.95), rgba(238, 242, 255, 0.88));
+			border: 1px solid rgba(110, 125, 191, 0.1);
+			text-align: left;
+		}
+
+		.yb-waitlist-empty {
+			flex-direction: column;
+			text-align: center;
+			gap: 12px;
+		}
+
+		.yb-waitlist-loading strong,
+		.yb-waitlist-empty h5 {
+			display: block;
+			margin: 0 0 6px;
+			font-size: 20px;
+			font-weight: 800;
+			color: #25376b;
+		}
+
+		.yb-waitlist-loading p,
+		.yb-waitlist-empty p {
+			margin: 0;
+			color: #7180ab;
+			font-size: 14px;
+			line-height: 1.7;
+		}
+
+		.yb-waitlist-loading-orb,
+		.yb-waitlist-empty-icon {
+			width: 58px;
+			height: 58px;
+			border-radius: 20px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(135deg, #5968ef, #67d4ff);
+			box-shadow: 0 18px 34px rgba(87, 104, 239, 0.22);
+			color: #fff;
+			font-size: 22px;
+			flex: 0 0 auto;
+		}
+
+		.yb-waitlist-loading-orb {
+			position: relative;
+		}
+
+		.yb-waitlist-loading-orb::before,
+		.yb-waitlist-loading-orb::after {
+			content: "";
+			position: absolute;
+			inset: 16px;
+			border-radius: 999px;
+			border: 3px solid rgba(255, 255, 255, 0.24);
+			border-top-color: #fff;
+			animation: ybSpin 1s linear infinite;
+		}
+
+		.yb-waitlist-loading-orb::after {
+			inset: 8px;
+			animation-direction: reverse;
+			animation-duration: 1.25s;
+		}
+
+		@keyframes ybSpin {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		.yb-waitlist-hero {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 18px;
+			padding: 18px 20px;
+			border-radius: 22px;
+			background: linear-gradient(135deg, rgba(92, 102, 241, 0.1), rgba(70, 211, 255, 0.08));
+			border: 1px solid rgba(92, 102, 241, 0.12);
+		}
+
+		.yb-waitlist-kicker {
+			display: inline-block;
+			margin-bottom: 6px;
+			font-size: 11px;
+			font-weight: 800;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			color: #7180b1;
+		}
+
+		.yb-waitlist-hero h4 {
+			margin: 0;
+			font-size: 19px;
+			font-weight: 800;
+			color: #24356b;
+		}
+
+		.yb-waitlist-pill {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 14px;
+			border-radius: 999px;
+			background: rgba(255, 255, 255, 0.86);
+			border: 1px solid rgba(96, 108, 193, 0.12);
+			color: #4f5dd7;
+			font-weight: 800;
+			font-size: 13px;
+			white-space: nowrap;
+		}
+
+		.yb-waitlist-entry {
+			display: grid;
+			grid-template-columns: 62px 1fr;
+			gap: 18px;
+			align-items: start;
+			padding: 18px;
+			margin-bottom: 14px;
+			border-radius: 24px;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 255, 0.94));
+			border: 1px solid rgba(103, 118, 197, 0.12);
+			box-shadow: 0 16px 32px rgba(21, 36, 83, 0.08);
+		}
+
+		.yb-waitlist-entry.is-next-up {
+			background: linear-gradient(135deg, rgba(84, 92, 236, 0.12), rgba(87, 225, 255, 0.08)), #ffffff;
+			border-color: rgba(84, 92, 236, 0.18);
+			box-shadow: 0 20px 40px rgba(84, 92, 236, 0.14);
+		}
+
+		.yb-waitlist-rank {
+			width: 62px;
+			height: 62px;
+			border-radius: 22px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(135deg, #5560ec, #66d4ff);
+			color: #fff;
+			font-size: 24px;
+			font-weight: 800;
+			box-shadow: 0 16px 26px rgba(85, 96, 236, 0.18);
+		}
+
+		.yb-waitlist-copy-top {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin-bottom: 6px;
+		}
+
+		.yb-waitlist-copy-top h5 {
+			margin: 0;
+			font-size: 20px;
+			font-weight: 800;
+			color: #24356d;
+		}
+
+		.yb-waitlist-copy p {
+			margin: 0 0 10px;
+			color: #7080ad;
+			font-size: 14px;
+			line-height: 1.6;
+		}
+
+		.yb-waitlist-status {
+			display: inline-flex;
+			align-items: center;
+			padding: 7px 12px;
+			border-radius: 999px;
+			background: rgba(230, 140, 56, 0.12);
+			color: #b5682a;
+			font-size: 11px;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.yb-waitlist-meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 16px;
+		}
+
+		.yb-waitlist-meta span {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			color: #506088;
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		.yb-waitlist-meta i {
+			color: #5d68e9;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!--*******************
+        Preloader start
+    ********************-->
+
+	<div id="preloader">
+		<div class="loader">
+			<div class="dots">
+				<div class="dot mainDot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+				<div class="dot"></div>
+			</div>
+
+		</div>
+	</div>
+	<!--*******************
+        Preloader end
+    ********************-->
+
+	<!--**********************************
+        Main wrapper start
+    ***********************************-->
+	<div id="main-wrapper">
+
+		<!--**********************************
+            Nav header start
+        ***********************************-->
+		<div class="nav-header">
+			<a href="index.html" class="brand-logo">
+				<img src="images/logo-full.png" alt="Logo" class="logo-abbr"
+					style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+				<div class="brand-title">
+					<h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+				</div>
+			</a>
+
+			<div class="nav-control">
+				<div class="hamburger">
+					<span class="line"></span><span class="line"></span><span class="line"></span>
+					<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect x="11" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect x="22" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect width="4" height="4" rx="2" fill="#2A353A" />
+						<rect y="11" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A" />
+						<rect y="22" width="4" height="4" rx="2" fill="#2A353A" />
+					</svg>
+				</div>
+			</div>
+		</div>
+		<!--**********************************
+            Nav header end
+        ***********************************-->
+
+		<!--**********************************
+            Chat box start
+        ***********************************-->
+		<div class="chatbox">
+			<div class="chatbox-close"></div>
+			<div class="custom-tab-1">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link" data-bs-toggle="tab" href="#notes">Notes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-bs-toggle="tab" href="#alerts">Alerts</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link active" data-bs-toggle="tab" href="#chat">Chat</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade active show" id="chat" role="tabpanel">
+						<div class="card mb-sm-3 mb-md-0 contacts_card dlab-chat-user-box">
+							<div class="card-header chat-list-header text-center">
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+											<rect fill="#000000" opacity="0.3"
+												transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+												x="4" y="11" width="16" height="2" rx="1" />
+										</g>
+									</svg></a>
+								<div>
+									<h6 class="mb-1">Chat List</h6>
+									<p class="mb-0">Show All</p>
+								</div>
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect x="0" y="0" width="24" height="24" />
+											<circle fill="#000000" cx="5" cy="12" r="2" />
+											<circle fill="#000000" cx="12" cy="12" r="2" />
+											<circle fill="#000000" cx="19" cy="12" r="2" />
+										</g>
+									</svg></a>
+							</div>
+							<div class="card-body contacts_body p-0 dlab-scroll  " id="DLAB_W_Contacts_Body">
+								<ul class="contacts">
+									<li class="name-first-letter">A</li>
+									<li class="active dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/1.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>Archie Parker</span>
+												<p>Kalid is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/2.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Alfie Mason</span>
+												<p>Taherah left 7 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/3.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>AharlieKane</span>
+												<p>Sami is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/4.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Athan Jacoby</span>
+												<p>Nargis left 30 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">B</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/5.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Bashid Samim</span>
+												<p>Rashid left 50 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/1.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>Breddie Ronan</span>
+												<p>Kalid is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/2.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Ceorge Carson</span>
+												<p>Taherah left 7 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">D</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/3.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>Darry Parker</span>
+												<p>Sami is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/4.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Denry Hunter</span>
+												<p>Nargis left 30 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">J</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/5.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Jack Ronan</span>
+												<p>Rashid left 50 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/1.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>Jacob Tucker</span>
+												<p>Kalid is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/2.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>James Logan</span>
+												<p>Taherah left 7 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/3.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon"></span>
+											</div>
+											<div class="user_info">
+												<span>Joshua Weston</span>
+												<p>Sami is online</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">O</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/4.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Oliver Acker</span>
+												<p>Nargis left 30 mins ago</p>
+											</div>
+										</div>
+									</li>
+									<li class="dlab-chat-user">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont">
+												<img src="images/avatar/5.jpg" class="rounded-circle user_img" alt="">
+												<span class="online_icon offline"></span>
+											</div>
+											<div class="user_info">
+												<span>Oscar Weston</span>
+												<p>Rashid left 50 mins ago</p>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="card chat dlab-chat-history-box d-none">
+							<div class="card-header chat-list-header text-center">
+								<a href="javascript:void(0);" class="dlab-chat-history-back">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+										width="18px" height="18px" viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<polygon points="0 0 24 0 24 24 0 24" />
+											<rect fill="#000000" opacity="0.3"
+												transform="translate(15.000000, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-15.000000, -12.000000) "
+												x="14" y="7" width="2" height="10" rx="1" />
+											<path
+												d="M3.7071045,15.7071045 C3.3165802,16.0976288 2.68341522,16.0976288 2.29289093,15.7071045 C1.90236664,15.3165802 1.90236664,14.6834152 2.29289093,14.2928909 L8.29289093,8.29289093 C8.67146987,7.914312 9.28105631,7.90106637 9.67572234,8.26284357 L15.6757223,13.7628436 C16.0828413,14.136036 16.1103443,14.7686034 15.7371519,15.1757223 C15.3639594,15.5828413 14.7313921,15.6103443 14.3242731,15.2371519 L9.03007346,10.3841355 L3.7071045,15.7071045 Z"
+												fill="#000000" fill-rule="nonzero"
+												transform="translate(9.000001, 11.999997) scale(-1, -1) rotate(90.000000) translate(-9.000001, -11.999997) " />
+										</g>
+									</svg>
+								</a>
+								<div>
+									<h6 class="mb-1">Chat with Khelesh</h6>
+									<p class="mb-0 text-success">Online</p>
+								</div>
+								<div class="dropdown">
+									<a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+										<svg xmlns="http://www.w3.org/2000/svg"
+											xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+											viewBox="0 0 24 24" version="1.1">
+											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+												<rect x="0" y="0" width="24" height="24" />
+												<circle fill="#000000" cx="5" cy="12" r="2" />
+												<circle fill="#000000" cx="12" cy="12" r="2" />
+												<circle fill="#000000" cx="19" cy="12" r="2" />
+											</g>
+										</svg>
+									</a>
+									<ul class="dropdown-menu dropdown-menu-end">
+										<li class="dropdown-item"><i class="fa fa-user-circle text-primary me-2"></i>
+											View profile</li>
+										<li class="dropdown-item"><i class="fa fa-users text-primary me-2"></i> Add to
+											btn-close friends</li>
+										<li class="dropdown-item"><i class="fa fa-plus text-primary me-2"></i> Add to
+											group</li>
+										<li class="dropdown-item"><i class="fa fa-ban text-primary me-2"></i> Block</li>
+									</ul>
+								</div>
+							</div>
+							<div class="card-body msg_card_body dlab-scroll" id="DLAB_W_Contacts_Body3">
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										Hi, how are you samim?
+										<span class="msg_time">8:40 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										Hi Khalid i am good tnx how about you?
+										<span class="msg_time_send">8:55 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										I am good too, thank you for your chat template
+										<span class="msg_time">9:00 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										You are welcome
+										<span class="msg_time_send">9:05 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										I am looking for your next templates
+										<span class="msg_time">9:07 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										Ok, thank you have a good day
+										<span class="msg_time_send">9:10 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										Bye, see you
+										<span class="msg_time">9:12 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										Hi, how are you samim?
+										<span class="msg_time">8:40 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										Hi Khalid i am good tnx how about you?
+										<span class="msg_time_send">8:55 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										I am good too, thank you for your chat template
+										<span class="msg_time">9:00 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										You are welcome
+										<span class="msg_time_send">9:05 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										I am looking for your next templates
+										<span class="msg_time">9:07 AM, Today</span>
+									</div>
+								</div>
+								<div class="d-flex justify-content-end mb-4">
+									<div class="msg_cotainer_send">
+										Ok, thank you have a good day
+										<span class="msg_time_send">9:10 AM, Today</span>
+									</div>
+									<div class="img_cont_msg">
+										<img src="images/avatar/2.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+								</div>
+								<div class="d-flex justify-content-start mb-4">
+									<div class="img_cont_msg">
+										<img src="images/avatar/1.jpg" class="rounded-circle user_img_msg" alt="">
+									</div>
+									<div class="msg_cotainer">
+										Bye, see you
+										<span class="msg_time">9:12 AM, Today</span>
+									</div>
+								</div>
+							</div>
+							<div class="card-footer type_msg">
+								<div class="input-group">
+									<textarea class="form-control" placeholder="Type your message..."></textarea>
+									<div class="input-group-append">
+										<button type="button" class="btn btn-primary"><i
+												class="fa fa-location-arrow"></i></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="alerts" role="tabpanel">
+						<div class="card mb-sm-3 mb-md-0 contacts_card">
+							<div class="card-header chat-list-header text-center">
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect x="0" y="0" width="24" height="24" />
+											<circle fill="#000000" cx="5" cy="12" r="2" />
+											<circle fill="#000000" cx="12" cy="12" r="2" />
+											<circle fill="#000000" cx="19" cy="12" r="2" />
+										</g>
+									</svg></a>
+								<div>
+									<h6 class="mb-1">Notications</h6>
+									<p class="mb-0">Show All</p>
+								</div>
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect x="0" y="0" width="24" height="24" />
+											<path
+												d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z"
+												fill="#000000" fill-rule="nonzero" opacity="0.3" />
+											<path
+												d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
+												fill="#000000" fill-rule="nonzero" />
+										</g>
+									</svg></a>
+							</div>
+							<div class="card-body contacts_body p-0 dlab-scroll" id="DLAB_W_Contacts_Body1">
+								<ul class="contacts">
+									<li class="name-first-letter">SEVER STATUS</li>
+									<li class="active">
+										<div class="d-flex bd-highlight">
+											<div class="img_cont primary">KK</div>
+											<div class="user_info">
+												<span>David Nester Birthday</span>
+												<p class="text-primary">Today</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">SOCIAL</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="img_cont success">RU</div>
+											<div class="user_info">
+												<span>Perfection Simplified</span>
+												<p>Jame Smith commented on your status</p>
+											</div>
+										</div>
+									</li>
+									<li class="name-first-letter">SEVER STATUS</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="img_cont primary">AU</div>
+											<div class="user_info">
+												<span>AharlieKane</span>
+												<p>Sami is online</p>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="img_cont info">MO</div>
+											<div class="user_info">
+												<span>Athan Jacoby</span>
+												<p>Nargis left 30 mins ago</p>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="card-footer"></div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="notes">
+						<div class="card mb-sm-3 mb-md-0 note_card">
+							<div class="card-header chat-list-header text-center">
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+											<rect fill="#000000" opacity="0.3"
+												transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+												x="4" y="11" width="16" height="2" rx="1" />
+										</g>
+									</svg></a>
+								<div>
+									<h6 class="mb-1">Notes</h6>
+									<p class="mb-0">Add New Nots</p>
+								</div>
+								<a href="javascript:void(0);"><svg xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink" width="18px" height="18px"
+										viewBox="0 0 24 24" version="1.1">
+										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+											<rect x="0" y="0" width="24" height="24" />
+											<path
+												d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z"
+												fill="#000000" fill-rule="nonzero" opacity="0.3" />
+											<path
+												d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z"
+												fill="#000000" fill-rule="nonzero" />
+										</g>
+									</svg></a>
+							</div>
+							<div class="card-body contacts_body p-0 dlab-scroll" id="DLAB_W_Contacts_Body2">
+								<ul class="contacts">
+									<li class="active">
+										<div class="d-flex bd-highlight">
+											<div class="user_info">
+												<span>New order placed..</span>
+												<p>10 Aug 2020</p>
+											</div>
+											<div class="ms-auto">
+												<a href="javascript:void(0);"
+													class="btn btn-primary btn-xs sharp me-1"><i
+														class="fas fa-pencil-alt"></i></a>
+												<a href="javascript:void(0);" class="btn btn-danger btn-xs sharp"><i
+														class="fa fa-trash"></i></a>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="user_info">
+												<span>Youtube, a video-sharing website..</span>
+												<p>10 Aug 2020</p>
+											</div>
+											<div class="ms-auto">
+												<a href="javascript:void(0);"
+													class="btn btn-primary btn-xs sharp me-1"><i
+														class="fas fa-pencil-alt"></i></a>
+												<a href="javascript:void(0);" class="btn btn-danger btn-xs sharp"><i
+														class="fa fa-trash"></i></a>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="user_info">
+												<span>john just buy your product..</span>
+												<p>10 Aug 2020</p>
+											</div>
+											<div class="ms-auto">
+												<a href="javascript:void(0);"
+													class="btn btn-primary btn-xs sharp me-1"><i
+														class="fas fa-pencil-alt"></i></a>
+												<a href="javascript:void(0);" class="btn btn-danger btn-xs sharp"><i
+														class="fa fa-trash"></i></a>
+											</div>
+										</div>
+									</li>
+									<li>
+										<div class="d-flex bd-highlight">
+											<div class="user_info">
+												<span>Athan Jacoby</span>
+												<p>10 Aug 2020</p>
+											</div>
+											<div class="ms-auto">
+												<a href="javascript:void(0);"
+													class="btn btn-primary btn-xs sharp me-1"><i
+														class="fas fa-pencil-alt"></i></a>
+												<a href="javascript:void(0);" class="btn btn-danger btn-xs sharp"><i
+														class="fa fa-trash"></i></a>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--**********************************
+            Chat box End
+        ***********************************-->
+
+		<!--**********************************
+            Header start
+        ***********************************-->
+		<div class="header">
+			<div class="header-content">
+				<nav class="navbar navbar-expand">
+					<div class="collapse navbar-collapse justify-content-between">
+						<div class="header-left">
+							<div class="dashboard_bar">
+								Event
+							</div>
+						</div>
+						<ul class="navbar-nav header-right">
+							<li class="nav-item dropdown notification_dropdown all">
+								<a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+									<svg height="24" class="svg-main-icon" viewBox="0 0 32 32" width="24"
+										xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+										<clipPath id="clip_1">
+											<path id="artboard_1" clip-rule="evenodd" d="m0 0h32v32h-32z" />
+										</clipPath>
+										<g id="select" clip-path="url(#clip_1)">
+											<path id="Vector"
+												d="m4.70222 7.16834-.12871-.2574c-.0593-.11861-.13904-.22136-.23922-.30824-.10018-.08689-.21317-.1513-.33898-.19323-.1258-.04194-.25484-.0582-.38711-.0488-.13228.0094-.25772.04375-.37633.10306-.24699.12349-.41414.31622-.50147.5782-.08732.26197-.06923.51645.05426.76344l1.32093 2.64183c.0593.1186.13904.2214.23922.3083.10018.0868.21317.1512.33898.1932.1258.0419.25484.0582.38711.0488.13228-.0094.25772-.0438.37633-.1031.01854-.0092.03678-.0191.05471-.0295s.03552-.0214.05277-.0329l5.99999-3.99995c.1104-.07356.2024-.16543.2762-.27561s.1237-.23029.1497-.36032c.026-.13004.0261-.2601.0004-.39019-.0257-.13008-.0754-.25029-.1489-.36063-.1532-.22977-.3652-.37173-.636-.42588-.2707-.05416-.521-.00465-.7508.14853l-1.94316 1.29545-3.1143 2.07619zm11.29778-1.16834c-.2761 0-.5118.09763-.7071.29289s-.2929.43097-.2929.70711.0976.51184.2929.70711c.1953.19526.431.29289.7071.29289h14c.2761 0 .5118-.09763.7071-.29289.1953-.19527.2929-.43097.2929-.70711s-.0976-.51185-.2929-.70711-.431-.29289-.7071-.29289zm-11.27691 9.1683-.12871-.2574c-.12349-.2469-.31622-.4141-.5782-.5014-.26197-.0874-.51645-.0693-.76344.0542-.11861.0593-.22135.1391-.30824.2393-.08688.1001-.15129.2131-.19323.3389-.04193.1258-.0582.2549-.0488.3871.0094.1323.04376.2578.10306.3764l1.32092 2.6418c.1235.247.31623.4142.5782.5015.26198.0873.51646.0692.76345-.0543.01854-.0092.03678-.0191.05471-.0295s.03552-.0214.05277-.0329l6.00002-3.9999c.2298-.1532.3717-.3652.4259-.636.0541-.2708.0046-.521-.1486-.7508-.1531-.2298-.3651-.3717-.6359-.4259-.2708-.0541-.521-.0046-.7508.1485l-5.05749 3.3717zm11.27691-.1683c-.2761 0-.5118.0976-.7071.2929s-.2929.431-.2929.7071.0976.5118.2929.7071.431.2929.7071.2929h14c.2761 0 .5118-.0976.7071-.2929s.2929-.431.2929-.7071-.0976-.5118-.2929-.7071-.431-.2929-.7071-.2929zm-11.27691 8.1683-.12871-.2574c-.12349-.247-.31622-.4141-.5782-.5014-.26197-.0874-.51645-.0693-.76344.0542-.11861.0593-.22135.1391-.30824.2393-.08688.1001-.15129.2131-.19323.3389-.04193.1258-.0582.2549-.0488.3871.0094.1323.04376.2578.10306.3764l1.32092 2.6418c.1235.247.31623.4142.5782.5015.26198.0873.51646.0692.76345-.0543.01854-.0092.03678-.0191.05471-.0295s.03552-.0214.05277-.0329l6.00002-4c.1103-.0735.2024-.1654.2762-.2756.0738-.1101.1237-.2303.1497-.3603s.0261-.2601.0004-.3902c-.0258-.1301-.0754-.2503-.149-.3606-.1531-.2298-.3651-.3717-.6359-.4259-.2708-.0541-.521-.0046-.7508.1485l-1.94319 1.2955-3.1143 2.0762zm11.27691.8317c-.2761 0-.5118.0976-.7071.2929s-.2929.431-.2929.7071.0976.5118.2929.7071.431.2929.7071.2929h14c.2761 0 .5118-.0976.7071-.2929s.2929-.431.2929-.7071-.0976-.5118-.2929-.7071-.431-.2929-.7071-.2929z"
+												fill-rule="evenodd" />
+										</g>
+									</svg>
+								</a>
+								<div class="dropdown-menu dropdown-menu-end p-0">
+									<div class="card mb-0">
+										<div class="card-header border-0 d-block h-auto">
+											<ul class="d-flex align-items-center justify-content-around">
+
+												<li class="nav-item dropdown notification_dropdown">
+													<a class="nav-link bell dz-theme-mode" href="javascript:void(0);">
+														<svg id="icon-light" xmlns="http://www.w3.org/2000/svg"
+															width="24" height="24" viewBox="0 0 24 24" fill="none"
+															stroke="currentColor" stroke-width="1"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="feather feather-sun">
+															<circle cx="12" cy="12" r="5"></circle>
+															<line x1="12" y1="1" x2="12" y2="3"></line>
+															<line x1="12" y1="21" x2="12" y2="23"></line>
+															<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+															<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+															<line x1="1" y1="12" x2="3" y2="12"></line>
+															<line x1="21" y1="12" x2="23" y2="12"></line>
+															<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+															<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+														</svg>
+														<svg id="icon-dark" xmlns="http://www.w3.org/2000/svg"
+															width="24" height="24" viewBox="0 0 24 24" fill="none"
+															stroke="currentColor" stroke-width="1"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="feather feather-moon">
+															<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z">
+															</path>
+														</svg>
+													</a>
+												</li>
+												<li class="nav-item dropdown notification_dropdown">
+													<a class="nav-link bell dz-fullscreen" href="javascript:void(0);">
+														<svg id="icon-full" viewBox="0 0 24 24" width="20" height="20"
+															stroke="currentColor" stroke-width="2" fill="none"
+															stroke-linecap="round" stroke-linejoin="round"
+															class="css-i6dzq1">
+															<path
+																d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+																style="stroke-dasharray: 37, 57; stroke-dashoffset: 0;">
+															</path>
+														</svg>
+														<svg id="icon-minimize" width="20" height="20"
+															viewBox="0 0 24 24" fill="none" stroke="A098AE"
+															stroke-width="2" stroke-linecap="round"
+															stroke-linejoin="round" class="feather feather-minimize">
+															<path
+																d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"
+																style="stroke-dasharray: 37, 57; stroke-dashoffset: 0;">
+															</path>
+														</svg>
+													</a>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+
+								</div>
+							</li>
+							<li class="nav-item dropdown notification_dropdown search-area-header">
+								<a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+									<svg width="24" height="24" viewBox="0 0 32 32" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M27.6 25.8L22 20.2C23.3 18.5 24.1 16.4 24.1 14.1C24.1 8.60001 19.6 4.10001 14.1 4.10001C8.6 4.10001 4 8.60001 4 14.1C4 19.6 8.5 24.1 14 24.1C16.3 24.1 18.5 23.3 20.2 21.9L25.8 27.5C26 27.7 26.4 27.9 26.7 27.9C27 27.9 27.3 27.8 27.6 27.5C28.1 27.1 28.1 26.3 27.6 25.8ZM6.5 14.1C6.5 10 9.9 6.60001 14 6.60001C18.1 6.60001 21.5 10 21.5 14.1C21.5 18.2 18.1 21.6 14 21.6C9.9 21.6 6.5 18.3 6.5 14.1Z"
+											fill="#A098AE" />
+									</svg>
+
+								</a>
+								<div class="dropdown-menu dropdown-menu-end p-0 rounded">
+									<div class="card mb-0">
+										<div class="card-body px-0">
+											<div class="px-3">
+												<div class="input-group search-area w-100">
+													<input type="text" class="form-control"
+														placeholder="Search here...">
+													<span class="input-group-text"><a href="javascript:void(0)">
+															<svg width="15" height="15" viewBox="0 0 18 18" fill="none"
+																xmlns="http://www.w3.org/2000/svg">
+																<path
+																	d="M17.5605 15.4395L13.7527 11.6317C14.5395 10.446 15 9.02625 15 7.5C15 3.3645 11.6355 0 7.5 0C3.3645 0 0 3.3645 0 7.5C0 11.6355 3.3645 15 7.5 15C9.02625 15 10.446 14.5395 11.6317 13.7527L15.4395 17.5605C16.0245 18.1462 16.9755 18.1462 17.5605 17.5605C18.1462 16.9747 18.1462 16.0252 17.5605 15.4395V15.4395ZM2.25 7.5C2.25 4.605 4.605 2.25 7.5 2.25C10.395 2.25 12.75 4.605 12.75 7.5C12.75 10.395 10.395 12.75 7.5 12.75C4.605 12.75 2.25 10.395 2.25 7.5V7.5Z"
+																	fill="#01A3FF"></path>
+															</svg>
+														</a></span>
+												</div>
+												<h6 class="my-2 mt-3">Recently Searched:</h6>
+											</div>
+											<div class="dlab-scroll px-3 mt-3 height300">
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/1.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/2.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Oliver</a>
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/1.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Lucas</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/2.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/4.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/3.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/2.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+												<ul class="d-flex align-items-center mb-3">
+													<li>
+														<img src="images/avatar/1.jpg" class="avatar avatar-sm" alt="">
+														<a href="javascript:void(0);" class="ms-2">Benjamin</a>
+
+													</li>
+													<li class="ms-auto"><i class="fa-solid fa-trash"></i></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link bell dz-theme-mode" href="javascript:void(0);">
+									<i id="icon-light-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun">
+											<circle cx="12" cy="12" r="5"></circle>
+											<line x1="12" y1="1" x2="12" y2="3"></line>
+											<line x1="12" y1="21" x2="12" y2="23"></line>
+											<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+											<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+											<line x1="1" y1="12" x2="3" y2="12"></line>
+											<line x1="21" y1="12" x2="23" y2="12"></line>
+											<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+											<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+										</svg></i>
+									<i id="icon-dark-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
+											<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+										</svg></i>
+								</a>
+							</li>
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link bell dz-fullscreen" href="javascript:void(0);">
+									<svg id="icon-full-1" viewBox="0 0 24 24" width="20" height="20"
+										stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+										stroke-linejoin="round" class="css-i6dzq1">
+										<path
+											d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+											style="stroke-dasharray: 37, 57; stroke-dashoffset: 0;"></path>
+									</svg>
+									<svg id="icon-minimize-1" width="20" height="20" viewBox="0 0 24 24" fill="none"
+										stroke="A098AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+										class="feather feather-minimize">
+										<path
+											d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"
+											style="stroke-dasharray: 37, 57; stroke-dashoffset: 0;"></path>
+									</svg>
+								</a>
+							</li>
+
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link bell-link" href="javascript:void(0);">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+										fill="none" stroke="#A098AE" stroke-width="2" stroke-linecap="round"
+										stroke-linejoin="round" class="feather feather-message-square">
+										<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+									</svg>
+								</a>
+							</li>
+							<li class="nav-item bell-icon blink dropdown notification_dropdown">
+								<a class="nav-link  " href="javascript:void(0);" role="button"
+									data-bs-toggle="dropdown">
+									<svg width="20" height="20" viewBox="0 0 32 32" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M25.3677 18.9391V9.86768C25.3677 4.70215 21.1655 0.5 16 0.5C10.8345 0.5 6.63232 4.70215 6.63232 9.86768V18.9397C4.96704 19.4224 3.73828 20.9544 3.73828 22.8374C3.73828 25.0386 5.5293 26.8296 7.73096 26.8296H11.377V26.877C11.377 29.4263 13.4507 31.5 16 31.5C18.5493 31.5 20.6231 29.4263 20.6231 26.8769V26.8296H24.2691C26.4707 26.8296 28.2617 25.0386 28.2617 22.7583C28.2617 20.9406 27.033 19.4198 25.3677 18.9391ZM9.63232 9.86768C9.63232 6.35645 12.4888 3.5 16 3.5C19.5112 3.5 22.3677 6.35645 22.3677 9.86768V18.7661H9.63232V9.86768ZM17.6231 26.8769C17.6231 27.772 16.895 28.5 16 28.5C15.105 28.5 14.377 27.772 14.377 26.8769V26.8296H17.623V26.8769H17.6231ZM24.269 23.8296H7.73096C7.1836 23.8296 6.73828 23.3843 6.73828 22.7583C6.73828 22.2114 7.18359 21.7661 7.73096 21.7661H24.2691C24.8164 21.7661 25.2617 22.2114 25.2617 22.8374C25.2617 23.3843 24.8164 23.8296 24.269 23.8296Z"
+											fill="#A098AE" />
+									</svg>
+								</a>
+								<div class="dropdown-menu dropdown-menu-end of-visible">
+									<div class="dropdown-header">
+										<h4 class="title mb-0">Notification</h4>
+										<a href="javascript:void(0);" class="d-none"><i
+												class="flaticon-381-settings-6"></i></a>
+									</div>
+									<div id="DZ_W_Notification1" class="widget-media dlab-scroll p-3"
+										style="height:380px;">
+										<ul class="timeline">
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2">
+														<img alt="image" width="50" src="images/avatar/1.jpg">
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Dr sultads Send you Photo</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2 media-info">
+														KG
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Resport created successfully</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2 media-success">
+														<i class="fa fa-home"></i>
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Reminder : Treatment Time!</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2">
+														<img alt="image" width="50" src="images/avatar/1.jpg">
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Dr sultads Send you Photo</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2 media-danger">
+														KG
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Resport created successfully</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+											<li>
+												<div class="timeline-panel">
+													<div class="media me-2 media-primary">
+														<i class="fa fa-home"></i>
+													</div>
+													<div class="media-body">
+														<h6 class="mb-1">Reminder : Treatment Time!</h6>
+														<small class="d-block">29 July 2020 - 02:26 PM</small>
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<a class="all-notification" href="javascript:void(0);">See all notifications <i
+											class="ti-arrow-end"></i></a>
+								</div>
+							</li>
+
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link me-0 " href="javascript:void(0);" data-bs-toggle="dropdown">
+									<svg width="20" class="setting-svg" height="20" viewBox="0 0 32 32" fill="none"
+										xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M12.2631 2.66667L11.4167 6.46615C10.9353 6.69779 10.4752 6.96458 10.0339 7.26563L6.32035 6.09636L2.58337 12.5703L5.39848 15.1484C5.28849 15.9648 5.33831 16.3672 5.39848 16.8516L2.58337 19.4297L6.32035 25.9037L10.0339 24.7344C10.4752 25.0354 10.9353 25.3022 11.4167 25.5339L12.2631 29.3333H19.737L20.5834 25.5339C21.0647 25.3022 21.5249 25.0354 21.9662 24.7344L25.6797 25.9037L29.4167 19.4297L26.6016 16.8516C26.6246 16.5682 26.6664 16.2845 26.6667 16C26.6678 15.7069 26.6216 15.4108 26.6016 15.1484L29.4167 12.5703L25.6797 6.09636L21.9662 7.26563C21.5249 6.96458 21.0647 6.69779 20.5834 6.46615L19.737 2.66667H12.2631ZM14.4037 5.33334H17.5964L18.2552 8.29167L18.9167 8.55209C19.6649 8.84512 20.3644 9.24846 20.9922 9.75001L21.5495 10.1927L24.4401 9.28386L26.0365 12.0495L23.8021 14.099L23.9089 14.8021C24.0346 15.5797 24.0101 16.4746 23.9089 17.1979L23.8021 17.901L26.0365 19.9505L24.4401 22.7162L21.5495 21.8073L20.9922 22.25C20.3644 22.7516 19.6649 23.1549 18.9167 23.4479L18.2552 23.7083L17.5964 26.6667H14.4037L13.7448 23.7083L13.0834 23.4479C12.3351 23.1549 11.6357 22.7516 11.0079 22.25L10.4506 21.8073L7.55994 22.7162L5.96358 19.9505L8.19796 17.901L8.09119 17.1979C7.96095 16.4046 7.98095 15.4967 8.09119 14.8021L8.19796 14.099L5.96358 12.0495L7.55994 9.28386L10.4506 10.1927L11.0079 9.75001C11.6357 9.24846 12.3351 8.84512 13.0834 8.55209L13.7448 8.29167L14.4037 5.33334ZM16 10.6667C13.0703 10.6667 10.6667 13.0703 10.6667 16C10.6667 18.9297 13.0703 21.3333 16 21.3333C18.9298 21.3333 21.3334 18.9297 21.3334 16C21.3334 13.0703 18.9298 10.6667 16 10.6667ZM16 13.3333C17.4886 13.3333 18.6667 14.5115 18.6667 16C18.6667 17.4886 17.4886 18.6667 16 18.6667C14.5115 18.6667 13.3334 17.4886 13.3334 16C13.3334 14.5115 14.5115 13.3333 16 13.3333Z"
+											fill="#A098AE" />
+									</svg>
+
+								</a>
+								<div class="dropdown-menu dropdown-menu-end">
+									<div id="DZ_W_TimeLine02" class="widget-timeline dlab-scroll style-1 p-3 height370">
+										<ul class="timeline">
+											<li>
+												<div class="timeline-badge primary"></div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>10 minutes ago</span>
+													<h6 class="mb-0">Youtube, a video-sharing website, goes live <strong
+															class="text-primary">$500</strong>.</h6>
+												</a>
+											</li>
+											<li>
+												<div class="timeline-badge info">
+												</div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>20 minutes ago</span>
+													<h6 class="mb-0">New order placed <strong
+															class="text-info">#XF-2356.</strong></h6>
+													<p class="mb-0">Quisque a consequat ante Sit amet magna at
+														volutapt...</p>
+												</a>
+											</li>
+											<li>
+												<div class="timeline-badge danger">
+												</div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>30 minutes ago</span>
+													<h6 class="mb-0">john just buy your product <strong
+															class="text-warning">Sell $250</strong></h6>
+												</a>
+											</li>
+											<li>
+												<div class="timeline-badge success">
+												</div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>15 minutes ago</span>
+													<h6 class="mb-0">StumbleUpon is acquired by eBay. </h6>
+												</a>
+											</li>
+											<li>
+												<div class="timeline-badge warning">
+												</div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>20 minutes ago</span>
+													<h6 class="mb-0">Mashable, a news website and blog, goes live.</h6>
+												</a>
+											</li>
+											<li>
+												<div class="timeline-badge dark">
+												</div>
+												<a class="timeline-panel text-muted" href="javascript:void(0);">
+													<span>20 minutes ago</span>
+													<h6 class="mb-0">Mashable, a news website and blog, goes live.</h6>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item">
+								<div class="dropdown header-profile2">
+									<a class="nav-link ms-0" href="javascript:void(0);" role="button"
+										data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="header-info2 d-flex align-items-center">
+											<div class="d-flex align-items-center sidebar-info">
+
+											</div>
+											<img src="images/user.jpg" alt="">
+										</div>
+									</a>
+									<div class="dropdown-menu dropdown-menu-end pb-0" style="">
+										<div class="card mb-0">
+											<div class="card-header p-3">
+												<ul class="d-flex align-items-center">
+													<li>
+														<img src="images/user.jpg" class="ms-0" alt="">
+													</li>
+													<li class="ms-2">
+														<h4 class="mb-0">Nella Vita</h4>
+														<span>Admin</span>
+													</li>
+												</ul>
+
+											</div>
+											<div class="card-body p-3">
+												<a href="app-profile.html" class="dropdown-item ai-icon ">
+													<svg xmlns="http://www.w3.org/2000/svg"
+														xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+														height="24px" viewBox="0 0 24 24" version="1.1"
+														class="svg-main-icon">
+														<g stroke="none" stroke-width="1" fill="none"
+															fill-rule="evenodd">
+															<polygon points="0 0 24 0 24 24 0 24" />
+															<path
+																d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
+																fill="#000000" fill-rule="nonzero" opacity="0.3" />
+															<path
+																d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z"
+																fill="var(--primary)" fill-rule="nonzero" />
+														</g>
+													</svg>
+													<span class="ms-2">Profile </span>
+												</a>
+												<a href="chat.html" class="dropdown-item ai-icon ">
+													<svg xmlns="http://www.w3.org/2000/svg"
+														xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+														height="24px" viewBox="0 0 24 24" version="1.1"
+														class="svg-main-icon">
+														<g stroke="none" stroke-width="1" fill="none"
+															fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24" />
+															<path
+																d="M21.9999843,15.009808 L22.0249378,15 L22.0249378,19.5857864 C22.0249378,20.1380712 21.5772226,20.5857864 21.0249378,20.5857864 C20.7597213,20.5857864 20.5053674,20.4804296 20.317831,20.2928932 L18.0249378,18 L5,18 C3.34314575,18 2,16.6568542 2,15 L2,6 C2,4.34314575 3.34314575,3 5,3 L19,3 C20.6568542,3 22,4.34314575 22,6 L22,15 C22,15.0032706 21.9999948,15.0065399 21.9999843,15.009808 Z M6.16794971,10.5547002 C7.67758127,12.8191475 9.64566871,14 12,14 C14.3543313,14 16.3224187,12.8191475 17.8320503,10.5547002 C18.1384028,10.0951715 18.0142289,9.47430216 17.5547002,9.16794971 C17.0951715,8.86159725 16.4743022,8.98577112 16.1679497,9.4452998 C15.0109146,11.1808525 13.6456687,12 12,12 C10.3543313,12 8.9890854,11.1808525 7.83205029,9.4452998 C7.52569784,8.98577112 6.90482849,8.86159725 6.4452998,9.16794971 C5.98577112,9.47430216 5.86159725,10.0951715 6.16794971,10.5547002 Z"
+																fill="var(--primary)" />
+														</g>
+													</svg>
+													<span class="ms-2">Message </span>
+												</a>
+												<a href="email-inbox.html" class="dropdown-item ai-icon ">
+													<svg xmlns="http://www.w3.org/2000/svg"
+														xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+														height="24px" viewBox="0 0 24 24" version="1.1"
+														class="svg-main-icon">
+														<g stroke="none" stroke-width="1" fill="none"
+															fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24" />
+															<path
+																d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z"
+																fill="#000000" />
+															<circle fill="var(--primary)" opacity="0.3" cx="19.5"
+																cy="17.5" r="2.5" />
+														</g>
+													</svg>
+													<span class="ms-2">Notification </span>
+												</a>
+												<a href="javascript:void(0);" class="dropdown-item ai-icon ">
+													<svg xmlns="http://www.w3.org/2000/svg"
+														xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+														height="24px" viewBox="0 0 24 24" version="1.1"
+														class="svg-main-icon">
+														<g stroke="none" stroke-width="1" fill="none"
+															fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24" />
+															<path
+																d="M18.6225,9.75 L18.75,9.75 C19.9926407,9.75 21,10.7573593 21,12 C21,13.2426407 19.9926407,14.25 18.75,14.25 L18.6854912,14.249994 C18.4911876,14.250769 18.3158978,14.366855 18.2393549,14.5454486 C18.1556809,14.7351461 18.1942911,14.948087 18.3278301,15.0846699 L18.372535,15.129375 C18.7950334,15.5514036 19.03243,16.1240792 19.03243,16.72125 C19.03243,17.3184208 18.7950334,17.8910964 18.373125,18.312535 C17.9510964,18.7350334 17.3784208,18.97243 16.78125,18.97243 C16.1840792,18.97243 15.6114036,18.7350334 15.1896699,18.3128301 L15.1505513,18.2736469 C15.008087,18.1342911 14.7951461,18.0956809 14.6054486,18.1793549 C14.426855,18.2558978 14.310769,18.4311876 14.31,18.6225 L14.31,18.75 C14.31,19.9926407 13.3026407,21 12.06,21 C10.8173593,21 9.81,19.9926407 9.81,18.75 C9.80552409,18.4999185 9.67898539,18.3229986 9.44717599,18.2361469 C9.26485393,18.1556809 9.05191298,18.1942911 8.91533009,18.3278301 L8.870625,18.372535 C8.44859642,18.7950334 7.87592081,19.03243 7.27875,19.03243 C6.68157919,19.03243 6.10890358,18.7950334 5.68746499,18.373125 C5.26496665,17.9510964 5.02757002,17.3784208 5.02757002,16.78125 C5.02757002,16.1840792 5.26496665,15.6114036 5.68716991,15.1896699 L5.72635306,15.1505513 C5.86570889,15.008087 5.90431906,14.7951461 5.82064513,14.6054486 C5.74410223,14.426855 5.56881236,14.310769 5.3775,14.31 L5.25,14.31 C4.00735931,14.31 3,13.3026407 3,12.06 C3,10.8173593 4.00735931,9.81 5.25,9.81 C5.50008154,9.80552409 5.67700139,9.67898539 5.76385306,9.44717599 C5.84431906,9.26485393 5.80570889,9.05191298 5.67216991,8.91533009 L5.62746499,8.870625 C5.20496665,8.44859642 4.96757002,7.87592081 4.96757002,7.27875 C4.96757002,6.68157919 5.20496665,6.10890358 5.626875,5.68746499 C6.04890358,5.26496665 6.62157919,5.02757002 7.21875,5.02757002 C7.81592081,5.02757002 8.38859642,5.26496665 8.81033009,5.68716991 L8.84944872,5.72635306 C8.99191298,5.86570889 9.20485393,5.90431906 9.38717599,5.82385306 L9.49484664,5.80114977 C9.65041313,5.71688974 9.7492905,5.55401473 9.75,5.3775 L9.75,5.25 C9.75,4.00735931 10.7573593,3 12,3 C13.2426407,3 14.25,4.00735931 14.25,5.25 L14.249994,5.31450877 C14.250769,5.50881236 14.366855,5.68410223 14.552824,5.76385306 C14.7351461,5.84431906 14.948087,5.80570889 15.0846699,5.67216991 L15.129375,5.62746499 C15.5514036,5.20496665 16.1240792,4.96757002 16.72125,4.96757002 C17.3184208,4.96757002 17.8910964,5.20496665 18.312535,5.626875 C18.7350334,6.04890358 18.97243,6.62157919 18.97243,7.21875 C18.97243,7.81592081 18.7350334,8.38859642 18.3128301,8.81033009 L18.2736469,8.84944872 C18.1342911,8.99191298 18.0956809,9.20485393 18.1761469,9.38717599 L18.1988502,9.49484664 C18.2831103,9.65041313 18.4459853,9.7492905 18.6225,9.75 Z"
+																fill="#000000" fill-rule="nonzero" opacity="0.3" />
+															<path
+																d="M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z"
+																fill="#000000" />
+														</g>
+													</svg>
+													<span class="ms-2">Settings </span>
+												</a>
+
+											</div>
+											<div class="card-footer text-center p-3">
+												<a href="page-login.html"
+													class="dropdown-item ai-icon btn btn-primary light">
+													<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+														viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+														<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+														<polyline points="16 17 21 12 16 7"></polyline>
+														<line x1="21" y1="12" x2="9" y2="12"></line>
+													</svg>
+													<span class="ms-2 text-primary">Logout </span>
+												</a>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+
+		</div>
+
+		<!-- haeder-end -->
+
+
+		<!--**********************************
+            Sidebar start
+        ***********************************-->
+		<div class="dlabnav">
+			<div class="dlabnav-scroll">
+				<ul class="metismenu" id="menu">
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-symbols-outlined">home</i>
+							<span class="nav-text">Dashboard</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="index.html">Dashboard Page</a></li>
+							<li><a href="finance.html">Finance</a></li>
+						</ul>
+
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-symbols-outlined">school</i>
+							<span class="nav-text">Student</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="student.html">Student</a></li>
+							<li><a href="student-detail.html">Student Detail</a></li>
+							<li><a href="add-student.html">Add New Student</a></li>
+
+						</ul>
+
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-symbols-outlined">person</i>
+							<span class="nav-text">Teacher</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="teacher.html">Teacher</a></li>
+							<li><a href="teacher-detail.html">Teacher Detail</a></li>
+							<li><a href="add-teacher.html">Add New Teacher</a></li>
+
+						</ul>
+
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">shopping_cart</i>
+							<span class="nav-text">Shop</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="ecom-product-list.html">E-Learning Packs</a></li>
+							<li><a href="ecom-product-order.html">Order</a></li>
+							<li><a href="ecom-checkout.html">Checkout</a></li>
+							<li><a href="ecom-invoice.html">Invoice</a></li>
+							<li><a href="ecom-customers.html">Customers</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-symbols-outlined">school</i>
+							<span class="nav-text">Courses</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="courses.html">All Courses</a></li>
+							<li><a href="lessons.html">Lessons</a></li>
+							<li><a href="app-calender.html">Calendar</a></li>
+						</ul>
+
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">verified</i>
+							<span class="nav-text">Assessment &amp; Certification</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="certifications.html">Certifications</a></li>
+							<li><a href="quiz-assessments.html">Quiz Assessments</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">assessment</i>
+							<span class="nav-text">Reports</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="student-reports.html">Student Reports</a></li>
+							<li><a href="teacher-reports.html">Teacher Reports</a></li>
+						</ul>
+					</li>
+					<li><a href="cv-list.html" aria-expanded="false">
+							<i class="material-icons">contact_page</i>
+							<span class="nav-text">CV Submissions</span>
+						</a>
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">folder</i>
+							<span class="nav-text">File Manager</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="file-manager.html">File Manager</a></li>
+							<li><a href="user.html">User</a></li>
+							<li><a href="celandar.html">Calendar</a></li>
+							<li><a href="chat.html">Chat</a></li>
+							<li><a href="activity.html">Activity</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons"> app_registration </i>
+							<span class="nav-text">Apps</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="app-profile.html">Profile</a></li>
+							<li><a href="edit-profile.html">Edit Profile</a></li>
+							<li><a href="post-details.html">Post Details</a></li>
+							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Email</a>
+								<ul aria-expanded="false">
+									<li><a href="email-compose.html">Compose</a></li>
+									<li><a href="email-inbox.html">Inbox</a></li>
+									<li><a href="email-read.html">Read</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+			</div>
+		</div>
+		<!--**********************************
+            Sidebar end
+        ***********************************-->
+
+		<!--**********************************
+            Content body start
+        ***********************************-->
+		<div class="content-body">
+			<div class="container-fluid">
+				<!-- Row -->
+				<div class="row">
+					<div class="col-xl-12">
+						<!-- Row -->
+						<div class="row">
+								<div class="col-xl-12">
+									<div id="ybOverviewMount"></div>
+								</div>
+								<!--column-->
+								<div class="col-xl-12">
+									<div class="page-title flex-wrap yb-calendar-toolbar">
+										<div class="d-flex align-items-center flex-wrap yb-calendar-toolbar-actions">
+											<select id="eventSortFilter" class="form-control default-select selectpicker yb-toolbar-select" aria-label="Sort events">
+												<option value="date_asc" selected>Increasing date</option>
+												<option value="date_desc">Descending date</option>
+											</select>
+											<select id="eventStatusFilter" class="form-control default-select selectpicker yb-toolbar-select" aria-label="Filter by status">
+												<option value="ALL" selected>All statuses</option>
+												<option value="PUBLIE">Publie</option>
+												<option value="ANNULE">Annule</option>
+												<option value="TERMINE">Termine</option>
+											</select>
+											<select id="eventDateFilter" class="form-control default-select selectpicker yb-toolbar-select" aria-label="Filter by date">
+												<option value="ALL" selected>All dates</option>
+												<option value="TODAY">Today</option>
+												<option value="UPCOMING">Upcoming</option>
+												<option value="PAST">Past</option>
+											</select>
+											<div class="me-2 mb-sm-0 mb-2 yb-calendar-search-wrap">
+												<input type="text" id="eventSearchTop" class="form-control"
+													placeholder="Search event..."
+													style="min-width: 350px;">
+											</div>
+											<select class="default-select selectpicker" id="calendarMonthFilter" aria-label="Month filter">
+												<option value="0">January</option>
+												<option value="1">February</option>
+											<option value="2">March</option>
+											<option value="3">April</option>
+											<option value="4">May</option>
+											<option value="5">June</option>
+											<option value="6">July</option>
+											<option value="7">August</option>
+											<option value="8">September</option>
+											<option value="9">October</option>
+											<option value="10">November</option>
+											<option value="11">December</option>
+										</select>
+										<div class="ms-2">
+											<select class="default-select selectpicker" id="calendarYearFilter" aria-label="Year filter">
+												<option value="">Year</option>
+											</select>
+										</div>
+										<!-- Button trigger modal -->
+										<button type="button" class="btn btn-primary ms-sm-2 ms-0 mt-sm-0 mt-2"
+											data-bs-toggle="modal" data-bs-target="#exampleModal">
+											+ New Event
+										</button>
+
+									</div>
+								</div>
+							</div>
+							<!--/column-->
+							<div class="col-xl-12 yb-analytics-row">
+								<div class="row">
+									<div class="col-xl-6">
+										<div class="card yb-analytics-card">
+											<div class="card-header pb-0 border-0 flex-wrap">
+												<div class="mb-2 mb-sm-0">
+													<h2 class="heading yb-analytics-title">Event Performance</h2>
+												</div>
+												<div class="d-flex align-items-center yb-analytics-stats">
+													<div class="yb-analytics-stat">
+														<i class="fa fa-circle text-primary"></i>
+														<div>
+															<span>This Month</span>
+															<strong id="ybEventTrendCurrent">0</strong>
+														</div>
+													</div>
+													<div class="yb-analytics-stat">
+														<i class="fa fa-circle text-secondary"></i>
+														<div>
+															<span>Last Month</span>
+															<strong id="ybEventTrendPrevious">0</strong>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="card-body">
+												<div id="ybEventTrendChart"></div>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-6">
+										<div class="card yb-analytics-card">
+											<div class="card-header pb-0 border-0 d-sm-flex d-block">
+												<h4 class="heading yb-analytics-title mb-3 mb-sm-0">Event Overview</h4>
+												<ul class="nav nav-pills mix-chart-tab ms-auto yb-analytics-tabs" id="ybOverviewRangeTabs">
+													<li class="nav-item">
+														<button type="button" class="nav-link active" data-series="week">Week</button>
+													</li>
+													<li class="nav-item">
+														<button type="button" class="nav-link" data-series="month">Month</button>
+													</li>
+													<li class="nav-item">
+														<button type="button" class="nav-link" data-series="year">Year</button>
+													</li>
+													<li class="nav-item">
+														<button type="button" class="nav-link" data-series="all">All</button>
+													</li>
+												</ul>
+											</div>
+											<div class="card-body">
+												<div id="ybEventOverviewChart"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--column-->
+							<div class="col-xl-8 order-xl-1 yb-events-column">
+								<div class="row" id="ybEventsSideRow">
+								</div>
+							</div>
+							<!--/column-->
+								<div class="col-xl-4 order-xl-2 yb-side-column">
+									<div class="card yb-events-control-card">
+										<div class="card-body">
+											<h3 class="heading mb-2">Events Details</h3>
+											<p class="yb-side-intro mb-3"></p>
+											<p class="mb-0 mt-3 text-muted" id="eventFilterInfo">All events</p>
+										</div>
+									</div>
+								<div class="card yb-calendar-card mt-3" id="ybCalendarCard">
+									<div class="card-header yb-calendar-card-head border-0 pb-0">
+										<div>
+											<h3 class="heading mb-1">Event Calendar</h3>
+											<p class="text-muted mb-0" id="ybCompactCalendarMonth">APRIL 2026</p>
+										</div>
+										<button type="button" class="btn btn-outline-primary yb-calendar-expand-btn" id="ybCalendarExpandBtn" aria-expanded="false" aria-label="Expand calendar" title="Expand calendar">
+											<svg class="yb-expand-icon yb-expand-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+												<path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+												<path d="M16 3h3a2 2 0 0 1 2 2v3"></path>
+												<path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>
+												<path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
+											</svg>
+											<svg class="yb-expand-icon yb-expand-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+												<path d="M9 3H5a2 2 0 0 0-2 2v4"></path>
+												<path d="M15 3h4a2 2 0 0 1 2 2v4"></path>
+												<path d="M9 21H5a2 2 0 0 1-2-2v-4"></path>
+												<path d="M15 21h4a2 2 0 0 0 2-2v-4"></path>
+												<path d="M8 8l-5 5"></path>
+												<path d="M16 8l5 5"></path>
+												<path d="M8 16l-5-5"></path>
+												<path d="M16 16l5-5"></path>
+											</svg>
+										</button>
+									</div>
+									<div class="card-body yb-calendar-card-body">
+										<div id="calendar" class="app-fullcalendar yb-compact-calendar"></div>
+										<div class="yb-calendar-card-footer">
+											<div class="yb-calendar-today-summary" id="ybCalendarTodaySummary">
+												<span class="yb-calendar-today-dot"></span>
+												<span>0 Events Today</span>
+											</div>
+											<button type="button" class="yb-calendar-view-all" id="ybCalendarViewAll">View All</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--/column-->
+							<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered yb-event-modal-dialog">
+					<div class="modal-content yb-event-modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">New Event</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+					<div class="modal-body">
+						<form id="eventForm" novalidate>
+							<input type="hidden" id="eventId">
+							<div class="row">
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventName" class="form-label">Event Name</label>
+										<input type="text" class="form-control" id="eventName" placeholder="Event Name"
+											required>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventDateDebut" class="form-label">Start Date</label>
+										<input type="datetime-local" class="form-control" id="eventDateDebut" required>
+									</div>
+								</div>
+								<div class="col-xl-12">
+									<div class="mb-3">
+										<label for="eventDescription" class="form-label">Description</label>
+										<textarea class="form-control" id="eventDescription" placeholder="Description"
+											rows="7" style="resize: none;" required></textarea>
+										<div id="eventDescriptionHint" class="yb-ai-status" data-state="idle" aria-live="polite">
+											<span class="yb-ai-status-orb"></span>
+											<span class="yb-ai-status-copy">AI ready to draft the paragraph from the event name.</span>
+											<span class="yb-ai-status-wave" aria-hidden="true"><span></span><span></span><span></span></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12">
+									<div class="mb-3">
+										<label for="eventImageUrl" class="form-label">Image</label>
+										<div class="yb-image-actions mb-2">
+											<label class="btn btn-outline-primary btn-sm yb-image-upload-btn mb-0" for="eventImageFile">
+												<i class="fa fa-upload me-2"></i>Upload from PC
+											</label>
+											<input type="file" id="eventImageFile" accept="image/*" hidden>
+											<small class="text-muted">You can either generate an image or upload one manually.</small>
+										</div>
+										<input type="text" class="form-control" id="eventImageUrl" placeholder="AI generated image URL will appear here" readonly>
+										<div id="eventImageHint" class="yb-ai-status mt-2" data-state="idle" aria-live="polite">
+											<span class="yb-ai-status-orb"></span>
+											<span class="yb-ai-status-copy">AI ready to prepare the event visual from the event name and description.</span>
+											<span class="yb-ai-status-wave" aria-hidden="true"><span></span><span></span><span></span></span>
+										</div>
+										<div class="yb-event-image-preview mt-3" id="ybEventImagePreview">
+											<img id="eventImagePreview" alt="Generated event preview">
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-12">
+									<div class="mb-3">
+										<div class="yb-modal-section-title">Venue Selection</div>
+										<label for="eventLocation" class="form-label">Location</label>
+										<div class="yb-location-picker">
+											<div class="yb-location-picker-head">
+												<div>
+													<h6>Choose the event venue</h6>
+													<p>Search by place name, then refine the exact venue on the map. The selected venue is saved directly into the event location field.</p>
+												</div>
+												<span class="yb-location-badge">OpenStreetMap</span>
+											</div>
+											<div class="yb-location-layout">
+												<div class="yb-location-search-card">
+													<div class="yb-location-search">
+														<input type="text" class="form-control" id="eventLocation"
+															placeholder="Search a place or choose it from the map" required>
+														<button type="button" class="yb-location-search-btn" id="eventLocationSearchBtn">Find on map</button>
+													</div>
+													<small class="yb-location-helper">Use OpenStreetMap search or click directly on the map to pin the venue.</small>
+													<div class="yb-location-results" id="eventLocationResults">
+														<div class="yb-location-empty">Search results will appear here once you start looking for a place.</div>
+													</div>
+												</div>
+												<div class="yb-location-map-card">
+													<div class="yb-location-map" id="eventLocationMap"></div>
+													<div class="yb-location-status" id="eventLocationStatus">Map ready for search and selection.</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventDateFin" class="form-label">End Date</label>
+										<input type="datetime-local" class="form-control" id="eventDateFin" required>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventCapacity" class="form-label">Capacity</label>
+										<input type="number" class="form-control" id="eventCapacity" placeholder="100"
+											required>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventType" class="form-label">Type</label>
+										<select class="form-control default-select" id="eventType" required>
+											<option selected disabled value="">Select Type</option>
+											<option value="WEBINAIRE">Webinaire</option>
+											<option value="FORMATION">Formation</option>
+											<option value="ATELIER">Atelier</option>
+											<option value="HACKATHON">Hackathon</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="mb-3">
+										<label for="eventStatut" class="form-label">Status</label>
+										<select class="form-control default-select" id="eventStatut" required>
+											<option value="PUBLIE" selected>Publie</option>
+											<option value="ANNULE">Annule</option>
+											<option value="TERMINE">Termine</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" id="saveEventBtn" form="eventForm" onclick="if(window.__ybrainySaveEvent){window.__ybrainySaveEvent();}">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="ybWaitlistModal" tabindex="-1" aria-labelledby="ybWaitlistModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered yb-waitlist-modal-dialog">
+				<div class="modal-content yb-waitlist-modal-content">
+					<div class="modal-header">
+						<div>
+							<h2 class="yb-waitlist-modal-title" id="ybWaitlistModalLabel">Waitlist</h2>
+							<p class="yb-waitlist-modal-subtitle" id="ybWaitlistModalMeta">Review the current student queue for this event.</p>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" id="ybWaitlistModalBody">
+						<div class="yb-waitlist-loading">
+							<span class="yb-waitlist-loading-orb"></span>
+							<div>
+								<strong>Refreshing waitlist</strong>
+								<p>Gathering the oldest waiting students for this event.</p>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!--**********************************
+			Footer start
+		***********************************-->
+	</div>
+	<!--**********************************
+			Footer end
+		***********************************-->
+
+
+
+	<!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+	<!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+	</div>
+	<!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+	<!--**********************************
+	Modal
+***********************************-->
+	<div class="yb-msg-overlay" id="ybMsgOverlay">
+		<div class="yb-msg-box">
+			<div class="yb-msg-loader">
+				<div class="yb-msg-container">
+					<div class="yb-msg-carousel">
+						<div class="yb-love"></div><div class="yb-love"></div><div class="yb-love"></div>
+						<div class="yb-love"></div><div class="yb-love"></div><div class="yb-love"></div><div class="yb-love"></div>
+					</div>
+				</div>
+				<div class="yb-msg-container">
+					<div class="yb-msg-carousel">
+						<div class="yb-death"></div><div class="yb-death"></div><div class="yb-death"></div>
+						<div class="yb-death"></div><div class="yb-death"></div><div class="yb-death"></div><div class="yb-death"></div>
+					</div>
+				</div>
+				<div class="yb-msg-container">
+					<div class="yb-msg-carousel">
+						<div class="yb-robots"></div><div class="yb-robots"></div><div class="yb-robots"></div>
+						<div class="yb-robots"></div><div class="yb-robots"></div><div class="yb-robots"></div><div class="yb-robots"></div>
+					</div>
+				</div>
+			</div>
+			<div class="yb-msg-text" id="ybMsgText">Please check your input.</div>
+			<button type="button" class="yb-msg-close" id="ybMsgCloseBtn">Close</button>
+		</div>
+	</div>
+
+	<!--**********************************
+        Scripts
+    ***********************************-->
+	<!-- Required vendors -->
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/chart.js/Chart.bundle.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="vendor/apexchart/apexchart.js"></script>
+
+	<script src="vendor/fullcalendar-5.11.0/lib/main.js"></script>
+	<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+	<!-- Chart piety plugin files -->
+	<script src="vendor/peity/jquery.peity.min.js"></script>
+
+	<script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+
+
+	<script src="vendor/wow-master/dist/wow.min.js"></script>
+	<script>
+  		window.EVENT_API_BASE = "/Event";
+  		window.INSCRIPTION_API_BASE = "/Inscription";
+	</script>
+	<script src="js/calendar-2.js?v=20260430-1"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+
+</body>
+
+<!-- Mirrored from akademi.dexignlab.com/xhtml/celandar.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 22 Jan 2026 01:09:59 GMT -->
+
+</html>

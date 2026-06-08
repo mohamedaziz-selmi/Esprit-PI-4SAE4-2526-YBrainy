@@ -1,0 +1,8 @@
+target,selected_model,ensemble_models,validation_mae,validation_rmse,validation_wape,validation_mape,validation_smape,validation_r2,confidence_ratio,reliability
+income_total,RandomForest,"RandomForest,GradientBoosting",402.5231,500.3175,34.7786,31.1511,35.9166,-0.05,0.2064,HIGH
+expense_SALARY,RandomForest,"RandomForest,ExtraTrees",314.5081,414.4206,107.7916,59.7123,146.1667,-0.0696,0.32,MEDIUM
+expense_MARKETING,ExtraTrees,"ExtraTrees,RandomForest",82.2806,94.9182,161.0289,247.0559,159.3603,-0.2157,0.32,LOW
+expense_INFRASTRUCTURE,RandomForest,"RandomForest,GradientBoosting",62.3392,80.3136,99.8201,57.1995,150.4907,-0.0299,0.32,MEDIUM
+expense_TOOLS,GradientBoosting,"GradientBoosting,ExtraTrees",21.0898,30.1535,87.8741,42.3815,135.1421,-0.0132,0.32,MEDIUM
+expense_CONTENT,ExtraTrees,"ExtraTrees,RandomForest",69.8112,84.4478,122.9628,67.0077,158.5972,-0.2665,0.32,LOW
+expense_SUPPORT,RandomForest,"RandomForest,ExtraTrees",41.358,42.773,346.5128,150.9145,177.1673,-1.352,0.32,LOW

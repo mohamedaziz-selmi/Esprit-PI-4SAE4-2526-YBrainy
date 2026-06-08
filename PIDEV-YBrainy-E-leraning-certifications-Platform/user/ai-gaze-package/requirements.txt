@@ -1,0 +1,12 @@
+﻿numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+joblib
+opencv-python
+mediapipe
+imbalanced-learn
+fastapi
+uvicorn[standard]
+pydantic

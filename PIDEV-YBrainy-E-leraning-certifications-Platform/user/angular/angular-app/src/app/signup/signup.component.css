@@ -1,0 +1,930 @@
+/* =============================================
+   SIGN UP PAGE – fully self-contained styles
+   Matches login-page design system exactly
+   ============================================= */
+
+:host {
+  display: block;
+}
+
+/* ── Layout ─────────────────────────────────── */
+.signup-wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.signup-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── Left Aside ──────────────────────────────── */
+.signup-aside {
+  width: 420px;
+  min-width: 320px;
+  background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 50%, #6d28d9 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 48px 40px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-aside::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.signup-aside::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 240px;
+  height: 240px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.aside-top {
+  position: relative;
+  z-index: 1;
+}
+
+.aside-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+
+.aside-logo-text {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.aside-heading {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  line-height: 1.2;
+}
+
+.aside-sub {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Aside Illustration ─────────────────────── */
+.aside-illustration {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 32px 0;
+}
+
+.float-card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 14px;
+  padding: 14px 18px;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.card-1 { animation-delay: 0s; align-self: flex-start; }
+.card-2 { animation-delay: 2s; align-self: flex-end; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+.card-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.card-dot.green { background: #34d399; }
+.card-dot.blue  { background: #60a5fa; }
+
+.card-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.card-lines span {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.35);
+  width: 100%;
+}
+
+/* ── Steps ───────────────────────────────────── */
+.aside-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 8px 0;
+  width: 100%;
+  max-width: 220px;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  opacity: 0.55;
+}
+
+.step-item.active {
+  opacity: 1;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-item.active .step-circle {
+  background: white;
+  border-color: white;
+  color: #6366f1;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  padding-top: 4px;
+}
+
+.step-text strong {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.step-text span {
+  color: rgba(255,255,255,0.6);
+  font-size: 11.5px;
+  margin-top: 2px;
+}
+
+.step-connector {
+  width: 2px;
+  height: 20px;
+  background: rgba(255,255,255,0.2);
+  margin-left: 14px;
+}
+
+/* ── Stats ───────────────────────────────────── */
+.aside-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 6px 14px;
+  color: rgba(255,255,255,0.85);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.stat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  flex-shrink: 0;
+}
+
+.stat-dot.orange { background: #fb923c; }
+
+/* ── Right Form Area ─────────────────────────── */
+.signup-form-area {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #f8fafc;
+  padding: 40px 24px;
+  overflow-y: auto;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  margin: auto 0;
+}
+
+.signup-card-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.signup-card-header h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 6px;
+}
+
+.signup-card-header span {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ── Form Fields ─────────────────────────────── */
+.field-group {
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.field-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 7px;
+}
+
+.req {
+  color: #ef4444;
+}
+
+.field-group input,
+.field-group select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  font-family: inherit;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+.field-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.field-group input:focus,
+.field-group select:focus {
+  border-color: #6366f1;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+}
+
+.field-group input.is-invalid {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+.field-group input.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+}
+
+.field-row {
+  display: flex;
+  gap: 14px;
+}
+
+.input-password-wrap {
+  position: relative;
+}
+
+.input-password-wrap input {
+  padding-right: 44px;
+}
+
+.toggle-pw {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.toggle-pw:hover { color: #6366f1; }
+
+.field-error {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #ef4444;
+}
+
+.file-upload-card {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.file-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.file-upload-row input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.file-select-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 9px;
+  border: 1px solid #c7d2fe;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.file-select-btn:hover {
+  background: #e0e7ff;
+}
+
+.file-name {
+  font-size: 12.5px;
+  color: #334155;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.muted-file {
+  color: #94a3b8;
+}
+
+.file-clear-btn {
+  margin-left: auto;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #be123c;
+  border-radius: 9px;
+  min-height: 34px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.file-clear-btn:hover {
+  background: #ffe4e6;
+}
+
+.image-preview {
+  margin-top: 12px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 78px;
+}
+
+.image-preview img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.image-preview span {
+  font-size: 12.5px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.image-preview-empty {
+  justify-content: center;
+  text-align: center;
+  background: #fbfdff;
+}
+
+/* ── Submit Button ───────────────────────────── */
+/* Personalized challenge */
+.challenge-card {
+  margin: 18px 0 10px;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(99, 102, 241, 0.08), transparent 34%),
+    linear-gradient(180deg, #f8fbff 0%, #f1f5ff 100%);
+  padding: 18px;
+}
+
+.challenge-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.challenge-eyebrow {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4338ca;
+}
+
+.challenge-header h4 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.challenge-copy,
+.challenge-profile,
+.challenge-reason {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.challenge-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.challenge-trigger-button {
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid #4338ca;
+  background: linear-gradient(135deg, #4338ca, #6366f1);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.18);
+  transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
+}
+
+.challenge-trigger-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(79, 70, 229, 0.24);
+}
+
+.challenge-trigger-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.challenge-prereq,
+.challenge-refresh-banner,
+.challenge-helper {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+.challenge-refresh-banner {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(224, 231, 255, 0.72);
+  border: 1px solid #c7d2fe;
+  color: #4338ca;
+  font-weight: 700;
+}
+
+.challenge-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid #dbeafe;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.challenge-loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(99, 102, 241, 0.18);
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.challenge-switch-label {
+  margin: 16px 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #4338ca;
+}
+
+.challenge-mode-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.challenge-mode-button {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.16s, box-shadow 0.2s;
+}
+
+.challenge-mode-button:hover {
+  transform: translateY(-1px);
+  border-color: #818cf8;
+}
+
+.challenge-mode-button.is-active {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.14);
+}
+
+.challenge-mode-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.challenge-mode-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.challenge-mode-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.challenge-mode-description {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.challenge-body {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.challenge-prompt {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.challenge-helper {
+  margin-bottom: 12px;
+}
+
+.challenge-choice-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.challenge-choice-button {
+  width: 100%;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 12px 14px;
+  text-align: left;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.16s, box-shadow 0.2s, background 0.2s;
+}
+
+.challenge-choice-button:hover {
+  transform: translateY(-1px);
+  border-color: #93c5fd;
+}
+
+.challenge-choice-button.is-selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.challenge-jigsaw-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.challenge-solved {
+  color: #15803d;
+}
+
+.challenge-jigsaw-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.challenge-jigsaw-piece {
+  aspect-ratio: 1.4 / 1;
+  border-radius: 12px;
+  border: 1px solid #bfdbfe;
+  background-color: #dbeafe;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.challenge-jigsaw-piece:hover {
+  transform: translateY(-1px);
+  border-color: #60a5fa;
+}
+
+.challenge-jigsaw-piece.is-selected {
+  border-color: #4338ca;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.challenge-token-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.challenge-token-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+}
+
+.btn-submit:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+}
+
+.btn-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Banners ─────────────────────────────────── */
+.error-banner {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.success-banner {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  color: #16a34a;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Sign In Prompt ──────────────────────────── */
+.signin-prompt {
+  text-align: center;
+  margin: 22px 0 0;
+  font-size: 13.5px;
+  color: #64748b;
+}
+
+.signin-prompt a {
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signin-prompt a:hover { text-decoration: underline; }
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 900px) {
+  .signup-aside { display: none; }
+  .signup-form-area { background: white; }
+}
+
+@media (max-width: 480px) {
+  .signup-card {
+    padding: 28px 20px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .signup-form-area {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .field-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .file-upload-row {
+    align-items: stretch;
+  }
+
+  .file-clear-btn {
+    margin-left: 0;
+  }
+
+  .challenge-header {
+    flex-direction: column;
+  }
+
+  .challenge-jigsaw-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

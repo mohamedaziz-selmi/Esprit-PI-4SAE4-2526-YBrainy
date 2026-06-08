@@ -1,0 +1,6 @@
+metric,value,low,high
+income_total,253441.97,201119.4,305764.53
+expenses_total,184857.66,125703.21,244012.11
+profit_total,68584.31,-42892.71,180061.32
+margin_pct,27.06,-14.03,89.53
+risk_level,HIGH,,

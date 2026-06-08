@@ -1,0 +1,41 @@
+<ng-container *ngIf="loading">
+  <span class="ml-badge ml-badge--loading">
+    <span class="ml-badge__icon">⟳</span>
+    <span class="ml-badge__label">ML…</span>
+  </span>
+</ng-container>
+
+<ng-container *ngIf="!loading && result && result.available">
+  <div class="ml-badge-wrap">
+    <span class="ml-badge ml-badge--result"
+          [style.border-color]="result.color"
+          [style.color]="result.color"
+          (click)="toggleDetail()"
+          title="Click for details">
+      <span class="ml-badge__icon">{{ icon }}</span>
+      <span class="ml-badge__label">{{ labelDisplay }}</span>
+      <span class="ml-badge__conf">{{ confidencePct }}%</span>
+    </span>
+
+    <div class="ml-detail" *ngIf="showDetail">
+      <div class="ml-detail__message">{{ result.message }}</div>
+      <div class="ml-detail__proba">
+        <div class="ml-detail__bar-row">
+          <span class="ml-detail__bar-label">HQ</span>
+          <div class="ml-detail__bar-track"><div class="ml-detail__bar-fill ml-detail__bar-fill--hq" [style.width.%]="result.probabilities.HQ * 100"></div></div>
+          <span class="ml-detail__bar-pct">{{ (result.probabilities.HQ * 100).toFixed(0) }}%</span>
+        </div>
+        <div class="ml-detail__bar-row">
+          <span class="ml-detail__bar-label">LQ_CLOSE</span>
+          <div class="ml-detail__bar-track"><div class="ml-detail__bar-fill ml-detail__bar-fill--close" [style.width.%]="result.probabilities.LQ_CLOSE * 100"></div></div>
+          <span class="ml-detail__bar-pct">{{ (result.probabilities.LQ_CLOSE * 100).toFixed(0) }}%</span>
+        </div>
+        <div class="ml-detail__bar-row">
+          <span class="ml-detail__bar-label">LQ_EDIT</span>
+          <div class="ml-detail__bar-track"><div class="ml-detail__bar-fill ml-detail__bar-fill--edit" [style.width.%]="result.probabilities.LQ_EDIT * 100"></div></div>
+          <span class="ml-detail__bar-pct">{{ (result.probabilities.LQ_EDIT * 100).toFixed(0) }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

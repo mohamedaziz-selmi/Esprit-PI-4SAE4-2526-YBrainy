@@ -1,0 +1,269 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+}
+
+.face-dialog-shell {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(12px);
+}
+
+.face-dialog {
+  width: min(100%, 760px);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 36%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.35);
+  padding: 24px;
+  color: #0f172a;
+}
+
+.face-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.face-dialog-eyebrow {
+  margin: 0 0 6px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.face-dialog-header h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.face-dialog-subtitle {
+  margin: 8px 0 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.face-dialog-close {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #334155;
+  cursor: pointer;
+}
+
+.face-dialog-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  min-height: 420px;
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.88)),
+    #0f172a;
+}
+
+.face-dialog-stage video,
+.face-dialog-stage img {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+  max-height: 65vh;
+  object-fit: cover;
+}
+
+.face-target {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  padding: 28px;
+}
+
+.face-target-ring {
+  width: min(54vw, 280px);
+  height: min(68vw, 340px);
+  align-self: center;
+  margin-top: 16px;
+  border-radius: 46% 46% 42% 42% / 40% 40% 52% 52%;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 0 999px rgba(15, 23, 42, 0.18);
+}
+
+.face-target-copy {
+  align-self: center;
+  max-width: 360px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+}
+
+.face-dialog-error {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.face-dialog-status {
+  margin: 16px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(219, 234, 254, 0.78);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.face-dialog-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #2563eb;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.34);
+}
+
+.face-dialog-status-dot.is-busy {
+  animation: face-scan-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes face-scan-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.34);
+  }
+
+  70% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+  }
+}
+
+.face-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.face-upload-button,
+.face-secondary-button,
+.face-primary-button {
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.face-upload-button,
+.face-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #1e293b;
+}
+
+.face-primary-button {
+  margin-left: auto;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  box-shadow: 0 18px 34px rgba(37, 99, 235, 0.24);
+}
+
+.face-upload-button:hover,
+.face-secondary-button:hover,
+.face-primary-button:hover {
+  transform: translateY(-1px);
+}
+
+.face-upload-button:disabled,
+.face-secondary-button:disabled,
+.face-primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 680px) {
+  .face-dialog-shell {
+    padding: 12px;
+  }
+
+  .face-dialog {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .face-dialog-header h2 {
+    font-size: 24px;
+  }
+
+  .face-dialog-stage {
+    min-height: 320px;
+  }
+
+  .face-dialog-stage video,
+  .face-dialog-stage img {
+    min-height: 320px;
+  }
+
+  .face-target-ring {
+    width: min(64vw, 240px);
+    height: min(78vw, 300px);
+  }
+
+  .face-dialog-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .face-primary-button {
+    margin-left: 0;
+  }
+}

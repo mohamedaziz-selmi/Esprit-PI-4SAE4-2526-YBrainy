@@ -1,0 +1,18 @@
+<ng-container *ngIf="mainHtml; else loading">
+  <div class="fo-static-page" [innerHTML]="mainHtml"></div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="comm-section" style="min-height:60vh; display:flex; align-items:center; justify-content:center;">
+    <div class="container">
+      <div class="comm-head-wrap cen">
+        <h1 class="comm-head mb16">Loading…</h1>
+        <div class="comm-txt mb36">
+          <p>Preparing service page.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+

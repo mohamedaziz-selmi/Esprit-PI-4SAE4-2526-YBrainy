@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="author" content="DexignLab">
+	<meta name="robots" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>YBrainy - Student Reports</title>
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
+	<link href="vendor/wow-master/css/libs/animate.css" rel="stylesheet">
+	<link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="vendor/jquery-nice-select/css/nice-select.css">
+	<link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<style>
+		.bt-buy-now, .bt-support-now, #DZScript { display: none !important; }
+		.report-card { transition: .3s; border-left: 4px solid transparent; }
+		.report-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,.1); }
+		.report-card.priority-critical { border-left-color: #dc3545; }
+		.report-card.priority-high { border-left-color: #fd7e14; }
+		.report-card.priority-medium { border-left-color: #ffc107; }
+		.report-card.priority-low { border-left-color: #198754; }
+		.stat-card { border-radius: 12px; transition: .3s; }
+		.stat-card:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,.12); }
+		.badge-status { font-size: 11px; padding: 5px 10px; border-radius: 20px; }
+		.filter-btn.active { background: var(--primary) !important; color: #fff !important; }
+	</style>
+</head>
+
+<body>
+	<div id="preloader">
+		<div class="loader">
+			<div class="dots">
+				<div class="dot mainDot"></div>
+				<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="main-wrapper">
+		<!-- Nav header -->
+		<div class="nav-header">
+			<a href="index.html" class="brand-logo">
+				<img src="images/logo-full.png" alt="Logo" class="logo-abbr"
+					style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+				<div class="brand-title">
+					<h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+				</div>
+			</a>
+			<div class="nav-control">
+				<div class="hamburger">
+					<span class="line"></span><span class="line"></span><span class="line"></span>
+					<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect x="11" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect x="22" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+						<rect y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+					</svg>
+				</div>
+			</div>
+		</div>
+
+		<!-- Header -->
+		<div class="header">
+			<div class="header-content">
+				<nav class="navbar navbar-expand">
+					<div class="collapse navbar-collapse justify-content-between">
+						<div class="header-left">
+							<div class="dashboard_bar">Student Reports</div>
+						</div>
+						<ul class="navbar-nav header-right">
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link bell dz-theme-mode" href="javascript:void(0);">
+									<i id="icon-light-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></i>
+									<i id="icon-dark-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></i>
+								</a>
+							</li>
+							<li class="nav-item dropdown notification_dropdown">
+								<a class="nav-link bell dz-fullscreen" href="javascript:void(0);">
+									<svg id="icon-full-1" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+									<svg id="icon-minimize-1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="A098AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+								</a>
+							</li>
+							<li class="nav-item">
+								<div class="dropdown header-profile2">
+									<a class="nav-link ms-0" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
+										<div class="header-info2 d-flex align-items-center">
+											<img src="images/user.jpg" alt="">
+										</div>
+									</a>
+									<div class="dropdown-menu dropdown-menu-end pb-0">
+										<div class="card mb-0">
+											<div class="card-header p-3">
+												<ul class="d-flex align-items-center">
+													<li><img src="images/user.jpg" class="ms-0" alt=""></li>
+													<li class="ms-2"><h4 class="mb-0">Nella Vita</h4><span>Admin</span></li>
+												</ul>
+											</div>
+											<div class="card-body p-3">
+												<a href="app-profile.html" class="dropdown-item ai-icon"><span class="ms-2">Profile</span></a>
+											</div>
+											<div class="card-footer text-center p-3">
+												<a href="page-login.html" class="dropdown-item ai-icon btn btn-primary light">
+													<span class="ms-2 text-primary">Logout</span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div class="dlabnav">
+			<div class="dlabnav-scroll">
+				<ul class="metismenu" id="menu">
+					<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-symbols-outlined">home</i>
+						<span class="nav-text">Dashboard</span></a>
+						<ul aria-expanded="false">
+							<li><a href="index.html">Dashboard Page</a></li>
+							<li><a href="finance.html">Finance</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-symbols-outlined">school</i>
+						<span class="nav-text">Student</span></a>
+						<ul aria-expanded="false">
+							<li><a href="student.html">Student</a></li>
+							<li><a href="student-detail.html">Student Detail</a></li>
+							<li><a href="add-student.html">Add New Student</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-symbols-outlined">person</i>
+						<span class="nav-text">Teacher</span></a>
+						<ul aria-expanded="false">
+							<li><a href="teacher.html">Teacher</a></li>
+							<li><a href="teacher-detail.html">Teacher Detail</a></li>
+							<li><a href="add-teacher.html">Add New Teacher</a></li>
+						</ul>
+					</li>
+										<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">shopping_cart</i>
+							<span class="nav-text">Shop</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="ecom-product-list.html">E-Learning Packs</a></li>
+							<li><a href="ecom-product-order.html">Order</a></li>
+							<li><a href="ecom-checkout.html">Checkout</a></li>
+							<li><a href="ecom-invoice.html">Invoice</a></li>
+							<li><a href="ecom-customers.html">Customers</a></li>
+						</ul>
+					</li>
+<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-symbols-outlined">school</i>
+						<span class="nav-text">Courses</span></a>
+						<ul aria-expanded="false">
+							<li><a href="courses.html">All Courses</a></li>
+							<li><a href="lessons.html">Lessons</a></li>
+							<li><a href="app-calender.html">Calendar</a></li>
+						</ul>
+					</li>
+										<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+							<i class="material-icons">verified</i>
+							<span class="nav-text">Assessment &amp; Certification</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a href="certifications.html">Certifications</a></li>
+							<li><a href="quiz-assessments.html">Quiz Assessments</a></li>
+						</ul>
+					</li>
+<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-icons">assessment</i>
+						<span class="nav-text">Reports</span></a>
+						<ul aria-expanded="false">
+							<li><a href="student-reports.html">Student Reports</a></li>
+							<li><a href="teacher-reports.html">Teacher Reports</a></li>
+						</ul>
+					</li>
+										<li><a href="cv-list.html" aria-expanded="false">
+							<i class="material-icons">contact_page</i>
+							<span class="nav-text">CV Submissions</span>
+						</a>
+					</li>
+<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-icons">folder</i>
+						<span class="nav-text">File Manager</span></a>
+						<ul aria-expanded="false">
+							<li><a href="file-manager.html">File Manager</a></li>
+							<li><a href="user.html">User</a></li>
+							<li><a href="celandar.html">Calendar</a></li>
+							<li><a href="chat.html">Chat</a></li>
+							<li><a href="activity.html">Activity</a></li>
+						</ul>
+					</li>
+					<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+						<i class="material-icons">app_registration</i>
+						<span class="nav-text">Apps</span></a>
+						<ul aria-expanded="false">
+							<li><a href="app-profile.html">Profile</a></li>
+							<li><a href="edit-profile.html">Edit Profile</a></li>
+							<li><a href="post-details.html">Post Details</a></li>
+							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Email</a>
+								<ul aria-expanded="false">
+									<li><a href="email-compose.html">Compose</a></li>
+									<li><a href="email-inbox.html">Inbox</a></li>
+									<li><a href="email-read.html">Read</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Content body -->
+		<div class="content-body">
+			<div class="container-fluid">
+				<!-- Breadcrumb -->
+				<div class="row page-titles">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="javascript:void(0)">Reports</a></li>
+						<li class="breadcrumb-item active"><a href="javascript:void(0)">Student Reports</a></li>
+					</ol>
+				</div>
+
+				<!-- Stats Cards -->
+				<div class="row" id="statsRow">
+					<div class="col-xl-3 col-sm-6">
+						<div class="card stat-card bg-primary">
+							<div class="card-body d-flex justify-content-between align-items-center p-4">
+								<div>
+									<h2 class="text-white mb-0" id="statTotal">0</h2>
+									<span class="text-white-50">Total Reports</span>
+								</div>
+								<i class="material-icons text-white" style="font-size:48px;opacity:.5;">description</i>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card stat-card bg-warning">
+							<div class="card-body d-flex justify-content-between align-items-center p-4">
+								<div>
+									<h2 class="text-white mb-0" id="statOpen">0</h2>
+									<span class="text-white-50">Open</span>
+								</div>
+								<i class="material-icons text-white" style="font-size:48px;opacity:.5;">folder_open</i>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card stat-card bg-info">
+							<div class="card-body d-flex justify-content-between align-items-center p-4">
+								<div>
+									<h2 class="text-white mb-0" id="statInProgress">0</h2>
+									<span class="text-white-50">In Progress</span>
+								</div>
+								<i class="material-icons text-white" style="font-size:48px;opacity:.5;">pending_actions</i>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-3 col-sm-6">
+						<div class="card stat-card bg-danger">
+							<div class="card-body d-flex justify-content-between align-items-center p-4">
+								<div>
+									<h2 class="text-white mb-0" id="statCritical">0</h2>
+									<span class="text-white-50">Critical / High</span>
+								</div>
+								<i class="material-icons text-white" style="font-size:48px;opacity:.5;">warning</i>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- New Report Form -->
+					<div class="col-xl-4">
+						<div class="card">
+							<div class="card-header border-0 pb-0">
+								<h4 class="card-title">
+									<i class="material-icons align-middle me-1 text-primary">add_circle</i>
+									Submit Student Report
+								</h4>
+							</div>
+							<div class="card-body">
+								<form id="reportForm">
+									<div class="mb-3">
+										<label class="form-label fw-bold">Student Name <span class="text-danger">*</span></label>
+										<input type="text" class="form-control" id="rSubjectName" required placeholder="e.g. Ahmed Ben Salah">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Student Email</label>
+										<input type="email" class="form-control" id="rSubjectEmail" placeholder="student@ybrainy.com">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Report Title <span class="text-danger">*</span></label>
+										<input type="text" class="form-control" id="rTitle" required placeholder="Brief title for the report">
+									</div>
+									<div class="row">
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Category <span class="text-danger">*</span></label>
+											<select class="form-select" id="rCategory" required>
+												<option value="">Select...</option>
+												<option value="attendance">Attendance</option>
+												<option value="behavior">Behavior</option>
+												<option value="performance">Performance</option>
+												<option value="certification">Certification</option>
+												<option value="issue">Technical Issue</option>
+												<option value="feedback">Feedback</option>
+											</select>
+										</div>
+										<div class="col-6 mb-3">
+											<label class="form-label fw-bold">Priority</label>
+											<select class="form-select" id="rPriority">
+												<option value="low">Low</option>
+												<option value="medium" selected>Medium</option>
+												<option value="high">High</option>
+												<option value="critical">Critical</option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Course Name</label>
+										<input type="text" class="form-control" id="rCourseName" placeholder="Related course (optional)">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Certification Name</label>
+										<input type="text" class="form-control" id="rCertName" placeholder="Related certification (optional)">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Submitted By</label>
+										<input type="text" class="form-control" id="rSubmittedBy" placeholder="Your name">
+									</div>
+									<div class="mb-3">
+										<label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+										<textarea class="form-control" id="rDescription" rows="4" required placeholder="Detailed description of the report..."></textarea>
+									</div>
+									<button type="submit" class="btn btn-primary w-100">
+										<i class="material-icons align-middle me-1">send</i> Submit Report
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Reports List -->
+					<div class="col-xl-8">
+						<div class="card">
+							<div class="card-header border-0 pb-0 d-flex justify-content-between align-items-center flex-wrap">
+								<h4 class="card-title">
+									<i class="material-icons align-middle me-1 text-primary">list_alt</i>
+									Student Reports
+								</h4>
+								<div class="d-flex gap-2 flex-wrap mt-2 mt-md-0">
+									<button class="btn btn-sm btn-outline-primary filter-btn active" data-filter="all">All</button>
+									<button class="btn btn-sm btn-outline-warning filter-btn" data-filter="open">Open</button>
+									<button class="btn btn-sm btn-outline-info filter-btn" data-filter="in_progress">In Progress</button>
+									<button class="btn btn-sm btn-outline-success filter-btn" data-filter="resolved">Resolved</button>
+									<button class="btn btn-sm btn-outline-secondary filter-btn" data-filter="closed">Closed</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="reportsContainer">
+									<div class="text-center py-4">
+										<div class="spinner-border text-primary" role="status"></div>
+										<p class="mt-2 text-muted">Loading reports...</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Report Detail Modal -->
+		<div class="modal fade" id="reportDetailModal" tabindex="-1">
+			<div class="modal-dialog modal-lg modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalReportTitle">Report Detail</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body" id="modalReportBody"></div>
+					<div class="modal-footer">
+						<select class="form-select w-auto" id="modalStatusChange">
+							<option value="open">Open</option>
+							<option value="in_progress">In Progress</option>
+							<option value="resolved">Resolved</option>
+							<option value="closed">Closed</option>
+						</select>
+						<button class="btn btn-primary" id="modalUpdateBtn">Update Status</button>
+						<button class="btn btn-danger" id="modalDeleteBtn">Delete</button>
+						<button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+	</div>
+
+	<!-- Scripts -->
+	<script src="vendor/global/global.min.js"></script>
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/dlabnav-init.js"></script>
+	<script src="js/demo.js"></script>
+	<script src="js/styleSwitcher.js"></script>
+
+	<script>
+	/* ═══════════════════════════════════════════════
+	 *  STATIC DATA — no backend needed
+	 * ═══════════════════════════════════════════════ */
+	let nextId = 9;
+	let allReports = [
+		{id:1, title:"Low quiz completion rate in Data Science course", description:"Student Ahmed Ben Ali has only completed 2 out of 10 quizzes in the Data Science with Python course. The student appears disengaged and may need additional support or motivation. Recommend reaching out for a one-on-one session.", category:"performance", priority:"high", status:"open", subjectName:"Ahmed Ben Ali", subjectEmail:"ahmed.benali@email.com", submittedBy:"Dr. Sarah Johnson", courseName:"Data Science with Python", certificationName:"Data Science Professional Certificate", createdAt:"2026-02-05T10:30:00"},
+		{id:2, title:"Repeated absence from live sessions", description:"Student Fatma Trabelsi has missed 5 consecutive live sessions for the Full-Stack Web Development course. Attempts to contact via email have been unsuccessful. Flagging for administrative follow-up.", category:"attendance", priority:"critical", status:"in_progress", subjectName:"Fatma Trabelsi", subjectEmail:"fatma.trabelsi@email.com", submittedBy:"Prof. Michael Chen", courseName:"Full-Stack Web Development Bootcamp", certificationName:"Full-Stack Web Development Certificate", createdAt:"2026-02-03T14:15:00"},
+		{id:3, title:"Suspected plagiarism in final project submission", description:"Student Mohamed Khelifi submitted a final project for the Mobile App Development course that closely resembles an open-source project on GitHub. Requires academic integrity review.", category:"behavior", priority:"critical", status:"open", subjectName:"Mohamed Khelifi", subjectEmail:"mohamed.khelifi@email.com", submittedBy:"Dr. Emily Watson", courseName:"Mobile App Development with Flutter", certificationName:"Flutter Mobile Developer Certificate", createdAt:"2026-02-01T09:00:00"},
+		{id:4, title:"Outstanding performance — certification recommendation", description:"Student Yasmine Bouazizi has consistently scored above 95% on all assessments in the UI/UX Design course and has helped peers in study groups. Recommending for early certification and potential teaching assistant role.", category:"certification", priority:"low", status:"resolved", subjectName:"Yasmine Bouazizi", subjectEmail:"yasmine.bouazizi@email.com", submittedBy:"Prof. David Kim", courseName:"UI/UX Design Masterclass", certificationName:"UI/UX Design Essentials Certificate", createdAt:"2026-01-28T16:45:00"},
+		{id:5, title:"Technical issues during online exam", description:"Student Karim Jebali experienced repeated disconnections during the Cybersecurity midterm exam. The student lost 15 minutes of exam time due to platform issues. Requesting a makeup exam or time extension.", category:"issue", priority:"high", status:"open", subjectName:"Karim Jebali", subjectEmail:"karim.jebali@email.com", submittedBy:"Dr. Sarah Johnson", courseName:"Cybersecurity Essentials", certificationName:"Cybersecurity Fundamentals Certificate", createdAt:"2026-01-25T11:20:00"},
+		{id:6, title:"Student feedback on course difficulty", description:"Student Amira Hamdi provided feedback that the Data Science course is progressing too quickly. She suggests adding more practice exercises between modules and extending the machine learning section.", category:"feedback", priority:"medium", status:"resolved", subjectName:"Amira Hamdi", subjectEmail:"amira.hamdi@email.com", submittedBy:"Course Admin", courseName:"Data Science with Python", certificationName:"Data Science Professional Certificate", createdAt:"2026-01-20T08:30:00"},
+		{id:7, title:"Disruptive behavior in group project", description:"Student Slim Meddeb has been unresponsive to group members and missed all team meetings for the collaborative project in Full-Stack Development. Team members report inability to progress.", category:"behavior", priority:"high", status:"in_progress", subjectName:"Slim Meddeb", subjectEmail:"slim.meddeb@email.com", submittedBy:"Prof. Michael Chen", courseName:"Full-Stack Web Development Bootcamp", certificationName:null, createdAt:"2026-01-18T13:00:00"},
+		{id:8, title:"Request for accessibility accommodations", description:"Student Nour Sassi has requested extended time on quizzes and exams due to a documented learning disability. Medical documentation has been provided and verified.", category:"issue", priority:"medium", status:"closed", subjectName:"Nour Sassi", subjectEmail:"nour.sassi@email.com", submittedBy:"Student Services", courseName:"UI/UX Design Masterclass", certificationName:null, createdAt:"2026-01-15T10:00:00"}
+	];
+
+	let currentFilter = 'all';
+	let selectedReportId = null;
+
+	// ─── Stats (computed from static array) ───
+	function loadStats() {
+		document.getElementById('statTotal').textContent = allReports.length;
+		document.getElementById('statOpen').textContent = allReports.filter(r=>r.status==='open').length;
+		document.getElementById('statInProgress').textContent = allReports.filter(r=>r.status==='in_progress').length;
+		document.getElementById('statCritical').textContent = allReports.filter(r=>r.priority==='high'||r.priority==='critical').length;
+	}
+
+	// ─── Render Reports ───
+	function renderReports() {
+		const container = document.getElementById('reportsContainer');
+		let filtered = allReports;
+		if (currentFilter !== 'all') {
+			filtered = allReports.filter(r => r.status === currentFilter);
+		}
+
+		if (filtered.length === 0) {
+			container.innerHTML = '<div class="text-center py-5"><i class="material-icons text-muted" style="font-size:64px;">inbox</i><h5 class="text-muted mt-2">No reports found</h5></div>';
+			return;
+		}
+
+		container.innerHTML = filtered.map(r => {
+			const priorityColor = { critical: 'danger', high: 'warning', medium: 'info', low: 'success' }[r.priority] || 'secondary';
+			const statusColor = { open: 'warning', in_progress: 'info', resolved: 'success', closed: 'secondary' }[r.status] || 'secondary';
+			const statusLabel = { open: 'Open', in_progress: 'In Progress', resolved: 'Resolved', closed: 'Closed' }[r.status] || r.status;
+			const categoryIcon = {
+				attendance: 'event_available', behavior: 'psychology', performance: 'trending_up',
+				certification: 'workspace_premium', issue: 'bug_report', feedback: 'rate_review'
+			}[r.category] || 'description';
+			const categoryLabel = r.category ? r.category.charAt(0).toUpperCase() + r.category.slice(1) : 'General';
+			const date = r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+			return `
+			<div class="card report-card priority-${r.priority} mb-3 border cursor-pointer" onclick="openReport(${r.id})" style="cursor:pointer;">
+				<div class="card-body p-3">
+					<div class="d-flex justify-content-between align-items-start">
+						<div class="d-flex align-items-start">
+							<div class="me-3 text-center" style="min-width:45px;">
+								<i class="material-icons text-${priorityColor}" style="font-size:32px;">${categoryIcon}</i>
+							</div>
+							<div>
+								<h6 class="mb-1">${r.title}</h6>
+								<div class="d-flex flex-wrap gap-2 mb-1">
+									<span class="badge bg-${priorityColor} badge-status">${r.priority ? r.priority.toUpperCase() : 'MEDIUM'}</span>
+									<span class="badge bg-${statusColor} badge-status">${statusLabel}</span>
+									<span class="badge bg-light text-dark badge-status"><i class="material-icons align-middle" style="font-size:13px;">${categoryIcon}</i> ${categoryLabel}</span>
+								</div>
+								<small class="text-muted">
+									<strong>Student:</strong> ${r.subjectName || '—'}
+									${r.courseName ? ' &bull; <strong>Course:</strong> ' + r.courseName : ''}
+									${r.certificationName ? ' &bull; <strong>Cert:</strong> ' + r.certificationName : ''}
+								</small>
+							</div>
+						</div>
+						<div class="text-end text-nowrap">
+							<small class="text-muted d-block">${date}</small>
+							<small class="text-muted">${r.submittedBy || ''}</small>
+						</div>
+					</div>
+				</div>
+			</div>`;
+		}).join('');
+	}
+
+	// ─── Filter Buttons ───
+	document.querySelectorAll('.filter-btn').forEach(btn => {
+		btn.addEventListener('click', function() {
+			document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+			this.classList.add('active');
+			currentFilter = this.dataset.filter;
+			renderReports();
+		});
+	});
+
+	// ─── Open Report Detail ───
+	function openReport(id) {
+		selectedReportId = id;
+		const r = allReports.find(x => x.id === id);
+		if (!r) return;
+		document.getElementById('modalReportTitle').textContent = r.title;
+		document.getElementById('modalStatusChange').value = r.status || 'open';
+		const categoryLabel = r.category ? r.category.charAt(0).toUpperCase() + r.category.slice(1) : 'General';
+		const priorityColor = { critical: 'danger', high: 'warning', medium: 'info', low: 'success' }[r.priority] || 'secondary';
+		const date = r.createdAt ? new Date(r.createdAt).toLocaleString() : '';
+
+		document.getElementById('modalReportBody').innerHTML = `
+			<div class="row mb-3">
+				<div class="col-md-6"><strong>Student:</strong> ${r.subjectName || '—'}</div>
+				<div class="col-md-6"><strong>Email:</strong> ${r.subjectEmail || '—'}</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md-4"><strong>Category:</strong> <span class="badge bg-primary">${categoryLabel}</span></div>
+				<div class="col-md-4"><strong>Priority:</strong> <span class="badge bg-${priorityColor}">${(r.priority || 'medium').toUpperCase()}</span></div>
+				<div class="col-md-4"><strong>Status:</strong> ${r.status || 'open'}</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md-6"><strong>Course:</strong> ${r.courseName || '—'}</div>
+				<div class="col-md-6"><strong>Certification:</strong> ${r.certificationName || '—'}</div>
+			</div>
+			<div class="row mb-3">
+				<div class="col-md-6"><strong>Submitted By:</strong> ${r.submittedBy || '—'}</div>
+				<div class="col-md-6"><strong>Date:</strong> ${date}</div>
+			</div>
+			<hr>
+			<div>
+				<strong>Description:</strong>
+				<p class="mt-2 mb-0 bg-light p-3 rounded">${r.description || 'No description provided.'}</p>
+			</div>
+		`;
+		new bootstrap.Modal(document.getElementById('reportDetailModal')).show();
+	}
+
+	// ─── Update Status (in-memory) ───
+	document.getElementById('modalUpdateBtn').addEventListener('click', function() {
+		if (!selectedReportId) return;
+		const newStatus = document.getElementById('modalStatusChange').value;
+		const r = allReports.find(x => x.id === selectedReportId);
+		if (r) r.status = newStatus;
+		bootstrap.Modal.getInstance(document.getElementById('reportDetailModal')).hide();
+		renderReports(); loadStats();
+		showToast('Status updated to ' + newStatus, 'success');
+	});
+
+	// ─── Delete Report (in-memory) ───
+	document.getElementById('modalDeleteBtn').addEventListener('click', function() {
+		if (!selectedReportId || !confirm('Delete this report permanently?')) return;
+		allReports = allReports.filter(r => r.id !== selectedReportId);
+		bootstrap.Modal.getInstance(document.getElementById('reportDetailModal')).hide();
+		renderReports(); loadStats();
+		showToast('Report deleted', 'warning');
+	});
+
+	// ─── Submit New Report (in-memory) ───
+	document.getElementById('reportForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		const report = {
+			id: nextId++,
+			type: 'student',
+			title: document.getElementById('rTitle').value,
+			description: document.getElementById('rDescription').value,
+			category: document.getElementById('rCategory').value,
+			priority: document.getElementById('rPriority').value,
+			subjectName: document.getElementById('rSubjectName').value,
+			subjectEmail: document.getElementById('rSubjectEmail').value,
+			submittedBy: document.getElementById('rSubmittedBy').value,
+			courseName: document.getElementById('rCourseName').value,
+			certificationName: document.getElementById('rCertName').value,
+			status: 'open',
+			createdAt: new Date().toISOString()
+		};
+		allReports.unshift(report);
+		this.reset();
+		renderReports(); loadStats();
+		showToast('Report submitted successfully!', 'success');
+	});
+
+	// ─── Toast ───
+	function showToast(msg, type) {
+		const html = `<div class="position-fixed top-0 end-0 p-3" style="z-index:9999;">
+			<div class="alert alert-${type} alert-dismissible fade show shadow" role="alert">
+				${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+			</div></div>`;
+		document.body.insertAdjacentHTML('beforeend', html);
+		setTimeout(() => { const el = document.querySelector('.position-fixed.top-0.end-0'); if(el) el.remove(); }, 3000);
+	}
+
+	// Init
+	loadStats();
+	renderReports();
+	</script>
+</body>
+</html>
+

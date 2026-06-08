@@ -1,0 +1,520 @@
+<div class="profile-page">
+  <div class="page-glow page-glow-a"></div>
+  <div class="page-glow page-glow-b"></div>
+
+  <ng-container *ngIf="user as u; else profileLoading">
+    <div class="profile-shell">
+      <div class="profile-topbar">
+        <button type="button" class="back-button" (click)="goBack()">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Return
+        </button>
+
+        <div class="topbar-right">
+          <span class="chip" [ngClass]="'chip-' + (u.status || 'secure').toLowerCase()">
+            {{ u.status || 'SECURE' }}
+          </span>
+          <span *ngIf="u.lockedUntil" class="chip chip-danger">
+            Locked until {{ u.lockedUntil | date:'MMM d, y, HH:mm' }}
+          </span>
+        </div>
+      </div>
+
+      <section class="hero-card">
+        <div class="hero-main">
+          <div class="avatar-stack">
+            <div class="avatar-frame">
+              <img
+                *ngIf="editModel.profilePicture || u.profilePicture"
+                [src]="(editModel.profilePicture || u.profilePicture) || ''"
+                class="avatar-img"
+                alt="Profile picture"
+              />
+              <div *ngIf="!(editModel.profilePicture || u.profilePicture)" class="avatar-initials">{{ getInitials() }}</div>
+              <label class="avatar-upload-btn" [title]="avatarUploading ? 'Uploading image...' : 'Upload a new photo'">
+                <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <input type="file" accept="image/*" (change)="onAvatarChange($event)" hidden />
+              </label>
+            </div>
+          </div>
+
+          <div class="hero-identity">
+            <div class="eyebrow">Profile Management</div>
+            <h1>{{ u.firstName || 'User' }} {{ u.lastName || '' }}</h1>
+            <div class="subline">
+              <span>&#64;{{ u.username }}</span>
+              <span *ngIf="u.email">&bull; {{ u.email }}</span>
+            </div>
+
+            <div class="badge-row">
+              <span class="badge">{{ u.role }}</span>
+              <span *ngIf="u.enterpriseVerified" class="badge badge-success">Enterprise Verified</span>
+              <span *ngIf="u.reasonForBan" class="badge badge-danger">Restricted</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-box">
+            <div class="stat-value">{{ u.streakDays ?? 0 }}</div>
+            <div class="stat-label">Day streak</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">{{ u.lastLogin ? (u.lastLogin | date:'MMM d') : 'N/A' }}</div>
+            <div class="stat-label">Last login</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value">{{ u.accountCreatedAt ? (u.accountCreatedAt | date:'yyyy') : 'N/A' }}</div>
+            <div class="stat-label">Member since</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="profile-grid">
+        <aside class="sidebar">
+          <section class="profile-panel">
+            <h2 class="profile-panel-title">Quick Info</h2>
+            <div class="info-list">
+              <div class="info-row" *ngIf="u.city || u.country">
+                <span class="info-key">Location</span>
+                <span class="info-value">{{ u.city }}<span *ngIf="u.city && u.country">, </span>{{ u.country }}</span>
+              </div>
+              <div class="info-row" *ngIf="u.address">
+                <span class="info-key">Address</span>
+                <span class="info-value">{{ u.address }}</span>
+              </div>
+              <div class="info-row" *ngIf="u.dateOfBirth">
+                <span class="info-key">Date of birth</span>
+                <span class="info-value">{{ u.dateOfBirth | date:'MMMM d, yyyy' }}</span>
+              </div>
+              <div class="info-row" *ngIf="u.age !== null && u.age !== undefined">
+                <span class="info-key">Age</span>
+                <span class="info-value">{{ u.age }}</span>
+              </div>
+              <div class="info-row" *ngIf="u.sex">
+                <span class="info-key">Sex</span>
+                <span class="info-value">{{ u.sex }}</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="profile-panel">
+            <h2 class="profile-panel-title">Account Status</h2>
+            <div class="status-card">
+              <div class="status-pill" [ngClass]="'status-' + (u.status || 'secure').toLowerCase()">
+                {{ u.status || 'SECURE' }}
+              </div>
+              <div class="status-meta">
+                <div>Member since {{ u.accountCreatedAt ? (u.accountCreatedAt | date:'MMM d, yyyy') : 'N/A' }}</div>
+                <div>Last updated {{ u.lastProfileUpdate ? (u.lastProfileUpdate | date:'MMM d, yyyy') : 'N/A' }}</div>
+              </div>
+              <div class="ban-box" *ngIf="u.reasonForBan || u.banPeriod || u.lockedUntil">
+                <div class="ban-title">Restriction details</div>
+                <div *ngIf="u.reasonForBan">{{ u.reasonForBan }}</div>
+                <div *ngIf="u.banPeriod">Duration: {{ u.banPeriod }} day(s)</div>
+                <div *ngIf="u.lockedUntil">Locked until: {{ u.lockedUntil | date:'MMM d, yyyy HH:mm' }}</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="profile-panel">
+            <h2 class="profile-panel-title">Face Login</h2>
+            <div class="face-biometric-card">
+              <div class="face-biometric-status">
+                <span class="face-biometric-indicator" [class.is-active]="u.faceBiometricRegistered"></span>
+                <div>
+                  <div class="face-biometric-title">
+                    {{ u.faceBiometricRegistered ? 'Enrolled and linked to Keycloak' : 'Not enrolled yet' }}
+                  </div>
+                  <p class="face-biometric-copy">
+                    Capture one clear face photo. The derived face hash is stored on your account and synced to Keycloak.
+                  </p>
+                </div>
+              </div>
+
+              <div class="face-biometric-actions">
+                <button type="button" class="btn btn-primary" (click)="openFaceBiometricDialog()" [disabled]="faceBiometricSaving">
+                  {{ faceBiometricSaving ? 'Saving...' : (u.faceBiometricRegistered ? 'Replace Face Login' : 'Enroll Face Login') }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-ghost"
+                  *ngIf="u.faceBiometricRegistered"
+                  (click)="onRemoveFaceBiometric()"
+                  [disabled]="faceBiometricSaving"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="profile-panel" *ngIf="u.role === 'ENTERPRISE_USER' || u.companyName || u.enterpriseCompanyId">
+            <h2 class="profile-panel-title">Enterprise</h2>
+            <div class="info-list">
+              <div class="info-row" *ngIf="u.companyName">
+                <span class="info-key">Company</span>
+                <span class="info-value">{{ u.companyName }}</span>
+              </div>
+              <div class="info-row" *ngIf="u.enterpriseCompanyId">
+                <span class="info-key">Company ID</span>
+                <span class="info-value mono">{{ u.enterpriseCompanyId }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">Verification</span>
+                <span class="info-value" [class.ok]="u.enterpriseVerified" [class.warn]="!u.enterpriseVerified">
+                  {{ u.enterpriseVerified ? 'Verified' : 'Pending admin verification' }}
+                </span>
+              </div>
+              <div class="info-row" *ngIf="u.enterpriseOnboardedAt">
+                <span class="info-key">Onboarded</span>
+                <span class="info-value">{{ u.enterpriseOnboardedAt | date:'MMM yyyy' }}</span>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+        <main class="main-column">
+          <section class="profile-panel profile-panel-form">
+            <div class="profile-panel-head">
+              <div>
+                <h2 class="profile-panel-title">Edit Profile</h2>
+                <p class="profile-panel-subtitle">Update your public and account details. Date of birth auto-calculates age.</p>
+              </div>
+              <div class="head-actions">
+                <button type="button" class="btn btn-ghost" (click)="resetFormFields()">Reset</button>
+                <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="saving || avatarUploading">
+                  {{ avatarUploading ? 'Uploading image...' : (saving ? 'Saving...' : 'Save Changes') }}
+                </button>
+              </div>
+            </div>
+
+            <div class="form-errors" *ngIf="profileValidationErrors.length">
+              <div class="form-error-item" *ngFor="let err of profileValidationErrors">{{ err }}</div>
+            </div>
+
+            <form
+              id="profile-edit-form"
+              class="edit-form"
+              #profileForm="ngForm"
+              (ngSubmit)="onSave()"
+              (input)="onProfileFormChanged()"
+              (change)="onProfileFormChanged()"
+              novalidate
+            >
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="firstName">First name</label>
+                  <input id="firstName" type="text" [(ngModel)]="editModel.firstName" name="firstName" placeholder="First name" maxlength="60" pattern="[A-Za-z '-]{1,60}" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('firstName')">{{ getProfileFieldError('firstName') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="lastName">Last name</label>
+                  <input id="lastName" type="text" [(ngModel)]="editModel.lastName" name="lastName" placeholder="Last name" maxlength="60" pattern="[A-Za-z '-]{1,60}" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('lastName')">{{ getProfileFieldError('lastName') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="username">Username</label>
+                  <input
+                    id="username"
+                    type="text"
+                    [(ngModel)]="editModel.username"
+                    name="username"
+                    placeholder="Username"
+                    required
+                    minlength="3"
+                    maxlength="30"
+                    pattern="[A-Za-z0-9._-]{3,30}"
+                  />
+                  <small class="field-error" *ngIf="hasProfileFieldError('username')">{{ getProfileFieldError('username') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="age">Age</label>
+                  <input
+                    id="age"
+                    type="number"
+                    [(ngModel)]="editModel.age"
+                    name="age"
+                    placeholder="Age"
+                    min="0"
+                    max="120"
+                    step="1"
+                    [readonly]="!!editModel.dateOfBirth"
+                  />
+                  <small *ngIf="editModel.dateOfBirth">Auto-calculated from date of birth.</small>
+                  <small class="field-error" *ngIf="hasProfileFieldError('age')">{{ getProfileFieldError('age') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="dateOfBirth">Date of birth</label>
+                  <input
+                    id="dateOfBirth"
+                    type="date"
+                    [(ngModel)]="editModel.dateOfBirth"
+                    (ngModelChange)="onDateOfBirthChange($event)"
+                    [max]="maxBirthDate"
+                    name="dateOfBirth"
+                  />
+                  <small class="field-error" *ngIf="hasProfileFieldError('dateOfBirth')">{{ getProfileFieldError('dateOfBirth') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="sex">Sex</label>
+                  <select id="sex" [(ngModel)]="editModel.sex" name="sex">
+                    <option value="">Select</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                  <small class="field-error" *ngIf="hasProfileFieldError('sex')">{{ getProfileFieldError('sex') }}</small>
+                </div>
+
+                <div class="form-field full">
+                  <label for="address">Address</label>
+                  <input id="address" type="text" [(ngModel)]="editModel.address" name="address" placeholder="Street address" maxlength="180" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('address')">{{ getProfileFieldError('address') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="city">City</label>
+                  <input id="city" type="text" [(ngModel)]="editModel.city" name="city" placeholder="City" maxlength="80" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('city')">{{ getProfileFieldError('city') }}</small>
+                </div>
+
+                <div class="form-field">
+                  <label for="country">Country</label>
+                  <input id="country" type="text" [(ngModel)]="editModel.country" name="country" placeholder="Country" maxlength="80" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('country')">{{ getProfileFieldError('country') }}</small>
+                </div>
+
+                <div class="form-field full">
+                  <label for="profilePicture">Profile picture URL (optional)</label>
+                  <input
+                    id="profilePicture"
+                    type="text"
+                    [(ngModel)]="editModel.profilePicture"
+                    name="profilePicture"
+                    placeholder="https://example.com/photo.jpg"
+                    maxlength="2048"
+                  />
+                  <small>You can paste an image URL or use the camera button to upload an image to the server.</small>
+                  <small class="field-error" *ngIf="hasProfileFieldError('profilePicture')">{{ getProfileFieldError('profilePicture') }}</small>
+                </div>
+
+                <div class="form-field full" *ngIf="u.role === 'ENTERPRISE_USER'">
+                  <label for="companyName">Company name</label>
+                  <input id="companyName" type="text" [(ngModel)]="editModel.companyName" name="companyName" placeholder="Company name" required minlength="2" maxlength="120" />
+                  <small class="field-error" *ngIf="hasProfileFieldError('companyName')">{{ getProfileFieldError('companyName') }}</small>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-ghost" (click)="resetFormFields()">Reset changes</button>
+                <button type="submit" class="btn btn-primary" [disabled]="saving || avatarUploading || profileForm.invalid">
+                  {{ avatarUploading ? 'Uploading image...' : (saving ? 'Saving...' : 'Save profile') }}
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="profile-panel">
+            <div class="profile-panel-head">
+              <div>
+                <h2 class="profile-panel-title">Change Password</h2>
+                <p class="profile-panel-subtitle">Set a new password and confirm it. Current password is not requested in this screen.</p>
+              </div>
+            </div>
+
+            <form class="password-form" #passwordForm="ngForm" (ngSubmit)="onChangePassword()" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="newPwd">New password</label>
+                  <input
+                    id="newPwd"
+                    type="password"
+                    [(ngModel)]="passwordModel.newPwd"
+                    name="newPwd"
+                    placeholder="Enter new password"
+                    required
+                    minlength="8"
+                    maxlength="128"
+                  />
+                </div>
+                <div class="form-field">
+                  <label for="confirmPwd">Confirm password</label>
+                  <input
+                    id="confirmPwd"
+                    type="password"
+                    [(ngModel)]="passwordModel.confirmPwd"
+                    name="confirmPwd"
+                    placeholder="Confirm new password"
+                    required
+                    minlength="8"
+                    maxlength="128"
+                  />
+                </div>
+              </div>
+              <div class="form-errors" *ngIf="passwordValidationError">
+                <div class="form-error-item">{{ passwordValidationError }}</div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-secondary" [disabled]="passwordForm.invalid || changingPassword">
+                  {{ changingPassword ? 'Updating...' : 'Update Password' }}
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <section class="profile-panel">
+            <div class="profile-panel-head">
+              <div>
+                <h2 class="profile-panel-title">Warnings</h2>
+                <p class="profile-panel-subtitle">Moderation warnings issued to your account are listed here.</p>
+              </div>
+              <span class="panel-count" *ngIf="!warningsLoading">{{ warnings.length }}</span>
+            </div>
+
+            <div *ngIf="warningsLoading" class="profile-empty-state">Loading warnings...</div>
+            <div *ngIf="!warningsLoading && warningsLoadFailed" class="profile-empty-state profile-empty-state-error">
+              Could not load warnings right now.
+            </div>
+            <div *ngIf="!warningsLoading && !warningsLoadFailed && !warnings.length" class="profile-empty-state">
+              No warnings on your account.
+            </div>
+
+            <div *ngIf="!warningsLoading && warnings.length" class="warning-list">
+              <article class="warning-item" *ngFor="let warning of warnings">
+                <div class="warning-item-top">
+                  <span class="warning-severity" [ngClass]="'severity-' + (warning.severity || 'info').toLowerCase()">
+                    {{ warning.severity || 'INFO' }}
+                  </span>
+                  <span class="warning-date">{{ warning.issuedDate ? (warning.issuedDate | date:'MMM d, y, HH:mm') : 'Date unavailable' }}</span>
+                </div>
+                <p class="warning-reason">{{ warning.reason }}</p>
+                <div class="warning-meta" *ngIf="warning.issuedBy">Issued by {{ warning.issuedBy }}</div>
+              </article>
+            </div>
+          </section>
+
+          <section class="profile-panel" *ngIf="isUserRestricted() || appeals.length || appealsLoading || appealsLoadFailed">
+            <div class="profile-panel-head">
+              <div>
+                <h2 class="profile-panel-title">Ban Appeal</h2>
+                <p class="profile-panel-subtitle">
+                  {{ isUserRestricted() ? 'If your account is restricted, you can submit an appeal for admin review.' : 'Appeal history for your account.' }}
+                </p>
+              </div>
+            </div>
+
+            <div class="appeal-status-banner" *ngIf="isUserRestricted()">
+              <div class="appeal-status-title">Account restricted</div>
+              <div *ngIf="u.reasonForBan">{{ u.reasonForBan }}</div>
+              <div *ngIf="u.lockedUntil">Locked until {{ u.lockedUntil | date:'MMM d, y, HH:mm' }}</div>
+            </div>
+
+            <form class="appeal-form" #appealForm="ngForm" (ngSubmit)="onSubmitBanAppeal()" *ngIf="isUserRestricted()" novalidate>
+              <label class="appeal-label" for="appealDescription">Appeal description</label>
+              <textarea
+                id="appealDescription"
+                class="appeal-textarea"
+                [(ngModel)]="appealDescription"
+                name="appealDescription"
+                rows="4"
+                placeholder="Explain why your restriction should be reviewed."
+                required
+                minlength="10"
+                maxlength="1000"
+                [disabled]="appealSubmitting || hasPendingAppeal()"
+              ></textarea>
+              <div class="form-errors" *ngIf="appealValidationError">
+                <div class="form-error-item">{{ appealValidationError }}</div>
+              </div>
+              <div class="appeal-form-meta">
+                <span *ngIf="hasPendingAppeal()" class="appeal-note">You already have a pending appeal.</span>
+                <span *ngIf="!hasPendingAppeal()" class="appeal-note">Be specific and respectful to speed up review.</span>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="!canSubmitAppeal() || appealForm.invalid">
+                  {{ appealSubmitting ? 'Submitting...' : (hasPendingAppeal() ? 'Appeal Pending' : 'Submit Appeal') }}
+                </button>
+              </div>
+            </form>
+
+            <div *ngIf="appealsLoading" class="profile-empty-state">Loading appeal history...</div>
+            <div *ngIf="!appealsLoading && appealsLoadFailed" class="profile-empty-state profile-empty-state-error">
+              Could not load ban appeals right now.
+            </div>
+            <div *ngIf="!appealsLoading && !appealsLoadFailed && !appeals.length" class="profile-empty-state">
+              No appeals submitted yet.
+            </div>
+
+            <div *ngIf="!appealsLoading && appeals.length" class="appeal-history-list">
+              <article class="appeal-history-item" *ngFor="let appeal of appeals">
+                <div class="appeal-history-head">
+                  <span class="appeal-status-pill" [ngClass]="'appeal-status-' + (appeal.appealStatus || 'pending').toLowerCase()">
+                    {{ appeal.appealStatus || 'PENDING' }}
+                  </span>
+                  <span class="appeal-date">
+                    {{ appeal.submittedDate ? (appeal.submittedDate | date:'MMM d, y, HH:mm') : 'Date unavailable' }}
+                  </span>
+                </div>
+                <p class="appeal-description">{{ appeal.description }}</p>
+                <div class="appeal-history-meta" *ngIf="appeal.resolvedDate || appeal.reviewedBy">
+                  <span *ngIf="appeal.reviewedBy">Reviewed by {{ appeal.reviewedBy }}</span>
+                  <span *ngIf="appeal.resolvedDate">Resolved {{ appeal.resolvedDate | date:'MMM d, y, HH:mm' }}</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="profile-panel profile-danger-panel">
+            <div class="profile-panel-head">
+              <div>
+                <h2 class="profile-panel-title">Danger Zone</h2>
+                <p class="profile-panel-subtitle">Deleting your account is permanent and cannot be undone.</p>
+              </div>
+            </div>
+            <div class="danger-actions">
+              <button type="button" class="btn btn-danger" (click)="onDeleteAccount()">Delete Account</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #profileLoading>
+    <div class="profile-shell">
+      <div class="loading-card">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <div>
+          <h2>Loading profile...</h2>
+          <p>Please wait while we fetch your account information.</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<div class="toast" [class.show]="toastVisible" [class.toast-error]="toastError">
+  {{ toastMessage }}
+</div>
+
+<app-face-capture-dialog
+  *ngIf="faceDialogOpen"
+  title="Enroll face login"
+  subtitle="Capture a clear front-facing photo so future sign-ins can establish a Keycloak session from your face biometric."
+  confirmLabel="Save face login"
+  [busy]="faceBiometricSaving"
+  (canceled)="closeFaceBiometricDialog()"
+  (confirmed)="onFaceBiometricCaptured($event)"
+></app-face-capture-dialog>

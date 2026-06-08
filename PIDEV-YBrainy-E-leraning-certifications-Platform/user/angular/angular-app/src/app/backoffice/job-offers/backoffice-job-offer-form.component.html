@@ -1,0 +1,160 @@
+<div id="main-wrapper" class="show wallet-open active">
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr" style="max-height: 60px; max-width: 200px; width: auto; height: auto; object-fit: contain;">
+      <div class="brand-title">
+        <h3 style="color: white; margin: 0; font-size: 24px; font-weight: bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control"><div class="hamburger"><span class="line"></span><span class="line"></span><span class="line"></span></div></div>
+  </div>
+
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left"><div class="dashboard_bar">{{ mode === 'create' ? 'New Job Offer' : 'Edit Job Offer' }}</div></div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-symbols-outlined">home</i><span class="nav-text">Dashboard</span></a><ul aria-expanded="false"><li><a routerLink="/dashboard">Dashboard Page</a></li><li><a href="javascript:void(0)">Finance</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-symbols-outlined">school</i><span class="nav-text">Student</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">Student</a></li><li><a href="javascript:void(0)">Student Detail</a></li><li><a href="javascript:void(0)">Add New Student</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-symbols-outlined">person</i><span class="nav-text">Teacher</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">Teacher</a></li><li><a href="javascript:void(0)">Teacher Detail</a></li><li><a href="javascript:void(0)">Add New Teacher</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">work</i><span class="nav-text">Jobs</span></a><ul aria-expanded="false"><li><a routerLink="/dashboard/job-offers">Job Offers</a></li><li><a routerLink="/dashboard/job-offers/new">Add New Offre</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">business_center</i><span class="nav-text">Business</span></a><ul aria-expanded="false"><li><a routerLink="/dashboard/partners">Partners</a></li><li><a routerLink="/dashboard/partners/new">Add New Partner</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">shopping_cart</i><span class="nav-text">Shop</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">E-Learning Packs</a></li><li><a href="javascript:void(0)">Order</a></li><li><a href="javascript:void(0)">Checkout</a></li><li><a href="javascript:void(0)">Invoice</a></li><li><a href="javascript:void(0)">Customers</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-symbols-outlined">school</i><span class="nav-text">Courses</span></a><ul aria-expanded="false"><li><a routerLink="/dashboard/courses">All Courses</a></li><li><a routerLink="/dashboard/lessons">Lessons</a></li><li><a routerLink="/dashboard/calendar">Calendar</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">verified</i><span class="nav-text">Assessment &amp; Certification</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">Certifications</a></li><li><a href="javascript:void(0)">Quiz Assessments</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">assessment</i><span class="nav-text">Reports</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">Student Reports</a></li><li><a href="javascript:void(0)">Teacher Reports</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">assignment_ind</i><span class="nav-text">Applications</span></a><ul aria-expanded="false"><li><a routerLink="/dashboard/applications">All Applications</a></li><li><a routerLink="/dashboard/applications/evaluate">Evaluate Applications</a></li></ul></li>
+        <li><a routerLink="/dashboard/cv-submissions" aria-expanded="false"><i class="material-icons">contact_page</i><span class="nav-text">CV Submissions</span></a></li>
+        <li><a routerLink="/dashboard/ai-application" aria-expanded="false"><i class="material-icons">auto_awesome</i><span class="nav-text">AI Builder</span></a></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">folder</i><span class="nav-text">File Manager</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">File Manager</a></li><li><a href="javascript:void(0)">User</a></li><li><a href="javascript:void(0)">Calendar</a></li><li><a href="javascript:void(0)">Chat</a></li><li><a href="javascript:void(0)">Activity</a></li></ul></li>
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false"><i class="material-icons">app_registration</i><span class="nav-text">Apps</span></a><ul aria-expanded="false"><li><a href="javascript:void(0)">Profile</a></li><li><a href="javascript:void(0)">Edit Profile</a></li><li><a href="javascript:void(0)">Post Details</a></li></ul></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="bo-wrap">
+        <div class="bo-top">
+          <div>
+            <h1>{{ title }}</h1>
+            <p class="muted">Entreprise partenaire + details offre + image upload.</p>
+          </div>
+          <div class="actions">
+            <button class="btn" type="button" (click)="cancel()" [disabled]="saving">Retour</button>
+            <button class="btn primary" type="button" (click)="save()" [disabled]="saving">{{ saving ? 'Enregistrement...' : 'Enregistrer' }}</button>
+          </div>
+        </div>
+
+        <div class="card" *ngIf="partners.length > 0; else noPartners">
+          <p class="error" *ngIf="saveError">{{ saveError }}</p>
+          <div class="grid">
+            <label class="field">
+              <span class="label">Entreprise *</span>
+              <select class="select" [formControl]="form.controls.partnershipId">
+                <option *ngFor="let p of partners" [value]="p.id">{{ p.name }}</option>
+              </select>
+              <span class="error" *ngIf="form.controls.partnershipId.touched && form.controls.partnershipId.invalid">Entreprise obligatoire.</span>
+            </label>
+
+            <label class="field">
+              <span class="label">Type *</span>
+              <select class="select" [formControl]="form.controls.contractType">
+                <option *ngFor="let t of contractTypes" [ngValue]="t">{{ t }}</option>
+              </select>
+            </label>
+
+            <label class="field full">
+              <span class="label">Titre *</span>
+              <input class="input" type="text" [formControl]="form.controls.title" placeholder="Ex: Stage Developpeur Angular" />
+              <span class="error" *ngIf="form.controls.title.touched && form.controls.title.hasError('required')">Titre obligatoire.</span>
+              <span class="error" *ngIf="form.controls.title.touched && form.controls.title.hasError('minlength')">Minimum 2 caracteres.</span>
+            </label>
+
+            <label class="field">
+              <span class="label">Lieu *</span>
+              <div class="location-picker">
+                <input class="input" type="text" [formControl]="locationSearchControl" (focus)="onLocationFocus()" (blur)="onLocationBlur()" placeholder="Rechercher ville/pays (ex: Tunis, France...)" />
+                <div class="location-dropdown" *ngIf="showLocationDropdown">
+                  <button class="location-item" type="button" *ngFor="let loc of filteredLocations" (mousedown)="selectLocation(loc)">
+                    <span class="location-flag">{{ loc.flag }}</span>
+                    <span>{{ loc.city }}, {{ loc.country }}</span>
+                  </button>
+                  <div class="location-empty" *ngIf="filteredLocations.length === 0">Aucun resultat</div>
+                </div>
+              </div>
+              <span class="error" *ngIf="form.controls.location.touched && form.controls.location.hasError('required')">Lieu obligatoire.</span>
+              <span class="error" *ngIf="form.controls.location.touched && form.controls.location.hasError('minlength')">Minimum 2 caracteres.</span>
+            </label>
+
+            <label class="field">
+              <span class="label">Salaire / Range *</span>
+              <input class="input" type="text" [formControl]="form.controls.salaryRange" placeholder="Ex: 1200-1800 TND" />
+              <span class="error" *ngIf="form.controls.salaryRange.touched && form.controls.salaryRange.hasError('required')">Salaire obligatoire.</span>
+              <span class="error" *ngIf="form.controls.salaryRange.touched && form.controls.salaryRange.hasError('pattern')">Format invalide (ex: 1200-1800 TND ou 1500 TND).</span>
+            </label>
+
+            <label class="field full">
+              <span class="label">Competences (separees par virgule) *</span>
+              <input class="input" type="text" [formControl]="form.controls.skillsCsv" placeholder="Angular, TypeScript, REST..." />
+              <span class="error" *ngIf="form.controls.skillsCsv.touched && form.controls.skillsCsv.hasError('required')">Competences obligatoires.</span>
+              <span class="error" *ngIf="form.controls.skillsCsv.touched && form.controls.skillsCsv.hasError('minlength')">Minimum 2 caracteres.</span>
+            </label>
+
+            <label class="field full">
+              <span class="label">Description *</span>
+              <textarea class="textarea" rows="6" [formControl]="form.controls.description" placeholder="Details de l'offre..."></textarea>
+              <span class="error" *ngIf="form.controls.description.touched && form.controls.description.hasError('required')">Description obligatoire.</span>
+              <span class="error" *ngIf="form.controls.description.touched && form.controls.description.hasError('minlength')">Minimum 10 caracteres.</span>
+            </label>
+
+            <label class="field">
+              <span class="label">Deadline *</span>
+              <input class="input" type="date" [formControl]="form.controls.deadline" [min]="minDeadline" (click)="openDeadlinePicker($event)" />
+              <span class="error" *ngIf="form.controls.deadline.touched && form.controls.deadline.hasError('required')">Deadline obligatoire.</span>
+              <span class="error" *ngIf="form.controls.deadline.touched && form.controls.deadline.hasError('notFutureDate')">La deadline doit etre une date future.</span>
+              <span class="error" *ngIf="form.controls.deadline.touched && form.controls.deadline.hasError('invalidDate')">Date invalide.</span>
+            </label>
+
+            <label class="field">
+              <span class="label">Statut *</span>
+              <select class="select" [formControl]="form.controls.isActive">
+                <option [ngValue]="true">Active</option>
+                <option [ngValue]="false">Inactive</option>
+              </select>
+            </label>
+
+            <div class="field full">
+              <div class="label">Image (upload)</div>
+              <div class="uploader">
+                <input type="file" accept="image/*" (change)="onImageSelected($event)" />
+                <div class="preview" *ngIf="previewImage"><img [src]="previewImage" alt="image preview" /></div>
+                <div class="muted" *ngIf="!previewImage">Aucune image.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noPartners>
+          <div class="empty">
+            <h2>Ajoute d'abord un partenaire</h2>
+            <p class="muted">Une offre doit etre liee a une entreprise partenaire.</p>
+            <a class="btn primary" routerLink="/dashboard/partners/new">Creer un partenaire</a>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

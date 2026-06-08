@@ -1,0 +1,244 @@
+<!-- ── Messaging Layout ───────────────────────────────────────────────────── -->
+<div class="msg-wrap">
+
+  <!-- ── Left Sidebar: Conversations ──────────────────────────────────────── -->
+  <aside class="msg-sidebar" [class.msg-sidebar--hidden]="activePartner">
+
+    <div class="msg-sidebar-header">
+      <h2 class="msg-sidebar-title">💬 Messages</h2>
+      <button class="msg-new-btn" (click)="openNewMsg()" title="New conversation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        New
+      </button>
+    </div>
+
+    <div class="msg-search-wrap">
+      <span class="msg-search-icon">🔍</span>
+      <input class="msg-search" [(ngModel)]="convSearch" placeholder="Search conversations…">
+    </div>
+
+    <!-- Conversation List -->
+    <div class="msg-conv-list">
+      <div *ngIf="loading" class="msg-conv-loading">Loading…</div>
+
+      <div *ngIf="!loading && filteredConversations.length === 0" class="msg-conv-empty">
+        <div class="msg-conv-empty-icon">💬</div>
+        <p>No conversations yet</p>
+        <button class="msg-start-btn-sm" (click)="openNewMsg()">Start one</button>
+      </div>
+
+      <div *ngFor="let c of filteredConversations"
+           class="msg-conv-item"
+           [class.msg-conv-item--active]="activePartner?.id === c.userId"
+           (click)="openChat(c.userId)">
+
+        <div class="msg-avatar" [style.background]="getAvatarBg(c.username)">
+          {{ getInitials(c.username) }}
+        </div>
+
+        <div class="msg-conv-content">
+          <div class="msg-conv-row1">
+            <span class="msg-conv-name">{{ c.username }}</span>
+            <span class="msg-conv-time">{{ formatTime(c.lastMessageAt) }}</span>
+          </div>
+          <div class="msg-conv-row2">
+            <span class="msg-role-badge" [class]="'msg-role-' + (c.role || 'student').toLowerCase()">
+              {{ getRoleEmoji(c.role) }} {{ c.role || 'STUDENT' }}
+            </span>
+            <span class="msg-level-pill">Lv.{{ c.level }}</span>
+          </div>
+          <div class="msg-conv-row3">
+            <span class="msg-conv-preview">
+              <span *ngIf="c.sentByMe" class="msg-conv-you">You: </span>{{ c.lastMessage }}
+            </span>
+            <span class="msg-unread-badge" *ngIf="c.unreadCount > 0">
+              {{ c.unreadCount > 99 ? '99+' : c.unreadCount }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Right Panel: Chat or Empty State ──────────────────────────────────── -->
+  <main class="msg-main">
+
+    <!-- Empty State -->
+    <div *ngIf="!activePartner" class="msg-empty-state">
+      <div class="msg-empty-icon">💬</div>
+      <h3>Your Messages</h3>
+      <p>Select a conversation or start a new one to begin chatting</p>
+      <button class="msg-cta-btn" (click)="openNewMsg()">
+        ✏️ New Message
+      </button>
+    </div>
+
+    <!-- Active Chat -->
+    <ng-container *ngIf="activePartner">
+
+      <!-- Chat Header -->
+      <div class="msg-chat-header">
+        <button class="msg-back-btn" (click)="router.navigate(['/messages'])">
+          ←
+        </button>
+        <div class="msg-chat-avatar" [style.background]="getAvatarBg(activePartner.username)">
+          {{ getInitials(activePartner.username) }}
+        </div>
+        <div class="msg-chat-info">
+          <div class="msg-chat-name">{{ activePartner.username }}</div>
+          <div class="msg-chat-meta">
+            <span class="msg-role-badge" [class]="'msg-role-' + (activePartner.role || 'student').toLowerCase()">
+              {{ getRoleEmoji(activePartner.role) }} {{ activePartner.role || 'STUDENT' }}
+            </span>
+            <span class="msg-level-pill">⭐ Lv.{{ activePartner.level }}</span>
+            <span class="msg-level-title">{{ activePartner.levelTitle }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Bubbles -->
+      <div class="msg-bubbles" #bubblesEl>
+        <div *ngIf="msgLoading" class="msg-bubbles-loading">Loading messages…</div>
+        <div *ngIf="!msgLoading && messages.length === 0" class="msg-bubbles-empty">
+          Say hi to {{ activePartner.username }}! 👋
+        </div>
+
+        <ng-container *ngFor="let msg of messages; let i = index">
+
+          <!-- Date Separator -->
+          <div *ngIf="showDateSep(msg, i)" class="msg-date-sep">
+            <span>{{ getDateLabel(msg.createdAt) }}</span>
+          </div>
+
+          <!-- Message Row -->
+          <div class="msg-row"
+               [class.msg-row--sent]="msg.senderId === currentUserId"
+               [class.msg-row--received]="msg.senderId !== currentUserId">
+
+            <!-- Received: avatar on left -->
+            <div *ngIf="msg.senderId !== currentUserId"
+                 class="msg-bubble-avatar"
+                 [style.background]="getAvatarBg(msg.senderUsername)"
+                 [title]="msg.senderUsername">
+              {{ getInitials(msg.senderUsername) }}
+            </div>
+
+            <!-- Bubble -->
+            <div class="msg-bubble"
+                 [class.msg-bubble--sent]="msg.senderId === currentUserId"
+                 [class.msg-bubble--received]="msg.senderId !== currentUserId">
+
+              <!-- Image attachment -->
+              <img *ngIf="msg.mediaType === 'image'"
+                   [src]="mediaUrl(msg.mediaUrl)"
+                   class="msg-media-img"
+                   (click)="viewImage(mediaUrl(msg.mediaUrl!))"
+                   alt="Image">
+
+              <!-- File attachment -->
+              <a *ngIf="msg.mediaType === 'file'"
+                 [href]="mediaUrl(msg.mediaUrl)"
+                 target="_blank"
+                 class="msg-file-chip">
+                📎 Download file
+              </a>
+
+              <!-- Text content -->
+              <div *ngIf="msg.content" class="msg-bubble-text">{{ msg.content }}</div>
+
+              <!-- Time -->
+              <div class="msg-bubble-time">{{ formatTimeShort(msg.createdAt) }}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Pending Media Preview -->
+      <div *ngIf="pendingMedia || uploadingFile" class="msg-media-preview">
+        <ng-container *ngIf="!uploadingFile && pendingMedia">
+          <img *ngIf="pendingMedia.type === 'image'" [src]="mediaUrl(pendingMedia.url)" class="msg-preview-thumb" alt="">
+          <span *ngIf="pendingMedia.type === 'file'" class="msg-preview-file">📎 {{ pendingMedia.name }}</span>
+          <button class="msg-preview-remove" (click)="clearMedia()">✕</button>
+        </ng-container>
+        <span *ngIf="uploadingFile" class="msg-uploading">Uploading…</span>
+      </div>
+
+      <!-- Emoji Picker -->
+      <div *ngIf="showEmojiPicker" class="msg-emoji-picker">
+        <div class="msg-emoji-grid">
+          <button *ngFor="let e of EMOJIS" class="msg-emoji-btn" (click)="insertEmoji(e)">{{ e }}</button>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="msg-input-area">
+        <input #fileInputEl type="file" style="display:none"
+               accept="image/*,.pdf,.doc,.docx,.txt,.zip,.log"
+               (change)="onFilePicked($event)">
+
+        <button class="msg-btn-icon msg-btn-emoji" (click)="toggleEmojiPicker()" title="Emoji">
+          😊
+        </button>
+        <button class="msg-btn-icon" (click)="openFilePicker()" title="Attach file" [disabled]="uploadingFile">
+          📎
+        </button>
+
+        <textarea #msgInputEl
+                  class="msg-input"
+                  [(ngModel)]="inputText"
+                  (keydown)="onKeydown($event)"
+                  placeholder="Type a message… (Enter to send, Shift+Enter for newline)"
+                  rows="1">
+        </textarea>
+
+        <button class="msg-send-btn" (click)="send()" [disabled]="!canSend" title="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+    </ng-container>
+  </main>
+</div>
+
+<!-- ── New Message Modal ───────────────────────────────────────────────────── -->
+<div *ngIf="showNewMsgModal" class="msg-modal-overlay" (click)="closeNewMsg()">
+  <div class="msg-modal" (click)="$event.stopPropagation()">
+    <div class="msg-modal-header">
+      <h3>New Message</h3>
+      <button class="msg-modal-close" (click)="closeNewMsg()">✕</button>
+    </div>
+    <input class="msg-modal-search" [(ngModel)]="userSearch" placeholder="Search users…" autofocus>
+    <div class="msg-modal-list">
+      <div *ngFor="let u of filteredUsers" class="msg-modal-user" (click)="startChat(u.id)">
+        <div class="msg-avatar" [style.background]="getAvatarBg(u.username)">
+          {{ getInitials(u.username) }}
+        </div>
+        <div class="msg-modal-info">
+          <div class="msg-modal-username">{{ u.username }}</div>
+          <div class="msg-modal-badges">
+            <span class="msg-role-badge" [class]="'msg-role-' + (u.role || 'student').toLowerCase()">
+              {{ getRoleEmoji(u.role) }} {{ u.role || 'STUDENT' }}
+            </span>
+            <span class="msg-level-pill">⭐ Lv.{{ u.level }}</span>
+            <span class="msg-level-title">{{ u.levelTitle }}</span>
+          </div>
+        </div>
+        <span class="msg-modal-arrow">→</span>
+      </div>
+      <div *ngIf="filteredUsers.length === 0" class="msg-modal-empty">No users found</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Image Viewer ────────────────────────────────────────────────────────── -->
+<div *ngIf="showImageViewer" class="msg-img-viewer" (click)="closeImageViewer()">
+  <img [src]="viewerImageUrl" class="msg-img-viewer-img" (click)="$event.stopPropagation()" alt="">
+  <button class="msg-img-viewer-close" (click)="closeImageViewer()">✕</button>
+</div>

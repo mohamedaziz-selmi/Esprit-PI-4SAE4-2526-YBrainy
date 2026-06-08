@@ -1,0 +1,299 @@
+<!-- Preloader -->
+<div id="preloader" style="display: none;">
+  <div class="sk-three-bounce">
+    <div class="sk-child sk-bounce1"></div>
+    <div class="sk-child sk-bounce2"></div>
+    <div class="sk-child sk-bounce3"></div>
+  </div>
+</div>
+
+<div id="main-wrapper" style="opacity:1 !important; visibility:visible !important; display:block !important;">
+
+  <!-- Nav header -->
+  <div class="nav-header">
+    <a routerLink="/dashboard" class="brand-logo">
+      <img src="assets/backoffice/images/logo-full.png" alt="Logo" class="logo-abbr"
+        style="max-height:60px; max-width:200px; width:auto; height:auto; object-fit:contain;">
+      <div class="brand-title">
+        <h3 style="color:white; margin:0; font-size:24px; font-weight:bold;">YBrainy</h3>
+      </div>
+    </a>
+    <div class="nav-control">
+      <div class="hamburger">
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="22" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="11" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect y="11" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect x="22" y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+          <rect y="22" width="4" height="4" rx="2" fill="#2A353A"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top header -->
+  <div class="header">
+    <div class="header-content">
+      <nav class="navbar navbar-expand">
+        <div class="collapse navbar-collapse justify-content-between">
+          <div class="header-left">
+            <div class="dashboard_bar">My Profile</div>
+          </div>
+          <ul class="navbar-nav header-right">
+            <li class="nav-item">
+              <a routerLink="/dashboard" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="dlabnav">
+    <div class="dlabnav-scroll">
+      <ul class="metismenu" id="menu">
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">home</i>
+            <span class="nav-text">Dashboard</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard">Dashboard Page</a></li>
+            <li><a routerLink="/dashboard/finance">Finance</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Student</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/students">Students</a></li>
+            <li><a routerLink="/dashboard/student-detail">Student Detail</a></li>
+            <li><a routerLink="/dashboard/add-student">Add New Student</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">person</i>
+            <span class="nav-text">Teacher</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/teachers">Teachers</a></li>
+            <li><a routerLink="/dashboard/teacher-detail">Teacher Detail</a></li>
+            <li><a routerLink="/dashboard/add-teacher">Add New Teacher</a></li>
+          </ul>
+        </li>
+
+        <li><a routerLink="/dashboard/packs">
+            <i class="material-icons">shopping_cart</i>
+            <span class="nav-text">Shop</span>
+          </a>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-symbols-outlined">school</i>
+            <span class="nav-text">Courses</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/courses">All Courses</a></li>
+            <li><a routerLink="/dashboard/lessons">Lessons</a></li>
+            <li><a routerLink="/dashboard/calendar">Calendar</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">verified</i>
+            <span class="nav-text">Assessment &amp; Certification</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/certifications">Certifications</a></li>
+            <li><a routerLink="/dashboard/quiz">Quiz Assessments</a></li>
+          </ul>
+        </li>
+
+        <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">
+            <i class="material-icons">assessment</i>
+            <span class="nav-text">Reports</span>
+          </a>
+          <ul aria-expanded="false">
+            <li><a routerLink="/dashboard/student-reports">Student Reports</a></li>
+            <li><a routerLink="/dashboard/teacher-reports">Teacher Reports</a></li>
+          </ul>
+        </li>
+
+        <li><a routerLink="/dashboard/cv-submissions">
+            <i class="material-icons">contact_page</i>
+            <span class="nav-text">CV Submissions</span>
+          </a>
+        </li>
+
+        <li><a routerLink="/dashboard/files">
+            <i class="material-icons">folder</i>
+            <span class="nav-text">File Manager</span>
+          </a>
+        </li>
+
+        <li><a routerLink="/dashboard/profile" class="text-primary font-w600">
+            <i class="material-icons">manage_accounts</i>
+            <span class="nav-text">My Profile</span>
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- Content body -->
+  <div class="content-body">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-xl-10 col-xxl-9">
+
+          <!-- Profile Card -->
+          <div class="profile-page-card">
+
+            <!-- Banner / avatar row -->
+            <div class="profile-banner">
+              <div class="profile-banner-overlay"></div>
+              <div class="profile-banner-content">
+
+                <!-- Avatar -->
+                <div class="profile-avatar-wrap">
+                  <div class="profile-avatar">
+                    <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Profile photo" class="profile-avatar-img">
+                    <div *ngIf="!avatarUrl" class="profile-avatar-initials">{{ userInitials }}</div>
+                  </div>
+
+                  <!-- Upload trigger -->
+                  <label class="profile-avatar-edit" for="avatarFileInput" title="Change photo">
+                    <i class="bi bi-camera-fill"></i>
+                  </label>
+                  <input id="avatarFileInput" type="file" accept="image/*" class="d-none"
+                    (change)="onAvatarFileChange($event)">
+
+                  <!-- Remove button -->
+                  <button *ngIf="avatarUrl" type="button" class="profile-avatar-remove"
+                    title="Remove photo" (click)="removeAvatar()">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
+                </div>
+
+                <div class="profile-banner-info">
+                  <h4 class="profile-display-name">{{ user?.name }}</h4>
+                  <span class="profile-role-badge">{{ user?.role }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload feedback -->
+            <div *ngIf="uploadSuccess" class="profile-feedback profile-feedback--success mx-4 mt-3">
+              <i class="bi bi-check-circle-fill"></i> Profile photo updated successfully.
+            </div>
+            <div *ngIf="uploadError" class="profile-feedback profile-feedback--error mx-4 mt-3">
+              <i class="bi bi-exclamation-triangle-fill"></i> {{ uploadError }}
+            </div>
+
+            <!-- Details grid -->
+            <div class="profile-details-grid">
+
+              <!-- User info card -->
+              <div class="profile-info-card">
+                <div class="profile-info-card-header">
+                  <h5><i class="material-icons me-2">person</i>Account Details</h5>
+                  <button type="button" class="btn btn-sm profile-edit-btn" (click)="editMode = !editMode">
+                    <i class="bi" [ngClass]="editMode ? 'bi-x-lg' : 'bi-pencil'"></i>
+                    {{ editMode ? 'Cancel' : 'Edit' }}
+                  </button>
+                </div>
+
+                <div class="profile-info-rows">
+
+                  <!-- Display name -->
+                  <div class="profile-info-row">
+                    <label>Full Name</label>
+                    <div *ngIf="!editMode" class="profile-info-value">{{ user?.name }}</div>
+                    <div *ngIf="editMode" class="d-flex gap-2 align-items-center flex-wrap">
+                      <input type="text" class="form-control form-control-sm profile-name-input"
+                        [(ngModel)]="displayName" placeholder="Your name" maxlength="80">
+                      <button type="button" class="btn btn-sm btn-primary" (click)="saveName()">Save</button>
+                    </div>
+                  </div>
+
+                  <!-- Email (read-only) -->
+                  <div class="profile-info-row">
+                    <label>Email</label>
+                    <div class="profile-info-value">{{ user?.email }}</div>
+                  </div>
+
+                  <!-- Role (read-only) -->
+                  <div class="profile-info-row">
+                    <label>Role</label>
+                    <div class="profile-info-value">
+                      <span class="badge profile-role-pill">{{ user?.role }}</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Photo upload card -->
+              <div class="profile-info-card">
+                <div class="profile-info-card-header">
+                  <h5><i class="material-icons me-2">photo_camera</i>Profile Photo</h5>
+                </div>
+
+                <div class="profile-photo-zone">
+                  <div class="profile-photo-preview">
+                    <img *ngIf="avatarUrl" [src]="avatarUrl" alt="Current avatar" class="profile-photo-preview-img">
+                    <div *ngIf="!avatarUrl" class="profile-photo-placeholder">
+                      <i class="bi bi-person-circle"></i>
+                      <span>No photo set</span>
+                    </div>
+                  </div>
+
+                  <div class="profile-photo-actions">
+                    <label for="avatarFileInput2" class="btn btn-primary btn-sm profile-upload-btn">
+                      <i class="bi bi-upload me-1"></i>
+                      {{ avatarUrl ? 'Change Photo' : 'Upload Photo' }}
+                    </label>
+                    <input id="avatarFileInput2" type="file" accept="image/*" class="d-none"
+                      (change)="onAvatarFileChange($event)">
+                    <button *ngIf="avatarUrl" type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeAvatar()">
+                      <i class="bi bi-trash me-1"></i>Remove
+                    </button>
+                  </div>
+
+                  <p class="profile-photo-hint">
+                    JPG, PNG, or WebP · Max 4 MB · Square images look best
+                  </p>
+                </div>
+              </div>
+
+            </div><!-- /grid -->
+
+            <!-- Danger zone -->
+            <div class="profile-danger-zone">
+              <h6><i class="bi bi-shield-exclamation me-2"></i>Session</h6>
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="logout()">
+                <i class="bi bi-box-arrow-right me-1"></i>Sign Out
+              </button>
+            </div>
+
+          </div><!-- /profile-page-card -->
+
+        </div>
+      </div>
+    </div>
+  </div><!-- /content-body -->
+
+</div><!-- /main-wrapper -->

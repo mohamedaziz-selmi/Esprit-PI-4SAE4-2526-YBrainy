@@ -1,0 +1,155 @@
+<div class="theater" [class.focus]="focusMode">
+  <div class="theater-bg"></div>
+
+  <header class="theater-top">
+    <div class="theater-breadcrumb">
+      <button class="theater-link" type="button" (click)="backToCourse()">Course</button>
+      <span class="theater-sep">/</span>
+      <button class="theater-link" type="button" (click)="backToLessons()">Lessons</button>
+      <span class="theater-sep">/</span>
+      <span class="theater-title" *ngIf="lesson">{{ lesson.title }}</span>
+    </div>
+
+    <div class="theater-top-actions">
+      <button class="theater-btn reader" type="button" [disabled]="readerLoading" (click)="toggleReader()">
+        <span *ngIf="!readerLoading">{{ readerOpen ? 'Close Reader' : 'Avatar Reader' }}</span>
+        <span *ngIf="readerLoading">Loading...</span>
+      </button>
+      <button class="theater-btn ghost" type="button" (click)="toggleFocusMode()">{{ focusMode ? 'Exit Focus' : 'Focus Mode' }}</button>
+      <div class="theater-hint">Keys: &larr;/&rarr; Prev/Next &nbsp; F Focus</div>
+      <div class="theater-reader-error" *ngIf="readerError">{{ readerError }}</div>
+    </div>
+  </header>
+
+  <div class="theater-shell" *ngIf="lesson; else missing">
+    <main class="stage">
+      <div class="stage-header">
+        <div class="stage-meta">
+          <span class="stage-chip">Step {{ activeIndex + 1 }} / {{ items.length || 1 }}</span>
+          <span class="stage-chip" *ngIf="lesson.durationMinutes != null">{{ lesson.durationMinutes }} min</span>
+          <span class="stage-chip" *ngIf="activeItem">{{ activeItem.type }}</span>
+        </div>
+
+        <div class="stage-tools" *ngIf="activeItem">
+          <ng-container *ngIf="stageKind() === 'VIDEO'">
+            <label class="tool-label">Speed</label>
+            <select class="tool-select" [value]="playbackRate" (change)="setPlaybackRate(($any($event.target)).value)">
+              <option [value]="0.5">0.5x</option>
+              <option [value]="0.75">0.75x</option>
+              <option [value]="1">1x</option>
+              <option [value]="1.25">1.25x</option>
+              <option [value]="1.5">1.5x</option>
+              <option [value]="2">2x</option>
+            </select>
+          </ng-container>
+
+          <ng-container *ngIf="stageKind() === 'IMAGE'">
+            <button class="theater-btn ghost" type="button" (click)="zoomOut()">-</button>
+            <div class="tool-zoom">{{ imageZoom }}x</div>
+            <button class="theater-btn ghost" type="button" (click)="zoomIn()">+</button>
+            <button class="theater-btn ghost" type="button" (click)="resetZoom()">Reset</button>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="stage-frame" [class.liquid-a]="liquidFlip" [class.liquid-b]="!liquidFlip">
+        <ng-container [ngSwitch]="stageKind()">
+          <div *ngSwitchCase="'VIDEO'" class="stage-media">
+            <video #stageVideo class="stage-video" controls playsinline [attr.src]="activeItem ? mediaUrl(activeItem.contentUrl) : null"></video>
+          </div>
+
+          <div *ngSwitchCase="'YOUTUBE'" class="stage-media">
+            <div class="stage-embed">
+              <iframe class="stage-iframe" [src]="safeYoutubeUrl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'PDF'" class="stage-media">
+            <div class="stage-pdf">
+				  <object class="stage-pdf-object" [data]="safePdfUrl" type="application/pdf">
+					<iframe class="stage-iframe" [src]="safePdfUrl"></iframe>
+				  </object>
+            </div>
+          </div>
+
+          <div *ngSwitchCase="'IMAGE'" class="stage-media">
+            <div class="stage-lightbox">
+              <img #stageImage class="stage-image" (load)="onStageImageLoaded()"
+                   [style.transform]="'scale(' + imageZoom + ')'"
+                   [src]="activeItem ? mediaUrl(activeItem.contentUrl) : ''"
+                   [alt]="lesson.title" />
+            </div>
+          </div>
+
+          <div *ngSwitchDefault class="stage-empty">
+            <div class="stage-empty-inner">
+              <div class="stage-empty-title">No content</div>
+              <div class="stage-empty-sub">This lesson item has no supported media.</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="stage-footer">
+        <h2 class="stage-lesson-title">{{ lesson.title }}</h2>
+        <p class="stage-lesson-desc">{{ lesson.description }}</p>
+      </div>
+    </main>
+
+    <aside class="roadmap" *ngIf="!focusMode">
+      <div class="roadmap-card">
+        <div class="roadmap-head">
+          <div class="roadmap-title">Content Roadmap</div>
+          <div class="roadmap-progress">{{ progressPercent }}%</div>
+        </div>
+
+        <div class="roadmap-bar">
+          <div class="roadmap-bar-fill" [style.height]="progressPercent + '%'" ></div>
+        </div>
+
+        <div class="roadmap-list">
+          <button class="roadmap-item" type="button"
+                  *ngFor="let it of items; let idx = index"
+                  [class.active]="idx === activeIndex"
+                  (click)="setActive(idx)">
+            <div class="roadmap-dot" [class.done]="isCompleted(idx)" [class.active]="idx === activeIndex"></div>
+            <div class="roadmap-icon">{{ iconFor(it.type) }}</div>
+            <div class="roadmap-body">
+              <div class="roadmap-label">Step {{ idx + 1 }}</div>
+              <div class="roadmap-type">{{ it.type }}</div>
+            </div>
+            <div class="roadmap-check" *ngIf="isCompleted(idx)">done</div>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="fab" [class.hidden]="focusMode">
+      <button class="fab-btn" type="button" (click)="prev()" [disabled]="!canPrev">Previous</button>
+      <button class="fab-btn" type="button" (click)="next()" [disabled]="!canNext" *ngIf="!isLast">Next</button>
+      <button class="fab-btn complete" type="button" (click)="completeLesson()" *ngIf="isLast">Complete Lesson</button>
+    </div>
+
+    <div class="fab" [class.hidden]="!focusMode" style="justify-content:center;">
+      <button class="fab-btn" type="button" (click)="toggleFocusMode()">Exit Focus</button>
+    </div>
+  </div>
+
+  <ng-template #missing>
+    <div class="theater-missing">
+      <div class="theater-missing-title">Lesson not found</div>
+      <button class="theater-btn" type="button" (click)="backToLessons()">Back to Lessons</button>
+    </div>
+  </ng-template>
+
+  <div class="theater-reader-dock" *ngIf="readerOpen && readerFrameUrl">
+    <div class="theater-reader-head">
+      <div>
+        <div class="theater-reader-title">Avatar Reader</div>
+        <div class="theater-reader-sub">{{ readerSpeakerSource }}</div>
+      </div>
+      <button class="theater-reader-close" type="button" (click)="closeReader()">Close</button>
+    </div>
+    <iframe class="theater-reader-frame" [src]="readerFrameUrl" title="Lesson avatar reader"></iframe>
+  </div>
+</div>

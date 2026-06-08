@@ -1,0 +1,278 @@
+@import url('../../../assets/backoffice/css/style.css');
+
+:host { display: block; }
+
+/* ── Table ── */
+.cv-table thead th {
+  background: #f4f6ff;
+  color: #27326f;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e2e7fb;
+  padding: 0.75rem 0.9rem;
+}
+
+.cv-table tbody td {
+  padding: 0.85rem 0.9rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0f3ff;
+}
+
+.cv-row:hover { background: #f8f9ff; }
+
+.cv-index {
+  display: inline-flex;
+  min-width: 30px;
+  justify-content: center;
+  padding: 0.22rem 0.44rem;
+  border-radius: 8px;
+  background: #edf1ff;
+  color: #66739e;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+/* ── Applicant cell ── */
+.cv-applicant-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cv-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4d44b5, #6f59e8);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cv-applicant-cell strong {
+  display: block;
+  color: #111827;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.cv-applicant-cell small {
+  display: block;
+  color: #7b83a9;
+  font-size: 0.75rem;
+}
+
+/* ── ATS score bar ── */
+.cv-ats-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cv-ats-bar-wrap {
+  flex: 1;
+  min-width: 60px;
+  max-width: 80px;
+  height: 7px;
+  border-radius: 999px;
+  background: #e8edf9;
+  overflow: hidden;
+}
+
+.cv-ats-bar {
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.4s ease;
+}
+
+.cv-ats-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── Status badge ── */
+.cv-status-badge {
+  border-radius: 7px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  padding: 0.3rem 0.65rem !important;
+  text-transform: capitalize;
+}
+
+.cv-status-pending  { background: rgba(252,196,62,0.2)!important; color: #a56a00!important; }
+.cv-status-reviewed { background: rgba(77,68,181,0.12)!important; color: #4d44b5!important; }
+.cv-status-shortlisted { background: rgba(30,186,98,0.15)!important; color: #0f7a46!important; }
+.cv-status-rejected { background: rgba(253,83,83,0.12)!important; color: #c0392b!important; }
+
+/* ── Action buttons ── */
+.cv-action-btn {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px !important;
+  font-size: 0.75rem;
+}
+
+/* ── Empty state ── */
+.cv-empty-state {
+  background: #fff;
+  border: 1px dashed #d9def2;
+  border-radius: 12px;
+  padding: 2.5rem 1rem;
+  margin: 1.5rem;
+}
+
+/* ── Detail modal overlay ── */
+.cv-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1085;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(19,26,52,0.58);
+  backdrop-filter: blur(4px);
+  animation: cvOverlayIn 0.18s ease-out;
+}
+
+.cv-detail-modal {
+  width: min(720px, 100%);
+  max-height: 88vh;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid #dce3fb;
+  box-shadow: 0 24px 48px rgba(19,26,52,0.36);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  animation: cvModalIn 0.22s cubic-bezier(0.22,1,0.36,1);
+}
+
+.cv-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5eafc;
+  background: linear-gradient(135deg, rgba(77,68,181,0.08), rgba(251,125,91,0.1));
+}
+
+.cv-detail-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.cv-detail-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4d44b5, #6f59e8);
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cv-detail-header h4 {
+  margin: 0;
+  color: #1f2755;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.cv-detail-header span {
+  color: #66739e;
+  font-size: 0.84rem;
+}
+
+.cv-detail-body {
+  overflow: auto;
+  padding: 1.25rem;
+}
+
+.cv-detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cv-detail-field label {
+  color: #7b83a9;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cv-detail-field strong, .cv-detail-field span {
+  color: #1f2755;
+  font-size: 0.9rem;
+}
+
+.cv-cover-letter {
+  background: #f8f9ff;
+  border: 1px solid #e4e9f9;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  color: #374166;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 0.35rem;
+}
+
+.cv-detail-status-row label {
+  color: #7b83a9;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: block;
+}
+
+/* ── Status action buttons ── */
+.cv-status-action-btn {
+  border-radius: 8px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  border: 1px solid transparent !important;
+  transition: all 0.16s ease;
+  opacity: 0.65;
+}
+
+.cv-status-action-btn.active { opacity: 1; }
+
+.cv-status-action-btn.cv-status-pending   { border-color: #fcc43e!important; color: #a56a00!important; background: rgba(252,196,62,0.12)!important; }
+.cv-status-action-btn.cv-status-reviewed  { border-color: #4d44b5!important; color: #4d44b5!important; background: rgba(77,68,181,0.08)!important; }
+.cv-status-action-btn.cv-status-shortlisted{ border-color: #1eba62!important; color: #0f7a46!important; background: rgba(30,186,98,0.1)!important; }
+.cv-status-action-btn.cv-status-rejected  { border-color: #fd5353!important; color: #c0392b!important; background: rgba(253,83,83,0.08)!important; }
+
+.cv-status-action-btn.active.cv-status-pending    { background: #fcc43e!important; color: #fff!important; }
+.cv-status-action-btn.active.cv-status-reviewed   { background: #4d44b5!important; color: #fff!important; }
+.cv-status-action-btn.active.cv-status-shortlisted{ background: #1eba62!important; color: #fff!important; }
+.cv-status-action-btn.active.cv-status-rejected   { background: #fd5353!important; color: #fff!important; }
+
+@keyframes cvOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cvModalIn { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 767.98px) {
+  .cv-ats-bar-wrap { max-width: 50px; }
+}

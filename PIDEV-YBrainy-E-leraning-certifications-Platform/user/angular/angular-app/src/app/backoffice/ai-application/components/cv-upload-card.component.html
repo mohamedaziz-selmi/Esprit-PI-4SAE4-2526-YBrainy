@@ -1,0 +1,29 @@
+<section class="module-card fade-slide-up">
+  <header class="module-card__header">
+    <h3>{{ title }}</h3>
+    <span>Drag and drop</span>
+  </header>
+
+  <label
+    class="drop-area"
+    [class.drop-area--active]="isDragOver"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <input type="file" accept=".txt,.md,.rtf,.doc,.docx,.pdf" (change)="onFilePick($event)" />
+    <strong>Drop CV file here or click to browse</strong>
+    <small>TXT, DOC, DOCX, PDF (text extraction depends on file format)</small>
+  </label>
+
+  <p *ngIf="fileName" class="file-pill">{{ fileName }}</p>
+  <p *ngIf="errorMessage" class="error-text">{{ errorMessage }}</p>
+
+  <textarea
+    [ngModel]="cvText"
+    (ngModelChange)="onTextInput($event)"
+    placeholder="Or paste your raw CV text here..."
+  ></textarea>
+
+  <p class="char-count">{{ cvText.length }} characters</p>
+</section>

@@ -1,0 +1,932 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║  YBrainy — Full Platform Docker Compose                         ║
+# ║  Run:    docker-compose up --build                              ║
+# ║  NOTE:   Stop all PowerShell services first (port conflicts)    ║
+# ║                                                                  ║
+# ║  Gateway:  http://localhost:8088                                ║
+# ║  Eureka:   http://localhost:8761                                ║
+# ║  RabbitMQ: http://localhost:15672  (guest/guest)                ║
+# ║  Swagger:  http://localhost:8088/swagger-ui.html                ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+networks:
+  ybrainy-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  postgres-data:
+  mongodb-data:
+  rabbitmq-data:
+  course-uploads:
+  lesson-uploads:
+  user-uploads:
+  thread-uploads:
+  post-uploads:
+  messaging-uploads:
+
+services:
+
+  # ══════════════════════════════════════════════════════════════════
+  # INFRASTRUCTURE
+  # ══════════════════════════════════════════════════════════════════
+
+  mysql:
+    image: mysql:8.0
+    container_name: ybrainy-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - ybrainy-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: ybrainy-postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: ybrainy_notes
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - ybrainy-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: mongo:6
+    container_name: ybrainy-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - ybrainy-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: ybrainy-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - ybrainy-net
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  zipkin:
+    image: openzipkin/zipkin:3
+    container_name: ybrainy-zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # SERVICE REGISTRY & CONFIG
+  # ══════════════════════════════════════════════════════════════════
+
+  eureka:
+    build:
+      context: ./user/p-r-k/Eureka/Eureka
+      dockerfile: Dockerfile
+    container_name: ybrainy-eureka
+    ports:
+      - "8761:8761"
+    environment:
+      SERVER_PORT: "8761"
+    networks:
+      - ybrainy-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8761/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  config-server:
+    build:
+      context: ./YBRAINY/ConfigServer/config-server
+      dockerfile: Dockerfile
+    container_name: ybrainy-config-server
+    ports:
+      - "8888:8888"
+    environment:
+      SERVER_PORT: "8888"
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      # Secrets for configs served by this server
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      TTS_API_KEY: ${TTS_API_KEY}
+      CONTENT_WRITER_API_KEY: ${CONTENT_WRITER_API_KEY}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      EVENT_GROQ_API_KEY: ${EVENT_GROQ_API_KEY}
+      HF_TOKEN: ${HF_TOKEN}
+      GITHUB_MODELS_API_KEY: ${GITHUB_MODELS_API_KEY}
+    depends_on:
+      eureka:
+        condition: service_healthy
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # USER SERVICE
+  # ══════════════════════════════════════════════════════════════════
+
+  user-service:
+    build:
+      context: ./user
+      dockerfile: Dockerfile
+    container_name: ybrainy-user-service
+    ports:
+      - "8899:8899"
+    environment:
+      SERVER_PORT: "8899"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ybrainy_users?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      KEYCLOAK_BASE_URL: http://host.docker.internal:9190
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://host.docker.internal:9190/realms/microservices
+      APP_UPLOAD_IMAGES_DIR: /app/uploads/images
+      APP_UPLOAD_IMAGES_PUBLIC_BASE_URL: http://localhost:8899/images
+    volumes:
+      - user-uploads:/app/uploads/images
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # YBRAINY CORE — Course / Quiz / Lesson / Enrollment
+  # ══════════════════════════════════════════════════════════════════
+
+  ml-service:
+    build:
+      context: ./YBRAINY/ML-Service
+      dockerfile: Dockerfile
+    container_name: ybrainy-ml-service
+    ports:
+      - "5000:5000"
+    environment:
+      COURSE_SERVICE_URL: http://course-service:8082
+    networks:
+      - ybrainy-net
+
+  course-service:
+    build:
+      context: ./YBRAINY/Course/tp-foyer
+      dockerfile: Dockerfile
+    container_name: ybrainy-course-service
+    ports:
+      - "8082:8082"
+    environment:
+      SERVER_PORT: "8082"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ybrainy_courses?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      FILE_UPLOAD_DIR: /app/uploads
+      ML_SERVICE_URL: http://ml-service:5000
+      APP_FRONTEND_URL: http://localhost:4200
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+    volumes:
+      - course-uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+      ml-service:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  quiz-service:
+    build:
+      context: ./YBRAINY/Quiz/quiz-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-quiz-service
+    ports:
+      - "8083:8083"
+    environment:
+      SERVER_PORT: "8083"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ybrainy_quiz?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  lesson-service:
+    build:
+      context: ./YBRAINY/Lesson/lesson-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-lesson-service
+    ports:
+      - "8084:8084"
+    environment:
+      SERVER_PORT: "8084"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ybrainy_lessons?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      FILE_UPLOAD_DIR: /app/uploads
+    volumes:
+      - lesson-uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  enrollment-service:
+    build:
+      context: ./YBRAINY/Enrollment/enrollment-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-enrollment-service
+    ports:
+      - "8085:8085"
+    environment:
+      SERVER_PORT: "8085"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ybrainy_enrollments?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  notes-service:
+    build:
+      context: ./notes-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-notes-service
+    ports:
+      - "8086:8086"
+    environment:
+      DATABASE_URL: postgresql://root@postgres:5432/ybrainy_notes
+      EUREKA_SERVER: http://eureka:8761/eureka/
+      SERVICE_PORT: "8086"
+      SERVICE_HOST: notes-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # PAYMENT
+  # ══════════════════════════════════════════════════════════════════
+
+  payment-service:
+    build:
+      context: ./payment/Payment
+      dockerfile: Dockerfile
+    container_name: ybrainy-payment-service
+    ports:
+      - "8095:8095"
+    environment:
+      SERVER_PORT: "8095"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_PUBLISHABLE_KEY: ${STRIPE_PUBLISHABLE_KEY}
+      TTS_API_KEY: ${TTS_API_KEY}
+      CONTENT_WRITER_API_KEY: ${CONTENT_WRITER_API_KEY}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  cart-service:
+    build:
+      context: ./payment/cart
+      dockerfile: Dockerfile
+    container_name: ybrainy-cart-service
+    ports:
+      - "8954:8954"
+    environment:
+      SERVER_PORT: "8954"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      APP_CHECKOUT_COURSES_URL: http://localhost:4200/courses
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  finance-service:
+    build:
+      context: ./payment/finance
+      dockerfile: Dockerfile
+    container_name: ybrainy-finance-service
+    ports:
+      - "8995:8995"
+    environment:
+      SERVER_PORT: "8995"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/elearning_platform?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # FORUM
+  # ══════════════════════════════════════════════════════════════════
+
+  category-service:
+    build:
+      context: ./forum/category-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-category-service
+    ports:
+      - "8180:8180"
+    environment:
+      CATEGORY_SERVICE_PORT: "8180"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_categories?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  thread-service:
+    build:
+      context: ./forum/thread-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-thread-service
+    ports:
+      - "8181:8181"
+    environment:
+      THREAD_SERVICE_PORT: "8181"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_threads?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      CONFIG_SERVER_URL: http://config-server:8888
+      ML_PREDICT_URL: http://predict-service:5001/predict
+      UPLOAD_DIR: /app/uploads
+      GROQ_API_KEY: ${GROQ_API_KEY}
+    volumes:
+      - thread-uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  post-service:
+    build:
+      context: ./forum/post-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-post-service
+    ports:
+      - "8182:8182"
+    environment:
+      POST_SERVICE_PORT: "8182"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_posts?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      CONFIG_SERVER_URL: http://config-server:8888
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - post-uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  comment-service:
+    build:
+      context: ./forum/comment-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-comment-service
+    ports:
+      - "8183:8183"
+    environment:
+      COMMENT_SERVICE_PORT: "8183"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_comments?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  messaging-service:
+    build:
+      context: ./forum/messaging-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-messaging-service
+    ports:
+      - "8184:8184"
+    environment:
+      MESSAGING_SERVICE_PORT: "8184"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_messages?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      UPLOAD_PATH: uploads/messages
+    volumes:
+      - messaging-uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+    networks:
+      - ybrainy-net
+
+  forum-engagement-service:
+    build:
+      context: ./forum/user-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-forum-engagement-service
+    ports:
+      - "8185:8185"
+    environment:
+      FORUM_USER_SERVICE_PORT: "8185"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/forum_users?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  predict-service:
+    build:
+      context: ./forum/predict-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-predict-service
+    ports:
+      - "5001:5001"
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # PARTNERSHIP / JOBS
+  # ══════════════════════════════════════════════════════════════════
+
+  partnership-service:
+    build:
+      context: "./new parteneriat/backend"
+      dockerfile: partnership-service/Dockerfile
+    container_name: ybrainy-partnership-service
+    ports:
+      - "8081:8081"
+    environment:
+      SERVER_PORT: "8081"
+      PARTNERSHIP_DB_URL: jdbc:mysql://mysql:3306/partnershipdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      PARTNERSHIP_DB_USERNAME: root
+      PARTNERSHIP_DB_PASSWORD: ""
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  job-offer-service:
+    build:
+      context: "./new parteneriat/backend"
+      dockerfile: job-offer-service/Dockerfile
+    container_name: ybrainy-job-offer-service
+    ports:
+      - "8187:8187"
+    environment:
+      JOB_OFFER_SERVICE_PORT: "8187"
+      JOB_OFFER_DB_URL: jdbc:mysql://mysql:3306/jobofferdb?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      JOB_OFFER_DB_USERNAME: root
+      JOB_OFFER_DB_PASSWORD: ""
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # PERSONALITY / WARNINGS  (MongoDB)
+  # ══════════════════════════════════════════════════════════════════
+
+  personality-behavior-service:
+    build:
+      context: ./personality-behavior-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-personality-behavior-service
+    ports:
+      - "8188:8188"
+    environment:
+      SERVER_PORT: "8188"
+      PERSONALITY_BEHAVIOR_SERVICE_PORT: "8188"
+      PERSONALITY_BEHAVIOR_MONGODB_URI: mongodb://mongodb:27017/personality_behavior_db
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  warning-ban-appeal-service:
+    build:
+      context: ./warning-ban-appeal-service
+      dockerfile: Dockerfile
+    container_name: ybrainy-warning-ban-appeal-service
+    ports:
+      - "8189:8189"
+    environment:
+      SERVER_PORT: "8189"
+      WARNING_BAN_APPEAL_SERVICE_PORT: "8189"
+      WARNING_BAN_APPEAL_MONGODB_URI: mongodb://mongodb:27017/warning_ban_appeal_db
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: "5672"
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # EVENTS
+  # ══════════════════════════════════════════════════════════════════
+
+  event-service:
+    build:
+      context: "./ybrainy events"
+      dockerfile: event-service/Dockerfile
+    container_name: ybrainy-event-service
+    ports:
+      - "9001:9001"
+    environment:
+      SERVER_PORT: "9001"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/event_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      EVENT_GROQ_API_KEY: ${EVENT_GROQ_API_KEY}
+      HF_TOKEN: ${HF_TOKEN}
+      GITHUB_MODELS_API_KEY: ${GITHUB_MODELS_API_KEY}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  inscription-service:
+    build:
+      context: "./ybrainy events"
+      dockerfile: inscription-service/Dockerfile
+    container_name: ybrainy-inscription-service
+    ports:
+      - "9002:9002"
+    environment:
+      SERVER_PORT: "9002"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inscription_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  events-user-service:
+    build:
+      context: "./ybrainy events"
+      dockerfile: user-service/Dockerfile
+    container_name: ybrainy-events-user-service
+    ports:
+      - "9003:9003"
+    environment:
+      EVENTS_USER_SERVICE_PORT: "9003"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/user_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  feedback-service:
+    build:
+      context: "./ybrainy events"
+      dockerfile: feedback-service/Dockerfile
+    container_name: ybrainy-feedback-service
+    ports:
+      - "9004:9004"
+    environment:
+      SERVER_PORT: "9004"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/feedback_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      CONFIG_SERVER_URL: http://config-server:8888
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: "5672"
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
+      config-server:
+        condition: service_started
+    networks:
+      - ybrainy-net
+
+  # ══════════════════════════════════════════════════════════════════
+  # API GATEWAY
+  # ══════════════════════════════════════════════════════════════════
+
+  api-gateway:
+    build:
+      context: ./user/p-r-k/ApiGateway/ApiGateway
+      dockerfile: Dockerfile
+    container_name: ybrainy-api-gateway
+    ports:
+      - "8088:8088"
+    environment:
+      SERVER_PORT: "8088"
+      YBRAINY_EUREKA_URL: http://eureka:8761/eureka/
+      ZIPKIN_URL: http://zipkin:9411
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://host.docker.internal:9190/realms/microservices
+    depends_on:
+      eureka:
+        condition: service_healthy
+    networks:
+      - ybrainy-net

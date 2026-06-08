@@ -1,0 +1,51 @@
+.animated-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  border-radius: 16px;
+  padding: 0.8rem 1.4rem;
+  min-height: 48px;
+  font-family: var(--font-family-title, Poppins, sans-serif);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #2d6de4 0%, #4d44b5 55%, #7e54ea 100%);
+  box-shadow: 0 14px 26px rgba(77, 68, 181, 0.28);
+  transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+}
+
+.animated-btn--full {
+  width: 100%;
+}
+
+.animated-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 20px 34px rgba(77, 68, 181, 0.42);
+  filter: brightness(1.08);
+}
+
+.animated-btn:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.animated-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.animated-btn__gloss {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(100deg, transparent 25%, rgba(255, 255, 255, 0.45) 50%, transparent 75%);
+  transition: transform 320ms ease;
+}
+
+.animated-btn:hover:not(:disabled) .animated-btn__gloss {
+  transform: translateX(120%);
+}
+
+.animated-btn__label {
+  position: relative;
+  z-index: 1;
+}

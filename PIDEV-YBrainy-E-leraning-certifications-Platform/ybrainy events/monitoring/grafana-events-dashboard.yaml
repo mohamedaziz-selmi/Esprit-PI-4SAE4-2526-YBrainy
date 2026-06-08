@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-events-dashboard
+  namespace: monitoring
+data:
+  events-dashboard.json: |
+    {
+      "annotations": {"list": []},
+      "description": "YBrainy Events Group - event-service, inscription-service, feedback-service",
+      "editable": true,
+      "graphTooltip": 1,
+      "panels": [
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {
+            "defaults": {
+              "color": {"mode": "thresholds"},
+              "mappings": [{"options": {"0": {"color": "red","text": "DOWN"},"1": {"color": "green","text": "UP"}},"type": "value"}],
+              "thresholds": {"mode": "absolute","steps": [{"color": "red","value": 0},{"color": "green","value": 1}]}
+            }
+          },
+          "gridPos": {"h": 4,"w": 8,"x": 0,"y": 0},
+          "id": 1,
+          "options": {"colorMode": "background","graphMode": "none","justifyMode": "center","orientation": "horizontal","reduceOptions": {"calcs": ["lastNotNull"]},"textMode": "auto"},
+          "targets": [
+            {"expr": "up{job=\"event-service\"}","legendFormat": "event-service"},
+            {"expr": "up{job=\"inscription-service\"}","legendFormat": "inscription-service"},
+            {"expr": "up{job=\"feedback-service\"}","legendFormat": "feedback-service"}
+          ],
+          "title": "Services Status",
+          "type": "stat"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}},
+          "gridPos": {"h": 8,"w": 12,"x": 0,"y": 4},
+          "id": 2,
+          "options": {"tooltip": {"mode": "multi"}},
+          "targets": [
+            {"expr": "rate(http_server_requests_seconds_count{job=\"event-service\"}[1m])","legendFormat": "event-service - {{method}} {{uri}} {{status}}"},
+            {"expr": "rate(http_server_requests_seconds_count{job=\"inscription-service\"}[1m])","legendFormat": "inscription-service - {{method}} {{uri}} {{status}}"},
+            {"expr": "rate(http_server_requests_seconds_count{job=\"feedback-service\"}[1m])","legendFormat": "feedback-service - {{method}} {{uri}} {{status}}"}
+          ],
+          "title": "HTTP Request Rate (req/s)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}},
+          "gridPos": {"h": 8,"w": 12,"x": 12,"y": 4},
+          "id": 3,
+          "targets": [
+            {"expr": "histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{job=\"event-service\"}[1m]))","legendFormat": "event-service P95"},
+            {"expr": "histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{job=\"inscription-service\"}[1m]))","legendFormat": "inscription-service P95"},
+            {"expr": "histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{job=\"feedback-service\"}[1m]))","legendFormat": "feedback-service P95"}
+          ],
+          "title": "Response Time P95",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps","color": {"mode": "fixed","fixedColor": "red"}}},
+          "gridPos": {"h": 8,"w": 12,"x": 0,"y": 12},
+          "id": 4,
+          "targets": [
+            {"expr": "rate(http_server_requests_seconds_count{job=\"event-service\",status=~\"4..|5..\"}[1m])","legendFormat": "event-service errors"},
+            {"expr": "rate(http_server_requests_seconds_count{job=\"inscription-service\",status=~\"4..|5..\"}[1m])","legendFormat": "inscription-service errors"},
+            {"expr": "rate(http_server_requests_seconds_count{job=\"feedback-service\",status=~\"4..|5..\"}[1m])","legendFormat": "feedback-service errors"}
+          ],
+          "title": "HTTP Error Rate (4xx + 5xx)",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "bytes"}},
+          "gridPos": {"h": 8,"w": 12,"x": 12,"y": 12},
+          "id": 5,
+          "targets": [
+            {"expr": "jvm_memory_used_bytes{job=\"event-service\",area=\"heap\"}","legendFormat": "event-service heap"},
+            {"expr": "jvm_memory_used_bytes{job=\"inscription-service\",area=\"heap\"}","legendFormat": "inscription-service heap"},
+            {"expr": "jvm_memory_used_bytes{job=\"feedback-service\",area=\"heap\"}","legendFormat": "feedback-service heap"},
+            {"expr": "jvm_memory_max_bytes{job=\"event-service\",area=\"heap\"}","legendFormat": "event-service heap max"}
+          ],
+          "title": "JVM Heap Memory",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "percentunit","min": 0,"max": 1}},
+          "gridPos": {"h": 8,"w": 12,"x": 0,"y": 20},
+          "id": 6,
+          "targets": [
+            {"expr": "process_cpu_usage{job=\"event-service\"}","legendFormat": "event-service CPU"},
+            {"expr": "process_cpu_usage{job=\"inscription-service\"}","legendFormat": "inscription-service CPU"},
+            {"expr": "process_cpu_usage{job=\"feedback-service\"}","legendFormat": "feedback-service CPU"}
+          ],
+          "title": "CPU Usage",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {"type": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}},
+          "gridPos": {"h": 4,"w": 12,"x": 12,"y": 20},
+          "id": 7,
+          "options": {"colorMode": "value","graphMode": "area","reduceOptions": {"calcs": ["lastNotNull"]}},
+          "targets": [
+            {"expr": "process_uptime_seconds{job=\"event-service\"}","legendFormat": "event-service"},
+            {"expr": "process_uptime_seconds{job=\"inscription-service\"}","legendFormat": "inscription-service"},
+            {"expr": "process_uptime_seconds{job=\"feedback-service\"}","legendFormat": "feedback-service"}
+          ],
+          "title": "Uptime",
+          "type": "stat"
+        }
+      ],
+      "refresh": "30s",
+      "schemaVersion": 38,
+      "tags": ["spring-boot","ybrainy","events"],
+      "time": {"from": "now-1h","to": "now"},
+      "title": "YBrainy Events Services",
+      "uid": "ybrainy-events-monitoring"
+    }

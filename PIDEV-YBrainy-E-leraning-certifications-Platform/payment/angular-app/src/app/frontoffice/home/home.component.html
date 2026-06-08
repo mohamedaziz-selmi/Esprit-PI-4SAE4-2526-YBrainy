@@ -1,0 +1,56 @@
+<!-- Main Container -->
+<main class="main-container pt0" id="go-to-top">
+
+  <!-- Moving Circle (global animation element) -->
+  <div class="main-circle-wrap">
+    <div class="tl-circle circle-binary">
+      <div class="ring"></div>
+      <video autoplay muted loop playsinline>
+        <source [src]="assets + 'wp-content/themes/ciklum/assets/video/neon-glow.mp4'">
+      </video>
+      <div class="circle-binary-overlay">
+        <div class="hover-parent mix">
+          <canvas id="binary-main" class="binary-canvas"></canvas>
+        </div>
+      </div>
+      <div class="main-logo">
+        <img [src]="assets + 'wp-content/themes/ciklum/assets/img/ciklum-white-big.png'" alt="">
+      </div>
+    </div>
+    <span class="loading-text">Loading YBrainy</span>
+  </div>
+
+  <!-- Banner / Hero -->
+  <app-hero-section></app-hero-section>
+
+  <!-- Trust Logos -->
+  <app-trust-logos></app-trust-logos>
+
+  <!-- Why YBrainy / Fundamentals -->
+  <app-why-ybrainy></app-why-ybrainy>
+
+  <!-- Popular Learning Paths -->
+  <app-learning-paths></app-learning-paths>
+
+  <!-- Learning Domains -->
+  <app-learning-domains></app-learning-domains>
+
+  <!-- Designed for Learners -->
+  <app-designed-for-learners></app-designed-for-learners>
+
+  <!-- Success Stories -->
+  <app-success-stories></app-success-stories>
+
+  <!-- Partners -->
+  <app-partners></app-partners>
+
+  <!-- Career CTA -->
+  <app-career-cta></app-career-cta>
+
+  <!-- Blog Insights -->
+  <app-blog-insights></app-blog-insights>
+
+  <!-- PreFooter CTA -->
+  <app-prefooter-cta></app-prefooter-cta>
+
+</main>

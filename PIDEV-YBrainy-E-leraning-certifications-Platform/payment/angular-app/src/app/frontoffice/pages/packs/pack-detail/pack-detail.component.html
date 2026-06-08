@@ -1,0 +1,180 @@
+<main class="main-container pack-detail-shell">
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-wrap">
+    <div class="spinner"></div>
+    <p>Loading pack details...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error-wrap">
+    <div class="error-icon">
+      <i class="bi bi-exclamation-circle"></i>
+    </div>
+    <h3>{{ error }}</h3>
+    <p>The selected learning pack is currently unavailable.</p>
+    <a routerLink="/packs" class="back-link">
+      <i class="bi bi-arrow-left"></i>
+      Back to Packs
+    </a>
+  </div>
+
+  <!-- Pack Detail -->
+  <ng-container *ngIf="pack && !loading">
+    <section class="detail-hero">
+      <div class="container container-md">
+        <div class="breadcrumb-bar">
+          <a routerLink="/">Home</a>
+          <span>/</span>
+          <a routerLink="/packs">Packs</a>
+          <span>/</span>
+          <strong>{{ pack.title }}</strong>
+        </div>
+
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-7">
+            <span class="detail-category">
+              <i class="bi bi-folder2-open"></i>
+              {{ pack.categoryName }}
+            </span>
+
+            <h1 class="detail-title">{{ pack.title }}</h1>
+
+            <p class="detail-lead">
+              {{ pack.description | slice:0:220 }}{{ pack.description.length > 220 ? '...' : '' }}
+            </p>
+
+            <div class="hero-metrics">
+              <div class="metric-chip">
+                <i class="bi bi-bar-chart-fill"></i>
+                <div>
+                  <span>Level</span>
+                  <strong>{{ getLevelLabel(pack.level) }}</strong>
+                </div>
+              </div>
+
+              <div class="metric-chip">
+                <i class="bi bi-clock-fill"></i>
+                <div>
+                  <span>Duration</span>
+                  <strong>{{ pack.durationHours }} hours</strong>
+                </div>
+              </div>
+
+              <div class="metric-chip" *ngIf="pack.certificateName">
+                <i class="bi bi-award-fill"></i>
+                <div>
+                  <span>Certificate</span>
+                  <strong>Included</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="hero-image-card">
+              <img
+                [src]="pack.image ? 'http://localhost/assets/img/packs/' + pack.image : 'assets/frontoffice/images/course-placeholder.jpg'"
+                [alt]="pack.title">
+              <div class="hero-image-overlay"></div>
+              <span class="discount-tag" *ngIf="getDiscount() > 0">{{ getDiscount() }}% OFF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-section">
+      <div class="container container-md">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <article class="detail-card">
+              <h4>About This Pack</h4>
+              <p>{{ pack.description }}</p>
+            </article>
+
+            <article class="detail-card">
+              <h4>What's Included</h4>
+              <ul class="detail-includes">
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>{{ pack.durationHours }}+ hours of guided content</span>
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>Hands-on projects and practical exercises</span>
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>Lifetime access to all included materials</span>
+                </li>
+                <li *ngIf="pack.certificateName">
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>{{ pack.certificateName }}</span>
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i>
+                  <span>Community and peer support access</span>
+                </li>
+              </ul>
+            </article>
+
+            <article *ngIf="pack.certificateName" class="detail-card cert-box">
+              <div class="cert-icon">
+                <i class="bi bi-award-fill"></i>
+              </div>
+              <div>
+                <h5>Certificate Track</h5>
+                <p>{{ pack.certificateName }}</p>
+                <small>Complete all modules in this pack to unlock your certificate.</small>
+              </div>
+            </article>
+          </div>
+
+          <div class="col-lg-4">
+            <aside class="price-card">
+              <div class="price-header">
+                <p class="price-label">Enrollment Price</p>
+                <div class="price-row">
+                  <span class="sale-price">${{ pack.salePrice | number:'1.2-2' }}</span>
+                  <span class="orig-price" *ngIf="pack.salePrice < pack.originalPrice">
+                    ${{ pack.originalPrice | number:'1.2-2' }}
+                  </span>
+                </div>
+              </div>
+
+              <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="addingToCart">
+                <i class="bi" [class.bi-cart-plus]="!addingToCart" [class.spinner-border]="addingToCart"
+                  [class.spinner-border-sm]="addingToCart"></i>
+                {{ addingToCart ? 'Adding...' : 'Add to Cart' }}
+              </button>
+
+              <ul class="price-details">
+                <li>
+                  <i class="bi bi-bar-chart-fill"></i>
+                  <span>{{ getLevelLabel(pack.level) }}</span>
+                </li>
+                <li>
+                  <i class="bi bi-clock-fill"></i>
+                  <span>{{ pack.durationHours }} hours</span>
+                </li>
+                <li>
+                  <i class="bi bi-folder2-open"></i>
+                  <span>{{ pack.categoryName }}</span>
+                </li>
+                <li *ngIf="pack.certificateName">
+                  <i class="bi bi-award-fill"></i>
+                  <span>{{ pack.certificateName }}</span>
+                </li>
+              </ul>
+
+              <a routerLink="/packs" class="outline-link">
+                <i class="bi bi-arrow-left"></i>
+                Back to all packs
+              </a>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+</main>

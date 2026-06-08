@@ -1,0 +1,125 @@
+pipeline {
+    agent any
+
+    environment {
+        SERVICE_NAME   = 'ml-service'
+        SERVICE_DIR    = 'YBRAINY/ML-Service'
+        IMAGE_NAME     = "ybrainy/${SERVICE_NAME}"
+        REGISTRY       = 'localhost:5000'
+        IMAGE_TAG      = "${BUILD_NUMBER}"
+        K8S_NAMESPACE  = 'ybrainy'
+        K8S_DEPLOYMENT = 'ml-service'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Python Tests') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh '''
+                        python3 -m pip install --quiet --no-warn-script-location \
+                            pytest pytest-mock flask flask-cors \
+                            scikit-learn joblib numpy pandas statsmodels requests
+                        python3 -m pytest tests/ -v \
+                            --tb=short \
+                            --junitxml=test-results.xml
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit testResults: "${SERVICE_DIR}/test-results.xml",
+                          allowEmptyResults: true
+                }
+            }
+        }
+
+        stage('Security Scan (Bandit)') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh '''
+                        python3 -m pip install --quiet bandit
+                        python3 -m bandit -r app.py \
+                            --severity-level medium \
+                            --confidence-level medium \
+                            -f txt \
+                            --exit-zero \
+                            || true
+                        echo "Bandit scan complete"
+                    '''
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dir("${SERVICE_DIR}") {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} -t ${IMAGE_NAME}:latest ."
+                }
+            }
+        }
+
+        stage('Security Scan (Trivy)') {
+            steps {
+                sh """
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        aquasec/trivy:latest image \
+                        --exit-code 0 \
+                        --severity MEDIUM,HIGH,CRITICAL \
+                        --format table \
+                        ${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
+        }
+
+        stage('Push to Registry') {
+            steps {
+                sh """
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker tag ${IMAGE_NAME}:latest      ${REGISTRY}/${IMAGE_NAME}:latest
+                    docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${REGISTRY}/${IMAGE_NAME}:latest
+                    echo "Pushed ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
+                """
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        kubectl --kubeconfig=${KUBECONFIG} get namespace ${K8S_NAMESPACE} \
+                            || kubectl --kubeconfig=${KUBECONFIG} create namespace ${K8S_NAMESPACE}
+
+                        kubectl --kubeconfig=${KUBECONFIG} apply \
+                            -f DEVOPS/${SERVICE_NAME}/k8s/ \
+                            -n ${K8S_NAMESPACE} || true
+
+                        kubectl --kubeconfig=${KUBECONFIG} -n ${K8S_NAMESPACE} \
+                            set image deployment/${K8S_DEPLOYMENT} \
+                            ${K8S_DEPLOYMENT}=${IMAGE_NAME}:${IMAGE_TAG}
+
+                        kubectl --kubeconfig=${KUBECONFIG} -n ${K8S_NAMESPACE} \
+                            rollout status deployment/${K8S_DEPLOYMENT} --timeout=120s
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "ML Service pipeline PASSED — ${IMAGE_NAME}:${IMAGE_TAG} deployed"
+        }
+        failure {
+            echo "ML Service pipeline FAILED"
+        }
+    }
+}

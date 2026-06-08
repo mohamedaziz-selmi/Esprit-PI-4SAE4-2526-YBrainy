@@ -1,0 +1,80 @@
+<div [class.container-fluid]="!isModal" [class.p-4]="!isModal" [class.py-4]="!isModal">
+  <div [class.row]="!isModal" [class.justify-content-center]="!isModal">
+    <div [class.col-lg-8]="!isModal">
+
+      <div *ngIf="!isModal" class="d-flex align-items-center mb-4">
+        <a routerLink="/dashboard/categories" class="btn btn-outline-secondary me-3">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="mb-0">{{ isEdit ? 'Edit Category' : 'New Category' }}</h2>
+      </div>
+
+      <!-- For Modal: Title in header -->
+      <div *ngIf="isModal" class="mb-3">
+        <h5 class="modal-title">{{ isEdit ? 'Edit Category' : 'New Category' }}</h5>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+      </div>
+
+      <!-- Form -->
+      <div *ngIf="!loading" [class.card]="!isModal" [class.shadow-sm]="!isModal">
+        <div [class.card-body]="!isModal" [class.p-4]="!isModal">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <!-- Name -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Category Name *</label>
+              <input type="text" class="form-control" formControlName="name"
+                     placeholder="e.g. Web Development"
+                     [class.is-invalid]="form.get('name')?.touched && form.get('name')?.invalid">
+              <div class="invalid-feedback" *ngIf="form.get('name')?.errors?.['required']">Name is required</div>
+              <div class="invalid-feedback" *ngIf="form.get('name')?.errors?.['minlength']">Minimum 2 characters</div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Description *</label>
+              <textarea class="form-control" formControlName="description" rows="3" maxlength="1000"
+                        placeholder="Brief description of this category..."
+                        [class.is-invalid]="form.get('description')?.touched && form.get('description')?.invalid"></textarea>
+              <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['required'] || form.get('description')?.errors?.['blank']">Description is required</div>
+              <div class="invalid-feedback" *ngIf="form.get('description')?.errors?.['maxlength']">Description must not exceed 1000 characters</div>
+            </div>
+
+            <!-- Icon Picker -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Icon</label>
+              <div class="d-flex flex-wrap gap-2">
+                <button *ngFor="let icon of icons" type="button"
+                        class="btn btn-outline-secondary icon-pick"
+                        [class.active]="form.get('icon')?.value === icon"
+                        (click)="selectIcon(icon)">
+                  <i [class]="'bi ' + icon" style="font-size: 1.2rem;"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary px-4" [disabled]="submitting">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+                {{ isEdit ? 'Update' : 'Create' }} Category
+              </button>
+              <button type="button" class="btn btn-light" (click)="onCancel()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

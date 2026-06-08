@@ -1,0 +1,543 @@
+# =============================================================================
+# YBrainy Platform – Central Configuration Reference
+# File: user/p-r-k/config-repo/application.yml
+#
+# Structure (multi-document YAML separated by ---):
+#   Document 1  : Shared defaults injected into every service
+#   Document 2  : "gateway"   profile – full API Gateway route table
+#   Documents 3+ : per-service profiles (spring.config.activate.on-profile)
+#
+# How each service uses this file
+# --------------------------------
+#   Spring services with spring-cloud-starter-config → fetched automatically
+#   via YBRAINY/ConfigServer (port 8888, native, search-location set to this dir).
+#   Services without config-client → their application.properties already contain
+#   the values shown here; this file is the canonical reference.
+#
+# Environment variables (override defaults when set):
+#   YBRAINY_EUREKA_URL   – Eureka server (default: http://localhost:8761/eureka/)
+#   RABBITMQ_HOST        – RabbitMQ host  (default: localhost)
+#   RABBITMQ_PORT        – RabbitMQ port  (default: 5672)
+#   RABBITMQ_USERNAME    – default: guest
+#   RABBITMQ_PASSWORD    – default: guest
+# =============================================================================
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 1 – Shared defaults (applies to ALL services)
+# ─────────────────────────────────────────────────────────────────────────────
+eureka:
+  client:
+    service-url:
+      defaultZone: ${YBRAINY_EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud: INFO
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 2 – "gateway" profile
+# Applied to: user/p-r-k/ApiGateway (spring.profiles.active=gateway)
+# ─────────────────────────────────────────────────────────────────────────────
+server:
+  port: 8088
+
+spring:
+  config:
+    activate:
+      on-profile: gateway
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # ── User / Auth ──────────────────────────────────────────────────────
+        - id: user-auth
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/auth/** ]
+          order: 1
+        - id: user-users
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/users/** ]
+          order: 2
+        - id: user-tracking
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/tracking/** ]
+          order: 3
+        - id: user-warnings-profile
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/warnings/** ]
+          order: 4
+        - id: user-ban-appeals-profile
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/ban-appeals, Path=/api/ban-appeals/** ]
+          order: 5
+
+        # ── Courses ──────────────────────────────────────────────────────────
+        - id: course-service
+          uri: lb://course-service
+          predicates: [ Path=/api/courses/** ]
+          order: 10
+        - id: course-learning-paths
+          uri: lb://course-service
+          predicates: [ Path=/api/learning-paths/** ]
+          order: 11
+        - id: course-instructor
+          uri: lb://course-service
+          predicates: [ Path=/api/instructor/** ]
+          order: 12
+        - id: course-students
+          uri: lb://course-service
+          predicates: [ Path=/api/students/** ]
+          order: 13
+        - id: course-ml
+          uri: lb://course-service
+          predicates: [ Path=/api/ml/** ]
+          order: 14
+        - id: course-certificates
+          uri: lb://course-service
+          predicates: [ Path=/api/certificates/** ]
+          order: 15
+        - id: quiz-service
+          uri: lb://quiz-service
+          predicates: [ Path=/api/quizzes/** ]
+          order: 16
+        - id: enrollment-service
+          uri: lb://enrollment-service
+          predicates: [ Path=/api/enrollments/** ]
+          order: 17
+        - id: lesson-service
+          uri: lb://lesson-service
+          predicates: [ Path=/api/lessons/** ]
+          order: 18
+
+        # ── Payment ──────────────────────────────────────────────────────────
+        - id: payment-service-payments
+          uri: lb://payment-service
+          predicates: [ Path=/api/payments/** ]
+          order: 20
+        - id: payment-service-packs
+          uri: lb://payment-service
+          predicates: [ Path=/api/packs/** ]
+          order: 21
+        - id: payment-service-internal
+          uri: lb://payment-service
+          predicates: [ Path=/api/internal/payments/** ]
+          order: 22
+        - id: cart-service
+          uri: lb://cart-service
+          predicates: [ Path=/api/cart/** ]
+          order: 23
+        - id: finance-service
+          uri: lb://finance-service
+          predicates: [ Path=/api/finance/** ]
+          order: 24
+
+        # ── Forum ────────────────────────────────────────────────────────────
+        - id: forum-category-service
+          uri: lb://category-service
+          predicates: [ Path=/api/categories/** ]
+          order: 30
+        - id: forum-thread-service
+          uri: lb://thread-service
+          predicates: [ Path=/api/threads/**, Path=/api/wishlist/**, Path=/api/ai/**, Path=/uploads/threads/** ]
+          order: 31
+        - id: forum-post-service
+          uri: lb://post-service
+          predicates: [ Path=/api/posts/**, Path=/uploads/posts/** ]
+          order: 32
+        - id: forum-comment-service
+          uri: lb://comment-service
+          predicates: [ Path=/api/comments/** ]
+          order: 33
+        - id: forum-messaging-service
+          uri: lb://messaging-service
+          predicates: [ Path=/api/messages/**, Path=/uploads/messages/**, Path=/ws/** ]
+          order: 34
+        - id: forum-users
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/forum-users/** ]
+          order: 35
+        - id: forum-dashboard-service
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/dashboard/** ]
+          order: 36
+        - id: forum-notification-service
+          uri: lb://breadandbutteruser
+          predicates: [ Path=/api/notifications/** ]
+          order: 37
+        # predict-service is Python/Flask – no Eureka; routed by direct URL
+        - id: forum-predict-service
+          uri: http://localhost:${PREDICT_SERVICE_PORT:5001}
+          predicates: [ Path=/api/predict/** ]
+          order: 36
+
+        # ── Personality / Warnings ────────────────────────────────────────────
+        - id: personality-behavior-personalities
+          uri: lb://personality-behavior-service
+          predicates: [ Path=/api/personalities, Path=/api/personalities/** ]
+          order: 40
+        - id: personality-behavior-behaviors
+          uri: lb://personality-behavior-service
+          predicates: [ Path=/api/behaviors, Path=/api/behaviors/** ]
+          order: 41
+        - id: warning-ban-appeal-service
+          uri: lb://warning-ban-appeal-service
+          predicates: [ Path=/api/appeals/**, Path=/api/bans/** ]
+          order: 42
+
+        # ── Partnership / Jobs ───────────────────────────────────────────────
+        - id: partnership-service
+          uri: lb://partnership-service
+          predicates: [ Path=/api/partnerships/** ]
+          order: 50
+        - id: job-offer-service
+          uri: lb://job-offer-service
+          predicates: [ Path=/api/offers/**, Path=/api/applications/**, Path=/api/generate-application, Path=/api/generate-application/** ]
+          order: 51
+
+        # ── Events ──────────────────────────────────────────────────────────
+        - id: event-service-legacy
+          uri: lb://event-service
+          predicates: [ Path=/Event/** ]
+          order: 60
+        - id: event-service-api
+          uri: lb://event-service
+          predicates: [ Path=/api/events/**, Path=/api/recommendations/** ]
+          order: 61
+        - id: inscription-service-legacy
+          uri: lb://inscription-service
+          predicates: [ Path=/Inscription/** ]
+          order: 62
+        - id: inscription-service-api
+          uri: lb://inscription-service
+          predicates: [ Path=/api/inscriptions/** ]
+          order: 63
+        - id: feedback-service-legacy
+          uri: lb://feedback-service
+          predicates: [ Path=/Feedback/** ]
+          order: 64
+        - id: feedback-service-api
+          uri: lb://feedback-service
+          predicates: [ Path=/api/feedbacks/** ]
+          order: 65
+        - id: events-user-service-legacy
+          uri: lb://events-user-service
+          predicates: [ Path=/User/** ]
+          order: 66
+        - id: events-user-service-api
+          uri: lb://events-user-service
+          predicates: [ Path=/api/event-users/** ]
+          order: 67
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 3 – cart-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: cart-service
+  application:
+    name: cart-service
+  rabbitmq:
+    exchange: ${APP_RABBITMQ_EXCHANGE:ybrainy.events}
+    payment-completed-routing-key: payment.completed
+    finance-payment-queue: finance.payment.completed.queue
+server:
+  port: 8954
+eureka:
+  client:
+    service-url:
+      defaultZone: ${YBRAINY_EUREKA_URL:http://localhost:8761/eureka/}
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 4 – payment-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: payment-service
+  application:
+    name: payment-service
+server:
+  port: 8095
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 5 – finance-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: finance-service
+  application:
+    name: finance-service
+server:
+  port: 8995
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 6 – course-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: course-service
+  application:
+    name: course-service
+server:
+  port: 8082
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 7 – quiz-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: quiz-service
+  application:
+    name: quiz-service
+server:
+  port: 8083
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 8 – lesson-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: lesson-service
+  application:
+    name: lesson-service
+server:
+  port: 8084
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 9 – enrollment-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: enrollment-service
+  application:
+    name: enrollment-service
+server:
+  port: 8085
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 10 – category-service (forum) – port changed 8082→8180
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: category-service
+  application:
+    name: category-service
+server:
+  port: 8180
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 11 – thread-service (forum) – port changed 8083→8181
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: thread-service
+  application:
+    name: thread-service
+server:
+  port: 8181
+ml:
+  predict:
+    url: ${ML_PREDICT_URL:http://localhost:5001/predict}
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 12 – post-service (forum) – port changed 8084→8182
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: post-service
+  application:
+    name: post-service
+server:
+  port: 8182
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 13 – comment-service (forum) – port changed 8085→8183
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: comment-service
+  application:
+    name: comment-service
+server:
+  port: 8183
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 14 – messaging-service (forum) – port changed 8086→8184
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: messaging-service
+  application:
+    name: messaging-service
+server:
+  port: 8184
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 15 – forum-engagement-service – new port 8185
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: forum-engagement-service
+  application:
+    name: forum-engagement-service
+server:
+  port: 8185
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 16 – partnership-service – Eureka fixed (was 8770)
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: partnership-service
+  application:
+    name: partnership-service
+server:
+  port: 8081
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 17 – job-offer-service – Eureka fixed + port changed 8082→8187
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: job-offer-service
+  application:
+    name: job-offer-service
+server:
+  port: 8187
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 18 – personality-behavior-service – Eureka enabled + port 8084→8188
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: personality-behavior-service
+  application:
+    name: personality-behavior-service
+server:
+  port: 8188
+eureka:
+  client:
+    enabled: true
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 19 – warning-ban-appeal-service – Eureka enabled + URL fixed
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: warning-ban-appeal-service
+  application:
+    name: warning-ban-appeal-service
+server:
+  port: 8086
+eureka:
+  client:
+    enabled: true
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 20 – event-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: event-service
+  application:
+    name: event-service
+server:
+  port: 9001
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 21 – inscription-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: inscription-service
+  application:
+    name: inscription-service
+server:
+  port: 9002
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 22 – feedback-service
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: feedback-service
+  application:
+    name: feedback-service
+server:
+  port: 9004
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# DOCUMENT 23 – events-user-service (renamed from user-service to avoid conflict)
+# ─────────────────────────────────────────────────────────────────────────────
+spring:
+  config:
+    activate:
+      on-profile: events-user-service
+  application:
+    name: events-user-service
+server:
+  port: 9003

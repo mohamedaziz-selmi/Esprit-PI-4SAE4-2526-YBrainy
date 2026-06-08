@@ -1,0 +1,24 @@
+# Build artifacts (each module's target/ dir)
+**/target/
+
+# IDE project files
+**/.idea/
+**/*.iml
+**/.vscode/
+**/.eclipse/
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+hs_err_pid*.log
+replay_pid*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local Maven settings (credentials)
+settings-local.xml

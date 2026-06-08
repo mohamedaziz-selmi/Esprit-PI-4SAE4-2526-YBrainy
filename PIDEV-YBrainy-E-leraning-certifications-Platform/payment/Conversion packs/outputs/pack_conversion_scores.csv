@@ -1,0 +1,28 @@
+pack_id,title,category_id,category_name,level,primary_skill,sale_price,original_price,discount_pct,duration_hours,market_demand_score,market_avg_roi,market_course_count,avg_views,avg_cart_adds,observed_purchase_rate,predicted_conversion_rate,expected_buyers,training_support,expected_revenue,conversion_rank
+3,Python & Django Backend Development,1,Web Development,INTERMEDIATE,python,179.99,249.99,28.0011,90,0.930743,92.53060000000002,49,5.7,0.75,0.480952,0.718253,301.67,420,54296.91,1
+5,Data Analytics Professional Certificate,2,Data and AI,BEGINNER,data-science,129.99,199.99,35.0018,80,0.755471,99.125,12,5.0,0.48,0.328571,0.62745,263.53,420,34256.12,2
+6,Machine Learning Engineering Masterclass,2,Data and AI,INTERMEDIATE,machine-learning,249.99,349.99,28.5722,130,0.813377,98.9688,16,5.3,0.5,0.264286,0.498765,209.48,420,52368.19,3
+24,UI/UX Design with Figma,8,Design,BEGINNER,general,169.99,249.99,32.0013,75,0.346841,62.5,4,4.07,0.4,0.214286,0.487716,204.84,420,34820.86,4
+19,Project Management Professional (PMP) Prep,6,Business,INTERMEDIATE,general,179.99,249.99,28.0011,65,0.346841,62.5,4,4.2,0.44,0.230952,0.483656,203.14,420,36562.38,5
+12,CompTIA Security+ Certification Prep,4,Cybersecurity,BEGINNER,general,139.99,199.99,30.0015,60,0.346841,62.5,4,4.13,0.35,0.219048,0.477394,200.51,420,28068.79,6
+15,Flutter & Dart Mobile Development,5,Mobile Development,INTERMEDIATE,react,199.99,279.99,28.5724,85,0.308318,83.6462,26,4.01,0.42,0.240476,0.471239,197.92,420,39582.05,7
+17,React Native Cross-Platform Development,5,Mobile Development,INTERMEDIATE,react,179.99,249.99,28.0011,70,0.308318,83.6462,26,4.03,0.41,0.209524,0.467959,196.54,420,35375.74,8
+18,Business Strategy & Planning Fundamentals,6,Business,BEGINNER,general,129.99,199.99,35.0018,40,0.346841,62.5,4,4.0,0.39,0.230952,0.458266,192.47,420,25019.41,9
+9,AWS Solutions Architect Certification Prep,3,Cloud,INTERMEDIATE,aws,199.99,299.99,33.3344,70,0.308928,100.0,7,4.14,0.38,0.207143,0.457689,192.23,420,38443.97,10
+26,DevOps Engineering Bootcamp,9,DevOps,INTERMEDIATE,aws,229.99,319.99,28.1259,95,0.308928,100.0,7,4.23,0.49,0.219048,0.456201,191.6,420,44067.14,11
+2,Full-Stack JavaScript Mastery,1,Web Development,INTERMEDIATE,react,199.99,299.99,33.3344,120,0.308318,83.6462,26,4.07,0.43,0.25,0.45482,191.02,420,38202.96,12
+16,iOS App Development with Swift,5,Mobile Development,INTERMEDIATE,react,219.99,299.99,26.6676,100,0.308318,83.6462,26,4.12,0.37,0.2,0.451239,189.52,420,41692.62,13
+21,Digital Marketing Complete Guide,7,Marketing,BEGINNER,general,169.99,249.99,32.0013,50,0.346841,62.5,4,4.08,0.49,0.209524,0.438558,184.19,420,31311.21,14
+1,Frontend Web Development Bootcamp,1,Web Development,BEGINNER,react,99.99,149.99,33.3356,65,0.308318,83.6462,26,3.71,0.31,0.157143,0.428845,180.11,420,18009.68,15
+22,Advanced SEO & Growth Marketing,7,Marketing,INTERMEDIATE,general,199.99,279.99,28.5724,60,0.346841,62.5,4,4.28,0.44,0.185714,0.416798,175.06,420,35009.3,16
+13,Ethical Hacking & Penetration Testing,4,Cybersecurity,INTERMEDIATE,general,259.99,349.99,25.715,110,0.346841,62.5,4,4.07,0.44,0.178571,0.404217,169.77,420,44138.8,17
+10,Microsoft Azure Fundamentals AZ-900,3,Cloud,BEGINNER,aws,99.99,149.99,33.3356,35,0.308928,100.0,7,3.93,0.31,0.166667,0.39584,166.25,420,16623.61,18
+23,Social Media Marketing Mastery,7,Marketing,BEGINNER,general,119.99,179.99,33.3352,40,0.346841,62.5,4,4.07,0.38,0.161905,0.395456,166.09,420,19929.31,19
+27,Certified Kubernetes Administrator (CKA) Prep,9,DevOps,ADVANCED,aws,219.99,299.99,26.6676,70,0.308928,100.0,7,4.01,0.44,0.164286,0.36689,154.09,420,33899.07,20
+25,Advanced Product Design & Design Systems,8,Design,ADVANCED,general,239.99,329.99,27.2736,90,0.346841,62.5,4,4.11,0.41,0.161905,0.355042,149.12,420,35786.7,21
+4,Next.js Advanced Full-Stack Development,1,Web Development,ADVANCED,react,219.99,279.99,21.4293,75,0.308318,83.6462,26,3.92,0.39,0.161905,0.349534,146.8,420,32295.46,22
+11,Google Cloud Professional Architect Prep,3,Cloud,ADVANCED,aws,259.99,349.99,25.715,80,0.308928,100.0,7,3.83,0.36,0.130952,0.319965,134.39,420,34938.84,23
+28,Site Reliability Engineering (SRE) Mastery,9,DevOps,ADVANCED,aws,259.99,349.99,25.715,80,0.308928,100.0,7,3.96,0.39,0.135714,0.319018,133.99,420,34835.46,24
+7,Deep Learning & NLP with Python,2,Data and AI,ADVANCED,deep-learning,299.99,399.99,25.0006,150,0.289859,98.5,1,3.69,0.31,0.107143,0.282112,118.49,420,35544.96,25
+14,SOC Analyst & Incident Response Mastery,4,Cybersecurity,ADVANCED,general,299.99,399.99,25.0006,90,0.346841,62.5,4,3.88,0.4,0.135714,0.273872,115.03,420,34506.66,26
+20,MBA Essentials - Business Leadership Track,6,Business,ADVANCED,general,349.99,499.99,30.0006,120,0.346841,62.5,4,3.9,0.31,0.047619,0.18343,77.04,420,26963.42,27

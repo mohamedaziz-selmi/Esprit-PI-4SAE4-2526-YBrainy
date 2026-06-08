@@ -1,0 +1,112 @@
+<div class="fo-course-detail-page">
+  <div class="fo-course-hero" *ngIf="course">
+    <div class="fo-hero-bg" [style.background-image]="course.thumbnailUrl ? 'url(' + course.thumbnailUrl + ')' : ''"></div>
+    <div class="fo-hero-overlay"></div>
+
+    <div class="fo-hero-inner">
+      <div class="fo-hero-top">
+        <button class="button line" type="button" (click)="backToCourses()">Back</button>
+      </div>
+
+      <div class="fo-hero-text">
+        <div class="fo-chips">
+          <span class="fo-chip">{{ course.category }}</span>
+          <span class="fo-chip dark">{{ course.level }}</span>
+          <span class="fo-chip success" *ngIf="course.offersCertificate">Certificate</span>
+          <span class="fo-chip warn" *ngIf="!course.isPublished">Draft</span>
+        </div>
+        <h1 class="fo-hero-title">{{ course.title }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="fo-course-container">
+    <ng-template #missing>
+      <div class="comm-txt">
+        <p>Course not found.</p>
+      </div>
+    </ng-template>
+
+    <div *ngIf="loading" class="fo-loading-wrap">
+      <div class="fo-spinner"></div>
+    </div>
+
+    <div *ngIf="!loading && !course">
+      <ng-container *ngTemplateOutlet="missing"></ng-container>
+    </div>
+
+    <section *ngIf="course" class="fo-course-main">
+      <div class="fo-course-grid">
+        <div class="fo-course-left">
+          <div class="fo-section">
+            <h2 class="fo-section-title">About this course</h2>
+            <p class="fo-desc">{{ course.description }}</p>
+          </div>
+        </div>
+
+        <aside class="fo-course-right">
+          <div class="fo-side-card">
+            <div class="fo-price">{{ formatPrice(course.price) }}</div>
+            <!-- Enrollment -->
+            <div *ngIf="!enrolled" class="fo-enroll-wrap">
+              <button class="fo-btn-enroll" type="button" [disabled]="enrolling" (click)="enrollOrPay()">
+                <ng-container *ngIf="enrolling">Processing...</ng-container>
+                <ng-container *ngIf="!enrolling && course.price > 0">Buy Now — ${{ course.price }}</ng-container>
+                <ng-container *ngIf="!enrolling && (!course.price || course.price === 0)">Enroll Free</ng-container>
+              </button>
+              <div *ngIf="enrollError" class="fo-enroll-error">{{ enrollError }}</div>
+            </div>
+            <div *ngIf="enrolled" class="fo-enrolled-badge">✓ Enrolled</div>
+
+            <button class="fo-primary" type="button" [disabled]="!enrolled" (click)="viewLessons()">🚀 Start Learning</button>
+            <button class="fo-reader-btn" type="button" [disabled]="readerLoading" (click)="toggleReader()">
+              <span *ngIf="!readerLoading">{{ readerOpen ? 'Close Avatar Reader' : 'Avatar Reader' }}</span>
+              <span *ngIf="readerLoading">Loading Reader...</span>
+            </button>
+            <div *ngIf="readerError" class="fo-reader-error">{{ readerError }}</div>
+            <div class="fo-side-hint" *ngIf="!enrolled">Enroll first to start learning and track your progress.</div>
+            <div class="fo-action-buttons">
+              <button class="fo-btn-progress" type="button" [disabled]="!enrolled" (click)="goToProgress()">📊 My Progress</button>
+              <button class="fo-btn-quiz" type="button" [disabled]="!enrolled" (click)="goToQuiz()">📝 Take Quiz</button>
+              <button class="fo-btn-reviews" type="button" [disabled]="!enrolled" (click)="goToReviews()">⭐ Reviews</button>
+            </div>
+
+            <div class="fo-stats">
+              <div class="fo-stat">
+                <div class="fo-stat-label">Lessons</div>
+                <div class="fo-stat-value">{{ course.lessonCount }}</div>
+              </div>
+              <div class="fo-stat">
+                <div class="fo-stat-label">Duration</div>
+                <div class="fo-stat-value">{{ course.approximateDurationMinutes }} min</div>
+              </div>
+              <div class="fo-stat">
+                <div class="fo-stat-label">Rating</div>
+                <div class="fo-stat-value">{{ course.rating | number:'1.1-1' }} <span class="fo-muted">({{ course.ratingCount }})</span></div>
+              </div>
+              <div class="fo-stat">
+                <div class="fo-stat-label">Created</div>
+                <div class="fo-stat-value">{{ formatDate(course.createdAt) }}</div>
+              </div>
+              <div class="fo-stat">
+                <div class="fo-stat-label">Updated</div>
+                <div class="fo-stat-value">{{ formatDate(course.updatedAt) }}</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <div class="fo-reader-dock" *ngIf="readerOpen && readerFrameUrl">
+    <div class="fo-reader-dock-head">
+      <div>
+        <div class="fo-reader-dock-title">Avatar Reader</div>
+        <div class="fo-reader-dock-sub">{{ readerSpeakerSource }}</div>
+      </div>
+      <button class="fo-reader-close" type="button" (click)="closeReader()">Close</button>
+    </div>
+    <iframe class="fo-reader-frame" [src]="readerFrameUrl" title="Course avatar reader"></iframe>
+  </div>
+</div>

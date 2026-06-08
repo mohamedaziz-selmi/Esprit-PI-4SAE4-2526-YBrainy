@@ -1,0 +1,94 @@
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+application-local.properties
+settings-local.xml
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+**/.claude/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+logs/
+**/logs/
+**/.logs/
+
+# Build outputs and dependency folders
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+target/
+**/target/
+.angular/
+**/.angular/
+.cache/
+**/.cache/
+.m2/
+**/.m2repo/
+
+# Test and scanner output
+coverage/
+**/coverage/
+.coverage
+**/.coverage
+.pytest_cache/
+**/.pytest_cache/
+__pycache__/
+**/__pycache__/
+.scannerwork/
+**/.scannerwork/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Runtime uploads and generated media
+uploads/
+**/uploads/
+generated-event-images/
+**/generated-event-images/
+**/scraper/result/
+**/debug_*.html
+
+# Heavy copied website-template/media dumps
+**/src/assets/frontoffice/www.ciklum.com/wp-content/uploads/
+**/src/assets/frontoffice/proj.leo9studio.in/projects/ciklum-wp/wp-content/uploads/
+
+# Machine-learning artifacts and datasets
+*.pkl
+*.joblib
+*.h5
+*.keras
+*.pt
+*.pth
+*.onnx
+*.tflite
+*.bin
+**/models/
+**/artifacts/
+**/datasets/*.csv
+**/outputs/*training_data*.csv
+
+# Local-only DevOps demo material with environment credentials
+DEVOPS/
+DEVOPS-GUIDE.md
+EXCELLENCE-DEMO.md
+START-EVERYTHING.ps1
+add-ybrainy-host.ps1
+
+# Downloaded/exported archives
+*.zip
+*.7z
+*.rar

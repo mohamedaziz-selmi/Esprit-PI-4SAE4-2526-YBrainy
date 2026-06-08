@@ -1,0 +1,208 @@
+<section class="codelab-shell" [class.light-mode]="activeTheme === 'light'">
+  <div class="codelab-bg codelab-bg-one"></div>
+  <div class="codelab-bg codelab-bg-two"></div>
+  <div class="codelab-bg codelab-bg-three"></div>
+
+  <div class="codelab-container">
+    <header class="codelab-topbar">
+      <div class="codelab-brand">
+        <div class="codelab-brand-mark">
+          <span>&lt;/&gt;</span>
+        </div>
+        <div>
+          <h1>CodeStudio</h1>
+          <p>Simulator and coding trainer</p>
+        </div>
+      </div>
+
+      <nav class="codelab-nav">
+        <button type="button" [class.active]="activeSection === 'editor'" (click)="selectSection('editor')">Editeur</button>
+        <button type="button" [class.active]="activeSection === 'projects'" (click)="selectSection('projects')">Projets</button>
+        <button type="button" [class.active]="activeSection === 'stats'" (click)="selectSection('stats')">Statistiques</button>
+      </nav>
+
+      <button
+        type="button"
+        class="theme-toggle"
+        (click)="toggleTheme()"
+        [attr.aria-label]="activeTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        [attr.title]="activeTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <span class="theme-toggle-icon" aria-hidden="true">
+          <svg *ngIf="activeTheme === 'dark'; else moonIcon" viewBox="0 0 24 24" focusable="false">
+            <path
+              d="M12 3.75a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 .75-.75Zm0 13.5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V18a.75.75 0 0 1 .75-.75Zm8.25-6a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm-15 0a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1 0-1.5h1.5Zm10.607-5.857a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06Zm-9.9 9.9a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06Zm11.02 2.12a.75.75 0 0 1 0-1.06l1.06-1.06a.75.75 0 0 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06 0Zm-9.9-9.9a.75.75 0 0 1 0-1.06l1.06-1.06a.75.75 0 1 1 1.06 1.06l-1.06 1.06a.75.75 0 0 1-1.06 0ZM12 8.25A3.75 3.75 0 1 1 8.25 12 3.75 3.75 0 0 1 12 8.25Z"
+            />
+          </svg>
+          <ng-template #moonIcon>
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path
+                d="M14.53 3.53a.75.75 0 0 1 .84.95 7.5 7.5 0 1 0 9.15 9.15.75.75 0 0 1 .95.84A9 9 0 1 1 14.53 3.53Z"
+              />
+            </svg>
+          </ng-template>
+        </span>
+        <span class="theme-toggle-label">{{ activeTheme === 'dark' ? 'Light mode' : 'Dark mode' }}</span>
+      </button>
+    </header>
+
+    <section class="language-row">
+      <span class="language-label">Language :</span>
+      <div class="language-pills">
+        <button
+          *ngFor="let language of languages"
+          type="button"
+          class="language-pill"
+          [class.active]="activeLanguage === language.id"
+          (click)="selectLanguage(language.id)"
+        >
+          <span class="dot" [style.background]="language.accent"></span>
+          {{ language.label }}
+        </button>
+      </div>
+    </section>
+
+    <ng-container [ngSwitch]="activeSection">
+      <section *ngSwitchCase="'editor'" class="workspace">
+        <div class="workspace-toolbar">
+          <div class="project-meta">
+            <input
+              type="text"
+              class="project-name-input"
+              [value]="projectName"
+              (input)="projectName = $any($event.target).value"
+              placeholder="Project name"
+            />
+            <span class="file-pill">{{ activeLanguageMeta.fileName }}</span>
+            <span class="saved-at" *ngIf="lastSavedAt">Saved {{ lastSavedAt }}</span>
+          </div>
+
+          <div class="toolbar-actions">
+            <button type="button" class="toolbar-btn subtle" (click)="clearEditor()">Effacer</button>
+            <button type="button" class="toolbar-btn subtle" (click)="copyCode()">Copier</button>
+            <button type="button" class="toolbar-btn success" (click)="saveProject()">Sauvegarder</button>
+            <button type="button" class="toolbar-btn primary" [disabled]="isRunning" (click)="runCode()">
+              {{ isRunning ? 'Execution...' : 'Executer' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="workspace-grid">
+          <article class="editor-panel">
+            <div class="panel-header">
+              <span>{{ activeLanguageMeta.fileName }}</span>
+              <span>Ligne {{ lineCount }}, Col {{ columnCount }}</span>
+            </div>
+
+            <div class="editor-body">
+              <div class="line-numbers">
+                <span *ngFor="let line of lineNumbers">{{ line }}</span>
+              </div>
+
+              <textarea
+                class="code-editor"
+                [value]="code"
+                spellcheck="false"
+                (input)="onCodeInput($event)"
+                (click)="onCursorActivity($event)"
+                (keyup)="onCursorActivity($event)"
+              ></textarea>
+            </div>
+          </article>
+
+          <article class="output-panel">
+            <div class="panel-header">
+              <span>Console / Resultat</span>
+              <span *ngIf="pythonRuntimeLoading">Loading Python runtime...</span>
+              <span *ngIf="!pythonRuntimeLoading && previewDocument">Preview active</span>
+            </div>
+
+            <pre class="console-output">{{ consoleOutput }}</pre>
+
+            <iframe
+              *ngIf="previewDocument"
+              class="preview-frame"
+              [attr.srcdoc]="previewDocument"
+              title="Code preview"
+            ></iframe>
+          </article>
+        </div>
+      </section>
+
+      <section *ngSwitchCase="'projects'" class="projects-section">
+        <div class="section-copy">
+          <h2>Saved projects</h2>
+          <p>Keep your practice snippets, reload them anytime, and continue improving.</p>
+        </div>
+
+        <div class="projects-grid" *ngIf="savedProjects.length; else emptyProjects">
+          <article class="project-card" *ngFor="let project of savedProjects">
+            <div class="project-card-top">
+              <div>
+                <h3>{{ project.name }}</h3>
+                <p>{{ project.language | titlecase }}</p>
+              </div>
+              <span class="project-date">{{ formatDate(project.updatedAt) }}</span>
+            </div>
+
+            <pre>{{ project.code }}</pre>
+
+            <div class="project-card-actions">
+              <button type="button" class="toolbar-btn primary" (click)="loadProject(project)">Open</button>
+              <button type="button" class="toolbar-btn subtle" (click)="deleteProject(project.id)">Delete</button>
+            </div>
+          </article>
+        </div>
+
+        <ng-template #emptyProjects>
+          <div class="empty-state">
+            <h3>No project saved yet</h3>
+            <p>Write code in the editor, then click Save to build your personal practice library.</p>
+          </div>
+        </ng-template>
+      </section>
+
+      <section *ngSwitchCase="'stats'" class="stats-section">
+        <div class="stats-header">
+          <h2>Statistiques</h2>
+          <p>A quick view of your coding activity in the simulator.</p>
+        </div>
+
+        <div class="stats-cards">
+          <article class="stat-card">
+            <span class="stat-label">Projects</span>
+            <strong>{{ projectCount }}</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Lines of code</span>
+            <strong>{{ totalLinesOfCode }}</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Executions</span>
+            <strong>{{ stats.executions }}</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Errors</span>
+            <strong>{{ stats.errors }}</strong>
+          </article>
+        </div>
+
+        <article class="usage-panel">
+          <h3>Languages used</h3>
+
+          <div class="usage-row" *ngFor="let entry of usageEntries">
+            <span class="usage-label">{{ entry.label }}</span>
+            <div class="usage-bar">
+              <div
+                class="usage-fill"
+                [style.background]="entry.accent"
+                [style.width.%]="(entry.value / maxUsage) * 100"
+              ></div>
+            </div>
+            <span class="usage-value">{{ entry.value }}</span>
+          </div>
+        </article>
+      </section>
+    </ng-container>
+  </div>
+</section>

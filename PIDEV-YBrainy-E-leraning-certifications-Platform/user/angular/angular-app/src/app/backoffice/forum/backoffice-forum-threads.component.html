@@ -1,0 +1,53 @@
+<app-backoffice-nav />
+
+<div class="bo-wrap">
+  <div class="bo-head">
+    <h1>Forum (Admin)</h1>
+    <div class="bo-actions">
+      <button type="button" class="btn" (click)="load()">Refresh</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="bo-card">Loading…</div>
+
+  <div *ngIf="!loading && error" class="bo-card bo-error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="bo-card">
+    <table class="bo-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Author</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of threads">
+          <td>{{ t.id }}</td>
+          <td>
+            <a (click)="openThread(t.id)" style="cursor:pointer; text-decoration:underline;">{{ t.title }}</a>
+          </td>
+          <td>{{ t.status }}</td>
+          <td>{{ t.author?.username ?? 'Unknown user' }}</td>
+          <td>{{ t.createdAt | date:'medium' }}</td>
+          <td>
+            <div class="bo-btn-row">
+              <button type="button" class="btn" (click)="lock(t)">Lock</button>
+              <button type="button" class="btn" (click)="unlock(t)">Unlock</button>
+              <button type="button" class="btn" (click)="close(t)">Close</button>
+              <button type="button" class="btn" (click)="reopen(t)">Reopen</button>
+              <button type="button" class="btn danger" (click)="deleteThread(t)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="threads.length === 0" class="bo-empty">No threads.</div>
+  </div>
+</div>
