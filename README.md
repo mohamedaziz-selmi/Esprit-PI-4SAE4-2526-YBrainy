@@ -190,7 +190,7 @@ The repository includes `.env.example` only. Real secrets must never be committe
 
 ## Authors
 
-YBrainy Team  
+YBrainy Team  : Yassin Bouras - Mohamed Aziz Selmi - Bejaoui Iheb - Issam Riahi - Houssem Hbaieb - Jacem Jouili
 Class: 4SAE4  
 Academic year: 2025-2026  
 School: ESPRIT School of Engineering
